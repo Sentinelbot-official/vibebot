@@ -84,7 +84,7 @@ Every feature has a story! Here are some community highlights:
 
 ### 💎 **220+ Commands Across 8 Categories**
 
-> 🔴 **Every command was coded live 24/7 with global chat!** Use `!story` in Discord to learn more!
+> 🔴 **Every command was coded live 24/7 with global chat!** Use `//story` in Discord to learn more!
 
 **🛡️ Advanced Moderation (19 commands)**
 
@@ -203,8 +203,8 @@ projects/
 
 ### General Commands
 
-- `!help [command]` - List all commands or get info about a specific command
-- `!ping` - Check bot latency
+- `//help [command]` - List all commands or get info about a specific command
+- `//ping` - Check bot latency
 - `!userinfo [@user]` - Get information about a user
 - `!serverinfo` - Get information about the server
 

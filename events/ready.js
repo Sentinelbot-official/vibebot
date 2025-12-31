@@ -9,9 +9,11 @@ module.exports = {
     try {
       // Get individual config values
       const version = config.getBotConfig('version') || '2.2.0';
-      const originStory = config.getBotConfig('origin_story') || 'Built 24/7 on stream';
-      const tagline = config.getBotConfig('tagline') || 'Let\'s vibe together!';
-      const twitchUrl = config.getBotConfig('twitch') || 'https://twitch.tv/projectdraguk';
+      const originStory =
+        config.getBotConfig('origin_story') || 'Built 24/7 on stream';
+      const tagline = config.getBotConfig('tagline') || "Let's vibe together!";
+      const twitchUrl =
+        config.getBotConfig('twitch') || 'https://twitch.tv/projectdraguk';
 
       logger.success(`🎵 ${client.user.tag} is now LIVE!`);
       logger.info(`📊 Serving ${client.guilds.cache.size} servers`);
@@ -39,7 +41,7 @@ module.exports = {
           name: `⚡ ${client.commands.size} commands ready!`,
           type: ActivityType.Playing,
         },
-        { name: `🚀 v${version} | !help`, type: ActivityType.Playing },
+        { name: `🚀 v${version} | //help`, type: ActivityType.Playing },
         { name: `🎮 Coded 24/7 with global chat!`, type: ActivityType.Playing },
         {
           name: `🔴 LIVE NOW - twitch.tv/projectdraguk`,

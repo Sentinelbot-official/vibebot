@@ -22,12 +22,12 @@ class ConfigManager {
   loadEnvironment() {
     const required = ['TOKEN', 'CLIENT_ID'];
     const optional = {
-      PREFIX: '!',
+      PREFIX: '//',
       NODE_ENV: 'production',
       LOG_LEVEL: 'info',
       MAX_COMMANDS_PER_MINUTE: '30',
       ENABLE_METRICS: 'false',
-      OWNER_IDS: '', // Comma-separated list of owner Discord IDs
+      OWNER_IDS: '1169281832416723028', // Comma-separated list of owner Discord IDs
     };
 
     // Check required variables

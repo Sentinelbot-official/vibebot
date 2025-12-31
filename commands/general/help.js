@@ -74,7 +74,9 @@ module.exports = {
             `💜 **${visibleCommands} commands** coded live with chat!\n` +
             `⚡ **Prefix:** \`${prefix}\`\n` +
             `🌍 **Built by viewers worldwide, any time, day or night!**\n` +
-            (isOwner ? `\n🔴 **Owner Mode Active** - Showing all commands including owner-only\n` : '') +
+            (isOwner
+              ? `\n🔴 **Owner Mode Active** - Showing all commands including owner-only\n`
+              : '') +
             `\nUse \`${prefix}help [command]\` for detailed info about any command.\n` +
             `**Let's vibe together!** 🎵\n\u200b`
         )

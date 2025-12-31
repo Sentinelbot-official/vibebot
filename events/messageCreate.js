@@ -2,7 +2,7 @@ const logger = require('../utils/logger');
 const cooldowns = require('../utils/cooldowns');
 const db = require('../utils/database');
 const ownerCheck = require('../utils/ownerCheck');
-const defaultPrefix = process.env.PREFIX || '!';
+const defaultPrefix = process.env.PREFIX || '//';
 
 module.exports = {
   name: 'messageCreate',
