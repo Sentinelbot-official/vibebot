@@ -110,7 +110,9 @@ module.exports = {
             `💎 Premium users get 2x entries\n` +
             `👑 VIP users get 3x entries`
         )
-        .setFooter({ text: `${winners} winner${winners > 1 ? 's' : ''} | Ends` })
+        .setFooter({
+          text: `${winners} winner${winners > 1 ? 's' : ''} | Ends`,
+        })
         .setTimestamp(endTime);
 
       const giveawayMsg = await message.channel.send({
@@ -132,7 +134,9 @@ module.exports = {
       };
       db.set('giveaways', message.guild.id, giveaways);
 
-      return message.reply(`✅ Giveaway started! Ends <t:${Math.floor(endTime / 1000)}:R>`);
+      return message.reply(
+        `✅ Giveaway started! Ends <t:${Math.floor(endTime / 1000)}:R>`
+      );
     }
 
     if (action === 'end') {
@@ -201,7 +205,9 @@ module.exports = {
             )
             .join('\n\n')
         )
-        .setFooter({ text: `Total: ${activeGiveaways.length} active giveaway${activeGiveaways.length > 1 ? 's' : ''}` });
+        .setFooter({
+          text: `Total: ${activeGiveaways.length} active giveaway${activeGiveaways.length > 1 ? 's' : ''}`,
+        });
 
       return message.reply({ embeds: [embed] });
     }

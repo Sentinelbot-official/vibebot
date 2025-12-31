@@ -86,7 +86,9 @@ module.exports = {
             )
             .join('\n')
         )
-        .setFooter({ text: `Total: ${autoPosts.length} auto-posts | VIP Feature 👑` });
+        .setFooter({
+          text: `Total: ${autoPosts.length} auto-posts | VIP Feature 👑`,
+        });
 
       return message.reply({ embeds: [embed] });
     }

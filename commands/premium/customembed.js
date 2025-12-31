@@ -40,7 +40,8 @@ module.exports = {
     }
 
     // Check embed limit
-    const embedCount = db.get('embed_count', `${guildId}_${message.author.id}`) || 0;
+    const embedCount =
+      db.get('embed_count', `${guildId}_${message.author.id}`) || 0;
     const limit = premiumPerks.getLimit(guildId, 'maxCustomEmbeds');
 
     if (embedCount >= limit) {
@@ -81,7 +82,10 @@ module.exports = {
     }
 
     // Parse arguments
-    const parts = args.join(' ').split('|').map(p => p.trim());
+    const parts = args
+      .join(' ')
+      .split('|')
+      .map(p => p.trim());
 
     if (parts.length < 2) {
       return message.reply(

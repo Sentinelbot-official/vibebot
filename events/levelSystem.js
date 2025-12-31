@@ -26,12 +26,12 @@ module.exports = {
 
     // Random XP gain (15-25 per message)
     let xpGain = Math.floor(Math.random() * 11) + 15;
-    
+
     // Apply premium XP multiplier
     const baseXP = xpGain;
     xpGain = premiumPerks.applyXPMultiplier(guildId, xpGain);
     const bonusXP = xpGain - baseXP;
-    
+
     levelData.xp += xpGain;
     levelData.messages += 1;
     levelData.lastXP = now;
@@ -46,7 +46,7 @@ module.exports = {
       // Level up message
       const tierBadge = premiumPerks.getTierBadge(guildId);
       const tierName = premiumPerks.getTierDisplayName(guildId);
-      
+
       const embed = new EmbedBuilder()
         .setColor(0x00ff00)
         .setTitle(`${tierBadge} Level Up!`)

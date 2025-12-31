@@ -175,7 +175,10 @@ module.exports = {
       const tierName = premiumPerks.getTierDisplayName(guildId);
 
       // Get user stats
-      const economy = db.get('economy', message.author.id) || { coins: 0, bank: 0 };
+      const economy = db.get('economy', message.author.id) || {
+        coins: 0,
+        bank: 0,
+      };
       const levelData = db.get('levels', `${guildId}-${message.author.id}`) || {
         level: 1,
         xp: 0,

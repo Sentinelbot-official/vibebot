@@ -23,12 +23,14 @@ Massive expansion adding advanced economy, analytics, and premium features!
 ### Added
 
 #### ⭐ XP Multipliers
+
 - Premium: 1.5x XP gain on all messages
 - VIP: 2x XP gain on all messages
 - XP bonuses displayed in level-up messages
 - Integrated with existing leveling system
 
 #### 🎉 Premium Giveaway System
+
 - Full giveaway management (`//giveaway start/end/reroll/list`)
 - **Premium users get 2x entries**
 - **VIP users get 3x entries**
@@ -38,6 +40,7 @@ Massive expansion adding advanced economy, analytics, and premium features!
 - Reroll functionality
 
 #### 📈 Stock Market System (VIP Only)
+
 - 6 stocks with realistic volatility
 - Buy/sell stocks (`//stocks buy/sell`)
 - Portfolio management
@@ -46,6 +49,7 @@ Massive expansion adding advanced economy, analytics, and premium features!
 - Seeded random for consistent prices
 
 #### 🏢 Business Ownership (VIP Only)
+
 - 6 business types (Café, Restaurant, Gym, Hotel, Casino, Tech Startup)
 - Passive income generation (collect every 6 hours)
 - Business upgrades (increase income)
@@ -53,6 +57,7 @@ Massive expansion adding advanced economy, analytics, and premium features!
 - Level system for businesses
 
 #### 📊 Server Analytics Dashboard (VIP Only)
+
 - **Overview:** Members, channels, activity, commands
 - **Members:** Growth tracking, retention rates
 - **Activity:** Messages, reactions, voice time
@@ -61,6 +66,7 @@ Massive expansion adding advanced economy, analytics, and premium features!
 - Comprehensive insights for server owners
 
 #### 🎨 Premium Profile Customization
+
 - 8 custom profile themes (Fire, Ocean, Forest, Sunset, Galaxy, Gold, Ruby)
 - Custom badges (20 characters)
 - Custom bio (200 characters)
@@ -68,6 +74,7 @@ Massive expansion adding advanced economy, analytics, and premium features!
 - Theme-based colors
 
 #### 🛡️ Advanced Moderation (Premium)
+
 - Extended audit logs (90 days vs 30 days)
 - Moderation insights & statistics
 - Top moderators tracking

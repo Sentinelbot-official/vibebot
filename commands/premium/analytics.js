@@ -53,12 +53,8 @@ module.exports = {
       const humanCount = totalMembers - botCount;
 
       // Get channel counts
-      const textChannels = guild.channels.cache.filter(
-        c => c.type === 0
-      ).size;
-      const voiceChannels = guild.channels.cache.filter(
-        c => c.type === 2
-      ).size;
+      const textChannels = guild.channels.cache.filter(c => c.type === 0).size;
+      const voiceChannels = guild.channels.cache.filter(c => c.type === 2).size;
       const categories = guild.channels.cache.filter(c => c.type === 4).size;
 
       // Get role count
@@ -159,21 +155,31 @@ module.exports = {
       // Get member join data
       const joinData = db.get('member_joins', guildId) || {};
       const last30Days = Object.entries(joinData)
-        .filter(([date]) => Date.now() - new Date(date).getTime() < 30 * 24 * 60 * 60 * 1000)
+        .filter(
+          ([date]) =>
+            Date.now() - new Date(date).getTime() < 30 * 24 * 60 * 60 * 1000
+        )
         .reduce((sum, [, count]) => sum + count, 0);
 
       const last7Days = Object.entries(joinData)
-        .filter(([date]) => Date.now() - new Date(date).getTime() < 7 * 24 * 60 * 60 * 1000)
+        .filter(
+          ([date]) =>
+            Date.now() - new Date(date).getTime() < 7 * 24 * 60 * 60 * 1000
+        )
         .reduce((sum, [, count]) => sum + count, 0);
 
       // Get member leave data
       const leaveData = db.get('member_leaves', guildId) || {};
       const left30Days = Object.entries(leaveData)
-        .filter(([date]) => Date.now() - new Date(date).getTime() < 30 * 24 * 60 * 60 * 1000)
+        .filter(
+          ([date]) =>
+            Date.now() - new Date(date).getTime() < 30 * 24 * 60 * 60 * 1000
+        )
         .reduce((sum, [, count]) => sum + count, 0);
 
       const netGrowth30Days = last30Days - left30Days;
-      const retentionRate = last30Days > 0 ? ((last30Days - left30Days) / last30Days) * 100 : 0;
+      const retentionRate =
+        last30Days > 0 ? ((last30Days - left30Days) / last30Days) * 100 : 0;
 
       const embed = new EmbedBuilder()
         .setColor('#0099ff')
@@ -221,7 +227,9 @@ module.exports = {
 
       const daysSinceUpdate = Math.max(
         1,
-        Math.floor((Date.now() - activityStats.lastUpdated) / (1000 * 60 * 60 * 24))
+        Math.floor(
+          (Date.now() - activityStats.lastUpdated) / (1000 * 60 * 60 * 24)
+        )
       );
 
       const embed = new EmbedBuilder()
@@ -265,7 +273,10 @@ module.exports = {
         return message.reply('📭 No command usage data yet!');
       }
 
-      const totalCommands = Object.values(commandStats).reduce((a, b) => a + b, 0);
+      const totalCommands = Object.values(commandStats).reduce(
+        (a, b) => a + b,
+        0
+      );
       const sortedCommands = Object.entries(commandStats)
         .sort(([, a], [, b]) => b - a)
         .slice(0, 10);
@@ -297,7 +308,10 @@ module.exports = {
       }
 
       const last30Days = Object.entries(joinData)
-        .filter(([date]) => Date.now() - new Date(date).getTime() < 30 * 24 * 60 * 60 * 1000)
+        .filter(
+          ([date]) =>
+            Date.now() - new Date(date).getTime() < 30 * 24 * 60 * 60 * 1000
+        )
         .sort(([a], [b]) => new Date(b) - new Date(a))
         .slice(0, 7);
 
@@ -307,7 +321,10 @@ module.exports = {
         .setDescription(
           '**Member Growth (Last 7 Days)**\n\n' +
             last30Days
-              .map(([date, count]) => `**${new Date(date).toLocaleDateString()}:** +${count} members`)
+              .map(
+                ([date, count]) =>
+                  `**${new Date(date).toLocaleDateString()}:** +${count} members`
+              )
               .join('\n')
         )
         .setFooter({ text: '👑 VIP Feature | Growth tracking' })
@@ -325,6 +342,8 @@ module.exports = {
 function getMostUsedCommand(commandStats) {
   if (Object.keys(commandStats).length === 0) return 'None';
 
-  const [cmd, count] = Object.entries(commandStats).sort(([, a], [, b]) => b - a)[0];
+  const [cmd, count] = Object.entries(commandStats).sort(
+    ([, a], [, b]) => b - a
+  )[0];
   return `${cmd} (${count})`;
 }

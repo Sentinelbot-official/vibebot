@@ -83,7 +83,10 @@ module.exports = {
       }
 
       const commandList = Object.entries(customCommands)
-        .map(([name, data]) => `**${name}** - ${data.response.substring(0, 50)}${data.response.length > 50 ? '...' : ''}`)
+        .map(
+          ([name, data]) =>
+            `**${name}** - ${data.response.substring(0, 50)}${data.response.length > 50 ? '...' : ''}`
+        )
         .join('\n');
 
       const embed = new EmbedBuilder()

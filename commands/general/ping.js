@@ -21,8 +21,9 @@ module.exports = {
     const dbLatency = Date.now() - dbStart;
 
     // Determine quality
-    const getQuality = (latency) => {
-      if (latency < 100) return { emoji: '🟢', text: 'Excellent', color: 0x00ff00 };
+    const getQuality = latency => {
+      if (latency < 100)
+        return { emoji: '🟢', text: 'Excellent', color: 0x00ff00 };
       if (latency < 200) return { emoji: '🟡', text: 'Good', color: 0xffff00 };
       if (latency < 400) return { emoji: '🟠', text: 'Fair', color: 0xff9900 };
       return { emoji: '🔴', text: 'Poor', color: 0xff0000 };
@@ -40,7 +41,9 @@ module.exports = {
     const seconds = Math.floor(uptime) % 60;
 
     // Memory usage
-    const memoryUsage = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
+    const memoryUsage = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(
+      2
+    );
 
     // Shard info
     const shardId = message.client.shard ? message.client.shard.ids[0] : 0;
@@ -52,59 +55,57 @@ module.exports = {
       .setTitle('🏓 Pong! - Latency Statistics')
       .setDescription(
         `**Overall Status:** ${messageQuality.emoji} ${messageQuality.text}\n\n` +
-        `Bot is responding and operational!`
+          `Bot is responding and operational!`
       )
       .addFields(
         {
           name: '📨 Message Latency',
-          value: 
+          value:
             `**${messageLatency}ms** ${messageQuality.emoji}\n` +
             `Time to send and receive a message`,
           inline: true,
         },
         {
           name: '💓 API Latency',
-          value: 
+          value:
             `**${apiLatency}ms** ${apiQuality.emoji}\n` +
             `WebSocket heartbeat to Discord`,
           inline: true,
         },
         {
           name: '💾 Database Latency',
-          value: 
+          value:
             `**${dbLatency}ms** ${dbQuality.emoji}\n` +
             `Time to query database`,
           inline: true,
         },
         {
           name: '⏰ Uptime',
-          value: 
+          value:
             `${days}d ${hours}h ${minutes}m ${seconds}s\n` +
             `Bot has been running continuously`,
           inline: true,
         },
         {
           name: '💾 Memory Usage',
-          value: 
-            `**${memoryUsage} MB**\n` +
-            `Current heap memory usage`,
+          value: `**${memoryUsage} MB**\n` + `Current heap memory usage`,
           inline: true,
         },
         {
           name: '🔷 Shard Info',
-          value: 
+          value:
             `**Shard ${shardId}** of ${totalShards}\n` +
             `Current shard serving this server`,
           inline: true,
         }
       )
-      .setFooter({ 
-        text: `Requested by ${message.author.tag} | Shard ${shardId}/${totalShards}` 
+      .setFooter({
+        text: `Requested by ${message.author.tag} | Shard ${shardId}/${totalShards}`,
       })
       .setTimestamp();
 
     // Add quality indicators
-    const qualityBar = (latency) => {
+    const qualityBar = latency => {
       if (latency < 100) return '▓▓▓▓▓▓▓▓▓▓ 100%';
       if (latency < 200) return '▓▓▓▓▓▓▓▓░░ 80%';
       if (latency < 400) return '▓▓▓▓▓░░░░░ 50%';

@@ -161,8 +161,7 @@ module.exports = {
           .setColor('#0099ff')
           .setAuthor({
             name: 'AI Assistant',
-            iconURL:
-              'https://cdn.discordapp.com/embed/avatars/0.png',
+            iconURL: 'https://cdn.discordapp.com/embed/avatars/0.png',
           })
           .setDescription(aiResponse)
           .setFooter({

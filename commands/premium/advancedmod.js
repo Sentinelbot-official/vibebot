@@ -74,7 +74,9 @@ module.exports = {
       const recentLogs = auditLogs.filter(log => log.timestamp > cutoffTime);
 
       if (recentLogs.length === 0) {
-        return message.reply(`📭 No audit logs found for the last ${days} days!`);
+        return message.reply(
+          `📭 No audit logs found for the last ${days} days!`
+        );
       }
 
       // Group by action type

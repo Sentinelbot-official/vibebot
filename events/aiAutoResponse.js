@@ -26,9 +26,11 @@ module.exports = {
     const botMentioned = message.mentions.has(message.client.user);
     const isReplyToBot =
       message.reference &&
-      (await message.channel.messages
-        .fetch(message.reference.messageId)
-        .catch(() => null))?.author?.id === message.client.user.id;
+      (
+        await message.channel.messages
+          .fetch(message.reference.messageId)
+          .catch(() => null)
+      )?.author?.id === message.client.user.id;
 
     if (!botMentioned && !isReplyToBot) return;
 
@@ -43,9 +45,7 @@ module.exports = {
       const conversation = db.get('ai_conversations', conversationKey) || [];
 
       // Clean message content (remove bot mention)
-      const cleanContent = message.content
-        .replace(/<@!?\d+>/g, '')
-        .trim();
+      const cleanContent = message.content.replace(/<@!?\d+>/g, '').trim();
 
       if (!cleanContent) return;
 
@@ -108,8 +108,7 @@ module.exports = {
           .setColor('#0099ff')
           .setAuthor({
             name: 'AI Assistant',
-            iconURL:
-              'https://cdn.discordapp.com/embed/avatars/0.png',
+            iconURL: 'https://cdn.discordapp.com/embed/avatars/0.png',
           })
           .setDescription(aiResponse)
           .setFooter({

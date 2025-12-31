@@ -4,7 +4,8 @@ const premiumPerks = require('../../utils/premiumPerks');
 
 module.exports = {
   name: 'shop',
-  description: 'View the shop and available items (Premium users get discounts!)',
+  description:
+    'View the shop and available items (Premium users get discounts!)',
   usage: '[page]',
   aliases: ['store', 'market'],
   category: 'economy',

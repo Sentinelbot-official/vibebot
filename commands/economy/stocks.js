@@ -6,10 +6,10 @@ const premiumPerks = require('../../utils/premiumPerks');
 const STOCKS = {
   TECH: { name: '💻 TechCorp', volatility: 0.15, basePrice: 1000 },
   FOOD: { name: '🍔 FoodChain', volatility: 0.08, basePrice: 500 },
-  GAME: { name: '🎮 GameStudio', volatility: 0.20, basePrice: 1500 },
+  GAME: { name: '🎮 GameStudio', volatility: 0.2, basePrice: 1500 },
   MUSIC: { name: '🎵 MusicStream', volatility: 0.12, basePrice: 800 },
   SPACE: { name: '🚀 SpaceX', volatility: 0.25, basePrice: 2000 },
-  CRYPTO: { name: '₿ CryptoExchange', volatility: 0.30, basePrice: 3000 },
+  CRYPTO: { name: '₿ CryptoExchange', volatility: 0.3, basePrice: 3000 },
 };
 
 module.exports = {
@@ -72,14 +72,17 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setColor('#0099ff')
         .setTitle('📊 Stock Market')
-        .setDescription('**Current Stock Prices**\n\nPrices update every 5 minutes')
+        .setDescription(
+          '**Current Stock Prices**\n\nPrices update every 5 minutes'
+        )
         .setTimestamp();
 
       for (const [symbol, stock] of Object.entries(STOCKS)) {
         const price = stockPrices[symbol];
         const change = getStockChange(symbol);
         const changeEmoji = change >= 0 ? '📈' : '📉';
-        const changeText = change >= 0 ? `+${change.toFixed(2)}%` : `${change.toFixed(2)}%`;
+        const changeText =
+          change >= 0 ? `+${change.toFixed(2)}%` : `${change.toFixed(2)}%`;
 
         embed.addFields({
           name: `${stock.name} (${symbol})`,
@@ -88,7 +91,9 @@ module.exports = {
         });
       }
 
-      embed.setFooter({ text: '👑 VIP Feature | Use //stocks buy <symbol> <shares>' });
+      embed.setFooter({
+        text: '👑 VIP Feature | Use //stocks buy <symbol> <shares>',
+      });
 
       return message.reply({ embeds: [embed] });
     }
@@ -221,7 +226,7 @@ module.exports = {
       const portfolio = db.get('stock_portfolio', message.author.id) || {};
 
       if (Object.keys(portfolio).length === 0) {
-        return message.reply('📭 You don\'t own any stocks yet!');
+        return message.reply("📭 You don't own any stocks yet!");
       }
 
       let totalValue = 0;
@@ -267,7 +272,9 @@ module.exports = {
         inline: false,
       });
 
-      embed.setFooter({ text: '👑 VIP Feature | Prices update every 5 minutes' });
+      embed.setFooter({
+        text: '👑 VIP Feature | Prices update every 5 minutes',
+      });
 
       return message.reply({ embeds: [embed] });
     }
@@ -303,8 +310,10 @@ function getStockChange(symbol) {
   const currentRandom = seededRandom(currentSeed + symbol.charCodeAt(0));
   const previousRandom = seededRandom(previousSeed + symbol.charCodeAt(0));
 
-  const currentPrice = stock.basePrice * (1 + (currentRandom - 0.5) * 2 * stock.volatility);
-  const previousPrice = stock.basePrice * (1 + (previousRandom - 0.5) * 2 * stock.volatility);
+  const currentPrice =
+    stock.basePrice * (1 + (currentRandom - 0.5) * 2 * stock.volatility);
+  const previousPrice =
+    stock.basePrice * (1 + (previousRandom - 0.5) * 2 * stock.volatility);
 
   return ((currentPrice - previousPrice) / previousPrice) * 100;
 }

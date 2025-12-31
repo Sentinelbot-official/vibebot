@@ -74,7 +74,10 @@ module.exports = {
 
     const action = args[0]?.toLowerCase();
 
-    if (!action || !['buy', 'sell', 'collect', 'list', 'upgrade', 'shop'].includes(action)) {
+    if (
+      !action ||
+      !['buy', 'sell', 'collect', 'list', 'upgrade', 'shop'].includes(action)
+    ) {
       const embed = new EmbedBuilder()
         .setColor('#0099ff')
         .setTitle('🏢 Business Management')
@@ -99,7 +102,9 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setColor('#0099ff')
         .setTitle('🏪 Business Shop')
-        .setDescription('**Available Businesses**\n\nBuy businesses to earn passive income!')
+        .setDescription(
+          '**Available Businesses**\n\nBuy businesses to earn passive income!'
+        )
         .setTimestamp();
 
       for (const [type, business] of Object.entries(BUSINESSES)) {
@@ -223,7 +228,7 @@ module.exports = {
       const businesses = db.get('businesses', message.author.id) || {};
 
       if (Object.keys(businesses).length === 0) {
-        return message.reply('❌ You don\'t own any businesses yet!');
+        return message.reply("❌ You don't own any businesses yet!");
       }
 
       const collectInterval = 6 * 60 * 60 * 1000; // 6 hours
@@ -243,7 +248,12 @@ module.exports = {
 
           totalIncome += income;
           data.lastCollect = Date.now();
-          collected.push({ type, name: business.name, emoji: business.emoji, income });
+          collected.push({
+            type,
+            name: business.name,
+            emoji: business.emoji,
+            income,
+          });
         }
       }
 
@@ -275,7 +285,9 @@ module.exports = {
         .setDescription(
           '**Collected from:**\n' +
             collected
-              .map(b => `${b.emoji} ${b.name}: ${b.income.toLocaleString()} coins`)
+              .map(
+                b => `${b.emoji} ${b.name}: ${b.income.toLocaleString()} coins`
+              )
               .join('\n') +
             `\n\n**Total Income:** ${totalIncome.toLocaleString()} coins\n` +
             `**New Balance:** ${economy.coins.toLocaleString()} coins`
@@ -290,7 +302,9 @@ module.exports = {
       const businesses = db.get('businesses', message.author.id) || {};
 
       if (Object.keys(businesses).length === 0) {
-        return message.reply('📭 You don\'t own any businesses yet!\nUse `//business shop` to buy one.');
+        return message.reply(
+          "📭 You don't own any businesses yet!\nUse `//business shop` to buy one."
+        );
       }
 
       const embed = new EmbedBuilder()

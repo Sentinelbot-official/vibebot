@@ -127,7 +127,10 @@ module.exports = {
 
     // Apply premium discount
     const originalPrice = item.price;
-    const discountedPrice = premiumPerks.applyShopDiscount(guildId, originalPrice);
+    const discountedPrice = premiumPerks.applyShopDiscount(
+      guildId,
+      originalPrice
+    );
     const totalPrice = discountedPrice * amount;
     const savings = (originalPrice - discountedPrice) * amount;
 

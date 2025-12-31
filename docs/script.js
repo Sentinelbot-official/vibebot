@@ -475,11 +475,12 @@ function checkLiveStatus() {
       // Wait 5 seconds before showing result
       setTimeout(() => {
         const uptimeLower = uptime.toLowerCase();
-        const isLive = uptime && 
-                       !uptimeLower.includes('offline') && 
-                       !uptimeLower.includes('error') &&
-                       uptime.trim() !== '';
-        
+        const isLive =
+          uptime &&
+          !uptimeLower.includes('offline') &&
+          !uptimeLower.includes('error') &&
+          uptime.trim() !== '';
+
         if (isLive) {
           // Stream is live!
           liveBadge.textContent = '🔴 LIVE NOW';
@@ -521,11 +522,12 @@ function checkLiveStatus() {
         // Wait 5 seconds before showing result
         setTimeout(() => {
           const uptimeLower = uptime.toLowerCase();
-          const isLive = uptime && 
-                         !uptimeLower.includes('offline') && 
-                         !uptimeLower.includes('error') &&
-                         uptime.trim() !== '';
-          
+          const isLive =
+            uptime &&
+            !uptimeLower.includes('offline') &&
+            !uptimeLower.includes('error') &&
+            uptime.trim() !== '';
+
           if (isLive) {
             liveBadge.textContent = '🔴 LIVE NOW';
             liveBadge.classList.add('live');
@@ -541,7 +543,7 @@ function checkLiveStatus() {
           }
         }, 5000);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('❌ Refresh error:', error);
         // Silently fail on refresh after 5 seconds
         setTimeout(() => {

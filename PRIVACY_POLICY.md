@@ -196,6 +196,7 @@ You have the right to:
 - Contact us to request manual data deletion
 
 **To request data deletion:**
+
 1. Use the command `//deletemydata confirm` in Discord (instant)
 2. Email us at vibetbot0@proton.me (manual processing within 30 days)
 3. Join our support server and request deletion
