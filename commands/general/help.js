@@ -145,8 +145,10 @@ module.exports = {
       if (!command) {
         const categoryName = name.charAt(0).toUpperCase() + name.slice(1);
         const categoryCommands = Array.from(commands.values()).filter(
-          cmd => cmd.category && cmd.category.toLowerCase() === name.toLowerCase() &&
-          (!cmd.ownerOnly || isOwner)
+          cmd =>
+            cmd.category &&
+            cmd.category.toLowerCase() === name.toLowerCase() &&
+            (!cmd.ownerOnly || isOwner)
         );
 
         if (categoryCommands.length > 0) {
