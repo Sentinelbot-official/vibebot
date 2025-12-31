@@ -823,6 +823,183 @@ section {
 }
 
 /* ============================================
+   How to Activate Section
+   ============================================ */
+
+.how-to-activate-section {
+    background: var(--light);
+    padding: 100px 0;
+}
+
+.activation-steps {
+    max-width: 900px;
+    margin: 0 auto 4rem;
+}
+
+.activation-step {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    padding: 2.5rem;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.activation-step:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.step-number {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 900;
+    box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3);
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+}
+
+.step-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.step-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.key-example,
+.command-example {
+    background: var(--darker);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+    border-left: 4px solid var(--primary);
+}
+
+.key-example p {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+.key-example code,
+.command-example code {
+    display: block;
+    color: var(--primary);
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.activation-faq {
+    max-width: 1000px;
+    margin: 0 auto 4rem;
+    padding: 3rem;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
+
+.activation-faq h3 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--primary);
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.faq-box {
+    padding: 1.5rem;
+    background: var(--light);
+    border-radius: 15px;
+    border-left: 4px solid var(--primary);
+}
+
+.faq-box h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    color: var(--text-color);
+}
+
+.faq-box p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    opacity: 0.85;
+}
+
+.activation-cta {
+    text-align: center;
+    padding: 3rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+}
+
+.activation-cta p {
+    font-size: 1.5rem;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.btn-large {
+    font-size: 1.2rem;
+    padding: 1rem 3rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .activation-step {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .step-number {
+        margin: 0 auto 1rem;
+    }
+
+    .step-buttons {
+        justify-content: center;
+    }
+
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
    Setup Section
    ============================================ */
 
