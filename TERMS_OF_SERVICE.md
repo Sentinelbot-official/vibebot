@@ -225,9 +225,11 @@ These Terms, along with our Privacy Policy, constitute the entire agreement betw
 ## 18. Intellectual Property
 
 - The Bot, its code, and all associated materials are owned by Airis
-- The Bot is licensed under the MIT License (see LICENSE file)
-- You may not claim ownership of the Bot or its code
-- You may not redistribute the Bot without proper attribution
+- The Bot is proprietary software with source code available for viewing
+- You may view the source code for educational purposes
+- You may contribute via pull requests (contributions become part of the project)
+- You may NOT redistribute, host, or claim ownership of the Bot
+- Public hosting or redistribution requires explicit written permission
 - Bot name, logo, and branding are property of the developer
 
 ## 19. Disclaimer of Warranties

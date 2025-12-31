@@ -87,6 +87,22 @@ Data you actively provide through Bot commands:
 - Tag names and content
 - Tag creator and usage count
 
+**Modmail System:**
+
+- Modmail messages sent via DM
+- Modmail conversation history
+- Ticket IDs and status
+- Staff replies and timestamps
+- User contact information (Discord ID, username)
+
+**Social Features:**
+
+- Marriage status and partner information
+- Clan/team memberships
+- Profile bios and customizations
+- Birthday information (if provided)
+- Reputation points given/received
+
 ### 1.3 Message Content
 
 - **Temporary Processing:** Message content is processed temporarily for:
@@ -176,9 +192,15 @@ You have the right to:
 
 - Request deletion of your personal data
 - Remove your data by leaving all servers with the Bot
+- Use the `//deletemydata confirm` command for instant deletion
 - Contact us to request manual data deletion
 
-**To request data deletion, contact us at vibetbot0@proton.me or join our support server.**
+**To request data deletion:**
+1. Use the command `//deletemydata confirm` in Discord (instant)
+2. Email us at vibetbot0@proton.me (manual processing within 30 days)
+3. Join our support server and request deletion
+
+**Note:** Server moderation logs are retained for 30 days after deletion for server safety purposes.
 
 ### 5.3 Data Correction
 
@@ -203,10 +225,23 @@ The Bot interacts with:
 - **QR Code API:** For QR code generation (data not stored by third party)
 - **Screenshot API:** For website previews (URLs only, no user data)
 
+**AI Services (Active - Early Access Feature):**
+
+- **OpenAI (DALL-E 3):** For AI image generation
+  - Image prompts are sent to OpenAI's API
+  - Subject to OpenAI's Privacy Policy and Terms
+  - Prompts may be used by OpenAI for service improvement
+  - Generated images are temporary and not stored by us
+  - User Discord ID is NOT sent to OpenAI
+- **Stability AI:** For AI image generation (alternative)
+  - Image prompts are sent to Stability AI's API
+  - Subject to Stability AI's Privacy Policy
+  - User Discord ID is NOT sent to Stability AI
+- **Note:** AI features require API keys and are optional/premium features
+
 **Planned Integrations (Not Yet Active):**
 
-- AI services (OpenAI, Claude, etc.) - if implemented, subject to their privacy policies
-- Image generation services - if implemented, prompts may be processed by third parties
+- AI chat services (OpenAI, Claude, etc.) - if implemented, subject to their privacy policies
 - Cryptocurrency price APIs - if implemented, no user data shared
 - GitHub/NPM APIs - if implemented, no user data shared
 
