@@ -48,7 +48,9 @@ module.exports = {
       }
 
       // Filter out NSFW if not in NSFW channel
-      let filteredPosts = posts.filter(p => !p.data.over_18 || message.channel.nsfw);
+      let filteredPosts = posts.filter(
+        p => !p.data.over_18 || message.channel.nsfw
+      );
 
       if (!filteredPosts.length) {
         return fetchingMsg.edit(
@@ -84,7 +86,11 @@ module.exports = {
           }
         );
 
-      if (post.selftext && !post.is_video && !post.url.match(/\.(jpg|jpeg|png|gif)$/i)) {
+      if (
+        post.selftext &&
+        !post.is_video &&
+        !post.url.match(/\.(jpg|jpeg|png|gif)$/i)
+      ) {
         embed.setDescription(post.selftext.substring(0, 2000));
       }
 
@@ -92,7 +98,11 @@ module.exports = {
         embed.setImage(post.url);
       }
 
-      if (post.thumbnail && post.thumbnail.startsWith('http') && !post.url.match(/\.(jpg|jpeg|png|gif)$/i)) {
+      if (
+        post.thumbnail &&
+        post.thumbnail.startsWith('http') &&
+        !post.url.match(/\.(jpg|jpeg|png|gif)$/i)
+      ) {
         embed.setThumbnail(post.thumbnail);
       }
 

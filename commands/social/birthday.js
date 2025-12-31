@@ -18,7 +18,7 @@ module.exports = {
 
       if (!birthday) {
         return message.reply(
-          `${target.id === message.author.id ? 'You haven\'t' : `${target.username} hasn't`} set a birthday yet!\nUse \`birthday set MM/DD\` to set one.`
+          `${target.id === message.author.id ? "You haven't" : `${target.username} hasn't`} set a birthday yet!\nUse \`birthday set MM/DD\` to set one.`
         );
       }
 
@@ -63,11 +63,10 @@ module.exports = {
 
       // Validate date
       const testDate = new Date(2024, month - 1, day);
-      if (
-        testDate.getMonth() !== month - 1 ||
-        testDate.getDate() !== day
-      ) {
-        return message.reply('❌ Invalid date! Please check the month and day.');
+      if (testDate.getMonth() !== month - 1 || testDate.getDate() !== day) {
+        return message.reply(
+          '❌ Invalid date! Please check the month and day.'
+        );
       }
 
       db.set('birthdays', message.author.id, {
@@ -161,7 +160,10 @@ module.exports = {
           const [month, day] = bd.date.split('/').map(Number);
           let daysUntil;
 
-          if (month > currentMonth || (month === currentMonth && day >= currentDay)) {
+          if (
+            month > currentMonth ||
+            (month === currentMonth && day >= currentDay)
+          ) {
             // Birthday is this year
             const bdDate = new Date(now.getFullYear(), month - 1, day);
             daysUntil = Math.ceil((bdDate - now) / (1000 * 60 * 60 * 24));
@@ -243,7 +245,7 @@ module.exports = {
       '❌ Invalid action!\nUsage: `birthday <set/remove/view/list/upcoming/channel>`\n\n' +
         '**Examples:**\n' +
         '`birthday set 03/15` - Set your birthday\n' +
-        '`birthday view @user` - View someone\'s birthday\n' +
+        "`birthday view @user` - View someone's birthday\n" +
         '`birthday list` - List all birthdays\n' +
         '`birthday upcoming` - See upcoming birthdays\n' +
         '`birthday channel #channel` - Set announcement channel (Admin)'

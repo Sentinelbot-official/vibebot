@@ -71,13 +71,28 @@ module.exports = {
   name: 'roleplay',
   description: 'Roleplay actions with GIFs',
   usage: '<action> [@user]',
-  aliases: ['rp', 'hug', 'pat', 'kiss', 'slap', 'punch', 'poke', 'wave', 'cry', 'dance', 'blush'],
+  aliases: [
+    'rp',
+    'hug',
+    'pat',
+    'kiss',
+    'slap',
+    'punch',
+    'poke',
+    'wave',
+    'cry',
+    'dance',
+    'blush',
+  ],
   category: 'fun',
   cooldown: 3,
   async execute(message, args) {
     // Get action from command name or first argument
-    let action = message.content.split(' ')[0].toLowerCase().replace(message.client.config.prefix, '');
-    
+    let action = message.content
+      .split(' ')[0]
+      .toLowerCase()
+      .replace(message.client.config.prefix, '');
+
     if (action === 'roleplay' || action === 'rp') {
       action = args[0]?.toLowerCase();
     }
@@ -94,7 +109,7 @@ module.exports = {
 
     // Some actions don't require a target
     const noTargetActions = ['cry', 'dance', 'blush'];
-    
+
     if (!target && !noTargetActions.includes(action)) {
       return message.reply(
         `❌ Please mention someone!\nUsage: \`${action} @user\``

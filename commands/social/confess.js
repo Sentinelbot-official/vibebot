@@ -66,8 +66,9 @@ module.exports = {
       }
 
       // Get confession count
-      const confessionData =
-        db.get('confessions', message.guild.id) || { count: 0 };
+      const confessionData = db.get('confessions', message.guild.id) || {
+        count: 0,
+      };
       confessionData.count++;
       db.set('confessions', message.guild.id, confessionData);
 
@@ -116,8 +117,9 @@ module.exports = {
       }
 
       const channel = message.guild.channels.cache.get(channelId);
-      const confessionData =
-        db.get('confessions', message.guild.id) || { count: 0 };
+      const confessionData = db.get('confessions', message.guild.id) || {
+        count: 0,
+      };
 
       const embed = new EmbedBuilder()
         .setColor(0x9b59b6)

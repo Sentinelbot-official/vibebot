@@ -1,9 +1,16 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 
 const games = new Map();
 
 function createBoard() {
-  const board = Array(4).fill(null).map(() => Array(4).fill(0));
+  const board = Array(4)
+    .fill(null)
+    .map(() => Array(4).fill(0));
   addNewTile(board);
   addNewTile(board);
   return board;
@@ -32,7 +39,8 @@ function move(board, direction) {
       for (let i = 0; i < 4; i++) {
         column.push(newBoard[i][j]);
       }
-      const newColumn = direction === 'up' ? slide(column) : slide(column.reverse()).reverse();
+      const newColumn =
+        direction === 'up' ? slide(column) : slide(column.reverse()).reverse();
       for (let i = 0; i < 4; i++) {
         if (newBoard[i][j] !== newColumn[i]) moved = true;
         newBoard[i][j] = newColumn[i];
@@ -41,7 +49,8 @@ function move(board, direction) {
   } else {
     for (let i = 0; i < 4; i++) {
       const row = newBoard[i];
-      const newRow = direction === 'left' ? slide(row) : slide(row.reverse()).reverse();
+      const newRow =
+        direction === 'left' ? slide(row) : slide(row.reverse()).reverse();
       if (JSON.stringify(row) !== JSON.stringify(newRow)) moved = true;
       newBoard[i] = newRow;
     }
@@ -82,7 +91,9 @@ function boardToString(board) {
     1024: '🏆',
     2048: '👑',
   };
-  return board.map(row => row.map(cell => tileEmojis[cell] || '🎯').join('')).join('\n');
+  return board
+    .map(row => row.map(cell => tileEmojis[cell] || '🎯').join(''))
+    .join('\n');
 }
 
 function getScore(board) {
@@ -144,7 +155,11 @@ module.exports = {
       .setColor(0xffd700)
       .setTitle('🎮 2048 Game')
       .setDescription(boardToString(board))
-      .addFields({ name: 'Score', value: getScore(board).toString(), inline: true })
+      .addFields({
+        name: 'Score',
+        value: getScore(board).toString(),
+        inline: true,
+      })
       .setFooter({ text: 'Use the buttons to move tiles!' })
       .setTimestamp();
 
@@ -154,7 +169,10 @@ module.exports = {
 
     collector.on('collect', async i => {
       if (i.user.id !== message.author.id) {
-        return i.reply({ content: '❌ This is not your game!', ephemeral: true });
+        return i.reply({
+          content: '❌ This is not your game!',
+          ephemeral: true,
+        });
       }
 
       const [, direction, id] = i.customId.split('_');
@@ -189,10 +207,17 @@ module.exports = {
 
       const newEmbed = new EmbedBuilder()
         .setColor(hasWon ? 0x00ff00 : gameOver ? 0xff0000 : 0xffd700)
-        .setTitle(hasWon ? '🏆 You Won!' : gameOver ? '💀 Game Over!' : '🎮 2048 Game')
+        .setTitle(
+          hasWon ? '🏆 You Won!' : gameOver ? '💀 Game Over!' : '🎮 2048 Game'
+        )
         .setDescription(boardToString(newBoard))
         .addFields({ name: 'Score', value: score.toString(), inline: true })
-        .setFooter({ text: hasWon || gameOver ? 'Game ended!' : 'Use the buttons to move tiles!' })
+        .setFooter({
+          text:
+            hasWon || gameOver
+              ? 'Game ended!'
+              : 'Use the buttons to move tiles!',
+        })
         .setTimestamp();
 
       if (hasWon || gameOver) {

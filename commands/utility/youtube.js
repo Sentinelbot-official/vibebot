@@ -71,7 +71,8 @@ module.exports = {
         .setTitle(video.snippet.title)
         .setURL(`https://www.youtube.com/watch?v=${video.id.videoId}`)
         .setDescription(
-          video.snippet.description.substring(0, 200) + '...' || 'No description'
+          video.snippet.description.substring(0, 200) + '...' ||
+            'No description'
         )
         .setThumbnail(video.snippet.thumbnails.high.url)
         .addFields(
@@ -113,7 +114,10 @@ module.exports = {
 
       return searchingMsg.edit({ content: null, embeds: [embed] });
     } catch (error) {
-      console.error('YouTube API Error:', error.response?.data || error.message);
+      console.error(
+        'YouTube API Error:',
+        error.response?.data || error.message
+      );
 
       let errorMsg = 'Failed to search YouTube. ';
       if (error.response?.status === 403) {

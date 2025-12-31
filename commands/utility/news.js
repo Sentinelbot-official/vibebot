@@ -40,17 +40,14 @@ module.exports = {
     const fetchingMsg = await message.reply('📰 Fetching news...');
 
     try {
-      const response = await axios.get(
-        'https://newsapi.org/v2/top-headlines',
-        {
-          params: {
-            apiKey: apiKey,
-            country: 'us',
-            category: category || 'general',
-            pageSize: 5,
-          },
-        }
-      );
+      const response = await axios.get('https://newsapi.org/v2/top-headlines', {
+        params: {
+          apiKey: apiKey,
+          country: 'us',
+          category: category || 'general',
+          pageSize: 5,
+        },
+      });
 
       const articles = response.data.articles;
 

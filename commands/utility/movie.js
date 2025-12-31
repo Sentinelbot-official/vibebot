@@ -134,9 +134,7 @@ module.exports = {
       }
 
       if (details.credits?.crew) {
-        const director = details.credits.crew.find(
-          c => c.job === 'Director'
-        );
+        const director = details.credits.crew.find(c => c.job === 'Director');
         if (director) {
           fields.push({
             name: '🎥 Director',

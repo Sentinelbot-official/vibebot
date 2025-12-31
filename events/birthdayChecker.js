@@ -9,9 +9,12 @@ module.exports = {
   once: false,
   execute(client) {
     // Check birthdays every hour
-    setInterval(() => {
-      checkBirthdays(client);
-    }, 60 * 60 * 1000); // Every hour
+    setInterval(
+      () => {
+        checkBirthdays(client);
+      },
+      60 * 60 * 1000
+    ); // Every hour
 
     // Also check immediately on startup
     setTimeout(() => checkBirthdays(client), 5000);

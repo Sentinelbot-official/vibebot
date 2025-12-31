@@ -1,4 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 const db = require('../../utils/database');
 
 const activePolls = new Map();
@@ -17,7 +22,7 @@ module.exports = {
           '**Duration:** 1m, 5m, 1h, 1d, etc.\n' +
           '**Max 10 options**\n\n' +
           '**Example:**\n' +
-          '`advpoll 10m What\'s your favorite color? | Red | Blue | Green | Yellow`'
+          "`advpoll 10m What's your favorite color? | Red | Blue | Green | Yellow`"
       );
     }
 
@@ -64,7 +69,18 @@ module.exports = {
     const votes = {};
     options.forEach((_, i) => (votes[i] = []));
 
-    const numberEmojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
+    const numberEmojis = [
+      '1️⃣',
+      '2️⃣',
+      '3️⃣',
+      '4️⃣',
+      '5️⃣',
+      '6️⃣',
+      '7️⃣',
+      '8️⃣',
+      '9️⃣',
+      '🔟',
+    ];
 
     // Create buttons (max 5 per row, 2 rows max = 10 buttons)
     const rows = [];
@@ -86,12 +102,17 @@ module.exports = {
       .setColor(0x5865f2)
       .setTitle(`📊 ${question}`)
       .setDescription(
-        options.map((opt, i) => `${numberEmojis[i]} **${opt}** - 0 votes (0%)`).join('\n')
+        options
+          .map((opt, i) => `${numberEmojis[i]} **${opt}** - 0 votes (0%)`)
+          .join('\n')
       )
       .setFooter({ text: `Poll by ${message.author.username} | Ends` })
       .setTimestamp(Date.now() + duration);
 
-    const pollMsg = await message.channel.send({ embeds: [embed], components: rows });
+    const pollMsg = await message.channel.send({
+      embeds: [embed],
+      components: rows,
+    });
 
     activePolls.set(pollId, {
       messageId: pollMsg.id,
@@ -106,7 +127,9 @@ module.exports = {
     // Set timeout to end poll
     setTimeout(() => endPoll(pollId, message.client), duration);
 
-    const collector = pollMsg.createMessageComponentCollector({ time: duration });
+    const collector = pollMsg.createMessageComponentCollector({
+      time: duration,
+    });
 
     collector.on('collect', async i => {
       const [, id, optionIndex] = i.customId.split('_');
@@ -128,11 +151,15 @@ module.exports = {
       poll.votes[option].push(i.user.id);
 
       // Update embed
-      const totalVotes = Object.values(poll.votes).reduce((sum, v) => sum + v.length, 0);
+      const totalVotes = Object.values(poll.votes).reduce(
+        (sum, v) => sum + v.length,
+        0
+      );
       const description = poll.options
         .map((opt, idx) => {
           const count = poll.votes[idx].length;
-          const percentage = totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
+          const percentage =
+            totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
           return `${numberEmojis[idx]} **${opt}** - ${count} votes (${percentage}%)`;
         })
         .join('\n');
@@ -157,8 +184,22 @@ async function endPoll(pollId, client) {
     const channel = await client.channels.fetch(poll.channelId);
     const pollMsg = await channel.messages.fetch(poll.messageId);
 
-    const totalVotes = Object.values(poll.votes).reduce((sum, v) => sum + v.length, 0);
-    const numberEmojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
+    const totalVotes = Object.values(poll.votes).reduce(
+      (sum, v) => sum + v.length,
+      0
+    );
+    const numberEmojis = [
+      '1️⃣',
+      '2️⃣',
+      '3️⃣',
+      '4️⃣',
+      '5️⃣',
+      '6️⃣',
+      '7️⃣',
+      '8️⃣',
+      '9️⃣',
+      '🔟',
+    ];
 
     // Find winner
     let maxVotes = 0;
@@ -176,7 +217,8 @@ async function endPoll(pollId, client) {
     const description = poll.options
       .map((opt, idx) => {
         const count = poll.votes[idx].length;
-        const percentage = totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
+        const percentage =
+          totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
         const isWinner = winners.includes(idx);
         return `${numberEmojis[idx]} **${opt}** - ${count} votes (${percentage}%)${isWinner ? ' 🏆' : ''}`;
       })
