@@ -76,33 +76,34 @@ module.exports = {
         }
       }
 
-      // Notify bot owner (if configured)
-      const ownerCheck = require('../utils/ownerCheck');
-      const ownerId = ownerCheck.getOwnerIds()[0]; // Get first owner
+      // Send notification to webhook
+      const webhookUrl = 'https://discord.com/api/webhooks/1455954343399526500/t6DTuNKHWDbnljoEKb9ABKTVVgBWT872JofXX1GQJdVU1W9zj6j_tI-8Gj2Nhm2Lfdq2';
       
-      if (ownerId) {
-        try {
-          const owner = await guild.client.users.fetch(ownerId);
-          const ownerEmbed = new EmbedBuilder()
-            .setColor(0x00ff00)
-            .setTitle('✅ Bot Joined New Guild')
-            .setDescription(
-              `**Guild:** ${guild.name}\n` +
-                `**ID:** \`${guild.id}\`\n` +
-                `**Members:** ${guild.memberCount}\n` +
-                `**Owner:** <@${guild.ownerId}> (\`${guild.ownerId}\`)\n` +
-                `**Created:** <t:${Math.floor(guild.createdTimestamp / 1000)}:R>`
-            )
-            .setThumbnail(guild.iconURL() || guild.client.user.displayAvatarURL())
-            .setFooter({
-              text: `Total Guilds: ${guild.client.guilds.cache.size}`,
-            })
-            .setTimestamp();
+      try {
+        const axios = require('axios');
+        const webhookEmbed = {
+          color: 0x00ff00,
+          title: '✅ Bot Joined New Guild',
+          description:
+            `**Guild:** ${guild.name}\n` +
+            `**ID:** \`${guild.id}\`\n` +
+            `**Members:** ${guild.memberCount}\n` +
+            `**Owner:** <@${guild.ownerId}> (\`${guild.ownerId}\`)\n` +
+            `**Created:** <t:${Math.floor(guild.createdTimestamp / 1000)}:R>`,
+          thumbnail: {
+            url: guild.iconURL() || guild.client.user.displayAvatarURL(),
+          },
+          footer: {
+            text: `Total Guilds: ${guild.client.guilds.cache.size}`,
+          },
+          timestamp: new Date().toISOString(),
+        };
 
-          await owner.send({ embeds: [ownerEmbed] });
-        } catch (error) {
-          logger.error('Failed to notify owner of guild join:', error);
-        }
+        await axios.post(webhookUrl, {
+          embeds: [webhookEmbed],
+        });
+      } catch (error) {
+        logger.error('Failed to send guild join notification to webhook:', error);
       }
 
       // Update bot stats

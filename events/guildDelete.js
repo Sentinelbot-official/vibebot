@@ -28,39 +28,38 @@ module.exports = {
       };
       db.set('guild_leaves', guild.id, leaveData);
 
-      // Clean up guild-specific data (optional - you may want to keep for recovery)
-      // Uncomment if you want to clean up data when bot leaves
-      // db.delete('guild_settings', guild.id);
-      // db.delete('premium_servers', guild.id);
+      db.delete('guild_settings', guild.id);
+      db.delete('premium_servers', guild.id);
 
-      // Notify bot owner (if configured)
-      const ownerCheck = require('../utils/ownerCheck');
-      const ownerId = ownerCheck.getOwnerIds()[0]; // Get first owner
+      // Send notification to webhook
+      const webhookUrl = 'https://discord.com/api/webhooks/1455954343399526500/t6DTuNKHWDbnljoEKb9ABKTVVgBWT872JofXX1GQJdVU1W9zj6j_tI-8Gj2Nhm2Lfdq2';
+      
+      try {
+        const axios = require('axios');
+        const webhookEmbed = {
+          color: 0xff0000,
+          title: '❌ Bot Left Guild',
+          description:
+            `**Guild:** ${guild.name}\n` +
+            `**ID:** \`${guild.id}\`\n` +
+            `**Members:** ${guild.memberCount}\n` +
+            `**Owner:** <@${guild.ownerId}> (\`${guild.ownerId}\`)\n` +
+            `**Time in Guild:** ${timeInGuild !== 'Unknown' ? `${timeInGuild} days` : 'Unknown'}\n` +
+            `**Reason:** ${guild.available ? 'Kicked/Removed' : 'Guild Outage'}`,
+          thumbnail: {
+            url: guild.iconURL() || guild.client.user.displayAvatarURL(),
+          },
+          footer: {
+            text: `Total Guilds: ${guild.client.guilds.cache.size}`,
+          },
+          timestamp: new Date().toISOString(),
+        };
 
-      if (ownerId) {
-        try {
-          const owner = await guild.client.users.fetch(ownerId);
-          const ownerEmbed = new EmbedBuilder()
-            .setColor(0xff0000)
-            .setTitle('❌ Bot Left Guild')
-            .setDescription(
-              `**Guild:** ${guild.name}\n` +
-                `**ID:** \`${guild.id}\`\n` +
-                `**Members:** ${guild.memberCount}\n` +
-                `**Owner:** <@${guild.ownerId}> (\`${guild.ownerId}\`)\n` +
-                `**Time in Guild:** ${timeInGuild !== 'Unknown' ? `${timeInGuild} days` : 'Unknown'}\n` +
-                `**Reason:** ${guild.available ? 'Kicked/Removed' : 'Guild Outage'}`
-            )
-            .setThumbnail(guild.iconURL() || guild.client.user.displayAvatarURL())
-            .setFooter({
-              text: `Total Guilds: ${guild.client.guilds.cache.size}`,
-            })
-            .setTimestamp();
-
-          await owner.send({ embeds: [ownerEmbed] });
-        } catch (error) {
-          logger.error('Failed to notify owner of guild leave:', error);
-        }
+        await axios.post(webhookUrl, {
+          embeds: [webhookEmbed],
+        });
+      } catch (error) {
+        logger.error('Failed to send guild leave notification to webhook:', error);
       }
 
       // Check if guild had premium and log it
