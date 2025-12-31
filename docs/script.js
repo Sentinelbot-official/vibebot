@@ -2,22 +2,6 @@
 // Built 24/7 live on Twitch with the community
 
 // ============================================
-// Scroll Progress Indicator
-// ============================================
-function updateScrollProgress() {
-  const scrollProgress = document.getElementById('scrollProgress');
-  if (!scrollProgress) return;
-
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  const progress = (scrollTop / scrollHeight) * 100;
-  
-  scrollProgress.style.width = progress + '%';
-}
-
-window.addEventListener('scroll', updateScrollProgress);
-
-// ============================================
 // Cookie Consent Banner
 // ============================================
 function initCookieConsent() {
@@ -955,7 +939,6 @@ document.addEventListener('DOMContentLoaded', () => {
   updateSocialProof();
   initCookieConsent();
   initTooltips();
-  updateScrollProgress();
   createParticles();
   addShareButtons();
   initQuickStartWizard();
