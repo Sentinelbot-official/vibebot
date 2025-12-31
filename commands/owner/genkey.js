@@ -28,11 +28,15 @@ module.exports = {
     const maxUses = args[2] ? parseInt(args[2]) : 1; // Default 1 use
 
     if (isNaN(duration) || duration < 0) {
-      return message.reply('❌ Duration must be a positive number (0 = lifetime)!');
+      return message.reply(
+        '❌ Duration must be a positive number (0 = lifetime)!'
+      );
     }
 
     if (isNaN(maxUses) || maxUses < 0) {
-      return message.reply('❌ Max uses must be a positive number (0 = unlimited)!');
+      return message.reply(
+        '❌ Max uses must be a positive number (0 = unlimited)!'
+      );
     }
 
     // Generate the key

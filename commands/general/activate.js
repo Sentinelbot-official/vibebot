@@ -3,7 +3,8 @@ const premium = require('../../utils/premium');
 
 module.exports = {
   name: 'activate',
-  description: 'Activate Premium or VIP for this server using an activation key',
+  description:
+    'Activate Premium or VIP for this server using an activation key',
   usage: '//activate <key>',
   category: 'general',
   cooldown: 10,
@@ -90,9 +91,7 @@ module.exports = {
         {
           name: '📅 Duration',
           value:
-            result.duration > 0
-              ? `${result.duration} days`
-              : '♾️ Lifetime',
+            result.duration > 0 ? `${result.duration} days` : '♾️ Lifetime',
           inline: true,
         },
         {

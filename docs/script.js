@@ -5,12 +5,12 @@
 // Premium Links Function
 // ============================================
 function openPremiumLinks() {
-    // Open Ko-fi in a new tab
-    window.open('https://ko-fi.com/airis0', '_blank');
-    // Small delay to ensure both tabs open (some browsers block rapid popups)
-    setTimeout(function() {
-        window.open('activate.html', '_blank');
-    }, 100);
+  // Open Ko-fi in a new tab
+  window.open('https://ko-fi.com/airis0', '_blank');
+  // Small delay to ensure both tabs open (some browsers block rapid popups)
+  setTimeout(function () {
+    window.open('activate.html', '_blank');
+  }, 100);
 }
 
 // ============================================

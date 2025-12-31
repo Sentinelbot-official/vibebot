@@ -103,10 +103,15 @@ class PremiumManager {
 
       // Check if server already has premium
       const existingPremium = this.getServerPremium(guildId);
-      if (existingPremium && existingPremium.tier === 'vip' && keyData.tier === 'premium') {
+      if (
+        existingPremium &&
+        existingPremium.tier === 'vip' &&
+        keyData.tier === 'premium'
+      ) {
         return {
           success: false,
-          message: '❌ This server already has VIP! Cannot downgrade to Premium.',
+          message:
+            '❌ This server already has VIP! Cannot downgrade to Premium.',
         };
       }
 

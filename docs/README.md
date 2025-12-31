@@ -42,13 +42,15 @@ To test locally:
 
 1. Open `index.html` in your browser
 2. Or use a local server:
+
    ```bash
    # Python
    python -m http.server 8000
-   
+
    # Node.js
    npx http-server
    ```
+
 3. Visit `http://localhost:8000`
 
 ## 📝 Customization
@@ -58,7 +60,9 @@ To test locally:
 In `index.html`, replace `YOUR_BOT_ID_HERE` with your actual Discord bot client ID:
 
 ```html
-<a href="https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=8&scope=bot">
+<a
+  href="https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=8&scope=bot"
+></a>
 ```
 
 ### Update Links

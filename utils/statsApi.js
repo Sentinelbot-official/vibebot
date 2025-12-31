@@ -20,7 +20,9 @@ class StatsAPI {
    */
   init(client) {
     if (!this.enabled) {
-      logger.info('Stats API is disabled. Set ENABLE_STATS_API=true to enable.');
+      logger.info(
+        'Stats API is disabled. Set ENABLE_STATS_API=true to enable.'
+      );
       return;
     }
 
@@ -129,7 +131,9 @@ class StatsAPI {
     } catch (error) {
       logger.error('Error handling status request:', error);
       res.writeHead(500);
-      res.end(JSON.stringify({ error: 'Internal server error', online: false }));
+      res.end(
+        JSON.stringify({ error: 'Internal server error', online: false })
+      );
     }
   }
 

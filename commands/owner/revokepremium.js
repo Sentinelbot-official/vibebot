@@ -30,7 +30,9 @@ module.exports = {
         `✅ Successfully revoked **${premiumData.tier.toUpperCase()}** from **${guildName}** (\`${guildId}\`)`
       );
     } else {
-      return message.reply('❌ Failed to revoke premium. Check logs for details.');
+      return message.reply(
+        '❌ Failed to revoke premium. Check logs for details.'
+      );
     }
   },
 };
