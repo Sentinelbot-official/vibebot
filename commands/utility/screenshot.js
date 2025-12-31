@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const axios = require('axios');
 
 module.exports = {
   name: 'screenshot',
@@ -7,9 +8,11 @@ module.exports = {
   usage: '<url>',
   category: 'utility',
   cooldown: 10,
-  execute(message, args) {
+  async execute(message, args) {
     if (!args.length) {
-      return message.reply('❌ Please provide a URL!');
+      return message.reply(
+        '❌ Please provide a URL!\nUsage: `screenshot <url>`\nExample: `screenshot https://discord.com`'
+      );
     }
 
     const url = args[0];
@@ -21,18 +24,118 @@ module.exports = {
       return message.reply('❌ Please provide a valid URL!');
     }
 
-    // Using free screenshot API
-    const screenshotUrl = `https://api.screenshotmachine.com/?key=demo&url=${encodeURIComponent(url)}&dimension=1024x768`;
+    const loadingMsg = await message.reply('📸 Taking screenshot...');
 
-    const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
-      .setTitle('📸 Website Screenshot')
-      .setDescription(`Preview of: ${url}`)
-      .setImage(screenshotUrl)
-      .setFooter({
-        text: 'Note: Using demo API - get your own key for better quality',
-      });
+    try {
+      // Try multiple free screenshot APIs in order of preference
 
-    message.reply({ embeds: [embed] });
+      // 1. Try Screenshot Machine API (if key provided)
+      const screenshotMachineKey = process.env.SCREENSHOT_MACHINE_KEY;
+      if (screenshotMachineKey) {
+        const screenshotUrl = `https://api.screenshotmachine.com/?key=${screenshotMachineKey}&url=${encodeURIComponent(url)}&dimension=1024x768&format=png&cacheLimit=0`;
+
+        const embed = new EmbedBuilder()
+          .setColor(0x0099ff)
+          .setTitle('📸 Website Screenshot')
+          .setDescription(`Preview of: ${url}`)
+          .setImage(screenshotUrl)
+          .setFooter({ text: 'Powered by Screenshot Machine' })
+          .setTimestamp();
+
+        return loadingMsg.edit({ content: null, embeds: [embed] });
+      }
+
+      // 2. Try Screenshotlayer API (if key provided)
+      const screenshotlayerKey = process.env.SCREENSHOTLAYER_KEY;
+      if (screenshotlayerKey) {
+        const screenshotUrl = `https://api.screenshotlayer.com/api/capture?access_key=${screenshotlayerKey}&url=${encodeURIComponent(url)}&viewport=1024x768&format=PNG`;
+
+        const embed = new EmbedBuilder()
+          .setColor(0x0099ff)
+          .setTitle('📸 Website Screenshot')
+          .setDescription(`Preview of: ${url}`)
+          .setImage(screenshotUrl)
+          .setFooter({ text: 'Powered by Screenshotlayer' })
+          .setTimestamp();
+
+        return loadingMsg.edit({ content: null, embeds: [embed] });
+      }
+
+      // 3. Try ApiFlash (if key provided)
+      const apiflashKey = process.env.APIFLASH_KEY;
+      if (apiflashKey) {
+        const screenshotUrl = `https://api.apiflash.com/v1/urltoimage?access_key=${apiflashKey}&url=${encodeURIComponent(url)}&width=1024&height=768&format=png&fresh=true`;
+
+        const embed = new EmbedBuilder()
+          .setColor(0x0099ff)
+          .setTitle('📸 Website Screenshot')
+          .setDescription(`Preview of: ${url}`)
+          .setImage(screenshotUrl)
+          .setFooter({ text: 'Powered by ApiFlash' })
+          .setTimestamp();
+
+        return loadingMsg.edit({ content: null, embeds: [embed] });
+      }
+
+      // 4. Try free services (no key required, but may have limitations)
+      
+      // Try shot.screenshotapi.net (free, no key)
+      try {
+        const freeUrl = `https://shot.screenshotapi.net/screenshot?url=${encodeURIComponent(url)}&width=1024&height=768&output=image&file_type=png&wait_for_event=load`;
+        
+        // Test if the URL is accessible
+        await axios.head(freeUrl, { timeout: 5000 });
+
+        const embed = new EmbedBuilder()
+          .setColor(0x0099ff)
+          .setTitle('📸 Website Screenshot')
+          .setDescription(`Preview of: ${url}`)
+          .setImage(freeUrl)
+          .setFooter({ text: 'Free Screenshot Service' })
+          .setTimestamp();
+
+        return loadingMsg.edit({ content: null, embeds: [embed] });
+      } catch (freeError) {
+        // Free service failed, continue to fallback
+      }
+
+      // Fallback: Provide setup instructions
+      const setupEmbed = new EmbedBuilder()
+        .setColor(0xffa500)
+        .setTitle('📸 Screenshot Service Not Configured')
+        .setDescription(
+          'To use the screenshot feature, add one of these API keys to your .env file:'
+        )
+        .addFields(
+          {
+            name: '1. Screenshot Machine (Recommended)',
+            value:
+              'Get key: [screenshotmachine.com](https://screenshotmachine.com)\nAdd: `SCREENSHOT_MACHINE_KEY=your_key`',
+            inline: false,
+          },
+          {
+            name: '2. Screenshotlayer',
+            value:
+              'Get key: [screenshotlayer.com](https://screenshotlayer.com)\nAdd: `SCREENSHOTLAYER_KEY=your_key`',
+            inline: false,
+          },
+          {
+            name: '3. ApiFlash',
+            value:
+              'Get key: [apiflash.com](https://apiflash.com)\nAdd: `APIFLASH_KEY=your_key`',
+            inline: false,
+          }
+        )
+        .setFooter({ text: 'All services offer free tiers!' })
+        .setTimestamp();
+
+      return loadingMsg.edit({ content: null, embeds: [setupEmbed] });
+    } catch (error) {
+      console.error('Screenshot error:', error.message);
+
+      return loadingMsg.edit(
+        `❌ Failed to take screenshot: ${error.message}\n\nMake sure the URL is accessible and try again.`
+      );
+    }
   },
 };

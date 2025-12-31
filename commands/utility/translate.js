@@ -1,8 +1,59 @@
 const { EmbedBuilder } = require('discord.js');
+const axios = require('axios');
+
+// Language codes mapping
+const languageCodes = {
+  af: 'Afrikaans',
+  sq: 'Albanian',
+  ar: 'Arabic',
+  hy: 'Armenian',
+  az: 'Azerbaijani',
+  eu: 'Basque',
+  be: 'Belarusian',
+  bn: 'Bengali',
+  bs: 'Bosnian',
+  bg: 'Bulgarian',
+  ca: 'Catalan',
+  zh: 'Chinese',
+  hr: 'Croatian',
+  cs: 'Czech',
+  da: 'Danish',
+  nl: 'Dutch',
+  en: 'English',
+  et: 'Estonian',
+  fi: 'Finnish',
+  fr: 'French',
+  de: 'German',
+  el: 'Greek',
+  he: 'Hebrew',
+  hi: 'Hindi',
+  hu: 'Hungarian',
+  is: 'Icelandic',
+  id: 'Indonesian',
+  it: 'Italian',
+  ja: 'Japanese',
+  ko: 'Korean',
+  lv: 'Latvian',
+  lt: 'Lithuanian',
+  no: 'Norwegian',
+  pl: 'Polish',
+  pt: 'Portuguese',
+  ro: 'Romanian',
+  ru: 'Russian',
+  sr: 'Serbian',
+  sk: 'Slovak',
+  sl: 'Slovenian',
+  es: 'Spanish',
+  sv: 'Swedish',
+  th: 'Thai',
+  tr: 'Turkish',
+  uk: 'Ukrainian',
+  vi: 'Vietnamese',
+};
 
 module.exports = {
   name: 'translate',
-  description: 'Translate text to another language (mock translation)',
+  description: 'Translate text to another language',
   usage: '<language> <text>',
   aliases: ['tr', 'trans'],
   category: 'utility',
@@ -12,121 +63,132 @@ module.exports = {
       return message.reply(
         '❌ Usage: `translate <language> <text>`\n' +
           'Example: `translate es Hello world`\n' +
-          'Supported: es (Spanish), fr (French), de (German), it (Italian), pt (Portuguese), ja (Japanese)'
+          'Popular codes: es (Spanish), fr (French), de (German), ja (Japanese), zh (Chinese), ru (Russian)\n' +
+          'Use `translate list` to see all supported languages'
       );
+    }
+
+    // List all languages
+    if (args[0].toLowerCase() === 'list') {
+      const langList = Object.entries(languageCodes)
+        .map(([code, name]) => `\`${code}\` - ${name}`)
+        .join('\n');
+
+      const embed = new EmbedBuilder()
+        .setColor(0x5865f2)
+        .setTitle('🌐 Supported Languages')
+        .setDescription(langList)
+        .setFooter({ text: `Total: ${Object.keys(languageCodes).length} languages` })
+        .setTimestamp();
+
+      return message.reply({ embeds: [embed] });
     }
 
     const targetLang = args[0].toLowerCase();
     const text = args.slice(1).join(' ');
 
-    // Mock translations (simple word replacements for demo)
-    const translations = {
-      es: {
-        hello: 'hola',
-        world: 'mundo',
-        good: 'bueno',
-        morning: 'mañana',
-        night: 'noche',
-        thank: 'gracias',
-        you: 'tú',
-        please: 'por favor',
-      },
-      fr: {
-        hello: 'bonjour',
-        world: 'monde',
-        good: 'bon',
-        morning: 'matin',
-        night: 'nuit',
-        thank: 'merci',
-        you: 'vous',
-        please: "s'il vous plaît",
-      },
-      de: {
-        hello: 'hallo',
-        world: 'welt',
-        good: 'gut',
-        morning: 'morgen',
-        night: 'nacht',
-        thank: 'danke',
-        you: 'du',
-        please: 'bitte',
-      },
-      it: {
-        hello: 'ciao',
-        world: 'mondo',
-        good: 'buono',
-        morning: 'mattina',
-        night: 'notte',
-        thank: 'grazie',
-        you: 'tu',
-        please: 'per favore',
-      },
-      pt: {
-        hello: 'olá',
-        world: 'mundo',
-        good: 'bom',
-        morning: 'manhã',
-        night: 'noite',
-        thank: 'obrigado',
-        you: 'você',
-        please: 'por favor',
-      },
-      ja: {
-        hello: 'こんにちは',
-        world: '世界',
-        good: '良い',
-        morning: '朝',
-        night: '夜',
-        thank: 'ありがとう',
-        you: 'あなた',
-        please: 'お願いします',
-      },
-    };
-
-    if (!translations[targetLang]) {
+    if (!languageCodes[targetLang]) {
       return message.reply(
-        '❌ Unsupported language! Supported: es, fr, de, it, pt, ja'
+        `❌ Unsupported language code: \`${targetLang}\`\nUse \`translate list\` to see all supported languages.`
       );
     }
 
-    // Simple word-by-word translation (mock)
-    const words = text.toLowerCase().split(' ');
-    const translated = words
-      .map(word => {
-        const cleanWord = word.replace(/[.,!?]/g, '');
-        return translations[targetLang][cleanWord] || word;
-      })
-      .join(' ');
+    const translatingMsg = await message.reply('🌐 Translating...');
 
-    const languageNames = {
-      es: 'Spanish',
-      fr: 'French',
-      de: 'German',
-      it: 'Italian',
-      pt: 'Portuguese',
-      ja: 'Japanese',
-    };
-
-    const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
-      .setTitle('🌐 Translation')
-      .addFields(
+    try {
+      // Use Google Translate API (free endpoint)
+      // Note: This uses the unofficial API. For production, use official Google Cloud Translation API
+      const response = await axios.get(
+        'https://translate.googleapis.com/translate_a/single',
         {
-          name: 'Original',
-          value: text,
-          inline: false,
-        },
-        {
-          name: `Translated (${languageNames[targetLang]})`,
-          value: translated,
-          inline: false,
+          params: {
+            client: 'gtx',
+            sl: 'auto', // Auto-detect source language
+            tl: targetLang,
+            dt: 't',
+            q: text,
+          },
+          timeout: 10000,
         }
-      )
-      .setFooter({
-        text: 'Note: This is a basic mock translation for demonstration',
-      })
-      .setTimestamp();
+      );
 
-    message.reply({ embeds: [embed] });
+      // Parse response
+      const translated = response.data[0]
+        .map(item => item[0])
+        .join('');
+
+      // Detect source language
+      const sourceLang = response.data[2] || 'auto';
+      const sourceLangName = languageCodes[sourceLang] || 'Unknown';
+
+      const embed = new EmbedBuilder()
+        .setColor(0x5865f2)
+        .setTitle('🌐 Translation')
+        .addFields(
+          {
+            name: `Original (${sourceLangName})`,
+            value: text.substring(0, 1024),
+            inline: false,
+          },
+          {
+            name: `Translated (${languageCodes[targetLang]})`,
+            value: translated.substring(0, 1024),
+            inline: false,
+          }
+        )
+        .setFooter({ text: 'Powered by Google Translate' })
+        .setTimestamp();
+
+      return translatingMsg.edit({ content: null, embeds: [embed] });
+    } catch (error) {
+      console.error('Translation error:', error.message);
+
+      // Fallback: Try alternative free API
+      try {
+        const fallbackResponse = await axios.get(
+          `https://api.mymemory.translated.net/get`,
+          {
+            params: {
+              q: text,
+              langpair: `auto|${targetLang}`,
+            },
+            timeout: 10000,
+          }
+        );
+
+        if (fallbackResponse.data.responseStatus === 200) {
+          const translated = fallbackResponse.data.responseData.translatedText;
+
+          const embed = new EmbedBuilder()
+            .setColor(0x5865f2)
+            .setTitle('🌐 Translation')
+            .addFields(
+              {
+                name: 'Original',
+                value: text.substring(0, 1024),
+                inline: false,
+              },
+              {
+                name: `Translated (${languageCodes[targetLang]})`,
+                value: translated.substring(0, 1024),
+                inline: false,
+              }
+            )
+            .setFooter({ text: 'Powered by MyMemory API' })
+            .setTimestamp();
+
+          return translatingMsg.edit({ content: null, embeds: [embed] });
+        }
+      } catch (fallbackError) {
+        console.error('Fallback translation error:', fallbackError.message);
+      }
+
+      return translatingMsg.edit(
+        '❌ Translation failed. The service may be temporarily unavailable.\n\n' +
+          '**For production use**, add Google Cloud Translation API key:\n' +
+          '1. Get API key from [Google Cloud Console](https://console.cloud.google.com)\n' +
+          '2. Add `GOOGLE_TRANSLATE_API_KEY` to your .env file'
+      );
+    }
   },
 };
