@@ -1596,6 +1596,517 @@ section {
 }
 
 /* ============================================
+   Hero Button Enhancements
+   ============================================ */
+
+.btn-pulse {
+    animation: pulse-btn 2s ease-in-out infinite;
+}
+
+@keyframes pulse-btn {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 15px rgba(102, 126, 234, 0);
+    }
+}
+
+.btn-icon {
+    margin-right: 0.5rem;
+}
+
+.btn-accent {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: var(--white);
+}
+
+.btn-accent:hover {
+    background: linear-gradient(135deg, #f5576c, #f093fb);
+    transform: translateY(-3px);
+}
+
+/* ============================================
+   Command Showcase Section
+   ============================================ */
+
+.showcase-section {
+    background: var(--card-bg);
+    padding: 100px 0;
+}
+
+.showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.showcase-card {
+    background: var(--light);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.showcase-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+}
+
+.showcase-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.showcase-icon {
+    font-size: 2.5rem;
+}
+
+.showcase-header h3 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.command-demo {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 10px;
+    border-left: 4px solid var(--primary);
+}
+
+.command-demo code {
+    display: block;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.command-demo p {
+    margin: 0;
+    color: var(--text-color);
+    opacity: 0.85;
+    font-size: 0.95rem;
+}
+
+.showcase-cta {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--light);
+    border-radius: 15px;
+}
+
+.showcase-cta code {
+    background: var(--darker);
+    color: var(--primary);
+    padding: 0.3rem 0.8rem;
+    border-radius: 5px;
+    font-weight: 700;
+}
+
+/* ============================================
+   Comparison Table Section
+   ============================================ */
+
+.comparison-section {
+    background: var(--light);
+    padding: 100px 0;
+}
+
+.comparison-table-wrapper {
+    overflow-x: auto;
+    margin-top: 3rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.comparison-table thead {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.comparison-table th {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--white);
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.comparison-table th.feature-column {
+    text-align: left;
+    width: 30%;
+}
+
+.comparison-table td {
+    padding: 1.2rem 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--light);
+    color: var(--text-color);
+    font-size: 1.05rem;
+}
+
+.comparison-table td.feature-name {
+    text-align: left;
+    font-weight: 600;
+}
+
+.comparison-table tbody tr:hover {
+    background: var(--light);
+}
+
+.comparison-table .price-row {
+    background: var(--light);
+    font-size: 1.3rem;
+}
+
+.comparison-table .cta-row {
+    background: var(--card-bg);
+    border-bottom: none;
+}
+
+.comparison-table .btn-sm {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.95rem;
+}
+
+/* ============================================
+   Roadmap Section
+   ============================================ */
+
+.roadmap-section {
+    background: var(--card-bg);
+    padding: 100px 0;
+}
+
+.roadmap-timeline {
+    max-width: 900px;
+    margin: 3rem auto;
+    position: relative;
+}
+
+.roadmap-timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--success), var(--primary), var(--secondary));
+}
+
+.roadmap-item {
+    position: relative;
+    padding-left: 80px;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+}
+
+.roadmap-item::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 4px solid var(--primary);
+    z-index: 1;
+}
+
+.roadmap-item.completed::before {
+    background: var(--success);
+    border-color: var(--success);
+}
+
+.roadmap-item.in-progress::before {
+    background: var(--warning);
+    border-color: var(--warning);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.roadmap-status {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.roadmap-item.completed .roadmap-status {
+    background: var(--success);
+    color: var(--white);
+}
+
+.roadmap-item.in-progress .roadmap-status {
+    background: var(--warning);
+    color: var(--darker);
+}
+
+.roadmap-item.planned .roadmap-status {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.roadmap-item.future .roadmap-status {
+    background: var(--secondary);
+    color: var(--white);
+}
+
+.roadmap-item h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+    color: var(--text-color);
+}
+
+.roadmap-item p {
+    color: var(--text-color);
+    opacity: 0.85;
+    margin-bottom: 0.5rem;
+}
+
+.roadmap-date {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: var(--light);
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.roadmap-cta {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--light);
+    border-radius: 15px;
+}
+
+.roadmap-cta a {
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+/* ============================================
+   Changelog Section
+   ============================================ */
+
+.changelog-section {
+    background: var(--light);
+    padding: 100px 0;
+}
+
+.changelog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.changelog-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.changelog-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+
+.changelog-card.latest {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), var(--card-bg));
+}
+
+.changelog-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--light);
+}
+
+.changelog-header h3 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.changelog-date {
+    display: inline-block;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 0.95rem;
+    margin-right: 1rem;
+}
+
+.changelog-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.changelog-badge.new {
+    background: var(--primary);
+    color: var(--white);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.changelog-list {
+    list-style: none;
+    padding: 0;
+}
+
+.changelog-list li {
+    padding: 0.7rem 0;
+    color: var(--text-color);
+    opacity: 0.9;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+/* ============================================
+   Support Widget Section
+   ============================================ */
+
+.support-widget-section {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 80px 0;
+}
+
+.support-widget-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.support-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.support-text h2 {
+    font-size: 2.5rem;
+    color: var(--white);
+    margin-bottom: 1rem;
+}
+
+.support-text p {
+    font-size: 1.2rem;
+    color: var(--white);
+    opacity: 0.95;
+    margin-bottom: 0.5rem;
+}
+
+.support-subtext {
+    font-size: 1rem !important;
+    opacity: 0.8 !important;
+}
+
+.support-buttons {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-kofi {
+    background: #FF5E5B;
+    color: var(--white);
+    font-size: 1.2rem;
+    padding: 1rem 2.5rem;
+    box-shadow: 0 8px 25px rgba(255, 94, 91, 0.4);
+}
+
+.btn-kofi:hover {
+    background: #ff4744;
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(255, 94, 91, 0.6);
+}
+
+.kofi-icon {
+    margin-right: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.btn-premium-alt {
+    background: var(--white);
+    color: var(--primary);
+    font-size: 1.2rem;
+    padding: 1rem 2.5rem;
+}
+
+.btn-premium-alt:hover {
+    background: var(--light);
+    transform: translateY(-5px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .showcase-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .roadmap-timeline::before {
+        left: 15px;
+    }
+
+    .roadmap-item {
+        padding-left: 50px;
+    }
+
+    .roadmap-item::before {
+        left: 8px;
+        width: 18px;
+        height: 18px;
+    }
+
+    .changelog-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .support-widget-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .support-buttons {
+        justify-content: center;
+    }
+}
+
+/* ============================================
    Footer
    ============================================ */
 
