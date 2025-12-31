@@ -775,6 +775,37 @@ section {
     border-bottom: none;
 }
 
+.premium-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    padding: 2rem;
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--primary);
+}
+
+.premium-intro p {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.premium-intro p:last-child {
+    margin-bottom: 0;
+}
+
+.premium-intro code {
+    background: var(--darker);
+    color: var(--primary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+}
+
 .premium-note {
     text-align: center;
     max-width: 600px;
