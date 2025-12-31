@@ -12,7 +12,9 @@ module.exports = {
     // Check if user has Manage Server permission
     if (!message.member.permissions.has('ManageGuild')) {
       return message.reply(
-        '❌ You need the **Manage Server** permission to activate premium!'
+        '❌ You need the **Manage Server** permission to activate premium!\n\n' +
+          '**Why?** Premium activation affects the entire server, so only server administrators can activate it.\n' +
+          '**Solution:** Ask a server administrator or owner to run this command.'
       );
     }
 

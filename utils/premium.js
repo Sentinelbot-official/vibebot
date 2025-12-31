@@ -44,9 +44,10 @@ class PremiumManager {
    * @param {string} tier - 'premium' or 'vip'
    * @param {number} duration - Duration in days (0 = lifetime)
    * @param {number} maxUses - Maximum uses (0 = unlimited)
+   * @param {string} guildId - Guild ID this key is bound to
    * @returns {string} Generated key
    */
-  generateKey(tier = 'premium', duration = 30, maxUses = 1) {
+  generateKey(tier = 'premium', duration = 30, maxUses = 1, guildId = null) {
     const key = `VIBE-${tier.toUpperCase()}-${crypto.randomBytes(8).toString('hex').toUpperCase()}`;
 
     const keyData = {
@@ -58,10 +59,11 @@ class PremiumManager {
       createdAt: Date.now(),
       expiresAt: duration > 0 ? Date.now() + duration * 24 * 60 * 60 * 1000 : 0,
       activatedServers: [],
+      boundToGuild: guildId, // Guild ID this key is restricted to
     };
 
     db.set('activation_keys', key, keyData);
-    logger.info(`Generated ${tier} key: ${key}`);
+    logger.info(`Generated ${tier} key: ${key} (bound to guild: ${guildId || 'any'})`);
 
     return key;
   }
@@ -82,6 +84,17 @@ class PremiumManager {
         return {
           success: false,
           message: '❌ Invalid activation key!',
+        };
+      }
+
+      // Check if key is bound to a specific guild
+      if (keyData.boundToGuild && keyData.boundToGuild !== guildId) {
+        return {
+          success: false,
+          message: 
+            '❌ This activation key is bound to a different server!\n\n' +
+            '**This key can only be used in the server it was created for.**\n' +
+            'Contact the bot owner if you believe this is an error.',
         };
       }
 

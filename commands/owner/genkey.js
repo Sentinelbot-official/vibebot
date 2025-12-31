@@ -3,29 +3,44 @@ const premium = require('../../utils/premium');
 
 module.exports = {
   name: 'genkey',
-  description: 'Generate a premium/VIP activation key',
-  usage: '//genkey <premium|vip> [duration_days] [max_uses]',
+  description: 'Generate a premium/VIP activation key for a specific server',
+  usage: '//genkey <guild_id> <premium|vip> [duration_days] [max_uses]',
   category: 'owner',
   ownerOnly: true,
   async execute(message, args) {
-    if (!args[0]) {
+    if (!args[0] || !args[1]) {
       return message.reply(
-        '❌ Usage: `//genkey <premium|vip> [duration_days] [max_uses]`\n\n' +
+        '❌ Usage: `//genkey <guild_id> <premium|vip> [duration_days] [max_uses]`\n\n' +
           '**Examples:**\n' +
-          '`//genkey premium` - 30 days, 1 use\n' +
-          '`//genkey vip 0 1` - Lifetime, 1 use\n' +
-          '`//genkey premium 30 5` - 30 days, 5 uses\n' +
-          '`//genkey vip 365 0` - 1 year, unlimited uses'
+          '`//genkey 123456789 premium` - 30 days, 1 use\n' +
+          '`//genkey 123456789 vip 0 1` - Lifetime, 1 use\n' +
+          '`//genkey 123456789 premium 30 5` - 30 days, 5 uses\n' +
+          '`//genkey 123456789 vip 365 0` - 1 year, unlimited uses\n\n' +
+          '💡 **Tip:** Use this command in the target server to auto-fill the guild ID!'
       );
     }
 
-    const tier = args[0].toLowerCase();
+    const guildId = args[0];
+    const tier = args[1].toLowerCase();
+    
     if (tier !== 'premium' && tier !== 'vip') {
       return message.reply('❌ Tier must be either `premium` or `vip`!');
     }
 
-    const duration = args[1] ? parseInt(args[1]) : 30; // Default 30 days
-    const maxUses = args[2] ? parseInt(args[2]) : 1; // Default 1 use
+    // Check if bot is in the specified guild
+    const targetGuild = message.client.guilds.cache.get(guildId);
+    if (!targetGuild) {
+      return message.reply(
+        `❌ Bot is not in the guild with ID \`${guildId}\`!\n\n` +
+          '**Make sure:**\n' +
+          '• The guild ID is correct\n' +
+          '• The bot has been invited to that server\n' +
+          '• The bot hasn\'t been kicked from that server'
+      );
+    }
+
+    const duration = args[2] ? parseInt(args[2]) : 30; // Default 30 days
+    const maxUses = args[3] ? parseInt(args[3]) : 1; // Default 1 use
 
     if (isNaN(duration) || duration < 0) {
       return message.reply(
@@ -39,14 +54,19 @@ module.exports = {
       );
     }
 
-    // Generate the key
-    const key = premium.generateKey(tier, duration, maxUses);
+    // Generate the key with guild binding
+    const key = premium.generateKey(tier, duration, maxUses, guildId);
 
     const embed = new EmbedBuilder()
       .setColor(tier === 'vip' ? '#ff0000' : '#0099ff')
       .setTitle(`🔑 ${tier.toUpperCase()} Key Generated`)
       .setDescription(`\`\`\`${key}\`\`\``)
       .addFields(
+        {
+          name: '🏰 Server',
+          value: `${targetGuild.name}\n\`${guildId}\``,
+          inline: false,
+        },
         {
           name: '🎫 Tier',
           value: tier.toUpperCase(),
@@ -64,7 +84,7 @@ module.exports = {
         }
       )
       .setFooter({
-        text: 'Give this key to the customer - they can activate it with //activate <key>',
+        text: 'This key can ONLY be activated in the specified server by someone with Manage Server permission',
       })
       .setTimestamp();
 
