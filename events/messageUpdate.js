@@ -12,9 +12,9 @@ module.exports = {
     if (oldMessage.content === newMessage.content) return;
 
     const settings = db.get('guild_settings', newMessage.guild.id) || {};
-    if (!settings.logChannel) return;
+    if (!settings.logChannelId) return;
 
-    const logChannel = newMessage.guild.channels.cache.get(settings.logChannel);
+    const logChannel = newMessage.guild.channels.cache.get(settings.logChannelId);
     if (!logChannel) return;
 
     const embed = new EmbedBuilder()

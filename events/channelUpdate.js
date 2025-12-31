@@ -5,9 +5,9 @@ module.exports = {
   name: 'channelUpdate',
   async execute(oldChannel, newChannel) {
     const settings = db.get('guild_settings', newChannel.guild.id) || {};
-    if (!settings.logChannel) return;
+    if (!settings.logChannelId) return;
 
-    const logChannel = newChannel.guild.channels.cache.get(settings.logChannel);
+    const logChannel = newChannel.guild.channels.cache.get(settings.logChannelId);
     if (!logChannel) return;
 
     const embed = new EmbedBuilder()

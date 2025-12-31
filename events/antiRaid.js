@@ -63,8 +63,8 @@ module.exports = {
       }
 
       // Log to log channel
-      if (settings.logChannel) {
-        const logChannel = member.guild.channels.cache.get(settings.logChannel);
+      if (settings.logChannelId) {
+        const logChannel = member.guild.channels.cache.get(settings.logChannelId);
         if (logChannel) {
           const embed = new EmbedBuilder()
             .setColor(0xff0000)

@@ -12,9 +12,9 @@ module.exports = {
     if (!message.content && message.attachments.size === 0) return;
 
     const settings = db.get('guild_settings', message.guild.id) || {};
-    if (!settings.logChannel) return;
+    if (!settings.logChannelId) return;
 
-    const logChannel = message.guild.channels.cache.get(settings.logChannel);
+    const logChannel = message.guild.channels.cache.get(settings.logChannelId);
     if (!logChannel) return;
 
     const embed = new EmbedBuilder()

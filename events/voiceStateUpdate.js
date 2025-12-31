@@ -5,9 +5,9 @@ module.exports = {
   name: 'voiceStateUpdate',
   async execute(oldState, newState) {
     const settings = db.get('guild_settings', newState.guild.id) || {};
-    if (!settings.logChannel) return;
+    if (!settings.logChannelId) return;
 
-    const logChannel = newState.guild.channels.cache.get(settings.logChannel);
+    const logChannel = newState.guild.channels.cache.get(settings.logChannelId);
     if (!logChannel) return;
 
     const member = newState.member;

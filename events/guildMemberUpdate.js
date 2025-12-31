@@ -5,9 +5,9 @@ module.exports = {
   name: 'guildMemberUpdate',
   async execute(oldMember, newMember) {
     const settings = db.get('guild_settings', newMember.guild.id) || {};
-    if (!settings.logChannel) return;
+    if (!settings.logChannelId) return;
 
-    const logChannel = newMember.guild.channels.cache.get(settings.logChannel);
+    const logChannel = newMember.guild.channels.cache.get(settings.logChannelId);
     if (!logChannel) return;
 
     const embed = new EmbedBuilder()
