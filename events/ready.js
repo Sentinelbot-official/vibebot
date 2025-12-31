@@ -16,8 +16,9 @@ module.exports = {
       const twitchUrl =
         config.getBotConfig('twitch') || 'https://twitch.tv/projectdraguk';
 
-      logger.success(`🎵 ${client.user.tag} is now LIVE!`);
-      logger.info(`🚀 Version ${version}`);
+      logger.success(`🔴 ${client.user.tag} is now LIVE!`);
+      logger.success(`🎵 ${tagline}`);
+      logger.info(`🚀 Version ${version} - Built 24/7 on Twitch!`);
 
       // Startup diagnostics
       const startupTime = Date.now() - (client.readyTimestamp || Date.now());

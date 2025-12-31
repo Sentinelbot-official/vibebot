@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
 const premiumPerks = require('../../utils/premiumPerks');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'daily',
@@ -137,10 +138,12 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({
-        text: `Next milestone: ${milestones.find(m => m > economy.dailyStreak) || 'MAX'} days | ${premiumBonus === 0 ? 'Upgrade to Premium for 2-3x rewards!' : 'Come back tomorrow!'}`,
-      })
-      .setTimestamp();
+      .setFooter(branding.footers.community)
+      .setTimestamp()
+      .setAuthor({
+        name: economy.dailyStreak >= 7 ? '🔥 You\'re on fire! Keep it up!' : branding.getTagline(),
+        iconURL: branding.footers.default.iconURL,
+      });
 
     message.reply({ embeds: [embed] });
   },
