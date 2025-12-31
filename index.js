@@ -136,10 +136,19 @@ if (fs.existsSync(eventsPath)) {
     const filePath = path.join(eventsPath, file);
     const event = require(filePath);
 
+    // Wrap event execution in error handler
+    const executeEvent = async (...args) => {
+      try {
+        await event.execute(...args);
+      } catch (error) {
+        logger.error(`Error in event ${event.name}:`, error);
+      }
+    };
+
     if (event.once) {
-      client.once(event.name, (...args) => event.execute(...args));
+      client.once(event.name, executeEvent);
     } else {
-      client.on(event.name, (...args) => event.execute(...args));
+      client.on(event.name, executeEvent);
     }
     logger.success(`Event loaded: ${event.name}`);
   }
@@ -224,6 +233,27 @@ async function start() {
     process.exit(1);
   }
 }
+
+// Global error handlers
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('🚨 Unhandled Promise Rejection:', reason);
+  logger.error('Promise:', promise);
+  // Don't exit - log and continue
+});
+
+process.on('uncaughtException', error => {
+  logger.error('🚨 Uncaught Exception:', error);
+  // For uncaught exceptions, we should exit gracefully
+  shutdown.triggerShutdown('Uncaught exception');
+});
+
+// Handle warnings
+process.on('warning', warning => {
+  logger.warn('Process warning:', warning.name);
+  if (warning.stack) {
+    logger.warn(warning.stack);
+  }
+});
 
 // Start the bot
 start().catch(error => {
