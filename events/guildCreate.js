@@ -78,12 +78,14 @@ module.exports = {
 
       // Send notification to webhook
       const webhookUrl = process.env.GUILD_LOG_WEBHOOK;
-      
+
       if (!webhookUrl) {
-        logger.warn('GUILD_LOG_WEBHOOK not configured - skipping webhook notification');
+        logger.warn(
+          'GUILD_LOG_WEBHOOK not configured - skipping webhook notification'
+        );
         return;
       }
-      
+
       try {
         const axios = require('axios');
         const webhookEmbed = {
@@ -108,7 +110,10 @@ module.exports = {
           embeds: [webhookEmbed],
         });
       } catch (error) {
-        logger.error('Failed to send guild join notification to webhook:', error);
+        logger.error(
+          'Failed to send guild join notification to webhook:',
+          error
+        );
       }
 
       // Update bot stats

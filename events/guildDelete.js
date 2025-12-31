@@ -33,12 +33,14 @@ module.exports = {
 
       // Send notification to webhook
       const webhookUrl = process.env.GUILD_LOG_WEBHOOK;
-      
+
       if (!webhookUrl) {
-        logger.warn('GUILD_LOG_WEBHOOK not configured - skipping webhook notification');
+        logger.warn(
+          'GUILD_LOG_WEBHOOK not configured - skipping webhook notification'
+        );
         return;
       }
-      
+
       try {
         const axios = require('axios');
         const webhookEmbed = {
@@ -64,7 +66,10 @@ module.exports = {
           embeds: [webhookEmbed],
         });
       } catch (error) {
-        logger.error('Failed to send guild leave notification to webhook:', error);
+        logger.error(
+          'Failed to send guild leave notification to webhook:',
+          error
+        );
       }
 
       // Check if guild had premium and log it
