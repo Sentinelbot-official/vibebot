@@ -1,16 +1,18 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
 const premiumPerks = require('../../utils/premiumPerks');
+const branding = require('../../utils/branding');
 
 const jobs = [
-  { name: 'programmer', min: 100, max: 300 },
-  { name: 'designer', min: 80, max: 250 },
-  { name: 'streamer', min: 150, max: 400 },
-  { name: 'chef', min: 90, max: 200 },
-  { name: 'teacher', min: 70, max: 180 },
-  { name: 'doctor', min: 200, max: 500 },
-  { name: 'artist', min: 60, max: 220 },
-  { name: 'musician', min: 100, max: 350 },
+  { name: 'programmer', min: 100, max: 300, emoji: '💻' },
+  { name: 'designer', min: 80, max: 250, emoji: '🎨' },
+  { name: 'Twitch streamer', min: 150, max: 400, emoji: '🔴' },
+  { name: 'chef', min: 90, max: 200, emoji: '👨‍🍳' },
+  { name: 'teacher', min: 70, max: 180, emoji: '📚' },
+  { name: 'doctor', min: 200, max: 500, emoji: '⚕️' },
+  { name: 'artist', min: 60, max: 220, emoji: '🎭' },
+  { name: 'musician', min: 100, max: 350, emoji: '🎵' },
+  { name: 'community manager', min: 120, max: 320, emoji: '💜' },
 ];
 
 module.exports = {
@@ -69,13 +71,22 @@ module.exports = {
     const tierBadge = premiumPerks.getTierBadge(guildId);
     const tierName = premiumPerks.getTierDisplayName(guildId);
 
+    const workMessages = [
+      'Great job!',
+      'You crushed it!',
+      'Nailed it!',
+      'Vibing at work!',
+      'That\'s the hustle!',
+      'Work hard, vibe harder!',
+    ];
+
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
-      .setTitle(`${tierBadge} Work Complete!`)
+      .setColor(branding.colors.success)
+      .setTitle(`${job.emoji} ${branding.getRandom(workMessages)}`)
       .setDescription(
-        `You worked as a **${job.name}** and earned **${earnings.toLocaleString()} coins**!${
+        `You worked as a **${job.name}** and earned **${branding.formatNumber(earnings)} coins**! ${branding.emojis.sparkles}${
           premiumBonus > 0
-            ? `\n\n${tierBadge} **${tierName} Bonus:** +${premiumBonus.toLocaleString()} coins`
+            ? `\n\n${tierBadge} **${tierName} Bonus:** +${branding.formatNumber(premiumBonus)} coins`
             : ''
         }`
       )
@@ -84,12 +95,7 @@ module.exports = {
         value: `${economy.coins.toLocaleString()} coins`,
         inline: true,
       })
-      .setFooter({
-        text:
-          cooldown < baseCooldown
-            ? `${tierBadge} Reduced cooldown! Come back in ${Math.floor(cooldown / 60000)} minutes`
-            : 'Come back in 1 hour to work again!',
-      })
+      .setFooter(branding.footers.community)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

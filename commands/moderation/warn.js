@@ -1,5 +1,6 @@
 const db = require('../../utils/database');
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'warn',

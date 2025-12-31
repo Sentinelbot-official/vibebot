@@ -9,6 +9,7 @@ const path = require('path');
 const db = require('../../utils/database');
 const ownerCheck = require('../../utils/ownerCheck');
 const premium = require('../../utils/premium');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'help',
@@ -52,15 +53,16 @@ module.exports = {
       }
 
       const embed = new EmbedBuilder()
-        .setColor(0x9b59b6)
-        .setTitle(`🔍 Search Results for "${query}"`)
+        .setColor(branding.colors.primary)
+        .setTitle(`${branding.emojis.vibe} Search Results for "${query}"`)
         .setDescription(
-          `Found ${results.length} command${results.length !== 1 ? 's' : ''}:\n\u200b`
+          `Found **${results.length}** command${results.length !== 1 ? 's' : ''}! ${branding.emojis.sparkles}\n\u200b`
         )
-        .setFooter({
-          text: `Use ${prefix}help [command] for details | ${message.author.tag}`,
-          iconURL: message.author.displayAvatarURL(),
+        .setAuthor({
+          name: branding.getTagline(),
+          iconURL: branding.footers.default.iconURL,
         })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       results.slice(0, 15).forEach(cmd => {
@@ -147,35 +149,35 @@ module.exports = {
 
         // Build embed with personality!
         const embed = new EmbedBuilder()
-          .setColor(isOwner ? 0xff0000 : isPremium ? 0xffd700 : 0x9b59b6)
+          .setColor(isOwner ? branding.colors.error : isPremium ? branding.colors.premium : branding.colors.primary)
           .setAuthor({
-            name: `🎵 ${message.client.user.username} - Built 24/7 Live on Twitch!`,
+            name: `${branding.emojis.vibe} ${message.client.user.username} - ${branding.getTagline()}`,
             iconURL: message.client.user.displayAvatarURL(),
           })
           .setDescription(
-            `**Hey there!** 👋 I'm Vibe Bot, created on a 24/7 live stream with the global community!\n\n` +
-              `🔴 **LIVE NOW (24/7):** https://twitch.tv/projectdraguk\n` +
-              `💜 **${visibleCommands} commands** coded live with chat!\n` +
+            `**Hey there!** ${branding.emojis.community} I'm Vibe Bot, created on a 24/7 live stream with the global community!\n\n` +
+              `${branding.emojis.live} **LIVE NOW (24/7):** https://twitch.tv/projectdraguk\n` +
+              `${branding.emojis.community} **${branding.formatNumber(visibleCommands)} commands** coded live with chat!\n` +
               (premiumCommands > 0
                 ? `💎 **${premiumCommands} premium commands** available!\n`
                 : '') +
               `⚡ **Prefix:** \`${prefix}\`\n` +
               (isPremium
-                ? `✨ **Premium Server** - ${tierName} Tier Active!\n`
+                ? `${branding.emojis.sparkles} **Premium Server** - ${tierName} Tier Active!\n`
                 : '') +
               `🌍 **Built by viewers worldwide, any time, day or night!**\n` +
               (isOwner
-                ? `\n🔴 **Owner Mode Active** - Showing all commands including owner-only\n`
+                ? `\n${branding.emojis.fire} **Owner Mode Active** - Showing all commands including owner-only\n`
                 : '') +
               `\n📖 \`${prefix}help [command]\` - Info about a command\n` +
               `📂 \`${prefix}help [category]\` - View category commands\n` +
               `🔍 \`${prefix}help search <query>\` - Search commands\n` +
-              `**Let's vibe together!** 🎵\n\u200b`
+              `**Let's vibe together!** ${branding.emojis.vibe}\n\u200b`
           )
           .setThumbnail(message.client.user.displayAvatarURL())
           .setFooter({
-            text: `Page ${page + 1}/${totalPages} | ${message.author.tag} | Built with ❤️ by Airis & Community`,
-            iconURL: message.author.displayAvatarURL(),
+            text: `Page ${page + 1}/${totalPages} | ${branding.footers.default.text}`,
+            iconURL: branding.footers.default.iconURL,
           })
           .setTimestamp();
 
