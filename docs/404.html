@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Vibe Bot</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .error-404 {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            text-align: center;
+            padding: 2rem;
+        }
+        .error-content {
+            max-width: 600px;
+        }
+        .error-code {
+            font-size: 10rem;
+            font-weight: 900;
+            color: var(--white);
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin: 0;
+            line-height: 1;
+        }
+        .error-title {
+            font-size: 2.5rem;
+            color: var(--white);
+            margin: 1rem 0;
+        }
+        .error-description {
+            font-size: 1.2rem;
+            color: var(--white);
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        .error-emoji {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .error-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .error-buttons .btn {
+            background: var(--white);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+        .error-buttons .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-404">
+        <div class="error-content">
+            <div class="error-emoji">🎵</div>
+            <h1 class="error-code">404</h1>
+            <h2 class="error-title">Page Not Found</h2>
+            <p class="error-description">
+                Oops! The page you're looking for doesn't exist. 
+                Maybe it got lost in the stream chat? 🤔
+            </p>
+            <div class="error-buttons">
+                <a href="index.html" class="btn">
+                    🏠 Go Home
+                </a>
+                <a href="https://discord.com/oauth2/authorize?client_id=1455908224958992384&permissions=268446806&integration_type=0&scope=bot" target="_blank" class="btn">
+                    🤖 Add Bot
+                </a>
+                <a href="https://twitch.tv/projectdraguk" target="_blank" class="btn">
+                    🔴 Watch Live
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

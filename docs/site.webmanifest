@@ -1,0 +1,21 @@
+{
+    "name": "Vibe Bot",
+    "short_name": "Vibe Bot",
+    "description": "220+ commands | AI-powered Discord bot built 24/7 live on Twitch",
+    "start_url": "/vibebot/",
+    "display": "standalone",
+    "background_color": "#9b59b6",
+    "theme_color": "#9b59b6",
+    "icons": [
+        {
+            "src": "assets/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        }
+    ]
+}
