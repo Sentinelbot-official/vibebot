@@ -4,6 +4,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
   PermissionFlagsBits,
+  MessageFlags,
 } = require('discord.js');
 
 module.exports = {
@@ -228,7 +229,7 @@ module.exports = {
           })
           .setTimestamp();
 
-        await i.reply({ embeds: [memberEmbed], ephemeral: true });
+        await i.reply({ embeds: [memberEmbed], flags: MessageFlags.Ephemeral });
       } else if (i.customId === 'permissions') {
         // Show all permissions
         const permissionList = allPerms
@@ -249,7 +250,7 @@ module.exports = {
           })
           .setTimestamp();
 
-        await i.reply({ embeds: [permEmbed], ephemeral: true });
+        await i.reply({ embeds: [permEmbed], flags: MessageFlags.Ephemeral });
       }
     });
 

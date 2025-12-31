@@ -3,6 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  MessageFlags,
 } = require('discord.js');
 
 const games = new Map();
@@ -171,7 +172,7 @@ module.exports = {
       if (i.user.id !== message.author.id) {
         return i.reply({
           content: '❌ This is not your game!',
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         });
       }
 
@@ -189,13 +190,13 @@ module.exports = {
 
       const game = games.get(id);
       if (!game) {
-        return i.reply({ content: '❌ Game expired!', ephemeral: true });
+        return i.reply({ content: '❌ Game expired!', flags: MessageFlags.Ephemeral });
       }
 
       const { board: newBoard, moved } = move(game.board, direction);
 
       if (!moved) {
-        return i.reply({ content: '❌ Invalid move!', ephemeral: true });
+        return i.reply({ content: '❌ Invalid move!', flags: MessageFlags.Ephemeral });
       }
 
       addNewTile(newBoard);

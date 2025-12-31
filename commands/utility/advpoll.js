@@ -3,6 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  MessageFlags,
 } = require('discord.js');
 const db = require('../../utils/database');
 
@@ -136,7 +137,7 @@ module.exports = {
       const poll = activePolls.get(id);
 
       if (!poll) {
-        return i.reply({ content: '❌ Poll expired!', ephemeral: true });
+        return i.reply({ content: '❌ Poll expired!', flags: MessageFlags.Ephemeral });
       }
 
       const option = parseInt(optionIndex);

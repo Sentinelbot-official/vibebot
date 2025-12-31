@@ -3,6 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  MessageFlags,
   ComponentType,
 } = require('discord.js');
 const db = require('../../utils/database');
@@ -122,7 +123,7 @@ module.exports = {
       if (interaction.user.id !== message.author.id) {
         return interaction.reply({
           content: '❌ This is not your trivia question!',
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         });
       }
 

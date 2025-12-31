@@ -3,6 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  MessageFlags,
   PermissionFlagsBits,
 } = require('discord.js');
 const db = require('../../utils/database');
@@ -166,7 +167,7 @@ module.exports.handleRoleMenuButton = async interaction => {
   if (!role) {
     return interaction.reply({
       content: '❌ This role no longer exists!',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 
@@ -178,21 +179,21 @@ module.exports.handleRoleMenuButton = async interaction => {
       await member.roles.remove(role);
       return interaction.reply({
         content: `✅ Removed the **${role.name}** role!`,
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     } else {
       // Add role
       await member.roles.add(role);
       return interaction.reply({
         content: `✅ Added the **${role.name}** role!`,
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     }
   } catch (error) {
     console.error('Role menu error:', error);
     return interaction.reply({
       content: '❌ Failed to toggle role. Please contact an administrator.',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 };

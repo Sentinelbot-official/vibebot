@@ -3,6 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  MessageFlags,
 } = require('discord.js');
 const db = require('../../utils/database');
 
@@ -153,7 +154,7 @@ module.exports = {
       if (i.user.id !== message.author.id) {
         return i.reply({
           content: '❌ This is not your game!',
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         });
       }
 
@@ -161,7 +162,7 @@ module.exports = {
       const game = games.get(id);
 
       if (!game) {
-        return i.reply({ content: '❌ Game expired!', ephemeral: true });
+        return i.reply({ content: '❌ Game expired!', flags: MessageFlags.Ephemeral });
       }
 
       if (action === 'fold') {

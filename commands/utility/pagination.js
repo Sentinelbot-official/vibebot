@@ -3,6 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  MessageFlags,
 } = require('discord.js');
 
 module.exports = {
@@ -65,7 +66,7 @@ async function createPagination(message, items, itemsPerPage, title) {
 
   collector.on('collect', async i => {
     if (i.user.id !== message.author.id) {
-      return i.reply({ content: '❌ Not your pagination!', ephemeral: true });
+      return i.reply({ content: '❌ Not your pagination!', flags: MessageFlags.Ephemeral });
     }
 
     if (i.customId === 'page_first') currentPage = 0;

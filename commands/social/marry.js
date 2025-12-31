@@ -3,6 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  MessageFlags,
 } = require('discord.js');
 const db = require('../../utils/database');
 
@@ -111,7 +112,7 @@ module.exports.handleMarriageButton = async interaction => {
   if (!proposals.has(proposalId)) {
     return interaction.reply({
       content: '❌ This proposal has expired!',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 
@@ -121,7 +122,7 @@ module.exports.handleMarriageButton = async interaction => {
   if (interaction.user.id !== proposal.targetId) {
     return interaction.reply({
       content: '❌ This proposal is not for you!',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 

@@ -3,6 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  MessageFlags,
 } = require('discord.js');
 const db = require('../../utils/database');
 
@@ -125,7 +126,7 @@ module.exports.handlePrestigeButton = async interaction => {
   if (!prestigeConfirmations.has(confirmId)) {
     return interaction.reply({
       content: '❌ This prestige confirmation has expired!',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 
@@ -134,7 +135,7 @@ module.exports.handlePrestigeButton = async interaction => {
   if (interaction.user.id !== confirmation.userId) {
     return interaction.reply({
       content: '❌ This prestige confirmation is not for you!',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 

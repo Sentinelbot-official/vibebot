@@ -3,6 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  MessageFlags,
   ComponentType,
 } = require('discord.js');
 
@@ -155,7 +156,7 @@ module.exports = {
       if (interaction.user.id !== currentPlayer) {
         return interaction.reply({
           content: "❌ It's not your turn!",
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         });
       }
 
@@ -165,7 +166,7 @@ module.exports = {
       if (row === -1) {
         return interaction.reply({
           content: '❌ That column is full!',
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         });
       }
 

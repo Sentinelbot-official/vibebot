@@ -3,6 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  MessageFlags,
 } = require('discord.js');
 const db = require('../../utils/database');
 const transactionLock = require('../../utils/transactionLock');
@@ -132,7 +133,7 @@ module.exports.handleTradeButton = async interaction => {
   if (!trade) {
     return interaction.reply({
       content: '❌ This trade request has expired!',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 
@@ -141,7 +142,7 @@ module.exports.handleTradeButton = async interaction => {
     db.delete(`trade_${tradeId}`, tradeId);
     return interaction.reply({
       content: '❌ This trade request has expired!',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 
@@ -149,7 +150,7 @@ module.exports.handleTradeButton = async interaction => {
   if (interaction.user.id !== trade.receiverId) {
     return interaction.reply({
       content: '❌ This trade request is not for you!',
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 
