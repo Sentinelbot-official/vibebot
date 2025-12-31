@@ -15,6 +15,135 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Slash commands support
 - Web dashboard
 
+## [2.3.0] - 2025-12-31
+
+### 🎨 Premium Features & Sharding
+
+Major update adding premium-exclusive features and Discord.js v14 sharding support!
+
+### Added
+
+#### 💎 Premium Features
+
+- `customstatus` - Custom bot status for Premium/VIP servers
+- `premiumbadge` - Premium badge/role system
+- `earlyaccess` - Early access feature system for beta features
+- Premium-exclusive features framework
+- Early access feature gating system
+
+#### 🔷 Sharding Support
+
+- `shard.js` - Discord.js ShardingManager implementation
+- Auto-sharding for large bots (2,500+ servers)
+- Shard health monitoring and statistics
+- Auto-restart on shard crashes
+- Cross-shard communication support
+- Shard-aware logging and metrics
+
+#### 🌐 Website Enhancements
+
+- Command showcase section with 12 featured commands
+- Feature comparison table (Free vs Premium vs VIP)
+- Roadmap section with timeline
+- Enhanced changelog with version badges
+- Ko-fi widget integration
+- Scroll-to-top button
+- SEO meta tags and Open Graph support
+- Favicon and PWA support
+- Privacy Policy page
+- Terms of Service page
+- Custom 404 error page
+
+#### 🔧 New Utilities
+
+- `utils/earlyAccess.js` - Early access feature management
+- Enhanced `utils/premium.js` with better key validation
+
+### Enhanced
+
+- `index.js` - Removed shard config (handled by ShardingManager)
+- `events/ready.js` - Added shard information logging
+- `package.json` - Added sharded mode scripts (`start:sharded`, `dev:sharded`)
+- `docs/index.html` - Major UI/UX improvements
+- `docs/styles.css` - Enhanced styling for new sections
+- `docs/script.js` - Improved interactivity and animations
+
+### Documentation
+
+- `readmes/SHARDING.md` - Comprehensive sharding guide
+- `readmes/PREMIUM_FEATURES.md` - Premium features documentation
+- Updated `README.md` with sharding information
+
+### Technical Improvements
+
+- Better separation of concerns (sharding vs single-instance)
+- Improved error handling for sharded environments
+- Enhanced logging for multi-shard deployments
+- Better resource management
+
+## [2.2.0] - 2025-12-31
+
+### 💎 Premium System & Website Launch
+
+Major update introducing the premium activation key system and full website!
+
+### Added
+
+#### 💎 Premium System
+
+- Per-server activation key system
+- Premium and VIP tiers
+- Ko-fi integration for purchases
+- `activate` - Activate premium with a key
+- `premium` - Check server premium status
+- `genkey` - Generate activation keys (owner-only)
+- `listkeys` - List all generated keys (owner-only)
+- `listservers` - List premium servers (owner-only)
+- `revokepremium` - Revoke server premium (owner-only)
+
+#### 🌐 GitHub Pages Website
+
+- Beautiful responsive website at `docs/`
+- Live bot statistics via Stats API
+- Twitch stream embed
+- Dark/light theme toggle
+- Mobile-responsive navbar
+- FAQ section
+- Testimonials section
+- Command search and filtering
+- Premium pricing tiers
+- Activation key instructions
+- Legal pages (Privacy Policy, Terms of Service)
+
+#### 📊 Stats API
+
+- `utils/statsApi.js` - HTTP server for bot statistics
+- Real-time server/user/command counts
+- Memory and uptime metrics
+- CORS support for website integration
+- Health check endpoints
+
+#### 🔧 New Utilities
+
+- `utils/premium.js` - Premium key management
+- `utils/statsApi.js` - Stats API server
+
+### Enhanced
+
+- `bot.config.json` - Added invite link with specific permissions
+- `utils/config.js` - Added Stats API configuration
+- `utils/shutdown.js` - Registered Stats API cleanup
+- `index.js` - Initialize Stats API on startup
+
+### Documentation
+
+- `readmes/PREMIUM_SYSTEM.md` - Premium system guide
+- `readmes/STATS_API.md` - Stats API documentation
+- `docs/activate.html` - Premium activation guide
+- `docs/privacy.html` - Privacy Policy
+- `docs/terms.html` - Terms of Service
+- `docs/404.html` - Custom 404 page
+
 ## [2.1.0] - 2025-12-31
 
 ### 🚀 Major Feature Expansion

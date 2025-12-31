@@ -1,6 +1,6 @@
 {
   "name": "vibe-bot",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "🔴 220+ commands | AI-powered | Built 24/7 LIVE on Twitch with the global community! A Discord bot with a story - featuring economy, mini-games, auto-mod, social features, and more!",
   "main": "index.js",
   "type": "commonjs",
