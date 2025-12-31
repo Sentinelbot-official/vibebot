@@ -53,7 +53,7 @@ module.exports = {
         `**Prize:** ${prize}\n` +
           `**Winners:** ${winners}\n` +
           `**Ends:** ${discordTimestamp(endTime, 'R')}\n\n` +
-          `React with 🎉 to enter!`
+          'React with 🎉 to enter!'
       )
       .setFooter({ text: `Hosted by ${message.author.tag}` })
       .setTimestamp(endTime);
@@ -96,7 +96,7 @@ module.exports = {
           .setDescription(
             `**Prize:** ${prize}\n` +
               `**Winner(s):** ${winnerMentions}\n\n` +
-              `Congratulations!`
+              'Congratulations!'
           )
           .setFooter({ text: `Hosted by ${message.author.tag}` })
           .setTimestamp();

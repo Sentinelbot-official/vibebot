@@ -41,7 +41,7 @@ class HealthMonitor {
         const result = await Promise.race([
           checkFn(),
           new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Health check timeout')), 5000),
+            setTimeout(() => reject(new Error('Health check timeout')), 5000)
           ),
         ]);
         results[name] = { status: 'healthy', ...result };

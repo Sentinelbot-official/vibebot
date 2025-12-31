@@ -1,47 +1,170 @@
 const { EmbedBuilder } = require('discord.js');
+const https = require('https');
 
 module.exports = {
   name: 'npm',
+  description: 'Get information about an NPM package',
+  usage: '<package-name>',
   aliases: ['package', 'npmjs'],
-  description: 'Get NPM package information (placeholder - requires API)',
-  usage: '<package>',
   category: 'utility',
-  cooldown: 10,
-  execute(message, args) {
+  cooldown: 5,
+  async execute(message, args) {
     if (!args.length) {
       return message.reply(
-        '❌ Please provide a package name! (e.g., `discord.js`)'
+        '❌ Please provide a package name! Usage: `npm <package-name>`\nExample: `npm discord.js`'
       );
     }
 
-    const packageName = args[0];
+    const packageName = args[0].toLowerCase();
 
-    // This is a placeholder - you would integrate with NPM API
+    try {
+      const packageData = await fetchNPMPackage(packageName);
 
-    const embed = new EmbedBuilder()
-      .setColor(0xcb3837)
-      .setTitle(`📦 NPM: ${packageName}`)
-      .setDescription(
-        '⚠️ **NPM API Not Configured**\n\n' +
-          'To use this command, you need to:\n' +
-          '1. Use NPM Registry API (no key needed!)\n' +
-          '2. Fetch from: `https://registry.npmjs.org/${packageName}`\n' +
-          '3. Update this command with API integration'
-      )
-      .addFields(
-        {
-          name: 'Features to Add',
-          value:
-            '• Package version\n• Weekly downloads\n• Description\n• Author info\n• Dependencies count\n• Last publish date',
+      const embed = new EmbedBuilder()
+        .setColor(0xcc3534)
+        .setTitle(`📦 ${packageData.name}`)
+        .setURL(packageData.url)
+        .setDescription(packageData.description || 'No description provided')
+        .addFields(
+          {
+            name: '📌 Latest Version',
+            value: packageData.version,
+            inline: true,
+          },
+          {
+            name: '📥 Weekly Downloads',
+            value: packageData.downloads.toLocaleString(),
+            inline: true,
+          },
+          {
+            name: '📄 License',
+            value: packageData.license || 'N/A',
+            inline: true,
+          },
+          {
+            name: '👤 Author',
+            value: packageData.author || 'N/A',
+            inline: true,
+          },
+          { name: '📅 Published', value: packageData.published, inline: true },
+          { name: '🔄 Last Update', value: packageData.modified, inline: true }
+        )
+        .setFooter({ text: 'Powered by NPM Registry' })
+        .setTimestamp();
+
+      if (packageData.keywords && packageData.keywords.length > 0) {
+        embed.addFields({
+          name: '🏷️ Keywords',
+          value: packageData.keywords
+            .slice(0, 10)
+            .map(k => `\`${k}\``)
+            .join(', '),
           inline: false,
-        },
-        {
-          name: 'API Endpoint',
-          value: '`https://registry.npmjs.org/<package>`',
-          inline: false,
-        }
+        });
+      }
+
+      if (
+        packageData.dependencies &&
+        Object.keys(packageData.dependencies).length > 0
+      ) {
+        const depCount = Object.keys(packageData.dependencies).length;
+        embed.addFields({
+          name: '📦 Dependencies',
+          value: `${depCount} dependencies`,
+          inline: true,
+        });
+      }
+
+      if (packageData.repository) {
+        embed.addFields({
+          name: '🔗 Repository',
+          value: `[View on GitHub](${packageData.repository})`,
+          inline: true,
+        });
+      }
+
+      return message.reply({ embeds: [embed] });
+    } catch (error) {
+      console.error('NPM command error:', error);
+      return message.reply(
+        '❌ Could not fetch package data. Please check the package name and try again.'
       );
-
-    message.reply({ embeds: [embed] });
+    }
   },
 };
+
+async function fetchNPMPackage(packageName) {
+  // Fetch package info
+  const packageInfo = await new Promise((resolve, reject) => {
+    https
+      .get(`https://registry.npmjs.org/${packageName}`, res => {
+        let data = '';
+        res.on('data', chunk => {
+          data += chunk;
+        });
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (err) {
+            reject(err);
+          }
+        });
+      })
+      .on('error', reject);
+  });
+
+  if (packageInfo.error) {
+    throw new Error('Package not found');
+  }
+
+  // Fetch download stats
+  const downloads = await new Promise((resolve, reject) => {
+    https
+      .get(
+        `https://api.npmjs.org/downloads/point/last-week/${packageName}`,
+        res => {
+          let data = '';
+          res.on('data', chunk => {
+            data += chunk;
+          });
+          res.on('end', () => {
+            try {
+              const json = JSON.parse(data);
+              resolve(json.downloads || 0);
+            } catch (err) {
+              resolve(0);
+            }
+          });
+        }
+      )
+      .on('error', () => resolve(0));
+  });
+
+  const latestVersion = packageInfo['dist-tags']?.latest;
+  const versionData = packageInfo.versions?.[latestVersion];
+
+  const packageData = {
+    name: packageInfo.name,
+    version: latestVersion,
+    description: packageInfo.description,
+    url: `https://www.npmjs.com/package/${packageInfo.name}`,
+    downloads: downloads,
+    license: versionData?.license,
+    author:
+      typeof versionData?.author === 'string'
+        ? versionData.author
+        : versionData?.author?.name,
+    published: new Date(packageInfo.time?.created).toLocaleDateString(),
+    modified: new Date(packageInfo.time?.modified).toLocaleDateString(),
+    keywords: versionData?.keywords,
+    dependencies: versionData?.dependencies,
+    repository:
+      typeof versionData?.repository === 'string'
+        ? versionData.repository
+        : versionData?.repository?.url
+            ?.replace(/^git\+/, '')
+            .replace(/\.git$/, ''),
+  };
+
+  return packageData;
+}

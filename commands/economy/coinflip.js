@@ -67,7 +67,9 @@ module.exports = {
       .setDescription(
         `You chose: **${userChoice}**\n` +
           `Result: **${result}**\n\n` +
-          `${won ? `✅ You won **${bet.toLocaleString()} coins**!` : `❌ You lost **${bet.toLocaleString()} coins**!`}`
+          (won
+            ? `✅ You won **${bet.toLocaleString()} coins**!`
+            : `❌ You lost **${bet.toLocaleString()} coins**!`)
       )
       .addFields({
         name: '💰 New Balance',

@@ -45,7 +45,7 @@ module.exports = {
     const embeds = chunks.map((chunk, index) => {
       const embed = new EmbedBuilder()
         .setColor(0xffa500)
-        .setTitle(`⚠️ Server Warnings`)
+        .setTitle('⚠️ Server Warnings')
         .setDescription(`Total users with warnings: ${allWarnings.length}`)
         .setTimestamp();
 

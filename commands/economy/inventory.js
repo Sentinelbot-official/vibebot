@@ -9,7 +9,7 @@ module.exports = {
   category: 'economy',
   cooldown: 3,
   guildOnly: true,
-  async execute(message, args) {
+  async execute(message, _args) {
     const user = message.mentions.users.first() || message.author;
     const inventory = db.get('inventory', user.id) || {};
     const guildInv = inventory[message.guild.id] || {};
@@ -29,7 +29,7 @@ module.exports = {
       .setTimestamp();
 
     let description = '';
-    for (const [itemId, item] of Object.entries(guildInv)) {
+    for (const [_itemId, item] of Object.entries(guildInv)) {
       description += `**${item.name}** x${item.quantity}\n${item.description}\n\n`;
     }
 

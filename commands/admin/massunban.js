@@ -8,7 +8,7 @@ module.exports = {
   category: 'admin',
   cooldown: 60,
   guildOnly: true,
-  async execute(message, args) {
+  async execute(message, _args) {
     if (
       !message.member.permissions.has(PermissionsBitField.Flags.Administrator)
     ) {
@@ -66,7 +66,7 @@ module.exports = {
         let unbanned = 0;
         let failed = 0;
 
-        for (const [id, ban] of bans) {
+        for (const [id, _ban] of bans) {
           try {
             await message.guild.members.unban(
               id,
@@ -83,7 +83,7 @@ module.exports = {
         }
 
         msg.edit(
-          `✅ Mass unban complete!\n` +
+          '✅ Mass unban complete!\n' +
             `**Unbanned:** ${unbanned}\n` +
             `**Failed:** ${failed}`
         );

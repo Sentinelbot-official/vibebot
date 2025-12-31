@@ -55,7 +55,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({ text: `Vibe Bot v1.0.0 | Made by Airis` })
+      .setFooter({ text: 'Vibe Bot v1.0.0 | Made by Airis' })
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

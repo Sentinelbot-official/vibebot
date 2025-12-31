@@ -8,7 +8,7 @@ module.exports = {
   category: 'economy',
   cooldown: 5,
   guildOnly: true,
-  async execute(message, args) {
+  async execute(message, _args) {
     const allEconomy = db.all('economy');
 
     if (!allEconomy || Object.keys(allEconomy).length === 0) {

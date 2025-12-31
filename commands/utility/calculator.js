@@ -28,7 +28,7 @@ module.exports = {
 
     try {
       // Evaluate the expression safely
-      const result = Function('"use strict"; return (' + sanitized + ')')();
+      const result = Function(`"use strict"; return (${sanitized})`)();
 
       if (!isFinite(result)) {
         return message.reply('❌ Result is not a finite number!');

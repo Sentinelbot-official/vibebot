@@ -13,7 +13,7 @@ module.exports = {
   description: 'Commit a crime for money (risky!)',
   category: 'economy',
   cooldown: 300, // 5 minutes
-  async execute(message, args) {
+  async execute(message, _args) {
     const economy = db.get('economy', message.author.id) || {
       coins: 0,
       bank: 0,

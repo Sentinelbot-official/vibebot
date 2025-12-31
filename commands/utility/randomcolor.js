@@ -10,7 +10,7 @@ module.exports = {
   async execute(message, args) {
     // Generate random color
     const randomColor = Math.floor(Math.random() * 16777215);
-    const hexColor = '#' + randomColor.toString(16).padStart(6, '0');
+    const hexColor = `#${randomColor.toString(16).padStart(6, '0')}`;
 
     // Convert to RGB
     const r = (randomColor >> 16) & 255;

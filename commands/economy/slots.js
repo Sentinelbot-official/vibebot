@@ -69,7 +69,9 @@ module.exports = {
       .setTitle('🎰 Slot Machine')
       .setDescription(
         `${slot1} | ${slot2} | ${slot3}\n\n` +
-          `${multiplier > 0 ? `✅ You won **${winnings.toLocaleString()} coins**! (${multiplier}x)` : `❌ You lost **${bet.toLocaleString()} coins**!`}`
+          (multiplier > 0
+            ? `✅ You won **${winnings.toLocaleString()} coins**! (${multiplier}x)`
+            : `❌ You lost **${bet.toLocaleString()} coins**!`)
       )
       .addFields({
         name: '💰 New Balance',

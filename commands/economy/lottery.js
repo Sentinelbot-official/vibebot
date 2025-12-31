@@ -12,7 +12,7 @@ module.exports = {
     const action = args[0]?.toLowerCase() || 'info';
 
     // Get lottery data
-    let lotteryData = db.get('lottery', 'global') || {
+    const lotteryData = db.get('lottery', 'global') || {
       jackpot: 10000,
       participants: [],
       lastDraw: Date.now(),
@@ -25,12 +25,12 @@ module.exports = {
         .setColor(0xffd700)
         .setTitle('🎫 Lottery Information')
         .setDescription(
-          `The lottery is a server-wide game where you can win big!\n\n` +
+          'The lottery is a server-wide game where you can win big!\n\n' +
             `**Current Jackpot:** ${lotteryData.jackpot} coins\n` +
             `**Ticket Price:** ${ticketPrice} coins\n` +
             `**Participants:** ${lotteryData.participants.length}\n\n` +
-            `Use \`lottery buy\` to purchase a ticket!\n` +
-            `Draw happens automatically when 10+ tickets are sold.`
+            'Use `lottery buy` to purchase a ticket!\n' +
+            'Draw happens automatically when 10+ tickets are sold.'
         )
         .setFooter({ text: 'Good luck!' })
         .setTimestamp();
@@ -70,7 +70,7 @@ module.exports = {
           `You bought a lottery ticket for **${ticketPrice}** coins!\n\n` +
             `**Current Jackpot:** ${lotteryData.jackpot} coins\n` +
             `**Your Chances:** 1/${lotteryData.participants.length}\n\n` +
-            `Good luck! 🍀`
+            'Good luck! 🍀'
         )
         .setFooter({ text: `Remaining balance: ${userData.wallet} coins` })
         .setTimestamp();
@@ -110,7 +110,7 @@ module.exports = {
           `**Winner:** ${winner.tag}\n` +
             `**Jackpot:** ${lotteryData.jackpot} coins\n` +
             `**Participants:** ${lotteryData.participants.length}\n\n` +
-            `Congratulations! 🎉`
+            'Congratulations! 🎉'
         )
         .setThumbnail(winner.displayAvatarURL())
         .setTimestamp();

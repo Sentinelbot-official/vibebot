@@ -19,7 +19,7 @@ module.exports = {
   description: 'Go fishing for coins',
   category: 'economy',
   cooldown: 60, // 1 minute
-  async execute(message, args) {
+  async execute(message, _args) {
     const economy = db.get('economy', message.author.id) || {
       coins: 0,
       bank: 0,

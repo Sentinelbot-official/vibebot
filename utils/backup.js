@@ -42,7 +42,10 @@ class BackupManager {
         // Verify backup file was created
         if (!fs.existsSync(backupPath)) {
           logger.error('Backup file was not created');
-          return { success: false, error: 'Backup file not found after creation' };
+          return {
+            success: false,
+            error: 'Backup file not found after creation',
+          };
         }
 
         const stats = fs.statSync(backupPath);
@@ -115,7 +118,7 @@ class BackupManager {
           logger.error('Scheduled backup failed:', error);
         }
       },
-      6 * 60 * 60 * 1000,
+      6 * 60 * 60 * 1000
     );
 
     logger.success('Auto-backup scheduled (every 6 hours)');

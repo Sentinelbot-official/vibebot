@@ -14,7 +14,7 @@ module.exports = {
   aliases: ['quiz'],
   category: 'economy',
   cooldown: 30,
-  async execute(message, args) {
+  async execute(message, _args) {
     const questions = [
       {
         question: 'What is the capital of France?',
@@ -101,7 +101,7 @@ module.exports = {
       .setDescription(
         `${question.question}\n\n` +
           `**Reward:** ${question.reward} coins\n` +
-          `**Time Limit:** 15 seconds`
+          '**Time Limit:** 15 seconds'
       )
       .setFooter({ text: `Trivia for ${message.author.tag}` })
       .setTimestamp();
@@ -145,7 +145,7 @@ module.exports = {
           .setColor(0x00ff00)
           .setTitle('✅ Correct!')
           .setDescription(
-            `You answered correctly!\n\n` +
+            'You answered correctly!\n\n' +
               `**Reward:** +${question.reward} coins\n` +
               `**New Balance:** ${userData.wallet} coins`
           )
@@ -157,7 +157,7 @@ module.exports = {
           .setColor(0xff0000)
           .setTitle('❌ Wrong!')
           .setDescription(
-            `That's incorrect!\n\n` +
+            "That's incorrect!\n\n" +
               `The correct answer was: **${question.answers[question.correct]}**`
           )
           .setTimestamp();
@@ -168,13 +168,13 @@ module.exports = {
       collector.stop();
     });
 
-    collector.on('end', collected => {
+    collector.on('end', _collected => {
       if (!answered) {
         const timeoutEmbed = new EmbedBuilder()
           .setColor(0xff0000)
           .setTitle("⏱️ Time's Up!")
           .setDescription(
-            `You didn't answer in time!\n\n` +
+            "You didn't answer in time!\n\n" +
               `The correct answer was: **${question.answers[question.correct]}**`
           )
           .setTimestamp();

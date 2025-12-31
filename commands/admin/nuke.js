@@ -1,4 +1,4 @@
-const { PermissionsBitField, ChannelType } = require('discord.js');
+const { PermissionsBitField } = require('discord.js');
 
 module.exports = {
   name: 'nuke',

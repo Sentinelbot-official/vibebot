@@ -36,7 +36,7 @@ async function checkHealth() {
           }
         } else {
           reject(
-            new Error(`Health check failed with status ${res.statusCode}`),
+            new Error(`Health check failed with status ${res.statusCode}`)
           );
         }
       });

@@ -84,7 +84,7 @@ function timeSince(pastDate) {
 
   if (diff <= 0) return 'Just now';
 
-  return formatTime(diff, true) + ' ago';
+  return `${formatTime(diff, true)} ago`;
 }
 
 /**

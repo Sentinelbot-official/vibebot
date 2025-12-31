@@ -12,7 +12,7 @@ module.exports = {
       .setColor(0x0099ff)
       .setTitle('🤖 Invite Vibe Bot')
       .setDescription(
-        `Click the link below to invite me to your server!\n\n` +
+        'Click the link below to invite me to your server!\n\n' +
           `[Invite Vibe Bot](${invite})`
       )
       .setThumbnail(message.client.user.displayAvatarURL())

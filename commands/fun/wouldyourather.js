@@ -102,7 +102,7 @@ module.exports = {
       .setTitle('🤔 Would You Rather...')
       .setDescription(
         `**1️⃣ ${question.option1}**\n\n**OR**\n\n**2️⃣ ${question.option2}**\n\n` +
-          `Vote by clicking the buttons below!`
+          'Vote by clicking the buttons below!'
       )
       .addFields(
         {
@@ -170,10 +170,10 @@ module.exports = {
       embed.setDescription(
         `**1️⃣ ${question.option1}**\n` +
           `${votes.option1.size} votes (${percent1}%)\n\n` +
-          `**OR**\n\n` +
+          '**OR**\n\n' +
           `**2️⃣ ${question.option2}**\n` +
           `${votes.option2.size} votes (${percent2}%)\n\n` +
-          `**Poll Ended!**`
+          '**Poll Ended!**'
       );
       embed.setFooter({ text: 'Poll ended' });
       embed.setColor(0xff0000);

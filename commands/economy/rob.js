@@ -8,7 +8,7 @@ module.exports = {
   usage: '<@user>',
   category: 'economy',
   cooldown: 300, // 5 minutes
-  async execute(message, args) {
+  async execute(message, _args) {
     const target = message.mentions.users.first();
 
     if (!target) {

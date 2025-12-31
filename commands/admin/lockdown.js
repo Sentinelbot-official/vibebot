@@ -51,7 +51,7 @@ module.exports = {
       let locked = 0;
       let failed = 0;
 
-      for (const [id, channel] of channels) {
+      for (const [_id, channel] of channels) {
         try {
           await channel.permissionOverwrites.edit(message.guild.id, {
             SendMessages: false,
@@ -89,7 +89,7 @@ module.exports = {
       confirmMsg.edit({ content: null, embeds: [embed] });
 
       // Announce in all channels
-      for (const [id, channel] of channels) {
+      for (const [_id, channel] of channels) {
         if (locked > 0) {
           try {
             await channel.send({
@@ -103,7 +103,9 @@ module.exports = {
                   .setTimestamp(),
               ],
             });
-          } catch {}
+          } catch {
+            // Ignore errors
+          }
         }
       }
     });

@@ -98,7 +98,7 @@ function loadCommands(dir) {
         logger.success(`Command loaded: ${command.name} (${relativePath})`);
       } else {
         logger.warn(
-          `Command at ${filePath} is missing "name" or "execute" property.`,
+          `Command at ${filePath} is missing "name" or "execute" property.`
         );
       }
     }

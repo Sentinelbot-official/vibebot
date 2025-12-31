@@ -67,7 +67,7 @@ module.exports = {
           `**Prize:** ${giveaway.prize}\n\n` +
             `**Winners:** ${winners.map(w => w.toString()).join(', ')}\n` +
             `**Hosted by:** <@${giveaway.hostId}>\n\n` +
-            `Giveaway ended early!`
+            'Giveaway ended early!'
         )
         .setFooter({ text: 'Ended at' })
         .setTimestamp();

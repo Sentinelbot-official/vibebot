@@ -73,7 +73,7 @@ module.exports = {
             .setTitle('🚨 RAID DETECTED')
             .setDescription(
               `**${validJoins.length} members** joined within **${antiRaid.timeWindow} seconds**!\n\n` +
-                `Anti-raid protection has been triggered.`
+                'Anti-raid protection has been triggered.'
             )
             .addFields(
               {

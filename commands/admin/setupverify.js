@@ -14,7 +14,7 @@ module.exports = {
   category: 'admin',
   cooldown: 10,
   guildOnly: true,
-  async execute(message, args) {
+  async execute(message, _args) {
     if (
       !message.member.permissions.has(PermissionsBitField.Flags.Administrator)
     ) {

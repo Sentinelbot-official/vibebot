@@ -58,7 +58,7 @@ module.exports = {
           `**Winners:** ${winners}\n` +
           `**Ends:** <t:${endTimestamp}:R> (<t:${endTimestamp}:F>)\n` +
           `**Hosted by:** ${message.author}\n\n` +
-          `React with 🎉 to enter!`
+          'React with 🎉 to enter!'
       )
       .setFooter({
         text: `${winners} winner${winners !== 1 ? 's' : ''} | Ends at`,
@@ -142,7 +142,7 @@ async function endGiveaway(client, guildId, messageId) {
         `**Prize:** ${giveaway.prize}\n\n` +
           `**Winners:** ${winners.map(w => w.toString()).join(', ')}\n` +
           `**Hosted by:** <@${giveaway.hostId}>\n\n` +
-          `Giveaway ended!`
+          'Giveaway ended!'
       )
       .setFooter({ text: 'Ended at' });
 

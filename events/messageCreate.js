@@ -9,6 +9,22 @@ module.exports = {
     // Ignore bot messages
     if (message.author.bot) return;
 
+    // Auto-responder system (check before command processing)
+    if (message.guild) {
+      const settings = db.get('guild_settings', message.guild.id) || {};
+      const autoResponders = settings.autoResponders || [];
+
+      if (autoResponders.length > 0) {
+        const content = message.content.toLowerCase();
+        for (const ar of autoResponders) {
+          if (content.includes(ar.trigger)) {
+            message.channel.send(ar.response).catch(() => {});
+            break; // Only trigger one auto-responder per message
+          }
+        }
+      }
+    }
+
     // Get server-specific prefix or use default
     let prefix = defaultPrefix;
     if (message.guild) {

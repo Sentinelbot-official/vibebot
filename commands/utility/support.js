@@ -11,9 +11,9 @@ module.exports = {
       .setColor(0x0099ff)
       .setTitle('💬 Support Server')
       .setDescription(
-        `Need help? Have suggestions? Join our support server!\n\n` +
-          `**Support Server:** [COMING SOON]\n` +
-          `**Email:** vibetbot0@proton.me`
+        'Need help? Have suggestions? Join our support server!\n\n' +
+          '**Support Server:** [COMING SOON]\n' +
+          '**Email:** vibetbot0@proton.me'
       )
       .setThumbnail(message.client.user.displayAvatarURL())
       .setTimestamp();

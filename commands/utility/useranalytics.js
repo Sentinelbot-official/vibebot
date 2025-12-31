@@ -58,8 +58,9 @@ module.exports = {
     // User badges
     const badges = [];
     if (target.id === message.guild.ownerId) badges.push('👑 Server Owner');
-    if (target.permissions.has('Administrator'))
+    if (target.permissions.has('Administrator')) {
       badges.push('🛡️ Administrator');
+    }
     if (target.premiumSince) badges.push('💎 Server Booster');
     if (user.bot) badges.push('🤖 Bot');
     if (leveling.level >= 50) badges.push('⭐ Level 50+');

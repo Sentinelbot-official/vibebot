@@ -84,10 +84,10 @@ module.exports = {
                   value: currentChunk,
                   inline: false,
                 });
-                currentChunk = cmdName + ', ';
+                currentChunk = `${cmdName}, `;
                 chunkIndex++;
               } else {
-                currentChunk += cmdName + ', ';
+                currentChunk += `${cmdName}, `;
               }
             }
 

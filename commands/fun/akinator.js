@@ -13,7 +13,7 @@ module.exports = {
   aliases: ['guess', 'guesswho'],
   category: 'fun',
   cooldown: 10,
-  async execute(message, args) {
+  async execute(message, _args) {
     const characters = [
       {
         name: 'Mario',
@@ -66,14 +66,14 @@ module.exports = {
         .setColor(0x5865f2)
         .setTitle('🔮 Akinator Game')
         .setDescription(
-          `I'm thinking of a character...\n\n` +
+          "I'm thinking of a character...\n\n" +
             `**Clues:**\n` +
             character.clues
               .slice(0, clueIndex + 1)
               .map((clue, i) => `${i + 1}. ${clue}`)
               .join('\n') +
             `\n\n**Guesses remaining:** ${guesses}\n\n` +
-            `Type your guess in chat or click buttons below!`
+            'Type your guess in chat or click buttons below!'
         )
         .setFooter({ text: 'You have 60 seconds to guess!' })
         .setTimestamp();
@@ -149,7 +149,7 @@ module.exports = {
             .setColor(0xff0000)
             .setTitle('❌ Game Over!')
             .setDescription(
-              `You ran out of guesses!\n\n` +
+              'You ran out of guesses!\n\n' +
                 `The character was **${character.name}**.`
             )
             .setTimestamp();

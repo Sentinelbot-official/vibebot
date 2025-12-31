@@ -119,7 +119,7 @@ module.exports = {
         if (result === 'draw') {
           embed.setDescription(
             `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n` +
-              `**Game Over: Draw!** 🤝`
+              '**Game Over: Draw!** 🤝'
           );
           embed.setColor(0xffa500);
         } else {

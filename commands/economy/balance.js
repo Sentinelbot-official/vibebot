@@ -8,7 +8,7 @@ module.exports = {
   usage: '[@user]',
   category: 'economy',
   cooldown: 3,
-  async execute(message, args) {
+  async execute(message, _args) {
     const user = message.mentions.users.first() || message.author;
 
     // Get user economy data

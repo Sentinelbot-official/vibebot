@@ -137,9 +137,7 @@ module.exports = {
       .setColor(0x5865f2)
       .setTitle('🔴 Connect 4 🟡')
       .setDescription(
-        `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n` +
-          renderBoard() +
-          `\nCurrent turn: <@${currentPlayer}>`
+        `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n${renderBoard()}\nCurrent turn: <@${currentPlayer}>`
       )
       .setTimestamp();
 
@@ -175,9 +173,7 @@ module.exports = {
         collector.stop();
 
         embed.setDescription(
-          `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n` +
-            renderBoard() +
-            `\n\n**Winner: <@${currentPlayer}>!** 🎉`
+          `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n${renderBoard()}\n\n**Winner: <@${currentPlayer}>!** 🎉`
         );
         embed.setColor(0x00ff00);
 
@@ -189,9 +185,7 @@ module.exports = {
         collector.stop();
 
         embed.setDescription(
-          `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n` +
-            renderBoard() +
-            `\n\n**Game Over: Draw!** 🤝`
+          `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n${renderBoard()}\n\n**Game Over: Draw!** 🤝`
         );
         embed.setColor(0xffa500);
 
@@ -205,9 +199,7 @@ module.exports = {
           currentPlayer === message.author.id ? opponent.id : message.author.id;
 
         embed.setDescription(
-          `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n` +
-            renderBoard() +
-            `\nCurrent turn: <@${currentPlayer}>`
+          `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n${renderBoard()}\nCurrent turn: <@${currentPlayer}>`
         );
 
         await interaction.update({
@@ -219,7 +211,7 @@ module.exports = {
 
     collector.on('end', (collected, reason) => {
       if (reason === 'time') {
-        embed.setDescription(renderBoard() + '\n\n⏱️ Game timed out!');
+        embed.setDescription(`${renderBoard()}\n\n⏱️ Game timed out!`);
         embed.setColor(0xff0000);
         gameMessage.edit({ embeds: [embed], components: [] });
       }

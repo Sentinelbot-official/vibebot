@@ -63,7 +63,7 @@ module.exports = {
     // Send confirmation embed
     const embed = new EmbedBuilder()
       .setColor(0x00ff00)
-      .setTitle(`✅ Warning Removed`)
+      .setTitle('✅ Warning Removed')
       .setThumbnail(member.user.displayAvatarURL())
       .addFields(
         { name: '👤 Member', value: `${member.user.tag}`, inline: true },

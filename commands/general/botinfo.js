@@ -66,10 +66,9 @@ module.exports = {
         { name: '📜 License', value: 'MIT', inline: true },
         {
           name: '🔗 Links',
-          value:
-            '[Support Server](https://discord.gg/COMING_SOON) | [Invite Bot](https://discord.com/oauth2/authorize?client_id=' +
-            client.user.id +
-            '&permissions=8&scope=bot)',
+          value: `[Support Server](https://discord.gg/COMING_SOON) | [Invite Bot](https://discord.com/oauth2/authorize?client_id=${
+            client.user.id
+          }&permissions=8&scope=bot)`,
           inline: false,
         }
       )

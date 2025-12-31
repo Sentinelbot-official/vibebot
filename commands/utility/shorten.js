@@ -1,48 +1,76 @@
 const { EmbedBuilder } = require('discord.js');
+const https = require('https');
 
 module.exports = {
   name: 'shorten',
-  aliases: ['shorturl', 'tinyurl'],
-  description: 'Shorten a URL (placeholder - requires API)',
+  description: 'Shorten a URL using TinyURL',
   usage: '<url>',
+  aliases: ['short', 'tinyurl'],
   category: 'utility',
   cooldown: 5,
-  execute(message, args) {
+  async execute(message, args) {
     if (!args.length) {
-      return message.reply('❌ Please provide a URL to shorten!');
+      return message.reply(
+        '❌ Please provide a URL to shorten! Usage: `shorten <url>`\nExample: `shorten https://example.com/very/long/url`'
+      );
     }
 
     const url = args[0];
 
-    // Validate URL
-    try {
-      new URL(url);
-    } catch (error) {
-      return message.reply('❌ Please provide a valid URL!');
+    // Basic URL validation
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return message.reply(
+        '❌ Please provide a valid URL starting with http:// or https://'
+      );
     }
 
-    // This is a placeholder - you would integrate with a URL shortener API
+    try {
+      const shortUrl = await shortenURL(url);
 
-    const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
-      .setTitle('🔗 URL Shortener')
-      .setDescription(
-        '⚠️ **URL Shortener API Not Configured**\n\n' +
-          'To use this command, you need to:\n' +
-          '1. Choose a URL shortener API\n' +
-          '2. Add API key to .env\n' +
-          '3. Update this command with API integration'
-      )
-      .addFields(
-        { name: 'Original URL', value: url.substring(0, 1024), inline: false },
-        {
-          name: 'Recommended APIs',
-          value:
-            '• [Bitly API](https://dev.bitly.com/)\n• [TinyURL API](https://tinyurl.com/app/dev)\n• [Rebrandly](https://www.rebrandly.com/api)\n• [Is.gd](https://is.gd/developers.php) (No API key needed)',
-          inline: false,
-        }
+      const embed = new EmbedBuilder()
+        .setColor(0x0099ff)
+        .setTitle('🔗 URL Shortened')
+        .addFields(
+          {
+            name: '📎 Original URL',
+            value: url.length > 1024 ? url.substring(0, 1021) + '...' : url,
+            inline: false,
+          },
+          { name: '✂️ Shortened URL', value: shortUrl, inline: false }
+        )
+        .setFooter({ text: 'Powered by TinyURL' })
+        .setTimestamp();
+
+      return message.reply({ embeds: [embed] });
+    } catch (error) {
+      console.error('Shorten command error:', error);
+      return message.reply(
+        '❌ Could not shorten the URL. Please check the URL and try again.'
       );
-
-    message.reply({ embeds: [embed] });
+    }
   },
 };
+
+function shortenURL(url) {
+  return new Promise((resolve, reject) => {
+    const apiUrl = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`;
+
+    https
+      .get(apiUrl, res => {
+        let data = '';
+
+        res.on('data', chunk => {
+          data += chunk;
+        });
+
+        res.on('end', () => {
+          if (data.startsWith('http')) {
+            resolve(data.trim());
+          } else {
+            reject(new Error('Invalid response from TinyURL'));
+          }
+        });
+      })
+      .on('error', reject);
+  });
+}

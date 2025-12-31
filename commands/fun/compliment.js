@@ -5,7 +5,7 @@ module.exports = {
   usage: '[@user]',
   category: 'fun',
   cooldown: 5,
-  execute(message, args) {
+  execute(message, _args) {
     const compliments = [
       "You're an awesome friend!",
       'You light up the room!',

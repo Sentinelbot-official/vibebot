@@ -85,8 +85,7 @@ module.exports = {
       .setDescription(
         `**Size:** ${size}x${size}\n` +
           `**Bombs:** ${bombCount}\n\n` +
-          `Click the spoilers to reveal!\n\n` +
-          gameBoard
+          `Click the spoilers to reveal!\n\n${gameBoard}`
       )
       .setFooter({ text: `Started by ${message.author.tag}` })
       .setTimestamp();

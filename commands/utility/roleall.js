@@ -17,7 +17,7 @@ module.exports = {
 
     if (
       !message.guild.members.me.permissions.has(
-        PermissionsBitField.Flags.ManageRoles,
+        PermissionsBitField.Flags.ManageRoles
       )
     ) {
       return message.reply('❌ I need Manage Roles permission!');
@@ -51,7 +51,7 @@ module.exports = {
     const confirmMsg = await message.reply(
       `⚠️ **WARNING:** This will ${action} the role ${role} ${action === 'add' ? 'to' : 'from'} **ALL** members!\n` +
         'This may take a while and cannot be undone easily.\n\n' +
-        'React with ✅ to confirm or ❌ to cancel.',
+        'React with ✅ to confirm or ❌ to cancel.'
     );
 
     await confirmMsg.react('✅');
@@ -76,7 +76,7 @@ module.exports = {
       }
 
       await confirmMsg.edit(
-        `⏳ ${action === 'add' ? 'Adding' : 'Removing'} role...`,
+        `⏳ ${action === 'add' ? 'Adding' : 'Removing'} role...`
       );
 
       const members = await message.guild.members.fetch();
@@ -113,7 +113,7 @@ module.exports = {
         } catch (error) {
           console.error(
             `Failed to ${action} role for ${member.user.tag}:`,
-            error,
+            error
           );
           failed++;
         }
@@ -123,7 +123,7 @@ module.exports = {
         `✅ Role ${action} complete!\n` +
           `**Success:** ${success}\n` +
           `**Failed:** ${failed}\n` +
-          `**Skipped:** ${skipped}`,
+          `**Skipped:** ${skipped}`
       );
     });
 

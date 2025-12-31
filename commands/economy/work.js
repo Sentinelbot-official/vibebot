@@ -17,7 +17,7 @@ module.exports = {
   description: 'Work to earn coins',
   category: 'economy',
   cooldown: 5,
-  async execute(message, args) {
+  async execute(message, _args) {
     const userId = message.author.id;
 
     // Get user economy data
