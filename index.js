@@ -66,6 +66,8 @@ const client = new Client({
     Partials.GuildMember,
     Partials.GuildScheduledEvent,
   ],
+  shards: 'auto', // Auto-shard based on guild count
+  shardCount: 'auto', // Auto-calculate shard count
 });
 
 // Initialize collections

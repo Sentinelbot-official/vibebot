@@ -9,8 +9,9 @@
     "npm": ">=9.0.0"
   },
   "scripts": {
-    "start": "node --trace-warnings index.js",
+    "start": "node --trace-warnings shard.js",
     "dev": "node --watch --trace-warnings index.js",
+    "dev:sharded": "node --watch --trace-warnings shard.js",
     "test": "node --test",
     "test:watch": "node --test --watch",
     "format": "prettier --write \"**/*.{js,json,md}\"",

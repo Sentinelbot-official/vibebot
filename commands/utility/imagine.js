@@ -10,10 +10,7 @@ module.exports = {
   cooldown: 30,
   async execute(message, args) {
     // Check early access
-    const access = earlyAccess.hasEarlyAccess(
-      message.guild.id,
-      'ai_image_gen'
-    );
+    const access = earlyAccess.hasEarlyAccess(message.guild.id, 'ai_image_gen');
 
     if (!access.hasAccess) {
       const embed = new EmbedBuilder()
@@ -28,7 +25,9 @@ module.exports = {
             `Upgrade to **${access.feature.minTier === 'vip' ? 'VIP' : 'Premium'}** to use this feature now!\n\n` +
             'Use `//premium` to learn more or `//earlyaccess` to see all beta features.'
         )
-        .setFooter({ text: 'Support the 24/7 journey and get early access! 💜' });
+        .setFooter({
+          text: 'Support the 24/7 journey and get early access! 💜',
+        });
 
       return message.reply({ embeds: [embed] });
     }

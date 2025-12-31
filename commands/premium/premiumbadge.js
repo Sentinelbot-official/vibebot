@@ -28,7 +28,8 @@ module.exports = {
 
     // Get or create premium badge role
     const tier = premiumData.tier;
-    const roleName = tier === 'vip' ? '👑 VIP Supporter' : '💎 Premium Supporter';
+    const roleName =
+      tier === 'vip' ? '👑 VIP Supporter' : '💎 Premium Supporter';
     const roleColor = tier === 'vip' ? '#ff0000' : '#0099ff';
 
     try {
@@ -49,9 +50,7 @@ module.exports = {
 
       // Check if user already has the role
       if (message.member.roles.cache.has(badgeRole.id)) {
-        return message.reply(
-          `✅ You already have the ${roleName} badge!`
-        );
+        return message.reply(`✅ You already have the ${roleName} badge!`);
       }
 
       // Add role to user

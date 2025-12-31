@@ -16,6 +16,14 @@ module.exports = {
         config.getBotConfig('twitch') || 'https://twitch.tv/projectdraguk';
 
       logger.success(`🎵 ${client.user.tag} is now LIVE!`);
+
+      // Shard information
+      if (client.shard) {
+        logger.info(
+          `🔷 Shard ${client.shard.ids[0]} of ${client.shard.count} total shards`
+        );
+      }
+
       logger.info(`📊 Serving ${client.guilds.cache.size} servers`);
       logger.info(`👥 Watching over ${client.users.cache.size} users`);
       logger.info(`⚡ ${client.commands.size} commands loaded and ready`);

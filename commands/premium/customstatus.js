@@ -71,9 +71,7 @@ module.exports = {
 
     // Validate length
     if (statusText.length > 128) {
-      return message.reply(
-        '❌ Status text must be 128 characters or less!'
-      );
+      return message.reply('❌ Status text must be 128 characters or less!');
     }
 
     // Save custom status
@@ -88,7 +86,7 @@ module.exports = {
       .setTitle('✅ Custom Status Set!')
       .setDescription(
         `**New Status:**\n${statusText}\n\n` +
-          '**Note:** The bot\'s status will update within a few minutes.\n' +
+          "**Note:** The bot's status will update within a few minutes.\n" +
           'The custom status is only visible in this server.'
       )
       .setFooter({ text: 'Premium Feature 💎' })
