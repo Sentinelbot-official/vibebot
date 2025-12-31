@@ -5,7 +5,12 @@
  * @author Airis
  */
 
-const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
+const {
+  Client,
+  GatewayIntentBits,
+  Partials,
+  Collection,
+} = require('discord.js');
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
@@ -20,7 +25,6 @@ const backup = require('./utils/backup');
 const automod = require('./utils/automod');
 const health = require('./utils/health');
 const shutdown = require('./utils/shutdown');
-const { ErrorHandler } = require('./utils/errors');
 
 const client = new Client({
   intents: [
@@ -66,7 +70,7 @@ health.registerCheck('database', async () => {
     // Simple query to check database
     db.get('health_check', 'test');
     return { status: 'operational' };
-  } catch (error) {
+  } catch {
     throw new Error('Database check failed');
   }
 });
@@ -94,7 +98,7 @@ function loadCommands(dir) {
         logger.success(`Command loaded: ${command.name} (${relativePath})`);
       } else {
         logger.warn(
-          `Command at ${filePath} is missing "name" or "execute" property.`
+          `Command at ${filePath} is missing "name" or "execute" property.`,
         );
       }
     }

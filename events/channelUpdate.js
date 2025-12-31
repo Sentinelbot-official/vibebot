@@ -7,7 +7,9 @@ module.exports = {
     const settings = db.get('guild_settings', newChannel.guild.id) || {};
     if (!settings.logChannelId) return;
 
-    const logChannel = newChannel.guild.channels.cache.get(settings.logChannelId);
+    const logChannel = newChannel.guild.channels.cache.get(
+      settings.logChannelId
+    );
     if (!logChannel) return;
 
     const embed = new EmbedBuilder()

@@ -10,7 +10,7 @@
 [![Docker](https://img.shields.io/badge/docker-supported-blue.svg)](Dockerfile)
 
 > **🎉 Now Production-Ready with 2026 Standards!**  
-> Enhanced with modern error handling, health monitoring, graceful shutdown, Docker support, and more!  
+> Enhanced with modern error handling, health monitoring, graceful shutdown, Docker support, and more!
 
 > **Built Live on Twitch by the Community!** 🎥
 
@@ -37,7 +37,6 @@ This isn't just a bot - it's a testament to what a community can build together.
 - Voted on design decisions
 - Learned alongside the stream
 - Made this project possible!
-
 
 **GitHub Repository:** https://github.com/Sentinelbot-official/vibebot
 

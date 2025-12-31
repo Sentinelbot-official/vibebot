@@ -52,8 +52,8 @@ module.exports = [
       'valid-typeof': 'error',
 
       // Best Practices
-      'curly': ['error', 'multi-line'],
-      'eqeqeq': ['error', 'always'],
+      curly: ['error', 'multi-line'],
+      eqeqeq: ['error', 'always'],
       'no-eval': 'error',
       'no-implied-eval': 'error',
       'no-multi-spaces': 'warn',
@@ -69,9 +69,9 @@ module.exports = [
       'prefer-arrow-callback': 'warn',
 
       // Style
-      'indent': ['error', 2, { SwitchCase: 1 }],
-      'quotes': ['error', 'single', { avoidEscape: true }],
-      'semi': ['error', 'always'],
+      indent: ['error', 2, { SwitchCase: 1 }],
+      quotes: ['error', 'single', { avoidEscape: true }],
+      semi: ['error', 'always'],
       'comma-dangle': ['error', 'always-multiline'],
       'arrow-spacing': 'error',
       'block-spacing': 'error',

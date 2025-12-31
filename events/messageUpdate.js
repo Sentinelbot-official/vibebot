@@ -14,7 +14,9 @@ module.exports = {
     const settings = db.get('guild_settings', newMessage.guild.id) || {};
     if (!settings.logChannelId) return;
 
-    const logChannel = newMessage.guild.channels.cache.get(settings.logChannelId);
+    const logChannel = newMessage.guild.channels.cache.get(
+      settings.logChannelId
+    );
     if (!logChannel) return;
 
     const embed = new EmbedBuilder()

@@ -44,7 +44,11 @@ module.exports = {
 
     // Determine color based on answer type
     let color;
-    if (answer.includes('yes') || answer.includes('certain') || answer.includes('definitely')) {
+    if (
+      answer.includes('yes') ||
+      answer.includes('certain') ||
+      answer.includes('definitely')
+    ) {
       color = 0x00ff00; // Green
     } else if (answer.includes('no') || answer.includes('doubtful')) {
       color = 0xff0000; // Red

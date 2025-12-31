@@ -93,7 +93,13 @@ module.exports = {
         for (let i = 1; i < 4; i++) {
           const r = row + dr * i;
           const c = col + dc * i;
-          if (r >= 0 && r < rows && c >= 0 && c < cols && board[r][c] === piece) {
+          if (
+            r >= 0 &&
+            r < rows &&
+            c >= 0 &&
+            c < cols &&
+            board[r][c] === piece
+          ) {
             count++;
           } else {
             break;
@@ -104,7 +110,13 @@ module.exports = {
         for (let i = 1; i < 4; i++) {
           const r = row - dr * i;
           const c = col - dc * i;
-          if (r >= 0 && r < rows && c >= 0 && c < cols && board[r][c] === piece) {
+          if (
+            r >= 0 &&
+            r < rows &&
+            c >= 0 &&
+            c < cols &&
+            board[r][c] === piece
+          ) {
             count++;
           } else {
             break;
@@ -144,7 +156,7 @@ module.exports = {
     collector.on('collect', async interaction => {
       if (interaction.user.id !== currentPlayer) {
         return interaction.reply({
-          content: '❌ It\'s not your turn!',
+          content: "❌ It's not your turn!",
           ephemeral: true,
         });
       }
@@ -207,9 +219,7 @@ module.exports = {
 
     collector.on('end', (collected, reason) => {
       if (reason === 'time') {
-        embed.setDescription(
-          renderBoard() + '\n\n⏱️ Game timed out!'
-        );
+        embed.setDescription(renderBoard() + '\n\n⏱️ Game timed out!');
         embed.setColor(0xff0000);
         gameMessage.edit({ embeds: [embed], components: [] });
       }

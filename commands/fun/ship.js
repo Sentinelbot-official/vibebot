@@ -74,7 +74,9 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(percentage >= 70 ? 0xff69b4 : percentage >= 40 ? 0xffa500 : 0x808080)
+      .setColor(
+        percentage >= 70 ? 0xff69b4 : percentage >= 40 ? 0xffa500 : 0x808080
+      )
       .setTitle('💘 Love Calculator')
       .setDescription(
         `**${user1.username}** 💕 **${user2.username}**\n\n` +

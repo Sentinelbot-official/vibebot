@@ -88,7 +88,9 @@ module.exports = {
     const totalPages = Math.ceil(shopItems.length / itemsPerPage);
 
     if (page < 1 || page > totalPages) {
-      return message.reply(`❌ Invalid page! Please choose between 1 and ${totalPages}.`);
+      return message.reply(
+        `❌ Invalid page! Please choose between 1 and ${totalPages}.`
+      );
     }
 
     const startIndex = (page - 1) * itemsPerPage;

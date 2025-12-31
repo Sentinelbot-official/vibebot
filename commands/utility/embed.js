@@ -3,7 +3,8 @@ const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 module.exports = {
   name: 'embed',
   description: 'Create a custom embed message',
-  usage: '<channel> <title> | <description> | [color] | [image_url] | [thumbnail_url]',
+  usage:
+    '<channel> <title> | <description> | [color] | [image_url] | [thumbnail_url]',
   aliases: ['createembed', 'embedcreate'],
   category: 'utility',
   cooldown: 5,
@@ -34,7 +35,10 @@ module.exports = {
     args.shift();
 
     // Parse embed data
-    const embedData = args.join(' ').split('|').map(s => s.trim());
+    const embedData = args
+      .join(' ')
+      .split('|')
+      .map(s => s.trim());
 
     if (embedData.length < 2) {
       return message.reply(

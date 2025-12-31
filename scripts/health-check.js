@@ -7,7 +7,8 @@
 const http = require('http');
 const https = require('https');
 
-const HEALTH_CHECK_URL = process.env.HEALTH_CHECK_URL || 'http://localhost:3000/health';
+const HEALTH_CHECK_URL =
+  process.env.HEALTH_CHECK_URL || 'http://localhost:3000/health';
 const TIMEOUT = parseInt(process.env.HEALTH_CHECK_TIMEOUT || '5000');
 
 /**
@@ -30,11 +31,13 @@ async function checkHealth() {
           try {
             const health = JSON.parse(data);
             resolve(health);
-          } catch (error) {
+          } catch {
             reject(new Error('Invalid health check response'));
           }
         } else {
-          reject(new Error(`Health check failed with status ${res.statusCode}`));
+          reject(
+            new Error(`Health check failed with status ${res.statusCode}`),
+          );
         }
       });
     });

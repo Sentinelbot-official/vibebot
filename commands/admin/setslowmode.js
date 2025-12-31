@@ -11,9 +11,7 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(
-        PermissionsBitField.Flags.ManageChannels
-      )
+      !message.member.permissions.has(PermissionsBitField.Flags.ManageChannels)
     ) {
       return message.reply('❌ You need Manage Channels permission!');
     }
@@ -25,8 +23,7 @@ module.exports = {
       );
     }
 
-    const channel =
-      message.mentions.channels.first() || message.channel;
+    const channel = message.mentions.channels.first() || message.channel;
 
     if (!channel.isTextBased()) {
       return message.reply('❌ Channel must be a text channel!');

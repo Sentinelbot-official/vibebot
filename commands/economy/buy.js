@@ -25,12 +25,42 @@ module.exports = {
 
     // Default shop items
     const defaultShopItems = {
-      fishing_rod: { id: 'fishing_rod', name: '🎣 Fishing Rod', price: 500, type: 'tool' },
-      hunting_rifle: { id: 'hunting_rifle', name: '🔫 Hunting Rifle', price: 750, type: 'tool' },
-      lucky_coin: { id: 'lucky_coin', name: '🍀 Lucky Coin', price: 1000, type: 'item' },
-      bank_note: { id: 'bank_note', name: '💳 Bank Note', price: 2500, type: 'item' },
-      trophy: { id: 'trophy', name: '🏆 Trophy', price: 5000, type: 'collectible' },
-      crown: { id: 'crown', name: '👑 Crown', price: 10000, type: 'collectible' },
+      fishing_rod: {
+        id: 'fishing_rod',
+        name: '🎣 Fishing Rod',
+        price: 500,
+        type: 'tool',
+      },
+      hunting_rifle: {
+        id: 'hunting_rifle',
+        name: '🔫 Hunting Rifle',
+        price: 750,
+        type: 'tool',
+      },
+      lucky_coin: {
+        id: 'lucky_coin',
+        name: '🍀 Lucky Coin',
+        price: 1000,
+        type: 'item',
+      },
+      bank_note: {
+        id: 'bank_note',
+        name: '💳 Bank Note',
+        price: 2500,
+        type: 'item',
+      },
+      trophy: {
+        id: 'trophy',
+        name: '🏆 Trophy',
+        price: 5000,
+        type: 'collectible',
+      },
+      crown: {
+        id: 'crown',
+        name: '👑 Crown',
+        price: 10000,
+        type: 'collectible',
+      },
       laptop: { id: 'laptop', name: '💻 Laptop', price: 3000, type: 'tool' },
       car: { id: 'car', name: '🚗 Car', price: 15000, type: 'vehicle' },
       house: { id: 'house', name: '🏠 House', price: 50000, type: 'property' },

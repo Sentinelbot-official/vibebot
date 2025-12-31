@@ -15,16 +15,46 @@ module.exports = {
   cooldown: 10,
   async execute(message, args) {
     const characters = [
-      { name: 'Mario', clues: ['video game character', 'wears red', 'plumber', 'Italian'] },
-      { name: 'Pikachu', clues: ['Pokemon', 'yellow', 'electric type', 'mouse'] },
-      { name: 'Batman', clues: ['superhero', 'wears black', 'rich', 'no superpowers'] },
-      { name: 'Elsa', clues: ['Disney character', 'ice powers', 'queen', 'blonde'] },
-      { name: 'Harry Potter', clues: ['wizard', 'wears glasses', 'has a scar', 'British'] },
-      { name: 'SpongeBob', clues: ['lives underwater', 'yellow', 'works at restaurant', 'square'] },
-      { name: 'Sonic', clues: ['video game character', 'blue', 'very fast', 'hedgehog'] },
-      { name: 'Iron Man', clues: ['superhero', 'wears armor', 'genius', 'billionaire'] },
-      { name: 'Darth Vader', clues: ['Star Wars', 'wears black', 'villain', 'father'] },
-      { name: 'Mickey Mouse', clues: ['Disney character', 'mouse', 'wears red shorts', 'iconic'] },
+      {
+        name: 'Mario',
+        clues: ['video game character', 'wears red', 'plumber', 'Italian'],
+      },
+      {
+        name: 'Pikachu',
+        clues: ['Pokemon', 'yellow', 'electric type', 'mouse'],
+      },
+      {
+        name: 'Batman',
+        clues: ['superhero', 'wears black', 'rich', 'no superpowers'],
+      },
+      {
+        name: 'Elsa',
+        clues: ['Disney character', 'ice powers', 'queen', 'blonde'],
+      },
+      {
+        name: 'Harry Potter',
+        clues: ['wizard', 'wears glasses', 'has a scar', 'British'],
+      },
+      {
+        name: 'SpongeBob',
+        clues: ['lives underwater', 'yellow', 'works at restaurant', 'square'],
+      },
+      {
+        name: 'Sonic',
+        clues: ['video game character', 'blue', 'very fast', 'hedgehog'],
+      },
+      {
+        name: 'Iron Man',
+        clues: ['superhero', 'wears armor', 'genius', 'billionaire'],
+      },
+      {
+        name: 'Darth Vader',
+        clues: ['Star Wars', 'wears black', 'villain', 'father'],
+      },
+      {
+        name: 'Mickey Mouse',
+        clues: ['Disney character', 'mouse', 'wears red shorts', 'iconic'],
+      },
     ];
 
     const character = characters[Math.floor(Math.random() * characters.length)];
@@ -71,8 +101,7 @@ module.exports = {
     });
 
     const filter = m =>
-      m.author.id === message.author.id &&
-      m.channel.id === message.channel.id;
+      m.author.id === message.author.id && m.channel.id === message.channel.id;
 
     const messageCollector = message.channel.createMessageCollector({
       filter,
@@ -128,7 +157,10 @@ module.exports = {
           await gameMsg.edit({ embeds: [loseEmbed], components: [] });
         } else {
           await m.react('❌');
-          await gameMsg.edit({ embeds: [getEmbed()], components: [getButtons()] });
+          await gameMsg.edit({
+            embeds: [getEmbed()],
+            components: [getButtons()],
+          });
         }
       }
     });
@@ -166,7 +198,7 @@ module.exports = {
       if (!gameEnded) {
         const timeoutEmbed = new EmbedBuilder()
           .setColor(0xff0000)
-          .setTitle('⏱️ Time\'s Up!')
+          .setTitle("⏱️ Time's Up!")
           .setDescription(`The character was **${character.name}**.`)
           .setTimestamp();
 

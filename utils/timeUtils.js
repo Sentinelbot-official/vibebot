@@ -31,7 +31,9 @@ function formatTime(milliseconds, long = false) {
  */
 function discordTimestamp(date, style = 'R') {
   const timestamp =
-    date instanceof Date ? Math.floor(date.getTime() / 1000) : Math.floor(date / 1000);
+    date instanceof Date
+      ? Math.floor(date.getTime() / 1000)
+      : Math.floor(date / 1000);
   return `<t:${timestamp}:${style}>`;
 }
 
@@ -62,8 +64,7 @@ function formatDuration(seconds) {
  */
 function timeUntil(futureDate) {
   const now = Date.now();
-  const future =
-    futureDate instanceof Date ? futureDate.getTime() : futureDate;
+  const future = futureDate instanceof Date ? futureDate.getTime() : futureDate;
   const diff = future - now;
 
   if (diff <= 0) return 'Now';

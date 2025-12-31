@@ -15,7 +15,14 @@ module.exports = {
     const location = args.join(' ');
 
     // Mock weather data (for demonstration)
-    const conditions = ['Sunny', 'Cloudy', 'Rainy', 'Snowy', 'Partly Cloudy', 'Stormy'];
+    const conditions = [
+      'Sunny',
+      'Cloudy',
+      'Rainy',
+      'Snowy',
+      'Partly Cloudy',
+      'Stormy',
+    ];
     const emojis = {
       Sunny: '☀️',
       Cloudy: '☁️',

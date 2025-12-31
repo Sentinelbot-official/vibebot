@@ -102,7 +102,7 @@ module.exports = {
     collector.on('collect', async interaction => {
       if (interaction.user.id !== currentPlayer) {
         return interaction.reply({
-          content: '❌ It\'s not your turn!',
+          content: "❌ It's not your turn!",
           ephemeral: true,
         });
       }

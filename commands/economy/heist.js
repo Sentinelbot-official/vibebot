@@ -44,12 +44,14 @@ module.exports = {
       {
         success: true,
         multiplier: 2,
-        message: '🎉 **HEIST SUCCESSFUL!** You cracked the vault and got away clean!',
+        message:
+          '🎉 **HEIST SUCCESSFUL!** You cracked the vault and got away clean!',
       },
       {
         success: true,
         multiplier: 1.5,
-        message: '✅ **SUCCESS!** You managed to grab some loot before escaping!',
+        message:
+          '✅ **SUCCESS!** You managed to grab some loot before escaping!',
       },
       {
         success: true,
@@ -64,7 +66,8 @@ module.exports = {
       {
         success: false,
         multiplier: 0,
-        message: '❌ **FAILED!** The alarm went off and you had to flee empty-handed!',
+        message:
+          '❌ **FAILED!** The alarm went off and you had to flee empty-handed!',
       },
       {
         success: false,
@@ -79,7 +82,8 @@ module.exports = {
       {
         success: false,
         multiplier: 0.5,
-        message: '⚠️ **PARTIAL LOSS!** You dropped half the money while escaping!',
+        message:
+          '⚠️ **PARTIAL LOSS!** You dropped half the money while escaping!',
       },
     ];
 
@@ -90,11 +94,13 @@ module.exports = {
     if (roll < 0.4) {
       // Success
       const successScenarios = scenarios.filter(s => s.success);
-      scenario = successScenarios[Math.floor(Math.random() * successScenarios.length)];
+      scenario =
+        successScenarios[Math.floor(Math.random() * successScenarios.length)];
     } else {
       // Failure
       const failScenarios = scenarios.filter(s => !s.success);
-      scenario = failScenarios[Math.floor(Math.random() * failScenarios.length)];
+      scenario =
+        failScenarios[Math.floor(Math.random() * failScenarios.length)];
     }
 
     let winnings;

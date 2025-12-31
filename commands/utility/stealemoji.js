@@ -54,7 +54,9 @@ module.exports = {
         reason: `Emoji stolen by ${message.author.tag}`,
       });
 
-      message.reply(`✅ Successfully added ${newEmoji} as \`:${customName}:\`!`);
+      message.reply(
+        `✅ Successfully added ${newEmoji} as \`:${customName}:\`!`
+      );
     } catch (error) {
       console.error('Error stealing emoji:', error);
 

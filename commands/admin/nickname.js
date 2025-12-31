@@ -2,7 +2,7 @@ const { PermissionsBitField } = require('discord.js');
 
 module.exports = {
   name: 'nickname',
-  description: 'Change a user\'s nickname',
+  description: "Change a user's nickname",
   usage: '<@user> <nickname|reset>',
   aliases: ['setnick', 'changenick'],
   category: 'admin',
@@ -10,9 +10,7 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(
-        PermissionsBitField.Flags.ManageNicknames
-      )
+      !message.member.permissions.has(PermissionsBitField.Flags.ManageNicknames)
     ) {
       return message.reply('❌ You need Manage Nicknames permission!');
     }
@@ -41,7 +39,7 @@ module.exports = {
     }
 
     if (member.id === message.guild.ownerId) {
-      return message.reply('❌ I cannot change the server owner\'s nickname!');
+      return message.reply("❌ I cannot change the server owner's nickname!");
     }
 
     if (

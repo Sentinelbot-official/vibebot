@@ -54,7 +54,7 @@ module.exports = {
       // 45% chance - lose
       result = 'lose';
       winnings = -amount;
-    } else if (roll < 0.80) {
+    } else if (roll < 0.8) {
       // 35% chance - small win (1.5x)
       result = 'small_win';
       multiplier = 1.5;

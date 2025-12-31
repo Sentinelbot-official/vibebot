@@ -130,7 +130,8 @@ class ErrorHandler {
     logger.error(`Command error in ${message.content}:`, error);
 
     // Determine user-facing message
-    let userMessage = '❌ An unexpected error occurred. Please try again later.';
+    let userMessage =
+      '❌ An unexpected error occurred. Please try again later.';
 
     if (error instanceof UserError || error instanceof ValidationError) {
       userMessage = `❌ ${error.message}`;

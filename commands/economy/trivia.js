@@ -54,7 +54,12 @@ module.exports = {
       },
       {
         question: 'What is the speed of light?',
-        answers: ['299,792 km/s', '150,000 km/s', '500,000 km/s', '1,000,000 km/s'],
+        answers: [
+          '299,792 km/s',
+          '150,000 km/s',
+          '500,000 km/s',
+          '1,000,000 km/s',
+        ],
         correct: 0,
         reward: 100,
       },
@@ -167,7 +172,7 @@ module.exports = {
       if (!answered) {
         const timeoutEmbed = new EmbedBuilder()
           .setColor(0xff0000)
-          .setTitle('⏱️ Time\'s Up!')
+          .setTitle("⏱️ Time's Up!")
           .setDescription(
             `You didn't answer in time!\n\n` +
               `The correct answer was: **${question.answers[question.correct]}**`

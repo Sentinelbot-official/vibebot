@@ -1,5 +1,9 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const { parseTime, formatTime, discordTimestamp } = require('../../utils/timeUtils');
+const {
+  parseTime,
+  formatTime,
+  discordTimestamp,
+} = require('../../utils/timeUtils');
 
 module.exports = {
   name: 'giveaway',

@@ -61,7 +61,9 @@ class RateLimiter {
     }
 
     // Remove old requests outside the window
-    limit.requests = limit.requests.filter(timestamp => now - timestamp < windowMs);
+    limit.requests = limit.requests.filter(
+      timestamp => now - timestamp < windowMs
+    );
 
     // Check if limit exceeded
     if (limit.requests.length >= maxRequests) {

@@ -10,7 +10,7 @@ module.exports = {
   async execute(message, args) {
     const jokes = [
       {
-        setup: 'Why don\'t scientists trust atoms?',
+        setup: "Why don't scientists trust atoms?",
         punchline: 'Because they make up everything!',
       },
       {
@@ -26,8 +26,8 @@ module.exports = {
         punchline: 'A gummy bear!',
       },
       {
-        setup: 'Why don\'t eggs tell jokes?',
-        punchline: 'They\'d crack each other up!',
+        setup: "Why don't eggs tell jokes?",
+        punchline: "They'd crack each other up!",
       },
       {
         setup: 'What did the ocean say to the beach?',
@@ -38,11 +38,11 @@ module.exports = {
         punchline: 'Because it was two-tired!',
       },
       {
-        setup: 'What do you call cheese that isn\'t yours?',
+        setup: "What do you call cheese that isn't yours?",
         punchline: 'Nacho cheese!',
       },
       {
-        setup: 'Why couldn\'t the bicycle stand up by itself?',
+        setup: "Why couldn't the bicycle stand up by itself?",
         punchline: 'It was two tired!',
       },
       {
@@ -66,8 +66,8 @@ module.exports = {
         punchline: 'Tyrannosaurus Wrecks!',
       },
       {
-        setup: 'Why don\'t skeletons fight each other?',
-        punchline: 'They don\'t have the guts!',
+        setup: "Why don't skeletons fight each other?",
+        punchline: "They don't have the guts!",
       },
     ];
 

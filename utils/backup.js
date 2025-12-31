@@ -97,7 +97,7 @@ class BackupManager {
       () => {
         this.createBackup();
       },
-      6 * 60 * 60 * 1000
+      6 * 60 * 60 * 1000,
     );
 
     logger.success('Auto-backup scheduled (every 6 hours)');

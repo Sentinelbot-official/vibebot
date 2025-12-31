@@ -34,7 +34,7 @@ class ConfigManager {
     if (missing.length > 0) {
       throw new Error(
         `Missing required environment variables: ${missing.join(', ')}\n` +
-          'Please create a .env file with these variables.'
+          'Please create a .env file with these variables.',
       );
     }
 
@@ -46,11 +46,13 @@ class ConfigManager {
       nodeEnv: process.env.NODE_ENV || optional.NODE_ENV,
       logLevel: process.env.LOG_LEVEL || optional.LOG_LEVEL,
       maxCommandsPerMinute: parseInt(
-        process.env.MAX_COMMANDS_PER_MINUTE || optional.MAX_COMMANDS_PER_MINUTE
+        process.env.MAX_COMMANDS_PER_MINUTE || optional.MAX_COMMANDS_PER_MINUTE,
       ),
       enableMetrics: process.env.ENABLE_METRICS === 'true',
-      isDevelopment: (process.env.NODE_ENV || optional.NODE_ENV) === 'development',
-      isProduction: (process.env.NODE_ENV || optional.NODE_ENV) === 'production',
+      isDevelopment:
+        (process.env.NODE_ENV || optional.NODE_ENV) === 'development',
+      isProduction:
+        (process.env.NODE_ENV || optional.NODE_ENV) === 'production',
     };
   }
 
@@ -113,7 +115,10 @@ class ConfigManager {
     }
 
     // Validate rate limit
-    if (this.config.maxCommandsPerMinute < 1 || this.config.maxCommandsPerMinute > 100) {
+    if (
+      this.config.maxCommandsPerMinute < 1 ||
+      this.config.maxCommandsPerMinute > 100
+    ) {
       logger.warn('maxCommandsPerMinute should be between 1 and 100');
     }
 

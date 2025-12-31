@@ -60,7 +60,8 @@ module.exports = {
 
         embed.addFields({
           name: `${data.user} (${data.count} warnings)`,
-          value: warningList + (data.count > 3 ? `\n*+${data.count - 3} more*` : ''),
+          value:
+            warningList + (data.count > 3 ? `\n*+${data.count - 3} more*` : ''),
           inline: false,
         });
       });

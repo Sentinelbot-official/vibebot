@@ -9,7 +9,7 @@ module.exports = {
   cooldown: 10,
   async execute(message, args) {
     const size = parseInt(args[0]) || 5;
-    const bombCount = parseInt(args[1]) || Math.floor((size * size) * 0.2);
+    const bombCount = parseInt(args[1]) || Math.floor(size * size * 0.2);
 
     if (size < 3 || size > 8) {
       return message.reply('❌ Size must be between 3 and 8!');
