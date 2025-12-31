@@ -17,7 +17,9 @@
     "format": "prettier --write \"**/*.{js,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,json,md}\"",
     "db:backup": "node scripts/backup.js",
-    "health": "node scripts/health-check.js"
+    "health": "node scripts/health-check.js",
+    "security:audit": "node scripts/security-audit.js",
+    "security:check": "npm audit && node scripts/security-audit.js"
   },
   "keywords": [
     "discord",
