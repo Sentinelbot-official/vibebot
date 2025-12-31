@@ -1,4 +1,10 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  PermissionFlagsBits,
+} = require('discord.js');
 
 module.exports = {
   name: 'roleinfo',
@@ -10,42 +16,63 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     const role =
-      message.mentions.roles.first() || 
+      message.mentions.roles.first() ||
       message.guild.roles.cache.get(args[0]) ||
-      message.guild.roles.cache.find(r => r.name.toLowerCase() === args.join(' ').toLowerCase());
+      message.guild.roles.cache.find(
+        r => r.name.toLowerCase() === args.join(' ').toLowerCase()
+      );
 
     if (!role) {
-      return message.reply('❌ Please mention a role, provide a role ID, or role name!');
+      return message.reply(
+        '❌ Please mention a role, provide a role ID, or role name!'
+      );
     }
 
     // Calculate role age
-    const ageInDays = Math.floor((Date.now() - role.createdTimestamp) / (1000 * 60 * 60 * 24));
+    const ageInDays = Math.floor(
+      (Date.now() - role.createdTimestamp) / (1000 * 60 * 60 * 24)
+    );
     const ageInYears = (ageInDays / 365).toFixed(1);
 
     // Get role hierarchy
-    const rolesAbove = message.guild.roles.cache.filter(r => r.position > role.position).size;
-    const rolesBelow = message.guild.roles.cache.filter(r => r.position < role.position).size;
+    const rolesAbove = message.guild.roles.cache.filter(
+      r => r.position > role.position
+    ).size;
+    const rolesBelow = message.guild.roles.cache.filter(
+      r => r.position < role.position
+    ).size;
     const totalRoles = message.guild.roles.cache.size;
 
     // Key permissions
     const keyPermissions = [];
-    if (role.permissions.has(PermissionFlagsBits.Administrator)) keyPermissions.push('👑 Administrator');
-    if (role.permissions.has(PermissionFlagsBits.ManageGuild)) keyPermissions.push('⚙️ Manage Server');
-    if (role.permissions.has(PermissionFlagsBits.ManageRoles)) keyPermissions.push('🎭 Manage Roles');
-    if (role.permissions.has(PermissionFlagsBits.ManageChannels)) keyPermissions.push('📺 Manage Channels');
-    if (role.permissions.has(PermissionFlagsBits.KickMembers)) keyPermissions.push('👢 Kick Members');
-    if (role.permissions.has(PermissionFlagsBits.BanMembers)) keyPermissions.push('🔨 Ban Members');
-    if (role.permissions.has(PermissionFlagsBits.ModerateMembers)) keyPermissions.push('🛡️ Timeout Members');
-    if (role.permissions.has(PermissionFlagsBits.ManageMessages)) keyPermissions.push('🗑️ Manage Messages');
-    if (role.permissions.has(PermissionFlagsBits.MentionEveryone)) keyPermissions.push('📢 Mention Everyone');
-    if (role.permissions.has(PermissionFlagsBits.ManageWebhooks)) keyPermissions.push('🪝 Manage Webhooks');
-    if (role.permissions.has(PermissionFlagsBits.ManageEmojisAndStickers)) keyPermissions.push('😀 Manage Emojis');
+    if (role.permissions.has(PermissionFlagsBits.Administrator))
+      keyPermissions.push('👑 Administrator');
+    if (role.permissions.has(PermissionFlagsBits.ManageGuild))
+      keyPermissions.push('⚙️ Manage Server');
+    if (role.permissions.has(PermissionFlagsBits.ManageRoles))
+      keyPermissions.push('🎭 Manage Roles');
+    if (role.permissions.has(PermissionFlagsBits.ManageChannels))
+      keyPermissions.push('📺 Manage Channels');
+    if (role.permissions.has(PermissionFlagsBits.KickMembers))
+      keyPermissions.push('👢 Kick Members');
+    if (role.permissions.has(PermissionFlagsBits.BanMembers))
+      keyPermissions.push('🔨 Ban Members');
+    if (role.permissions.has(PermissionFlagsBits.ModerateMembers))
+      keyPermissions.push('🛡️ Timeout Members');
+    if (role.permissions.has(PermissionFlagsBits.ManageMessages))
+      keyPermissions.push('🗑️ Manage Messages');
+    if (role.permissions.has(PermissionFlagsBits.MentionEveryone))
+      keyPermissions.push('📢 Mention Everyone');
+    if (role.permissions.has(PermissionFlagsBits.ManageWebhooks))
+      keyPermissions.push('🪝 Manage Webhooks');
+    if (role.permissions.has(PermissionFlagsBits.ManageEmojisAndStickers))
+      keyPermissions.push('😀 Manage Emojis');
 
     const embed = new EmbedBuilder()
       .setColor(role.color || 0x99aab5)
       .setTitle(`🎭 ${role.name}`)
       .setDescription(
-        role.managed 
+        role.managed
           ? `*This role is managed by an integration or bot*\n\u200b`
           : null
       )
@@ -57,7 +84,10 @@ module.exports = {
         },
         {
           name: '🎨 Color',
-          value: role.hexColor !== '#000000' ? `${role.hexColor}\n🟦` : 'Default (No Color)',
+          value:
+            role.hexColor !== '#000000'
+              ? `${role.hexColor}\n🟦`
+              : 'Default (No Color)',
           inline: true,
         },
         {
@@ -87,7 +117,8 @@ module.exports = {
     if (role.hoist) properties.push('📌 Hoisted (Displayed Separately)');
     if (role.mentionable) properties.push('📢 Mentionable');
     if (role.managed) properties.push('🤖 Managed by Integration');
-    if (role.permissions.has(PermissionFlagsBits.Administrator)) properties.push('👑 Has Administrator');
+    if (role.permissions.has(PermissionFlagsBits.Administrator))
+      properties.push('👑 Has Administrator');
     if (role.icon) properties.push('🖼️ Has Custom Icon');
     if (role.unicodeEmoji) properties.push(`${role.unicodeEmoji} Has Emoji`);
 
@@ -125,7 +156,10 @@ module.exports = {
     // Role hierarchy visualization
     const rolesNearby = message.guild.roles.cache
       .sort((a, b) => b.position - a.position)
-      .filter(r => Math.abs(r.position - role.position) <= 2 && r.id !== message.guild.id)
+      .filter(
+        r =>
+          Math.abs(r.position - role.position) <= 2 && r.id !== message.guild.id
+      )
       .map(r => {
         if (r.id === role.id) return `**➜ ${r.name}** (This Role)`;
         return r.position > role.position ? `↑ ${r.name}` : `↓ ${r.name}`;
@@ -183,8 +217,10 @@ module.exports = {
           .setColor(role.color || 0x99aab5)
           .setTitle(`👥 Members with ${role.name}`)
           .setDescription(
-            memberList + 
-            (role.members.size > 50 ? `\n\n*...and ${role.members.size - 50} more members*` : '')
+            memberList +
+              (role.members.size > 50
+                ? `\n\n*...and ${role.members.size - 50} more members*`
+                : '')
           )
           .setFooter({
             text: `Total: ${role.members.size} members | ${message.author.tag}`,

@@ -1,4 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 const db = require('../../utils/database');
 const premium = require('../../utils/premium');
 
@@ -14,15 +19,15 @@ module.exports = {
     // Parse arguments
     const validTypes = ['economy', 'level', 'voice', 'messages', 'xp'];
     const validFilters = ['global', 'weekly', 'monthly', 'all'];
-    
+
     let type = 'economy';
     let filter = 'global';
-    
+
     if (args[0] && validTypes.includes(args[0].toLowerCase())) {
       type = args[0].toLowerCase();
       if (type === 'xp') type = 'level'; // Alias
     }
-    
+
     if (args[1] && validFilters.includes(args[1].toLowerCase())) {
       filter = args[1].toLowerCase();
       if (filter === 'all') filter = 'global'; // Alias
@@ -33,7 +38,7 @@ module.exports = {
 
     // Get leaderboard data based on type
     let leaderboardData = [];
-    
+
     if (type === 'economy') {
       const allEconomy = db.all('economy');
       if (!allEconomy || Object.keys(allEconomy).length === 0) {
@@ -108,7 +113,9 @@ module.exports = {
 
     // Apply time filter if premium
     if (filter !== 'global' && !isPremium) {
-      return message.reply('❌ Time filters (weekly/monthly) are a **Premium** feature! Use `//premium` to learn more.');
+      return message.reply(
+        '❌ Time filters (weekly/monthly) are a **Premium** feature! Use `//premium` to learn more.'
+      );
     }
 
     // Pagination setup
@@ -117,10 +124,11 @@ module.exports = {
     const totalPages = Math.ceil(leaderboardData.length / itemsPerPage);
 
     // Find user's position
-    const userPosition = leaderboardData.findIndex(u => u.userId === message.author.id) + 1;
+    const userPosition =
+      leaderboardData.findIndex(u => u.userId === message.author.id) + 1;
     const userData = leaderboardData.find(u => u.userId === message.author.id);
 
-    const generateEmbed = async (page) => {
+    const generateEmbed = async page => {
       const start = page * itemsPerPage;
       const end = start + itemsPerPage;
       const pageData = leaderboardData.slice(start, end);
@@ -139,15 +147,22 @@ module.exports = {
         messages: 'Messages',
       };
 
-      const filterText = filter === 'global' ? 'All Time' : filter === 'weekly' ? 'This Week' : 'This Month';
+      const filterText =
+        filter === 'global'
+          ? 'All Time'
+          : filter === 'weekly'
+            ? 'This Week'
+            : 'This Month';
 
       const embed = new EmbedBuilder()
         .setColor(isPremium ? 0xffd700 : 0x9b59b6)
-        .setTitle(`${typeEmojis[type]} ${typeNames[type]} Leaderboard ${isPremium ? '💎' : ''}`)
+        .setTitle(
+          `${typeEmojis[type]} ${typeNames[type]} Leaderboard ${isPremium ? '💎' : ''}`
+        )
         .setDescription(
           `**Filter:** ${filterText}\n` +
-          `**Server:** ${message.guild.name}\n` +
-          `**Total Entries:** ${leaderboardData.length.toLocaleString()}\n\u200b`
+            `**Server:** ${message.guild.name}\n` +
+            `**Total Entries:** ${leaderboardData.length.toLocaleString()}\n\u200b`
         )
         .setThumbnail(message.guild.iconURL({ dynamic: true }))
         .setFooter({
@@ -160,12 +175,22 @@ module.exports = {
       for (let i = 0; i < pageData.length; i++) {
         const entry = pageData[i];
         const globalRank = start + i + 1;
-        const member = await message.guild.members.fetch(entry.userId).catch(() => null);
+        const member = await message.guild.members
+          .fetch(entry.userId)
+          .catch(() => null);
         const username = member ? member.user.username : `User ${entry.userId}`;
 
-        const medal = globalRank === 1 ? '🥇' : globalRank === 2 ? '🥈' : globalRank === 3 ? '🥉' : `**${globalRank}.**`;
-        const isCurrentUser = entry.userId === message.author.id ? ' ⬅️ **YOU**' : '';
-        
+        const medal =
+          globalRank === 1
+            ? '🥇'
+            : globalRank === 2
+              ? '🥈'
+              : globalRank === 3
+                ? '🥉'
+                : `**${globalRank}.**`;
+        const isCurrentUser =
+          entry.userId === message.author.id ? ' ⬅️ **YOU**' : '';
+
         description += `${medal} ${username}${isCurrentUser}\n${entry.extra}\n\n`;
       }
 
@@ -218,7 +243,10 @@ module.exports = {
         .setDisabled(currentPage === totalPages - 1)
     );
 
-    const msg = await message.reply({ embeds: [embed], components: totalPages > 1 ? [row] : [] });
+    const msg = await message.reply({
+      embeds: [embed],
+      components: totalPages > 1 ? [row] : [],
+    });
 
     if (totalPages <= 1) return;
 
@@ -230,8 +258,10 @@ module.exports = {
 
     collector.on('collect', async i => {
       if (i.customId === 'first') currentPage = 0;
-      else if (i.customId === 'prev') currentPage = Math.max(0, currentPage - 1);
-      else if (i.customId === 'next') currentPage = Math.min(totalPages - 1, currentPage + 1);
+      else if (i.customId === 'prev')
+        currentPage = Math.max(0, currentPage - 1);
+      else if (i.customId === 'next')
+        currentPage = Math.min(totalPages - 1, currentPage + 1);
       else if (i.customId === 'last') currentPage = totalPages - 1;
 
       const newEmbed = await generateEmbed(currentPage);

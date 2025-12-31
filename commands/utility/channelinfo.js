@@ -1,4 +1,8 @@
-const { EmbedBuilder, ChannelType, PermissionFlagsBits } = require('discord.js');
+const {
+  EmbedBuilder,
+  ChannelType,
+  PermissionFlagsBits,
+} = require('discord.js');
 const db = require('../../utils/database');
 
 module.exports = {
@@ -34,14 +38,16 @@ module.exports = {
     };
 
     // Calculate channel age
-    const ageInDays = Math.floor((Date.now() - channel.createdTimestamp) / (1000 * 60 * 60 * 24));
+    const ageInDays = Math.floor(
+      (Date.now() - channel.createdTimestamp) / (1000 * 60 * 60 * 24)
+    );
     const ageInYears = (ageInDays / 365).toFixed(1);
 
     const embed = new EmbedBuilder()
       .setColor(0x5865f2)
       .setTitle(`${typeEmojis[channel.type] || '📺'} ${channel.name}`)
       .setDescription(
-        channel.topic 
+        channel.topic
           ? `*${channel.topic.substring(0, 200)}${channel.topic.length > 200 ? '...' : ''}*\n\u200b`
           : null
       )
@@ -84,10 +90,14 @@ module.exports = {
     }
 
     // Text channel specific info
-    if (channel.type === ChannelType.GuildText || channel.type === ChannelType.GuildAnnouncement) {
+    if (
+      channel.type === ChannelType.GuildText ||
+      channel.type === ChannelType.GuildAnnouncement
+    ) {
       const webhooks = await channel.fetchWebhooks().catch(() => null);
       const threads = channel.threads?.cache.size || 0;
-      const activeThreads = channel.threads?.cache.filter(t => !t.archived).size || 0;
+      const activeThreads =
+        channel.threads?.cache.filter(t => !t.archived).size || 0;
 
       embed.addFields(
         {
@@ -126,10 +136,20 @@ module.exports = {
     }
 
     // Voice channel specific info
-    if (channel.type === ChannelType.GuildVoice || channel.type === ChannelType.GuildStageVoice) {
+    if (
+      channel.type === ChannelType.GuildVoice ||
+      channel.type === ChannelType.GuildStageVoice
+    ) {
       const bitrateKbps = channel.bitrate / 1000;
-      const maxBitrate = message.guild.premiumTier === 3 ? 384 : message.guild.premiumTier === 2 ? 256 : message.guild.premiumTier === 1 ? 128 : 96;
-      
+      const maxBitrate =
+        message.guild.premiumTier === 3
+          ? 384
+          : message.guild.premiumTier === 2
+            ? 256
+            : message.guild.premiumTier === 1
+              ? 128
+              : 96;
+
       embed.addFields(
         {
           name: '🎵 Bitrate',
@@ -138,7 +158,9 @@ module.exports = {
         },
         {
           name: '👥 User Limit',
-          value: channel.userLimit ? `${channel.userLimit} users` : '♾️ Unlimited',
+          value: channel.userLimit
+            ? `${channel.userLimit} users`
+            : '♾️ Unlimited',
           inline: true,
         },
         {
@@ -153,10 +175,14 @@ module.exports = {
           .map(m => m.user.username)
           .slice(0, 10)
           .join(', ');
-        
+
         embed.addFields({
           name: '👤 Connected Users',
-          value: memberList + (channel.members.size > 10 ? ` and ${channel.members.size - 10} more...` : ''),
+          value:
+            memberList +
+            (channel.members.size > 10
+              ? ` and ${channel.members.size - 10} more...`
+              : ''),
           inline: false,
         });
       }
@@ -165,7 +191,10 @@ module.exports = {
       if (channel.rtcRegion) {
         embed.addFields({
           name: '🌍 Region',
-          value: channel.rtcRegion === 'automatic' ? '🌐 Automatic' : channel.rtcRegion,
+          value:
+            channel.rtcRegion === 'automatic'
+              ? '🌐 Automatic'
+              : channel.rtcRegion,
           inline: true,
         });
       }
@@ -183,7 +212,8 @@ module.exports = {
 
     // Forum channel specific info
     if (channel.type === ChannelType.GuildForum) {
-      const activeThreads = channel.threads?.cache.filter(t => !t.archived).size || 0;
+      const activeThreads =
+        channel.threads?.cache.filter(t => !t.archived).size || 0;
       const totalThreads = channel.threads?.cache.size || 0;
 
       embed.addFields(
@@ -202,10 +232,17 @@ module.exports = {
       );
 
       if (channel.availableTags && channel.availableTags.length > 0) {
-        const tags = channel.availableTags.slice(0, 5).map(t => t.name).join(', ');
+        const tags = channel.availableTags
+          .slice(0, 5)
+          .map(t => t.name)
+          .join(', ');
         embed.addFields({
           name: '🏷️ Available Tags',
-          value: tags + (channel.availableTags.length > 5 ? `... (+${channel.availableTags.length - 5} more)` : ''),
+          value:
+            tags +
+            (channel.availableTags.length > 5
+              ? `... (+${channel.availableTags.length - 5} more)`
+              : ''),
           inline: false,
         });
       }
@@ -216,8 +253,15 @@ module.exports = {
     if (overwrites.size > 0) {
       const overwriteList = overwrites
         .map(overwrite => {
-          const target = overwrite.type === 0 ? message.guild.roles.cache.get(overwrite.id) : message.guild.members.cache.get(overwrite.id);
-          const name = target ? (overwrite.type === 0 ? `@${target.name}` : target.user.username) : 'Unknown';
+          const target =
+            overwrite.type === 0
+              ? message.guild.roles.cache.get(overwrite.id)
+              : message.guild.members.cache.get(overwrite.id);
+          const name = target
+            ? overwrite.type === 0
+              ? `@${target.name}`
+              : target.user.username
+            : 'Unknown';
           return name;
         })
         .slice(0, 5)

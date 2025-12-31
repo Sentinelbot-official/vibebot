@@ -1,4 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const db = require('../../utils/database');
@@ -16,7 +21,7 @@ module.exports = {
     // Get custom prefix for this server or use default
     const settings = db.get('guild_settings', message.guild.id) || {};
     const prefix = settings.prefix || process.env.PREFIX || '//';
-    
+
     // Get premium status
     const tierName = premium.getServerTier(message.guild.id);
     const isPremium = tierName !== 'Free';
@@ -25,7 +30,9 @@ module.exports = {
     if (args[0] && args[0].toLowerCase() === 'search') {
       const query = args.slice(1).join(' ').toLowerCase();
       if (!query) {
-        return message.reply('❌ Please provide a search query! Example: `//help search economy`');
+        return message.reply(
+          '❌ Please provide a search query! Example: `//help search economy`'
+        );
       }
 
       const isOwner = ownerCheck.isOwner(message.author.id);
@@ -35,7 +42,8 @@ module.exports = {
           cmd.name.toLowerCase().includes(query) ||
           (cmd.description && cmd.description.toLowerCase().includes(query)) ||
           (cmd.category && cmd.category.toLowerCase().includes(query)) ||
-          (cmd.aliases && cmd.aliases.some(a => a.toLowerCase().includes(query)))
+          (cmd.aliases &&
+            cmd.aliases.some(a => a.toLowerCase().includes(query)))
         );
       });
 
@@ -46,7 +54,9 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setColor(0x9b59b6)
         .setTitle(`🔍 Search Results for "${query}"`)
-        .setDescription(`Found ${results.length} command${results.length !== 1 ? 's' : ''}:\n\u200b`)
+        .setDescription(
+          `Found ${results.length} command${results.length !== 1 ? 's' : ''}:\n\u200b`
+        )
         .setFooter({
           text: `Use ${prefix}help [command] for details | ${message.author.tag}`,
           iconURL: message.author.displayAvatarURL(),
@@ -116,19 +126,21 @@ module.exports = {
       const visibleCommands = Array.from(commands.values()).filter(
         cmd => !cmd.ownerOnly || isOwner
       ).length;
-      
+
       // Count premium commands
       const premiumCommands = Array.from(commands.values()).filter(
         cmd => cmd.premiumOnly && (!cmd.ownerOnly || isOwner)
       ).length;
 
       // Pagination setup
-      const categoryEntries = Object.entries(categories).filter(([_, cmds]) => cmds.length > 0);
+      const categoryEntries = Object.entries(categories).filter(
+        ([_, cmds]) => cmds.length > 0
+      );
       const categoriesPerPage = 5;
       let currentPage = 0;
       const totalPages = Math.ceil(categoryEntries.length / categoriesPerPage);
 
-      const generateEmbed = (page) => {
+      const generateEmbed = page => {
         const start = page * categoriesPerPage;
         const end = start + categoriesPerPage;
         const pageCategories = categoryEntries.slice(start, end);
@@ -144,9 +156,13 @@ module.exports = {
             `**Hey there!** 👋 I'm Vibe Bot, created on a 24/7 live stream with the global community!\n\n` +
               `🔴 **LIVE NOW (24/7):** https://twitch.tv/projectdraguk\n` +
               `💜 **${visibleCommands} commands** coded live with chat!\n` +
-              (premiumCommands > 0 ? `💎 **${premiumCommands} premium commands** available!\n` : '') +
+              (premiumCommands > 0
+                ? `💎 **${premiumCommands} premium commands** available!\n`
+                : '') +
               `⚡ **Prefix:** \`${prefix}\`\n` +
-              (isPremium ? `✨ **Premium Server** - ${tierName} Tier Active!\n` : '') +
+              (isPremium
+                ? `✨ **Premium Server** - ${tierName} Tier Active!\n`
+                : '') +
               `🌍 **Built by viewers worldwide, any time, day or night!**\n` +
               (isOwner
                 ? `\n🔴 **Owner Mode Active** - Showing all commands including owner-only\n`
@@ -167,9 +183,10 @@ module.exports = {
         for (const [category, cmds] of pageCategories) {
           // Count premium commands in this category
           const premiumCount = cmds.filter(cmd => cmd.premiumOnly).length;
-          const categoryTitle = premiumCount > 0 
-            ? `📂 ${category} (${cmds.length} commands) 💎 ${premiumCount} premium`
-            : `📂 ${category} (${cmds.length} commands)`;
+          const categoryTitle =
+            premiumCount > 0
+              ? `📂 ${category} (${cmds.length} commands) 💎 ${premiumCount} premium`
+              : `📂 ${category} (${cmds.length} commands)`;
 
           // Just show command names with premium indicators
           const commandList = cmds
@@ -255,7 +272,10 @@ module.exports = {
           .setDisabled(currentPage === totalPages - 1 || totalPages === 1)
       );
 
-      const msg = await message.channel.send({ embeds: [embed], components: totalPages > 1 ? [row] : [] });
+      const msg = await message.channel.send({
+        embeds: [embed],
+        components: totalPages > 1 ? [row] : [],
+      });
 
       if (totalPages <= 1) return;
 
@@ -267,8 +287,10 @@ module.exports = {
 
       collector.on('collect', async i => {
         if (i.customId === 'first') currentPage = 0;
-        else if (i.customId === 'prev') currentPage = Math.max(0, currentPage - 1);
-        else if (i.customId === 'next') currentPage = Math.min(totalPages - 1, currentPage + 1);
+        else if (i.customId === 'prev')
+          currentPage = Math.max(0, currentPage - 1);
+        else if (i.customId === 'next')
+          currentPage = Math.min(totalPages - 1, currentPage + 1);
         else if (i.customId === 'last') currentPage = totalPages - 1;
 
         const newEmbed = generateEmbed(currentPage);
@@ -355,12 +377,16 @@ module.exports = {
 
         if (categoryCommands.length > 0) {
           // Count premium commands
-          const premiumCount = categoryCommands.filter(cmd => cmd.premiumOnly).length;
+          const premiumCount = categoryCommands.filter(
+            cmd => cmd.premiumOnly
+          ).length;
 
           // Show all commands in this category
           const embed = new EmbedBuilder()
             .setColor(isPremium ? 0xffd700 : 0x9b59b6)
-            .setTitle(`📂 ${categoryName} Commands ${premiumCount > 0 ? `💎 ${premiumCount} premium` : ''}`)
+            .setTitle(
+              `📂 ${categoryName} Commands ${premiumCount > 0 ? `💎 ${premiumCount} premium` : ''}`
+            )
             .setDescription(
               `Here are all **${categoryCommands.length}** commands in the **${categoryName}** category:\n\u200b`
             )
