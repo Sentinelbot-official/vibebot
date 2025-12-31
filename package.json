@@ -1,0 +1,25 @@
+{
+  "name": "vibe-bot",
+  "version": "1.0.0",
+  "description": "A feature-rich Discord bot with moderation, economy, leveling, and auto-mod systems",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write \"**/*.{js,json,md}\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.2.3",
+    "better-sqlite3": "^11.8.1",
+    "ms": "^2.1.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4"
+  }
+}

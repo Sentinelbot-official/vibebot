@@ -1,0 +1,30 @@
+{
+  "name": "Vibe Bot",
+  "version": "2.0.0",
+  "author": "Airis",
+  "description": "A feature-rich Discord bot with 100+ commands, built live on Twitch with the community",
+  "website": "https://github.com/Sentinelbot-official/vibebot",
+  "support_server": "DISCORD_SERVER_COMING_SOON",
+  "twitch": "https://twitch.tv/projectdraguk",
+  "invite_link": "https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=8&scope=bot",
+  "features": [
+    "Advanced Moderation (19 commands)",
+    "Economy System (16 commands)",
+    "Leveling & XP (4 commands)",
+    "Reaction Roles",
+    "Auto-Moderation & Anti-Raid",
+    "Giveaways & Engagement",
+    "Utility Commands (34 commands)",
+    "Fun Commands (8 commands)",
+    "Admin Tools (15 commands)",
+    "Ticket & Verification Systems",
+    "Custom Per-Server Settings"
+  ],
+  "colors": {
+    "primary": "#0099ff",
+    "success": "#00ff00",
+    "warning": "#ffa500",
+    "error": "#ff0000",
+    "economy": "#ffd700"
+  }
+}
