@@ -17,12 +17,12 @@ module.exports = {
       const leaves = db.getAll('guild_leaves') || [];
 
       const recentJoins = joins
-        .filter(j => j.key !== 'initialized')
+        .filter(j => j.key !== 'initialized' && j.value && j.value.joinedAt)
         .sort((a, b) => b.value.joinedAt - a.value.joinedAt)
         .slice(0, 5);
 
       const recentLeaves = leaves
-        .filter(l => l.key !== 'initialized')
+        .filter(l => l.key !== 'initialized' && l.value && l.value.leftAt)
         .sort((a, b) => b.value.leftAt - a.value.leftAt)
         .slice(0, 5);
 
@@ -35,7 +35,7 @@ module.exports = {
         const joinsText = recentJoins
           .map(
             j =>
-              `• **${j.value.name}** (\`${j.value.id}\`)\n  <t:${Math.floor(j.value.joinedAt / 1000)}:R> - ${j.value.memberCount} members`
+              `• **${j.value.name || 'Unknown'}** (\`${j.value.id || 'Unknown'}\`)\n  <t:${Math.floor(j.value.joinedAt / 1000)}:R> - ${j.value.memberCount || 0} members`
           )
           .join('\n');
         embed.addFields({
@@ -49,7 +49,7 @@ module.exports = {
         const leavesText = recentLeaves
           .map(
             l =>
-              `• **${l.value.name}** (\`${l.value.id}\`)\n  <t:${Math.floor(l.value.leftAt / 1000)}:R> - ${l.value.timeInGuild !== 'Unknown' ? `${l.value.timeInGuild} days` : 'Unknown time'}`
+              `• **${l.value.name || 'Unknown'}** (\`${l.value.id || 'Unknown'}\`)\n  <t:${Math.floor(l.value.leftAt / 1000)}:R> - ${l.value.timeInGuild && l.value.timeInGuild !== 'Unknown' ? `${l.value.timeInGuild} days` : 'Unknown time'}`
           )
           .join('\n');
         embed.addFields({
@@ -75,16 +75,16 @@ module.exports = {
       const joins = db.getAll('guild_joins') || [];
       const leaves = db.getAll('guild_leaves') || [];
 
-      const totalJoins = joins.filter(j => j.key !== 'initialized').length;
-      const totalLeaves = leaves.filter(l => l.key !== 'initialized').length;
+      const totalJoins = joins.filter(j => j.key !== 'initialized' && j.value).length;
+      const totalLeaves = leaves.filter(l => l.key !== 'initialized' && l.value).length;
 
       // Calculate joins/leaves in last 7 days
       const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
       const recentJoins = joins.filter(
-        j => j.key !== 'initialized' && j.value.joinedAt > sevenDaysAgo
+        j => j.key !== 'initialized' && j.value && j.value.joinedAt && j.value.joinedAt > sevenDaysAgo
       ).length;
       const recentLeaves = leaves.filter(
-        l => l.key !== 'initialized' && l.value.leftAt > sevenDaysAgo
+        l => l.key !== 'initialized' && l.value && l.value.leftAt && l.value.leftAt > sevenDaysAgo
       ).length;
 
       // Get largest guild
@@ -95,7 +95,7 @@ module.exports = {
 
       // Get oldest guild (by join time)
       const oldestJoin = joins
-        .filter(j => j.key !== 'initialized')
+        .filter(j => j.key !== 'initialized' && j.value && j.value.joinedAt)
         .sort((a, b) => a.value.joinedAt - b.value.joinedAt)[0];
 
       const embed = new EmbedBuilder()
@@ -134,7 +134,7 @@ module.exports = {
         })
         .setTimestamp();
 
-      if (oldestJoin) {
+      if (oldestJoin && oldestJoin.value && oldestJoin.value.name && oldestJoin.value.joinedAt) {
         embed.addFields({
           name: '⏰ Oldest Guild',
           value: `**${oldestJoin.value.name}**\nJoined <t:${Math.floor(oldestJoin.value.joinedAt / 1000)}:R>`,
