@@ -17,6 +17,7 @@ module.exports = {
     // Calculate database latency
     const dbStart = Date.now();
     const db = require('../../utils/database');
+const branding = require('../../utils/branding');
     db.get('ping_test', 'test');
     const dbLatency = Date.now() - dbStart;
 

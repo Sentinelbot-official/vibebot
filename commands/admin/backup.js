@@ -1,5 +1,6 @@
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const backup = require('../../utils/backup');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'backup',

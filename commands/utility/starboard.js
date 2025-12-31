@@ -1,5 +1,6 @@
 const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'setupstarboard',

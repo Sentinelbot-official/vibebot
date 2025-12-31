@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 const recipes = {
   sword: { name: 'Iron Sword', materials: { iron: 3, wood: 1 }, emoji: '⚔️' },

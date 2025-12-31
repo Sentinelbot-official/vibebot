@@ -1,6 +1,7 @@
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const premiumPerks = require('../../utils/premiumPerks');
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'autopost',

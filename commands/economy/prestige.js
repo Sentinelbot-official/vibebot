@@ -6,6 +6,7 @@ const {
   MessageFlags,
 } = require('discord.js');
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 // Store pending prestige confirmations
 const prestigeConfirmations = new Map();

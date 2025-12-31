@@ -98,6 +98,7 @@ module.exports = {
 
       // Log the reopening
       const logger = require('../../utils/logger');
+const branding = require('../../utils/branding');
       logger.info(
         `[MODMAIL] ${message.author.tag} reopened ticket ${ticketId}`
       );

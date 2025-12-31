@@ -1,5 +1,6 @@
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 /**
  * Check if a regex pattern is safe (no catastrophic backtracking)

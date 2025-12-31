@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
 const premiumPerks = require('../../utils/premiumPerks');
+const branding = require('../../utils/branding');
 
 // Stock market data
 const STOCKS = {

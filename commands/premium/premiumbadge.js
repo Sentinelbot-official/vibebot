@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const premium = require('../../utils/premium');
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'premiumbadge',

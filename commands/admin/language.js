@@ -1,5 +1,6 @@
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const i18n = require('../../utils/i18n');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'language',

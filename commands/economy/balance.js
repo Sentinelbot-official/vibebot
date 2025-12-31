@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
 const premium = require('../../utils/premium');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'balance',

@@ -8,6 +8,7 @@ const {
 const { version: nodeVersion } = process;
 const os = require('os');
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'botinfo',

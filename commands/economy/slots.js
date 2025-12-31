@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 const emojis = ['🍒', '🍋', '🍊', '🍇', '💎', '7️⃣'];
 const multipliers = {

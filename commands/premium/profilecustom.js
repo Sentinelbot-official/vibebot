@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const premiumPerks = require('../../utils/premiumPerks');
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 const PROFILE_THEMES = {
   default: { color: '#0099ff', emoji: '⚪' },

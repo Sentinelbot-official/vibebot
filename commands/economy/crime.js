@@ -1,4 +1,5 @@
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 const crimes = [
   { name: 'robbed a bank', min: 500, max: 2000, chance: 0.4 },

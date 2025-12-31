@@ -83,6 +83,7 @@ module.exports = {
       }
     } catch (error) {
       const logger = require('../../utils/logger');
+const branding = require('../../utils/branding');
       logger.error('Error checking Twitch stream:', error);
 
       // Fallback response

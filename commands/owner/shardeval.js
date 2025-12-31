@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const util = require('util');
 const auditLog = require('../../utils/auditLog');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'shardeval',

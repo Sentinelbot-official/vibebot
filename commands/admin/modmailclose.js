@@ -103,6 +103,7 @@ module.exports = {
 
       // Log the closure
       const logger = require('../../utils/logger');
+const branding = require('../../utils/branding');
       logger.info(
         `[MODMAIL] ${message.author.tag} closed ticket ${ticketId}: ${reason}`
       );

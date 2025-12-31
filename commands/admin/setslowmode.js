@@ -1,5 +1,6 @@
 const { PermissionFlagsBits } = require('discord.js');
 const { parseTime, formatTime } = require('../../utils/timeUtils');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'setslowmode',

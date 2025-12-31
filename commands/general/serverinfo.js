@@ -1,5 +1,6 @@
 const { EmbedBuilder, ChannelType } = require('discord.js');
 const premiumPerks = require('../../utils/premiumPerks');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'serverinfo',

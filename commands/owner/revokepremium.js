@@ -1,4 +1,5 @@
 const premium = require('../../utils/premium');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'revokepremium',

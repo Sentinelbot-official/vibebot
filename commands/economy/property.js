@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 const properties = {
   apartment: { name: 'Apartment', price: 10000, income: 100, emoji: '🏢' },

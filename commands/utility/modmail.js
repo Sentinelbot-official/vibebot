@@ -146,6 +146,7 @@ module.exports = {
 
       // Log the modmail
       const logger = require('../../utils/logger');
+const branding = require('../../utils/branding');
       logger.info(
         `[MODMAIL] New ticket ${ticketId} from ${message.author.tag} in ${message.guild.name}`
       );

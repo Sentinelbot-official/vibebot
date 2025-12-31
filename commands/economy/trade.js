@@ -127,6 +127,7 @@ module.exports = {
 module.exports.handleTradeButton = async interaction => {
   const [action, , tradeId] = interaction.customId.split('_');
   const transactionLock = require('../../utils/transactionLock');
+const branding = require('../../utils/branding');
 
   const trade = db.get(`trade_${tradeId}`, tradeId);
 

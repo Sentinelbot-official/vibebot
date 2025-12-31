@@ -2,6 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const logger = require('../../utils/logger');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'reload',

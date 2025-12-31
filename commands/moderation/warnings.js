@@ -1,6 +1,7 @@
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
 const { paginate, chunkArray } = require('../../utils/pagination');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'warnings',

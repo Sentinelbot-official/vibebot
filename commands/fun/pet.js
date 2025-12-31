@@ -5,6 +5,7 @@ const {
   ButtonStyle,
 } = require('discord.js');
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 const petTypes = {
   dog: { emoji: '🐕', name: 'Dog', hungerRate: 0.5, happinessRate: 0.3 },

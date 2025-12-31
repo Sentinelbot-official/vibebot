@@ -1,4 +1,5 @@
 const db = require('../../utils/database');
+const branding = require('../../utils/branding');
 
 const animals = [
   { name: '🐰 Rabbit', value: 20 },

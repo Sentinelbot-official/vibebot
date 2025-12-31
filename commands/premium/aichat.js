@@ -174,6 +174,7 @@ module.exports = {
       }
     } catch (error) {
       const logger = require('../../utils/logger');
+const branding = require('../../utils/branding');
       logger.error('AI Chat error:', error);
 
       const errorEmbed = new EmbedBuilder()

@@ -2,6 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
 const premium = require('../../utils/premium');
 const premiumPerks = require('../../utils/premiumPerks');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'rank',
