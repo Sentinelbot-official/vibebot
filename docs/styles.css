@@ -59,11 +59,12 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--card-bg);
     backdrop-filter: blur(10px);
     box-shadow: var(--shadow);
     z-index: 1000;
     padding: 1rem 0;
+    transition: background 0.3s ease;
 }
 
 .navbar .container {
@@ -93,7 +94,7 @@ body {
 
 .nav-links a {
     text-decoration: none;
-    color: var(--dark);
+    color: var(--text-color);
     font-weight: 600;
     transition: color 0.3s;
 }
@@ -292,12 +293,13 @@ section {
     font-size: 3rem;
     font-weight: 900;
     margin-bottom: 1rem;
-    color: var(--dark);
+    color: var(--text-color);
 }
 
 .section-subtitle {
     font-size: 1.2rem;
-    color: #7f8c8d;
+    color: var(--text-color);
+    opacity: 0.7;
 }
 
 /* ============================================
@@ -337,6 +339,11 @@ section {
     color: var(--primary);
 }
 
+.story-card p {
+    color: var(--text-color);
+    opacity: 0.85;
+}
+
 /* ============================================
    Features Section
    ============================================ */
@@ -356,6 +363,11 @@ section {
     border: 2px solid transparent;
 }
 
+.feature-card p {
+    color: var(--text-color);
+    opacity: 0.85;
+}
+
 .feature-card:hover {
     transform: translateY(-10px);
     border-color: var(--primary);
@@ -369,7 +381,7 @@ section {
 .feature-card h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--dark);
+    color: var(--text-color);
 }
 
 /* ============================================
@@ -515,6 +527,8 @@ section {
 .command-category li {
     padding: 0.5rem 0;
     border-bottom: 1px solid var(--light);
+    color: var(--text-color);
+    opacity: 0.85;
 }
 
 .command-category li:last-child {
