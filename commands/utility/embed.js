@@ -44,31 +44,56 @@ module.exports = {
       );
     }
 
-    const [title, description, color, imageUrl, thumbnailUrl] = embedData;
+    const [title, description, colorStr, imageUrl, thumbnailUrl] = embedData;
+
+    // Validate title and description
+    if (!title || title.trim().length === 0) {
+      return message.reply('❌ Title cannot be empty!');
+    }
+
+    if (!description || description.trim().length === 0) {
+      return message.reply('❌ Description cannot be empty!');
+    }
+
+    // Parse color safely
+    let color = 0x5865f2;
+    if (colorStr) {
+      const cleanColor = colorStr.replace('#', '').trim();
+      const parsedColor = parseInt(cleanColor, 16);
+      if (!isNaN(parsedColor) && parsedColor >= 0 && parsedColor <= 0xFFFFFF) {
+        color = parsedColor;
+      }
+    }
 
     // Create embed
     const embed = new EmbedBuilder()
       .setTitle(title.substring(0, 256))
       .setDescription(description.substring(0, 4096))
-      .setColor(color ? parseInt(color.replace('#', ''), 16) : 0x5865f2)
+      .setColor(color)
       .setFooter({ text: `Created by ${message.author.tag}` })
       .setTimestamp();
 
-    if (imageUrl) {
+    // Validate and set image URL
+    if (imageUrl && imageUrl.trim().length > 0) {
       try {
-        new URL(imageUrl);
-        embed.setImage(imageUrl);
+        const url = new URL(imageUrl.trim());
+        if (url.protocol === 'http:' || url.protocol === 'https:') {
+          embed.setImage(imageUrl.trim());
+        }
       } catch {
-        // Invalid URL, skip
+        // Invalid URL, skip silently
       }
     }
 
-    if (thumbnailUrl) {
+    // Validate and set thumbnail URL
+    if (thumbnailUrl && thumbnailUrl.trim().length > 0) {
       try {
-        new URL(thumbnailUrl);
-        embed.setThumbnail(thumbnailUrl);
+        const url = new URL(thumbnailUrl.trim());
+        if (url.protocol === 'http:' || url.protocol === 'https:') {
+          embed.setThumbnail(thumbnailUrl.trim());
+        }
       } catch {
-        // Invalid URL, skip
+        // Invalid URL, skip silently
       }
     }
 

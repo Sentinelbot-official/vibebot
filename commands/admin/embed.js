@@ -33,8 +33,26 @@ module.exports = {
 
     const title = parts[0];
     const description = parts[1];
-    const color = parts[2] ? parseInt(parts[2].replace('#', ''), 16) : 0x0099ff;
+    let color = 0x0099ff;
+    
+    // Parse color safely
+    if (parts[2]) {
+      const colorStr = parts[2].replace('#', '');
+      const parsedColor = parseInt(colorStr, 16);
+      if (!isNaN(parsedColor) && parsedColor >= 0 && parsedColor <= 0xFFFFFF) {
+        color = parsedColor;
+      }
+    }
+    
     const footer = parts[3] || null;
+
+    if (!title || title.length === 0) {
+      return message.reply('❌ Title cannot be empty!');
+    }
+
+    if (!description || description.length === 0) {
+      return message.reply('❌ Description cannot be empty!');
+    }
 
     if (title.length > 256) {
       return message.reply('❌ Title must be 256 characters or less!');
@@ -44,14 +62,18 @@ module.exports = {
       return message.reply('❌ Description must be 4096 characters or less!');
     }
 
+    if (footer && footer.length > 2048) {
+      return message.reply('❌ Footer must be 2048 characters or less!');
+    }
+
     const embed = new EmbedBuilder()
       .setTitle(title)
       .setDescription(description)
-      .setColor(isNaN(color) ? 0x0099ff : color)
+      .setColor(color)
       .setTimestamp();
 
     if (footer) {
-      embed.setFooter({ text: footer });
+      embed.setFooter({ text: footer.substring(0, 2048) });
     }
 
     try {
