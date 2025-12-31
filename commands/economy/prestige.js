@@ -57,7 +57,7 @@ module.exports = {
     );
 
     const embed = new EmbedBuilder()
-      .setColor(0xffd700)
+      .setColor(branding.colors.premium)
       .setTitle('✨ Prestige System')
       .setDescription(
         `**Are you sure you want to prestige?**\n\nThis will reset your level to 1 and XP to 0, but you'll gain permanent bonuses!`
@@ -110,7 +110,7 @@ module.exports = {
       if (prestigeConfirmations.has(confirmId)) {
         prestigeConfirmations.delete(confirmId);
         const expiredEmbed = EmbedBuilder.from(embed)
-          .setColor(0x808080)
+          .setColor(branding.colors.warning)
           .setFooter({ text: 'Prestige confirmation expired' });
         confirmMessage
           .edit({ embeds: [expiredEmbed], components: [] })
@@ -173,7 +173,7 @@ module.exports.handlePrestigeButton = async interaction => {
     db.set('profiles', interaction.user.id, profile);
 
     const successEmbed = new EmbedBuilder()
-      .setColor(0xffd700)
+      .setColor(branding.colors.premium)
       .setTitle('✨ Prestige Complete!')
       .setDescription(
         `🎉 Congratulations! You are now **Prestige ${confirmation.prestigeLevel}**!`

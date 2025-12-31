@@ -137,7 +137,7 @@ module.exports = {
     );
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('🃏 Poker - 5 Card Draw')
       .setDescription(
         `**Your Hand:**\n${playerHand.map(cardToString).join(' ')}\n\n` +
@@ -176,7 +176,7 @@ module.exports = {
         collector.stop();
 
         const foldEmbed = new EmbedBuilder()
-          .setColor(0xff0000)
+          .setColor(branding.colors.error)
           .setTitle('🃏 Poker - Folded')
           .setDescription(`You folded and lost ${betAmount} coins.`)
           .addFields({

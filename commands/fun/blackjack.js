@@ -102,7 +102,7 @@ module.exports = {
     activeGames.set(message.author.id, gameState);
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle('🃏 Blackjack')
       .addFields(
         {
@@ -124,7 +124,7 @@ module.exports = {
       economy.coins += Math.floor(bet * 1.5);
       db.set('economy', message.author.id, economy);
 
-      embed.setColor(0x00ff00);
+      embed.setColor(branding.colors.success);
       embed.setDescription('🎉 BLACKJACK! You win 1.5x your bet!');
       embed.addFields({
         name: 'New Balance',

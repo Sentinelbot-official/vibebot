@@ -15,7 +15,7 @@ module.exports = {
       const templateList = Object.keys(templates).sort();
 
       const embed = new EmbedBuilder()
-        .setColor(0xff6b6b)
+        .setColor(branding.colors.error)
         .setTitle('🎨 Available Meme Templates')
         .setDescription(
           `**Total Templates:** ${templateList.length}\n\n` +
@@ -81,7 +81,7 @@ module.exports = {
         const randomPost = posts[Math.floor(Math.random() * posts.length)].data;
 
         const embed = new EmbedBuilder()
-          .setColor(0xff6b6b)
+          .setColor(branding.colors.error)
           .setTitle(
             randomPost.title.length > 256
               ? randomPost.title.substring(0, 253) + '...'
@@ -217,7 +217,7 @@ module.exports = {
       }
 
       const memeEmbed = new EmbedBuilder()
-        .setColor(0xff6b6b)
+        .setColor(branding.colors.error)
         .setTitle('🎨 Your Custom Meme')
         .setImage(response.data.data.url)
         .setFooter({

@@ -250,7 +250,7 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0xffd700)
+      .setColor(branding.colors.premium)
       .setTitle(`🏆 ${user.username}'s Achievements`)
       .setDescription(
         `**Filter:** ${selectedFilter.charAt(0).toUpperCase() + selectedFilter.slice(1)}\n` +

@@ -67,7 +67,7 @@ module.exports = {
           db.set('economy', target.id, targetEconomy);
 
           const embed = new EmbedBuilder()
-            .setColor(0x00ff00)
+            .setColor(branding.colors.success)
             .setTitle('💰 Robbery Successful!')
             .setDescription(
               `You successfully robbed **${stolen.toLocaleString()} coins** from ${target}!`
@@ -88,7 +88,7 @@ module.exports = {
           db.set('economy', message.author.id, robberEconomy);
 
           const embed = new EmbedBuilder()
-            .setColor(0xff0000)
+            .setColor(branding.colors.error)
             .setTitle('🚨 Robbery Failed!')
             .setDescription(
               `You got caught! You paid a fine of **${fine.toLocaleString()} coins**.`
