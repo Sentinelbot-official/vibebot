@@ -67,12 +67,12 @@ module.exports = {
 
     // Check cooldown (database-backed) - skip for owners
     const isOwner = ownerCheck.isOwner(message.author.id);
-    
+
     if (!isOwner) {
       const cooldownTime = command.cooldown || 3; // Default 3 seconds
       const cooldownKey = `${message.author.id}-${command.name}`;
       const cooldownData = db.get('cooldowns', cooldownKey);
-      
+
       if (cooldownData && Date.now() < cooldownData) {
         const timeLeft = Math.ceil((cooldownData - Date.now()) / 1000);
         return message.reply(

@@ -22,7 +22,7 @@ module.exports = {
 
     const guildId = args[0];
     const tier = args[1].toLowerCase();
-    
+
     if (tier !== 'premium' && tier !== 'vip') {
       return message.reply('❌ Tier must be either `premium` or `vip`!');
     }
@@ -35,7 +35,7 @@ module.exports = {
           '**Make sure:**\n' +
           '• The guild ID is correct\n' +
           '• The bot has been invited to that server\n' +
-          '• The bot hasn\'t been kicked from that server'
+          "• The bot hasn't been kicked from that server"
       );
     }
 

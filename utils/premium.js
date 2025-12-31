@@ -63,7 +63,9 @@ class PremiumManager {
     };
 
     db.set('activation_keys', key, keyData);
-    logger.info(`Generated ${tier} key: ${key} (bound to guild: ${guildId || 'any'})`);
+    logger.info(
+      `Generated ${tier} key: ${key} (bound to guild: ${guildId || 'any'})`
+    );
 
     return key;
   }
@@ -91,7 +93,7 @@ class PremiumManager {
       if (keyData.boundToGuild && keyData.boundToGuild !== guildId) {
         return {
           success: false,
-          message: 
+          message:
             '❌ This activation key is bound to a different server!\n\n' +
             '**This key can only be used in the server it was created for.**\n' +
             'Contact the bot owner if you believe this is an error.',

@@ -8,30 +8,30 @@ function initCookieConsent() {
   const cookieConsent = document.getElementById('cookieConsent');
   const acceptBtn = document.getElementById('acceptCookies');
   const declineBtn = document.getElementById('declineCookies');
-  
+
   if (!cookieConsent) return;
-  
+
   // Check if user has already made a choice
   const cookieChoice = localStorage.getItem('cookieConsent');
-  
+
   if (!cookieChoice) {
     // Show banner after 2 seconds
     setTimeout(() => {
       cookieConsent.style.display = 'block';
     }, 2000);
   }
-  
+
   acceptBtn?.addEventListener('click', () => {
     localStorage.setItem('cookieConsent', 'accepted');
     cookieConsent.style.animation = 'slideDown 0.5s ease-out';
     setTimeout(() => {
       cookieConsent.style.display = 'none';
     }, 500);
-    
+
     // Initialize analytics if accepted
     initAnalytics();
   });
-  
+
   declineBtn?.addEventListener('click', () => {
     localStorage.setItem('cookieConsent', 'declined');
     cookieConsent.style.animation = 'slideDown 0.5s ease-out';
@@ -47,13 +47,13 @@ function initCookieConsent() {
 function initAnalytics() {
   const consent = localStorage.getItem('cookieConsent');
   if (consent !== 'accepted') return;
-  
+
   // Simple page view tracking (privacy-friendly)
   const pageViews = parseInt(localStorage.getItem('pageViews') || '0') + 1;
   localStorage.setItem('pageViews', pageViews.toString());
-  
+
   console.log('📊 Page views:', pageViews);
-  
+
   // You can add Plausible or Fathom Analytics here
   // Example: plausible('pageview');
 }
@@ -455,7 +455,7 @@ function updateBotStatusFromData(data) {
 function checkLiveStatus() {
   const liveBadge = document.querySelector('.live-badge');
   const TWITCH_USERNAME = 'projectdraguk';
-  
+
   if (!liveBadge) return;
 
   // Show loading state
@@ -491,7 +491,11 @@ function checkLiveStatus() {
     fetch(`https://decapi.me/twitch/uptime/${TWITCH_USERNAME}`)
       .then(response => response.text())
       .then(uptime => {
-        if (uptime && !uptime.includes('offline') && !uptime.includes('error')) {
+        if (
+          uptime &&
+          !uptime.includes('offline') &&
+          !uptime.includes('error')
+        ) {
           liveBadge.textContent = '🔴 LIVE NOW';
           liveBadge.classList.add('live');
           liveBadge.classList.remove('offline');
@@ -693,20 +697,20 @@ if (scrollToTopBtn) {
 // ============================================
 function initVoting() {
   const voteButtons = document.querySelectorAll('.vote-btn');
-  
+
   // Load votes from localStorage
   const votes = JSON.parse(localStorage.getItem('vibebot_votes') || '{}');
-  
+
   voteButtons.forEach(btn => {
     const feature = btn.dataset.feature;
     const countSpan = btn.querySelector('.vote-count');
-    
+
     // Check if user has voted
     if (votes[feature]) {
       btn.classList.add('voted');
       btn.title = 'You voted for this!';
     }
-    
+
     btn.addEventListener('click', () => {
       if (votes[feature]) {
         // Remove vote
@@ -722,7 +726,7 @@ function initVoting() {
         btn.title = 'You voted for this!';
         const currentCount = parseInt(countSpan.textContent);
         countSpan.textContent = currentCount + 1;
-        
+
         // Show thank you message
         const voteItem = btn.closest('.vote-item');
         const originalBg = voteItem.style.background;
@@ -731,7 +735,7 @@ function initVoting() {
           voteItem.style.background = originalBg;
         }, 1000);
       }
-      
+
       // Save to localStorage
       localStorage.setItem('vibebot_votes', JSON.stringify(votes));
     });
@@ -762,7 +766,7 @@ console.log(
 function updateSocialProof() {
   const serversUsing = document.getElementById('serversUsing');
   const usersServed = document.getElementById('usersServed');
-  
+
   if (serversUsing && usersServed) {
     // These will be updated by the stats API
     // For now, show loading state
@@ -778,15 +782,15 @@ function createParticles() {
   const particlesContainer = document.createElement('div');
   particlesContainer.className = 'particles-container';
   document.body.prepend(particlesContainer);
-  
+
   const particleCount = 30;
-  
+
   for (let i = 0; i < particleCount; i++) {
     const particle = document.createElement('div');
     particle.className = 'particle';
     particle.style.left = Math.random() * 100 + '%';
     particle.style.animationDelay = Math.random() * 15 + 's';
-    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+    particle.style.animationDuration = 15 + Math.random() * 10 + 's';
     particlesContainer.appendChild(particle);
   }
 }
@@ -796,8 +800,10 @@ function createParticles() {
 // ============================================
 function addShareButtons() {
   const url = encodeURIComponent(window.location.href);
-  const title = encodeURIComponent('Check out Vibe Bot - 220+ Commands Discord Bot!');
-  
+  const title = encodeURIComponent(
+    'Check out Vibe Bot - 220+ Commands Discord Bot!'
+  );
+
   const shareButtons = document.createElement('div');
   shareButtons.className = 'share-buttons';
   shareButtons.innerHTML = `
@@ -818,7 +824,7 @@ function addShareButtons() {
       </svg>
     </button>
   `;
-  
+
   document.body.appendChild(shareButtons);
 }
 
@@ -839,36 +845,36 @@ function initQuickStartWizard() {
   const steps = document.querySelectorAll('.wizard-step');
   const progressFill = document.getElementById('wizardProgress');
   const currentStepText = document.getElementById('currentStep');
-  
+
   if (!wizard) return;
-  
+
   let currentStep = 1;
   const totalSteps = steps.length;
-  
+
   // Check if user has seen wizard
   const hasSeenWizard = localStorage.getItem('hasSeenWizard');
-  
+
   if (!hasSeenWizard) {
     // Show wizard after 3 seconds
     setTimeout(() => {
       wizard.style.display = 'flex';
     }, 3000);
   }
-  
+
   function updateProgress() {
     const progress = (currentStep / totalSteps) * 100;
     progressFill.style.width = progress + '%';
     currentStepText.textContent = currentStep;
   }
-  
+
   function showStep(step) {
     steps.forEach((s, index) => {
-      s.style.display = (index + 1) === step ? 'block' : 'none';
+      s.style.display = index + 1 === step ? 'block' : 'none';
     });
     currentStep = step;
     updateProgress();
   }
-  
+
   nextBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       if (currentStep < totalSteps) {
@@ -876,17 +882,17 @@ function initQuickStartWizard() {
       }
     });
   });
-  
+
   closeBtn?.addEventListener('click', () => {
     wizard.style.display = 'none';
     localStorage.setItem('hasSeenWizard', 'true');
   });
-  
+
   finishBtn?.addEventListener('click', () => {
     wizard.style.display = 'none';
     localStorage.setItem('hasSeenWizard', 'true');
   });
-  
+
   updateProgress();
 }
 
@@ -895,22 +901,23 @@ function initQuickStartWizard() {
 // ============================================
 function initTooltips() {
   const tooltipElements = document.querySelectorAll('[data-tooltip]');
-  
+
   tooltipElements.forEach(element => {
-    element.addEventListener('mouseenter', (e) => {
+    element.addEventListener('mouseenter', e => {
       const tooltip = document.createElement('div');
       tooltip.className = 'tooltip';
       tooltip.textContent = element.getAttribute('data-tooltip');
       document.body.appendChild(tooltip);
-      
+
       const rect = element.getBoundingClientRect();
-      tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
+      tooltip.style.left =
+        rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
       tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
-      
+
       element._tooltip = tooltip;
     });
-    
-    element.addEventListener('mouseleave', (e) => {
+
+    element.addEventListener('mouseleave', e => {
       if (element._tooltip) {
         element._tooltip.remove();
         element._tooltip = null;
@@ -933,13 +940,13 @@ document.addEventListener('DOMContentLoaded', () => {
   createParticles();
   addShareButtons();
   initQuickStartWizard();
-  
+
   // Check cookie consent and init analytics
   const consent = localStorage.getItem('cookieConsent');
   if (consent === 'accepted') {
     initAnalytics();
   }
-  
+
   console.log('✅ Vibe Bot website loaded successfully!');
   console.log('💜 Theme:', document.documentElement.getAttribute('data-theme'));
 });

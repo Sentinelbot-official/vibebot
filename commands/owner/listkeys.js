@@ -33,12 +33,14 @@ module.exports = {
         keyData.expiresAt > 0
           ? `Expires <t:${Math.floor(keyData.expiresAt / 1000)}:R>`
           : 'Never expires';
-      
+
       // Get guild info if bound
       let guildInfo = 'Any server';
       if (keyData.boundToGuild) {
         const guild = message.client.guilds.cache.get(keyData.boundToGuild);
-        guildInfo = guild ? `🏰 ${guild.name}` : `🏰 Guild ID: ${keyData.boundToGuild}`;
+        guildInfo = guild
+          ? `🏰 ${guild.name}`
+          : `🏰 Guild ID: ${keyData.boundToGuild}`;
       }
 
       embed.addFields({
