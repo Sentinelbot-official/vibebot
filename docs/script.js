@@ -466,49 +466,66 @@ function checkLiveStatus() {
   fetch(`https://decapi.me/twitch/uptime/${TWITCH_USERNAME}`)
     .then(response => response.text())
     .then(uptime => {
-      if (uptime && !uptime.includes('offline') && !uptime.includes('error')) {
-        // Stream is live!
-        liveBadge.textContent = '🔴 LIVE NOW';
-        liveBadge.classList.add('live');
-        liveBadge.classList.remove('offline', 'checking');
-        liveBadge.title = `Live for ${uptime}`;
-      } else {
-        // Stream is offline
-        liveBadge.textContent = '⚫ Offline';
-        liveBadge.classList.add('offline');
-        liveBadge.classList.remove('live', 'checking');
-        liveBadge.title = 'Stream is currently offline';
-      }
+      // Wait 5 seconds before showing result
+      setTimeout(() => {
+        if (uptime && !uptime.includes('offline') && !uptime.includes('error')) {
+          // Stream is live!
+          liveBadge.textContent = '🔴 LIVE NOW';
+          liveBadge.classList.add('live');
+          liveBadge.classList.remove('offline', 'checking');
+          liveBadge.title = `Live for ${uptime}`;
+        } else {
+          // Stream is offline
+          liveBadge.textContent = '⚫ Offline';
+          liveBadge.classList.add('offline');
+          liveBadge.classList.remove('live', 'checking');
+          liveBadge.title = 'Stream is currently offline';
+        }
+      }, 5000);
     })
     .catch(error => {
-      console.warn('Could not check stream status:', error);
-      liveBadge.textContent = '🔴 Watch Stream';
-      liveBadge.classList.remove('checking');
+      // Wait 5 seconds even on error
+      setTimeout(() => {
+        console.warn('Could not check stream status:', error);
+        liveBadge.textContent = '🔴 Watch Stream';
+        liveBadge.classList.remove('checking');
+      }, 5000);
     });
 
   // Check every 2 minutes
   setInterval(() => {
+    // Show checking state
+    liveBadge.textContent = '⏳ Checking...';
+    liveBadge.classList.add('checking');
+    liveBadge.classList.remove('live', 'offline');
+
     fetch(`https://decapi.me/twitch/uptime/${TWITCH_USERNAME}`)
       .then(response => response.text())
       .then(uptime => {
-        if (
-          uptime &&
-          !uptime.includes('offline') &&
-          !uptime.includes('error')
-        ) {
-          liveBadge.textContent = '🔴 LIVE NOW';
-          liveBadge.classList.add('live');
-          liveBadge.classList.remove('offline');
-          liveBadge.title = `Live for ${uptime}`;
-        } else {
-          liveBadge.textContent = '⚫ Offline';
-          liveBadge.classList.add('offline');
-          liveBadge.classList.remove('live');
-          liveBadge.title = 'Stream is currently offline';
-        }
+        // Wait 5 seconds before showing result
+        setTimeout(() => {
+          if (
+            uptime &&
+            !uptime.includes('offline') &&
+            !uptime.includes('error')
+          ) {
+            liveBadge.textContent = '🔴 LIVE NOW';
+            liveBadge.classList.add('live');
+            liveBadge.classList.remove('offline', 'checking');
+            liveBadge.title = `Live for ${uptime}`;
+          } else {
+            liveBadge.textContent = '⚫ Offline';
+            liveBadge.classList.add('offline');
+            liveBadge.classList.remove('live', 'checking');
+            liveBadge.title = 'Stream is currently offline';
+          }
+        }, 5000);
       })
       .catch(() => {
-        // Silently fail on refresh
+        // Silently fail on refresh after 5 seconds
+        setTimeout(() => {
+          liveBadge.classList.remove('checking');
+        }, 5000);
       });
   }, 120000); // 2 minutes
 }
