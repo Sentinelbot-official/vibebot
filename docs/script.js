@@ -2,6 +2,88 @@
 // Built 24/7 live on Twitch with the community
 
 // ============================================
+// Scroll Progress Indicator
+// ============================================
+function updateScrollProgress() {
+  const scrollProgress = document.getElementById('scrollProgress');
+  if (!scrollProgress) return;
+
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const progress = (scrollTop / scrollHeight) * 100;
+  
+  scrollProgress.style.width = progress + '%';
+}
+
+window.addEventListener('scroll', updateScrollProgress);
+
+// ============================================
+// Cookie Consent Banner
+// ============================================
+function initCookieConsent() {
+  const cookieConsent = document.getElementById('cookieConsent');
+  const acceptBtn = document.getElementById('acceptCookies');
+  const declineBtn = document.getElementById('declineCookies');
+  
+  if (!cookieConsent) return;
+  
+  // Check if user has already made a choice
+  const cookieChoice = localStorage.getItem('cookieConsent');
+  
+  if (!cookieChoice) {
+    // Show banner after 2 seconds
+    setTimeout(() => {
+      cookieConsent.style.display = 'block';
+    }, 2000);
+  }
+  
+  acceptBtn?.addEventListener('click', () => {
+    localStorage.setItem('cookieConsent', 'accepted');
+    cookieConsent.style.animation = 'slideDown 0.5s ease-out';
+    setTimeout(() => {
+      cookieConsent.style.display = 'none';
+    }, 500);
+    
+    // Initialize analytics if accepted
+    initAnalytics();
+  });
+  
+  declineBtn?.addEventListener('click', () => {
+    localStorage.setItem('cookieConsent', 'declined');
+    cookieConsent.style.animation = 'slideDown 0.5s ease-out';
+    setTimeout(() => {
+      cookieConsent.style.display = 'none';
+    }, 500);
+  });
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+// ============================================
+// Privacy-Friendly Analytics
+// ============================================
+function initAnalytics() {
+  const consent = localStorage.getItem('cookieConsent');
+  if (consent !== 'accepted') return;
+  
+  // Simple page view tracking (privacy-friendly)
+  const pageViews = parseInt(localStorage.getItem('pageViews') || '0') + 1;
+  localStorage.setItem('pageViews', pageViews.toString());
+  
+  console.log('📊 Page views:', pageViews);
+  
+  // You can add Plausible or Fathom Analytics here
+  // Example: plausible('pageview');
+}
+
+// ============================================
 // Premium Links Function
 // ============================================
 function openPremiumLinks() {
@@ -715,6 +797,154 @@ function updateSocialProof() {
 }
 
 // ============================================
+// Animated Background Particles
+// ============================================
+function createParticles() {
+  const particlesContainer = document.createElement('div');
+  particlesContainer.className = 'particles-container';
+  document.body.prepend(particlesContainer);
+  
+  const particleCount = 30;
+  
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 15 + 's';
+    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+    particlesContainer.appendChild(particle);
+  }
+}
+
+// ============================================
+// Social Share Buttons
+// ============================================
+function addShareButtons() {
+  const url = encodeURIComponent(window.location.href);
+  const title = encodeURIComponent('Check out Vibe Bot - 220+ Commands Discord Bot!');
+  
+  const shareButtons = document.createElement('div');
+  shareButtons.className = 'share-buttons';
+  shareButtons.innerHTML = `
+    <button class="share-btn" data-tooltip="Share on Twitter" onclick="window.open('https://twitter.com/intent/tweet?url=${url}&text=${title}', '_blank')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+      </svg>
+    </button>
+    <button class="share-btn" data-tooltip="Share on Facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${url}', '_blank')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+      </svg>
+    </button>
+    <button class="share-btn" data-tooltip="Copy Link" onclick="copyToClipboard('${decodeURIComponent(url)}')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+    </button>
+  `;
+  
+  document.body.appendChild(shareButtons);
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('✅ Link copied to clipboard!');
+  });
+}
+
+// ============================================
+// Quick Start Wizard
+// ============================================
+function initQuickStartWizard() {
+  const wizard = document.getElementById('quickStartWizard');
+  const closeBtn = document.getElementById('closeWizard');
+  const finishBtn = document.getElementById('finishWizard');
+  const nextBtns = document.querySelectorAll('.wizard-next');
+  const steps = document.querySelectorAll('.wizard-step');
+  const progressFill = document.getElementById('wizardProgress');
+  const currentStepText = document.getElementById('currentStep');
+  
+  if (!wizard) return;
+  
+  let currentStep = 1;
+  const totalSteps = steps.length;
+  
+  // Check if user has seen wizard
+  const hasSeenWizard = localStorage.getItem('hasSeenWizard');
+  
+  if (!hasSeenWizard) {
+    // Show wizard after 3 seconds
+    setTimeout(() => {
+      wizard.style.display = 'flex';
+    }, 3000);
+  }
+  
+  function updateProgress() {
+    const progress = (currentStep / totalSteps) * 100;
+    progressFill.style.width = progress + '%';
+    currentStepText.textContent = currentStep;
+  }
+  
+  function showStep(step) {
+    steps.forEach((s, index) => {
+      s.style.display = (index + 1) === step ? 'block' : 'none';
+    });
+    currentStep = step;
+    updateProgress();
+  }
+  
+  nextBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (currentStep < totalSteps) {
+        showStep(currentStep + 1);
+      }
+    });
+  });
+  
+  closeBtn?.addEventListener('click', () => {
+    wizard.style.display = 'none';
+    localStorage.setItem('hasSeenWizard', 'true');
+  });
+  
+  finishBtn?.addEventListener('click', () => {
+    wizard.style.display = 'none';
+    localStorage.setItem('hasSeenWizard', 'true');
+  });
+  
+  updateProgress();
+}
+
+// ============================================
+// Tooltips
+// ============================================
+function initTooltips() {
+  const tooltipElements = document.querySelectorAll('[data-tooltip]');
+  
+  tooltipElements.forEach(element => {
+    element.addEventListener('mouseenter', (e) => {
+      const tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      tooltip.textContent = element.getAttribute('data-tooltip');
+      document.body.appendChild(tooltip);
+      
+      const rect = element.getBoundingClientRect();
+      tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
+      tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
+      
+      element._tooltip = tooltip;
+    });
+    
+    element.addEventListener('mouseleave', (e) => {
+      if (element._tooltip) {
+        element._tooltip.remove();
+        element._tooltip = null;
+      }
+    });
+  });
+}
+
+// ============================================
 // Initialize Everything
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -723,6 +953,19 @@ document.addEventListener('DOMContentLoaded', () => {
   checkLiveStatus();
   initVoting();
   updateSocialProof();
+  initCookieConsent();
+  initTooltips();
+  updateScrollProgress();
+  createParticles();
+  addShareButtons();
+  initQuickStartWizard();
+  
+  // Check cookie consent and init analytics
+  const consent = localStorage.getItem('cookieConsent');
+  if (consent === 'accepted') {
+    initAnalytics();
+  }
+  
   console.log('✅ Vibe Bot website loaded successfully!');
   console.log('💜 Theme:', document.documentElement.getAttribute('data-theme'));
 });

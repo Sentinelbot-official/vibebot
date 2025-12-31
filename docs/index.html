@@ -73,8 +73,26 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
 </head>
 <body>
+    <!-- Scroll Progress Indicator -->
+    <div id="scrollProgress" class="scroll-progress"></div>
+    
+    <!-- Cookie Consent Banner -->
+    <div id="cookieConsent" class="cookie-consent" style="display: none;">
+        <div class="cookie-content">
+            <p>🍪 We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
+            <div class="cookie-buttons">
+                <button id="acceptCookies" class="btn btn-primary btn-sm">Accept</button>
+                <button id="declineCookies" class="btn btn-secondary btn-sm">Decline</button>
+                <a href="privacy.html" class="cookie-link">Learn More</a>
+            </div>
+        </div>
+    </div>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
@@ -1193,6 +1211,63 @@
     <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to top">
         ↑
     </button>
+    
+    <!-- Quick Start Wizard -->
+    <div id="quickStartWizard" class="wizard-modal" style="display: none;">
+        <div class="wizard-content">
+            <button class="wizard-close" id="closeWizard" aria-label="Close wizard">&times;</button>
+            
+            <div class="wizard-step" data-step="1">
+                <h2>🎉 Welcome to Vibe Bot!</h2>
+                <p>Let's get you started in just 3 easy steps</p>
+                <div class="wizard-icon">🚀</div>
+                <button class="btn btn-primary wizard-next">Get Started</button>
+            </div>
+            
+            <div class="wizard-step" data-step="2" style="display: none;">
+                <h2>📝 Step 1: Add the Bot</h2>
+                <p>Click the button below to invite Vibe Bot to your Discord server</p>
+                <a href="https://discord.com/oauth2/authorize?client_id=1455908224958992384&permissions=268446806&integration_type=0&scope=bot" target="_blank" class="btn btn-primary">
+                    Add to Discord
+                </a>
+                <button class="btn btn-secondary wizard-next">Next Step</button>
+            </div>
+            
+            <div class="wizard-step" data-step="3" style="display: none;">
+                <h2>⚡ Step 2: Try Your First Command</h2>
+                <p>In any channel, type:</p>
+                <div class="wizard-command">//help</div>
+                <p>This will show you all available commands!</p>
+                <button class="btn btn-primary wizard-next">Next Step</button>
+            </div>
+            
+            <div class="wizard-step" data-step="4" style="display: none;">
+                <h2>🎊 You're All Set!</h2>
+                <p>Here are some popular commands to try:</p>
+                <div class="wizard-commands">
+                    <div class="wizard-command-item">
+                        <code>//daily</code> - Get daily coins
+                    </div>
+                    <div class="wizard-command-item">
+                        <code>//profile</code> - View your profile
+                    </div>
+                    <div class="wizard-command-item">
+                        <code>//8ball</code> - Ask a question
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="finishWizard">Start Using Vibe Bot!</button>
+            </div>
+            
+            <div class="wizard-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="wizardProgress"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="currentStep">1</span> of 4
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
