@@ -414,6 +414,52 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// Fix Twitch embed parent domain based on current location
+(function fixTwitchEmbed() {
+    const iframe = document.querySelector('.stream-embed iframe');
+    const fallback = document.querySelector('.stream-fallback');
+    
+    if (iframe) {
+        const currentDomain = window.location.hostname || 'localhost';
+        const currentSrc = iframe.src;
+        
+        // Update parent parameter to match current domain
+        if (currentDomain === 'localhost' || currentDomain === '127.0.0.1' || currentDomain === '') {
+            // For local testing, use localhost as parent
+            iframe.src = currentSrc.replace('parent=sentinelbot-official.github.io', 'parent=localhost');
+        }
+        // For GitHub Pages, it's already correct
+        
+        console.log('🎬 Twitch embed configured for:', currentDomain);
+        
+        // Hide fallback message after iframe loads
+        iframe.addEventListener('load', () => {
+            if (fallback) {
+                setTimeout(() => {
+                    fallback.style.opacity = '0';
+                    setTimeout(() => {
+                        fallback.style.display = 'none';
+                    }, 300);
+                }, 1000);
+            }
+        });
+        
+        // If iframe fails to load after 10 seconds, show helpful message
+        setTimeout(() => {
+            if (fallback && fallback.style.display !== 'none') {
+                fallback.innerHTML = `
+                    <h3>⚠️ Stream Embed Blocked</h3>
+                    <p><a href="https://twitch.tv/projectdraguk" target="_blank" style="font-size: 1.2rem;">🔴 Watch Live on Twitch</a></p>
+                    <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 1rem;">
+                        Your browser's tracking prevention is blocking the embed.<br>
+                        Click above to watch on Twitch directly!
+                    </p>
+                `;
+            }
+        }, 10000);
+    }
+})();
+
 // Console message for developers
 console.log('%c🎵 Vibe Bot', 'font-size: 40px; font-weight: bold; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;');
 console.log('%cBuilt 24/7 live on Twitch with the community!', 'font-size: 16px; color: #9b59b6;');

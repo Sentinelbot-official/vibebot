@@ -169,11 +169,21 @@
                 <p class="section-subtitle">Every feature is coded live on Twitch - join the community!</p>
             </div>
             <div class="stream-embed">
+                <div class="stream-fallback">
+                    <h3>🔴 Stream Loading...</h3>
+                    <p>If the stream doesn't load, <a href="https://twitch.tv/projectdraguk" target="_blank">watch on Twitch</a></p>
+                    <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 1rem;">
+                        Note: Some browsers block embedded content. Try disabling tracking prevention or use a different browser.
+                    </p>
+                </div>
                 <iframe 
-                    src="https://player.twitch.tv/?channel=projectdraguk&parent=sentinelbot-official.github.io&muted=false"
+                    src="https://player.twitch.tv/?channel=projectdraguk&parent=sentinelbot-official.github.io&muted=false&autoplay=false"
                     height="480"
                     width="100%"
-                    allowfullscreen>
+                    frameborder="0"
+                    scrolling="no"
+                    allowfullscreen="true"
+                    allow="autoplay; fullscreen; encrypted-media; picture-in-picture">
                 </iframe>
             </div>
             <div class="stream-info">
