@@ -136,6 +136,18 @@ if (fs.existsSync(eventsPath)) {
     const filePath = path.join(eventsPath, file);
     const event = require(filePath);
 
+    // Skip special handlers (manually initialized)
+    if (file === 'birthdayChecker.js') {
+      logger.info(`Skipping ${file} (manually initialized)`);
+      continue;
+    }
+
+    // Skip if no execute function (not a standard event)
+    if (!event.execute) {
+      logger.warn(`Event ${file} has no execute function, skipping`);
+      continue;
+    }
+
     // Wrap event execution in error handler
     const executeEvent = async (...args) => {
       try {

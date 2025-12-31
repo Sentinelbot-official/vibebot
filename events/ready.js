@@ -66,8 +66,20 @@ module.exports = {
       }, 30000);
 
       logger.success('🎭 Dynamic status rotation started!');
+
+      // Initialize birthday checker
+      try {
+        const birthdayChecker = require('./birthdayChecker');
+        if (birthdayChecker.init) {
+          birthdayChecker.init(client);
+        }
+      } catch (error) {
+        logger.warn('Birthday checker not available:', error.message);
+      }
     } catch (error) {
-      logger.error('Error in clientReady event:', error);
+      logger.error('Error in clientReady event:', error.message);
+      logger.error('Stack trace:', error.stack);
+      logger.error('Full error:', JSON.stringify(error, null, 2));
       // Continue anyway - bot should still work
     }
   },

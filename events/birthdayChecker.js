@@ -5,9 +5,9 @@ const logger = require('../utils/logger');
 let lastCheckedDate = null;
 
 module.exports = {
-  name: 'clientReady',
-  once: false,
-  execute(client) {
+  name: 'birthdayCheck',
+  // This will be manually initialized from the main ready event
+  init(client) {
     // Check birthdays every hour
     setInterval(
       () => {
@@ -16,8 +16,10 @@ module.exports = {
       60 * 60 * 1000
     ); // Every hour
 
-    // Also check immediately on startup
+    // Also check immediately on startup (after 5 seconds)
     setTimeout(() => checkBirthdays(client), 5000);
+    
+    logger.info('✓ Birthday checker initialized');
   },
 };
 
