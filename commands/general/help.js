@@ -64,22 +64,48 @@ module.exports = {
       // Add fields for each category
       for (const [category, cmds] of Object.entries(categories)) {
         if (cmds.length > 0) {
-          const commandList = cmds
-            .map(cmd => {
-              const desc = cmd.description ? ` - ${cmd.description}` : '';
-              return `\`${cmd.name}\`${desc}`;
-            })
-            .join('\n');
+          // Just show command names without descriptions to save space
+          const commandList = cmds.map(cmd => `\`${cmd.name}\``).join(', ');
 
-          embed.addFields({
-            name: `📂 ${category}`,
-            value: commandList || 'No commands',
-            inline: false,
-          });
+          // Check if field value is within Discord's 1024 character limit
+          if (commandList.length > 1024) {
+            // Split into multiple fields if too long
+            const cmdNames = cmds.map(cmd => `\`${cmd.name}\``);
+            let currentChunk = '';
+            let chunkIndex = 1;
+
+            for (const cmdName of cmdNames) {
+              if ((currentChunk + cmdName).length > 1000) {
+                embed.addFields({
+                  name: `📂 ${category} (${chunkIndex})`,
+                  value: currentChunk,
+                  inline: false,
+                });
+                currentChunk = cmdName + ', ';
+                chunkIndex++;
+              } else {
+                currentChunk += cmdName + ', ';
+              }
+            }
+
+            if (currentChunk) {
+              embed.addFields({
+                name: `📂 ${category} (${chunkIndex})`,
+                value: currentChunk.slice(0, -2), // Remove trailing comma
+                inline: false,
+              });
+            }
+          } else {
+            embed.addFields({
+              name: `📂 ${category} (${cmds.length} commands)`,
+              value: commandList || 'No commands',
+              inline: false,
+            });
+          }
         }
       }
 
-      message.channel.send({ embeds: [embed] });
+      return message.channel.send({ embeds: [embed] });
     } else {
       // Show info about specific command
       const name = args[0].toLowerCase();
@@ -124,7 +150,7 @@ module.exports = {
         });
       }
 
-      message.channel.send({ embeds: [embed] });
+      return message.channel.send({ embeds: [embed] });
     }
   },
 };
