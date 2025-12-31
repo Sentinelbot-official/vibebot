@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const axios = require('axios');
+const branding = require('../../utils/branding');
 
 // Language codes mapping
 const languageCodes = {
@@ -75,9 +76,65 @@ module.exports = {
         .join('\n');
 
       const embed = new EmbedBuilder()
-        .setColor(branding.colors.info)
+        .setColor(0x5865f2)
         .setTitle('🌐 Supported Languages')
         .setDescription(langList)
+        .setFooter(branding.footers.default)
+        .setTimestamp();
+
+      return message.reply({ embeds: [embed] });
+    }
+
+    const targetLang = args[0].toLowerCase();
+    const text = args.slice(1).join(' ');
+
+    if (!languageCodes[targetLang]) {
+      return message.reply(
+        `❌ Unsupported language code: \`${targetLang}\`\nUse \`translate list\` to see all supported languages.`
+      );
+    }
+
+    const translatingMsg = await message.reply('🌐 Translating...');
+
+    try {
+      // Use Google Translate API (free endpoint)
+      // Note: This uses the unofficial API. For production, use official Google Cloud Translation API
+      const response = await axios.get(
+        'https://translate.googleapis.com/translate_a/single',
+        {
+          params: {
+            client: 'gtx',
+            sl: 'auto', // Auto-detect source language
+            tl: targetLang,
+            dt: 't',
+            q: text,
+          },
+          timeout: 10000,
+        }
+      );
+
+      // Parse response
+      const translated = response.data[0].map(item => item[0]).join('');
+
+      // Detect source language
+      const sourceLang = response.data[2] || 'auto';
+      const sourceLangName = languageCodes[sourceLang] || 'Unknown';
+
+      const embed = new EmbedBuilder()
+        .setColor(0x5865f2)
+        .setTitle('🌐 Translation')
+        .addFields(
+          {
+            name: `Original (${sourceLangName})`,
+            value: text.substring(0, 1024),
+            inline: false,
+          },
+          {
+            name: `Translated (${languageCodes[targetLang]})`,
+            value: translated.substring(0, 1024),
+            inline: false,
+          }
+        )
         .setFooter(branding.footers.default)
         .setTimestamp();
 
@@ -102,7 +159,7 @@ module.exports = {
           const translated = fallbackResponse.data.responseData.translatedText;
 
           const embed = new EmbedBuilder()
-            .setColor(branding.colors.info)
+            .setColor(0x5865f2)
             .setTitle('🌐 Translation')
             .addFields(
               {

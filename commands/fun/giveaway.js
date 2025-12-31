@@ -1,6 +1,7 @@
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
 const premiumPerks = require('../../utils/premiumPerks');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'giveaway',
@@ -111,6 +112,205 @@ module.exports = {
             `👑 VIP users get 3x entries`
         )
         .setFooter(branding.footers.default)
+        .setTimestamp(endTime);
+
+      const giveawayMsg = await message.channel.send({
+        embeds: [giveawayEmbed],
+      });
+      await giveawayMsg.react('🎉');
+
+      // Save giveaway data
+      const giveaways = db.get('giveaways', message.guild.id) || {};
+      giveaways[giveawayMsg.id] = {
+        messageId: giveawayMsg.id,
+        channelId: message.channel.id,
+        guildId: message.guild.id,
+        prize,
+        winners,
+        endTime,
+        hostId: message.author.id,
+        ended: false,
+      };
+      db.set('giveaways', message.guild.id, giveaways);
+
+      return message.reply(
+        `✅ Giveaway started! Ends <t:${Math.floor(endTime / 1000)}:R>`
+      );
+    }
+
+    if (action === 'end') {
+      const messageId = args[1];
+
+      if (!messageId) {
+        return message.reply('❌ Please provide the giveaway message ID!');
+      }
+
+      const giveaways = db.get('giveaways', message.guild.id) || {};
+      const giveaway = giveaways[messageId];
+
+      if (!giveaway) {
+        return message.reply('❌ Giveaway not found!');
+      }
+
+      if (giveaway.ended) {
+        return message.reply('❌ This giveaway has already ended!');
+      }
+
+      await endGiveaway(message.client, giveaway);
+      return message.reply('✅ Giveaway ended!');
+    }
+
+    if (action === 'reroll') {
+      const messageId = args[1];
+
+      if (!messageId) {
+        return message.reply('❌ Please provide the giveaway message ID!');
+      }
+
+      const giveaways = db.get('giveaways', message.guild.id) || {};
+      const giveaway = giveaways[messageId];
+
+      if (!giveaway) {
+        return message.reply('❌ Giveaway not found!');
+      }
+
+      if (!giveaway.ended) {
+        return message.reply('❌ This giveaway has not ended yet!');
+      }
+
+      await endGiveaway(message.client, giveaway, true);
+      return message.reply('✅ Giveaway rerolled!');
+    }
+
+    if (action === 'list') {
+      const giveaways = db.get('giveaways', message.guild.id) || {};
+      const activeGiveaways = Object.values(giveaways).filter(g => !g.ended);
+
+      if (activeGiveaways.length === 0) {
+        return message.reply('📭 No active giveaways!');
+      }
+
+      const embed = new EmbedBuilder()
+        .setColor('#0099ff')
+        .setTitle('🎉 Active Giveaways')
+        .setDescription(
+          activeGiveaways
+            .map(
+              g =>
+                `**${g.prize}**\n` +
+                `Channel: <#${g.channelId}>\n` +
+                `Ends: <t:${Math.floor(g.endTime / 1000)}:R>\n` +
+                `Message ID: \`${g.messageId}\``
+            )
+            .join('\n\n')
+        )
+        .setFooter(branding.footers.default);
+
+      return message.reply({ embeds: [embed] });
+    }
+  },
+};
+
+async function endGiveaway(client, giveaway, isReroll = false) {
+  try {
+    const channel = await client.channels.fetch(giveaway.channelId);
+    const giveawayMsg = await channel.messages.fetch(giveaway.messageId);
+
+    // Get reactions
+    const reaction = giveawayMsg.reactions.cache.get('🎉');
+    if (!reaction) {
+      const embed = new EmbedBuilder()
+        .setColor('#ff0000')
+        .setTitle('🎉 Giveaway Ended')
+        .setDescription(`**Prize:** ${giveaway.prize}\n\n❌ No valid entries!`);
+
+      await giveawayMsg.edit({ embeds: [embed] });
+      return;
+    }
+
+    const users = await reaction.users.fetch();
+    let participants = users.filter(u => !u.bot);
+
+    if (participants.size === 0) {
+      const embed = new EmbedBuilder()
+        .setColor('#ff0000')
+        .setTitle('🎉 Giveaway Ended')
+        .setDescription(`**Prize:** ${giveaway.prize}\n\n❌ No valid entries!`);
+
+      await giveawayMsg.edit({ embeds: [embed] });
+      return;
+    }
+
+    // Apply premium multipliers
+    const guild = await client.guilds.fetch(giveaway.guildId);
+    const entriesMap = new Map();
+
+    for (const [userId, user] of participants) {
+      const member = await guild.members.fetch(userId).catch(() => null);
+      if (!member) continue;
+
+      // Check premium status
+      const tierName = premiumPerks.getTierDisplayName(giveaway.guildId);
+      let entries = 1;
+
+      if (tierName === 'VIP') {
+        entries = 3;
+      } else if (tierName === 'Premium') {
+        entries = 2;
+      }
+
+      entriesMap.set(userId, { user, entries });
+    }
+
+    // Create weighted array
+    const weightedEntries = [];
+    for (const [userId, data] of entriesMap) {
+      for (let i = 0; i < data.entries; i++) {
+        weightedEntries.push(data.user);
+      }
+    }
+
+    // Pick winners
+    const winners = [];
+    const winnerIds = new Set();
+
+    for (let i = 0; i < giveaway.winners && weightedEntries.length > 0; i++) {
+      const randomIndex = Math.floor(Math.random() * weightedEntries.length);
+      const winner = weightedEntries[randomIndex];
+
+      if (!winnerIds.has(winner.id)) {
+        winners.push(winner);
+        winnerIds.add(winner.id);
+      }
+
+      // Remove all entries from this winner
+      for (let j = weightedEntries.length - 1; j >= 0; j--) {
+        if (weightedEntries[j].id === winner.id) {
+          weightedEntries.splice(j, 1);
+        }
+      }
+    }
+
+    if (winners.length === 0) {
+      const embed = new EmbedBuilder()
+        .setColor('#ff0000')
+        .setTitle('🎉 Giveaway Ended')
+        .setDescription(`**Prize:** ${giveaway.prize}\n\n❌ No valid entries!`);
+
+      await giveawayMsg.edit({ embeds: [embed] });
+      return;
+    }
+
+    // Update message
+    const embed = new EmbedBuilder()
+      .setColor('#00ff00')
+      .setTitle('🎉 Giveaway Ended!')
+      .setDescription(
+        `**Prize:** ${giveaway.prize}\n\n` +
+          `**Winner${winners.length > 1 ? 's' : ''}:** ${winners.map(w => `<@${w.id}>`).join(', ')}\n\n` +
+          `**Hosted by:** <@${giveaway.hostId}>`
+      )
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     await giveawayMsg.edit({ embeds: [embed] });
