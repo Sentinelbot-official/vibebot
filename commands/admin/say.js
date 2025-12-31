@@ -1,9 +1,9 @@
-const { PermissionFlagsBits } = require('discord.js');
+const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 
 module.exports = {
   name: 'say',
   aliases: ['echo'],
-  description: 'Make the bot say something',
+  description: 'Make the bot say something in an embed',
   usage: '<message>',
   category: 'admin',
   cooldown: 3,
@@ -17,43 +17,25 @@ module.exports = {
       return message.reply('❌ Please provide a message!');
     }
 
-    let text = args.join(' ');
+    const text = args.join(' ');
 
-    // Validate message length
-    if (text.length > 2000) {
-      return message.reply('❌ Message is too long! Maximum 2000 characters.');
+    // Validate message length (embeds have 4096 char limit for description)
+    if (text.length > 4000) {
+      return message.reply('❌ Message is too long! Maximum 4000 characters.');
     }
 
-    // Sanitize ALL mentions to prevent pings (for everyone, including admins)
-    text = text
-      .replace(/@everyone/gi, '@\u200beveryone')
-      .replace(/@here/gi, '@\u200bhere');
-
-    // Sanitize user mentions
-    text = text.replace(/<@!?\d+>/g, match => {
-      return match.replace('@', '@\u200b');
-    });
-
-    // Sanitize role mentions
-    text = text.replace(/<@&\d+>/g, match => {
-      return match.replace('@', '@\u200b');
-    });
-
     try {
-      // Add attribution footer to show who used the command
-      const footer = `\n\n-# Sent by ${message.author.tag} via say command`;
-      const fullMessage = text + footer;
+      const embed = new EmbedBuilder()
+        .setDescription(text)
+        .setColor(0x5865f2)
+        .setFooter({
+          text: `Sent by ${message.author.tag}`,
+          iconURL: message.author.displayAvatarURL(),
+        })
+        .setTimestamp();
 
       await message.delete();
-      await message.channel.send({
-        content: fullMessage,
-        allowedMentions: {
-          // Disable ALL pings for everyone
-          parse: [],
-          users: [],
-          roles: [],
-        },
-      });
+      await message.channel.send({ embeds: [embed] });
     } catch (error) {
       console.error('Error sending message:', error);
       message.reply('❌ Failed to send message!');
