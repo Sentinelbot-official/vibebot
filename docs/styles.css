@@ -1083,21 +1083,54 @@ section {
    ============================================ */
 
 .activate-hero {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: var(--white);
-    padding: 120px 0 80px;
+    padding: 150px 0 100px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.activate-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+}
+
+.activate-hero .hero-content {
+    position: relative;
+    z-index: 1;
 }
 
 .activate-hero h1 {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
     font-weight: 900;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.8s ease;
 }
 
 .hero-subtitle {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     opacity: 0.95;
+    font-weight: 500;
+    animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .instructions-section {
@@ -1112,27 +1145,57 @@ section {
 
 .instruction-card {
     background: var(--card-bg);
-    border-radius: 20px;
+    border-radius: 25px;
     padding: 3rem;
     margin-bottom: 2.5rem;
-    box-shadow: var(--shadow);
-    border-left: 5px solid var(--primary);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 2px solid transparent;
+    border-left: 6px solid var(--primary);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.instruction-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+    opacity: 0;
+    transition: opacity 0.4s ease;
 }
 
 .instruction-card:hover {
-    transform: translateX(10px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
+    border-color: var(--primary);
+}
+
+.instruction-card:hover::before {
+    opacity: 1;
 }
 
 .instruction-card.highlight {
-    border-left-color: var(--warning);
-    background: linear-gradient(to right, rgba(255, 165, 0, 0.05), var(--card-bg));
+    border-left-color: #f093fb;
+    background: linear-gradient(135deg, rgba(240, 147, 251, 0.08), var(--card-bg));
+    animation: pulse 2s ease-in-out infinite;
 }
 
 .instruction-card.success {
-    border-left-color: var(--success);
-    background: linear-gradient(to right, rgba(0, 255, 0, 0.05), var(--card-bg));
+    border-left-color: #00d4aa;
+    background: linear-gradient(135deg, rgba(0, 212, 170, 0.08), var(--card-bg));
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 10px 30px rgba(240, 147, 251, 0.2);
+    }
+    50% {
+        box-shadow: 0 15px 40px rgba(240, 147, 251, 0.4);
+    }
 }
 
 .card-header {
@@ -1141,13 +1204,28 @@ section {
 
 .step-badge {
     display: inline-block;
-    background: var(--primary);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: var(--white);
-    padding: 0.5rem 1.5rem;
+    padding: 0.6rem 1.8rem;
     border-radius: 50px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    text-transform: uppercase;
+    animation: slideInLeft 0.6s ease;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .card-header h2 {
@@ -1168,16 +1246,63 @@ section {
     gap: 1.5rem;
     margin: 2rem 0;
     flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tier-buttons .btn {
+    position: relative;
+    overflow: hidden;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 1.2rem 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.tier-buttons .btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.tier-buttons .btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.tier-buttons .btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
 }
 
 .note {
     font-size: 1rem !important;
-    padding: 1rem;
-    background: var(--warning);
-    color: var(--darker);
-    border-radius: 10px;
-    font-weight: 600;
+    padding: 1.2rem 1.5rem;
+    background: linear-gradient(135deg, #ffd89b, #19547b);
+    color: var(--white);
+    border-radius: 15px;
+    font-weight: 700;
     margin-top: 1.5rem !important;
+    box-shadow: 0 6px 20px rgba(255, 216, 155, 0.4);
+    border-left: 5px solid #ffa500;
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 6px 20px rgba(255, 216, 155, 0.4);
+    }
+    50% {
+        box-shadow: 0 8px 30px rgba(255, 216, 155, 0.7);
+    }
 }
 
 .info-box {
@@ -1215,21 +1340,48 @@ section {
 
 .key-display,
 .command-display {
-    background: var(--darker);
-    padding: 2rem;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    padding: 2.5rem;
+    border-radius: 20px;
     text-align: center;
     margin: 1.5rem 0;
-    border: 2px solid var(--primary);
+    border: 3px solid #667eea;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4), inset 0 2px 10px rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.key-display::before,
+.command-display::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
 }
 
 .key-display code,
 .command-display code {
-    color: var(--primary);
-    font-size: 1.5rem;
-    font-weight: 700;
+    color: #00d4aa;
+    font-size: 1.6rem;
+    font-weight: 800;
     font-family: 'Courier New', monospace;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(0, 212, 170, 0.6);
+    position: relative;
+    z-index: 1;
 }
 
 .requirements-box {
@@ -1252,28 +1404,72 @@ section {
 }
 
 .thank-you-box {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
     color: var(--white);
-    padding: 2rem;
-    border-radius: 15px;
+    padding: 3rem;
+    border-radius: 25px;
     text-align: center;
     margin-top: 2rem;
+    box-shadow: 0 15px 50px rgba(102, 126, 234, 0.5);
+    position: relative;
+    overflow: hidden;
+    animation: gradientShift 5s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.thank-you-box::before {
+    content: '💜';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 4rem;
+    opacity: 0.2;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
 .thank-you-box h3 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 900;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .thank-you-box p {
     color: var(--white) !important;
-    margin-bottom: 0.8rem !important;
+    margin-bottom: 1rem !important;
+    font-size: 1.1rem !important;
+    line-height: 1.8 !important;
 }
 
 .thank-you-box a {
+    color: #ffd89b;
+    text-decoration: none;
+    font-weight: 800;
+    border-bottom: 2px solid #ffd89b;
+    transition: all 0.3s ease;
+}
+
+.thank-you-box a:hover {
     color: var(--white);
-    text-decoration: underline;
-    font-weight: 700;
+    border-bottom-color: var(--white);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 .quick-faq {
@@ -1315,17 +1511,44 @@ section {
 
 .final-cta {
     text-align: center;
-    padding: 4rem 2rem;
-    background: var(--card-bg);
-    border-radius: 20px;
-    box-shadow: var(--shadow-lg);
-    margin-top: 3rem;
+    padding: 5rem 3rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.6);
+    margin-top: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.final-cta::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: moveBackground 20s linear infinite;
+}
+
+@keyframes moveBackground {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(50px, 50px);
+    }
 }
 
 .final-cta h3 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: var(--text-color);
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+    color: var(--white);
+    font-weight: 900;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
 }
 
 .back-link {
