@@ -29,15 +29,31 @@ module.exports = {
           .setURL(`https://twitch.tv/${twitchUsername}`)
           .setDescription(
             `**Airis** is currently live streaming!\n\n` +
-              `🎵 Building Vibe Bot with the 24/7 community!\n` +
-              `⏱️ **Uptime:** ${uptime}\n\n` +
-              `[Click here to watch!](https://twitch.tv/${twitchUsername})`
+              `🎵 Building Vibe Bot with the 24/7 community!`
           )
           .setThumbnail(
             `https://static-cdn.jtvnw.net/previews-ttv/live_user_${twitchUsername}-440x248.jpg?t=${Date.now()}`
           )
+          .addFields(
+            {
+              name: '⏱️ Uptime',
+              value: uptime,
+              inline: true,
+            },
+            {
+              name: '🔴 Watch Now',
+              value: `[Click here to watch!](https://twitch.tv/${twitchUsername})`,
+              inline: false,
+            },
+            {
+              name: '💜 About',
+              value:
+                'This bot is being built LIVE 24/7 with viewers worldwide!',
+              inline: false,
+            }
+          )
           .setFooter({
-            text: 'Built 24/7 with the community',
+            text: 'Click the title to watch! | Built 24/7 with the community',
             iconURL: message.author.displayAvatarURL(),
           })
           .setTimestamp();
