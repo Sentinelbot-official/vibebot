@@ -67,14 +67,19 @@ module.exports = {
         const staffMsg = await modmailChannel.messages
           .fetch(ticket.staffMessageId)
           .catch(() => null);
-        if (staffMsg) {
-          const updatedEmbed = EmbedBuilder.from(staffMsg.embeds[0])
-            .setColor('#ff9900')
-            .addFields({
-              name: '🔓 Reopened',
-              value: `By: ${message.author.tag}\nAt: <t:${Math.floor(Date.now() / 1000)}:R>`,
-            });
-          await staffMsg.edit({ embeds: [updatedEmbed] });
+        if (staffMsg && staffMsg.embeds && staffMsg.embeds.length > 0) {
+          try {
+            const updatedEmbed = EmbedBuilder.from(staffMsg.embeds[0])
+              .setColor('#ff9900')
+              .addFields({
+                name: '🔓 Reopened',
+                value: `By: ${message.author.tag}\nAt: <t:${Math.floor(Date.now() / 1000)}:R>`,
+              });
+            await staffMsg.edit({ embeds: [updatedEmbed] });
+          } catch (embedError) {
+            console.error('Error updating modmail embed:', embedError);
+            // Continue anyway, ticket is still reopened
+          }
         }
       }
 
