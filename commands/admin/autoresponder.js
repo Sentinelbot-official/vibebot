@@ -1,6 +1,22 @@
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
 
+/**
+ * Escape HTML and potentially dangerous content
+ * @param {string} text - Text to escape
+ * @returns {string} Escaped text
+ */
+function escapeContent(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+    .replace(/@everyone/gi, '@\u200beveryone')
+    .replace(/@here/gi, '@\u200bhere');
+}
+
 module.exports = {
   name: 'autoresponder',
   description: 'Create automatic responses to specific triggers',
@@ -60,15 +76,29 @@ module.exports = {
       }
 
       const trigger = args[1].toLowerCase();
-      const response = args.slice(2).join(' ');
+      const rawResponse = args.slice(2).join(' ');
+
+      // Escape HTML and dangerous content
+      const response = escapeContent(rawResponse);
 
       if (trigger.length > 100) {
         return message.reply('❌ Trigger is too long! Maximum 100 characters.');
       }
 
-      if (response.length > 1000) {
+      if (response.length > 500) {
         return message.reply(
-          '❌ Response is too long! Maximum 1000 characters.'
+          '❌ Response is too long! Maximum 500 characters.'
+        );
+      }
+
+      // Validate trigger doesn't contain dangerous patterns
+      if (
+        trigger.includes('@') ||
+        trigger.includes('<') ||
+        trigger.includes('>')
+      ) {
+        return message.reply(
+          '❌ Trigger cannot contain @, <, or > characters!'
         );
       }
 
@@ -79,8 +109,8 @@ module.exports = {
         );
       }
 
-      if (autoResponders.length >= 50) {
-        return message.reply('❌ Maximum of 50 auto-responders per server!');
+      if (autoResponders.length >= 25) {
+        return message.reply('❌ Maximum of 25 auto-responders per server!');
       }
 
       autoResponders.push({
@@ -98,7 +128,11 @@ module.exports = {
         .setTitle('✅ Auto-Responder Added')
         .addFields(
           { name: '🔔 Trigger', value: `\`${trigger}\``, inline: false },
-          { name: '💬 Response', value: response, inline: false }
+          {
+            name: '💬 Response',
+            value: response.substring(0, 1024),
+            inline: false,
+          }
         )
         .setFooter({
           text: `Total: ${autoResponders.length} auto-responder(s)`,

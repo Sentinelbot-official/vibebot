@@ -25,10 +25,22 @@ module.exports = {
       return message.reply('❌ Please provide an announcement message!');
     }
 
+    // Validate announcement length
+    if (announcement.length > 2000) {
+      return message.reply(
+        '❌ Announcement is too long! Maximum 2000 characters.'
+      );
+    }
+
+    // Sanitize @everyone/@here mentions
+    const sanitizedAnnouncement = announcement
+      .replace(/@everyone/gi, '@\u200beveryone')
+      .replace(/@here/gi, '@\u200bhere');
+
     const embed = new EmbedBuilder()
       .setColor(0x0099ff)
       .setTitle('📢 Announcement')
-      .setDescription(announcement)
+      .setDescription(sanitizedAnnouncement)
       .setFooter({
         text: `Announced by ${message.author.tag}`,
         iconURL: message.author.displayAvatarURL(),
@@ -36,7 +48,10 @@ module.exports = {
       .setTimestamp();
 
     try {
-      await channel.send({ embeds: [embed] });
+      await channel.send({
+        embeds: [embed],
+        allowedMentions: { parse: ['users'] },
+      });
       message.reply(`✅ Announcement sent to ${channel}!`);
 
       // Delete command message

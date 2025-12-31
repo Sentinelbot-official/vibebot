@@ -5,9 +5,7 @@ const {
   ButtonStyle,
 } = require('discord.js');
 const db = require('../../utils/database');
-
-// Store active trade requests
-const tradeRequests = new Map();
+const transactionLock = require('../../utils/transactionLock');
 
 module.exports = {
   name: 'trade',
@@ -40,93 +38,112 @@ module.exports = {
       return message.reply('❌ Please provide a valid amount greater than 0!');
     }
 
-    // Check sender's balance
-    const senderEconomy = db.get('economy', message.author.id) || {
-      coins: 0,
-      bank: 0,
-    };
-    if (senderEconomy.coins < amount) {
-      return message.reply(
-        `❌ You don't have enough coins! You have ${senderEconomy.coins.toLocaleString()} coins.`
-      );
+    // Maximum trade amount
+    if (amount > 1000000) {
+      return message.reply('❌ Maximum trade amount is 1,000,000 coins!');
     }
 
-    // Create trade request
-    const tradeId = `${message.author.id}-${targetUser.id}-${Date.now()}`;
-
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId(`trade_accept_${tradeId}`)
-        .setLabel('Accept')
-        .setStyle(ButtonStyle.Success)
-        .setEmoji('✅'),
-      new ButtonBuilder()
-        .setCustomId(`trade_decline_${tradeId}`)
-        .setLabel('Decline')
-        .setStyle(ButtonStyle.Danger)
-        .setEmoji('❌')
-    );
-
-    const embed = new EmbedBuilder()
-      .setColor(0xffd700)
-      .setTitle('💱 Trade Request')
-      .setDescription(
-        `${message.author} wants to trade **${amount.toLocaleString()} coins** with ${targetUser}!`
-      )
-      .addFields(
-        { name: 'From', value: message.author.tag, inline: true },
-        { name: 'To', value: targetUser.tag, inline: true },
-        {
-          name: 'Amount',
-          value: `${amount.toLocaleString()} coins`,
-          inline: true,
-        }
-      )
-      .setFooter({ text: 'Trade expires in 60 seconds' })
-      .setTimestamp();
-
-    const tradeMessage = await message.reply({
-      content: `${targetUser}`,
-      embeds: [embed],
-      components: [row],
-    });
-
-    // Store trade request
-    tradeRequests.set(tradeId, {
-      senderId: message.author.id,
-      receiverId: targetUser.id,
-      amount: amount,
-      messageId: tradeMessage.id,
-      expiresAt: Date.now() + 60000, // 60 seconds
-    });
-
-    // Auto-expire after 60 seconds
-    setTimeout(() => {
-      if (tradeRequests.has(tradeId)) {
-        tradeRequests.delete(tradeId);
-        const expiredEmbed = EmbedBuilder.from(embed)
-          .setColor(0x808080)
-          .setFooter({ text: 'Trade expired' });
-        tradeMessage
-          .edit({ embeds: [expiredEmbed], components: [] })
-          .catch(() => {});
+    // Use transaction lock to check balance
+    await transactionLock.withLock(message.author.id, async () => {
+      // Check sender's balance
+      const senderEconomy = db.get('economy', message.author.id) || {
+        coins: 0,
+        bank: 0,
+      };
+      if (senderEconomy.coins < amount) {
+        return message.reply(
+          `❌ You don't have enough coins! You have ${senderEconomy.coins.toLocaleString()} coins.`
+        );
       }
-    }, 60000);
+
+      // Create trade request
+      const tradeId = `${message.author.id}-${targetUser.id}-${Date.now()}`;
+
+      const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId(`trade_accept_${tradeId}`)
+          .setLabel('Accept')
+          .setStyle(ButtonStyle.Success)
+          .setEmoji('✅'),
+        new ButtonBuilder()
+          .setCustomId(`trade_decline_${tradeId}`)
+          .setLabel('Decline')
+          .setStyle(ButtonStyle.Danger)
+          .setEmoji('❌')
+      );
+
+      const embed = new EmbedBuilder()
+        .setColor(0xffd700)
+        .setTitle('💱 Trade Request')
+        .setDescription(
+          `${message.author} wants to trade **${amount.toLocaleString()} coins** with ${targetUser}!`
+        )
+        .addFields(
+          { name: 'From', value: message.author.tag, inline: true },
+          { name: 'To', value: targetUser.tag, inline: true },
+          {
+            name: 'Amount',
+            value: `${amount.toLocaleString()} coins`,
+            inline: true,
+          }
+        )
+        .setFooter({ text: 'Trade expires in 60 seconds' })
+        .setTimestamp();
+
+      const tradeMessage = await message.reply({
+        content: `${targetUser}`,
+        embeds: [embed],
+        components: [row],
+      });
+
+      // Store trade request in database (not memory)
+      db.set(`trade_${tradeId}`, tradeId, {
+        senderId: message.author.id,
+        receiverId: targetUser.id,
+        amount: amount,
+        messageId: tradeMessage.id,
+        expiresAt: Date.now() + 60000, // 60 seconds
+      });
+
+      // Auto-expire after 60 seconds
+      setTimeout(() => {
+        const trade = db.get(`trade_${tradeId}`, tradeId);
+        if (trade) {
+          db.delete(`trade_${tradeId}`, tradeId);
+          const expiredEmbed = EmbedBuilder.from(embed)
+            .setColor(0x808080)
+            .setFooter({ text: 'Trade expired' });
+          tradeMessage
+            .edit({ embeds: [expiredEmbed], components: [] })
+            .catch(() => {});
+        }
+      }, 60000);
+    });
   },
 };
 
 // Export handler for button interactions (to be used in events)
 module.exports.handleTradeButton = async interaction => {
   const [action, , tradeId] = interaction.customId.split('_');
+  const transactionLock = require('../../utils/transactionLock');
 
-  if (!tradeRequests.has(tradeId)) {
+  const trade = db.get(`trade_${tradeId}`, tradeId);
+
+  if (!trade) {
     return interaction.reply({
       content: '❌ This trade request has expired!',
       ephemeral: true,
     });
   }
 
-  const trade = tradeRequests.get(tradeId);
+  // Check if trade has expired
+  if (Date.now() > trade.expiresAt) {
+    db.delete(`trade_${tradeId}`, tradeId);
+    return interaction.reply({
+      content: '❌ This trade request has expired!',
+      ephemeral: true,
+    });
+  }
 
   // Only the receiver can accept/decline
   if (interaction.user.id !== trade.receiverId) {
@@ -137,52 +154,58 @@ module.exports.handleTradeButton = async interaction => {
   }
 
   if (action === 'accept') {
-    // Check sender still has the coins
-    const senderEconomy = db.get('economy', trade.senderId) || {
-      coins: 0,
-      bank: 0,
-    };
-    if (senderEconomy.coins < trade.amount) {
-      tradeRequests.delete(tradeId);
-      return interaction.update({
-        content: '❌ Trade failed! Sender no longer has enough coins.',
-        embeds: [],
-        components: [],
-      });
-    }
-
-    // Get receiver economy
-    const receiverEconomy = db.get('economy', trade.receiverId) || {
-      coins: 0,
-      bank: 0,
-    };
-
-    // Transfer coins
-    senderEconomy.coins -= trade.amount;
-    receiverEconomy.coins += trade.amount;
-
-    db.set('economy', trade.senderId, senderEconomy);
-    db.set('economy', trade.receiverId, receiverEconomy);
-
-    const successEmbed = new EmbedBuilder()
-      .setColor(0x00ff00)
-      .setTitle('✅ Trade Completed!')
-      .setDescription(
-        `Successfully traded **${trade.amount.toLocaleString()} coins**!`
-      )
-      .addFields(
-        { name: 'From', value: `<@${trade.senderId}>`, inline: true },
-        { name: 'To', value: `<@${trade.receiverId}>`, inline: true },
-        {
-          name: 'Amount',
-          value: `${trade.amount.toLocaleString()} coins`,
-          inline: true,
+    // Use transaction lock to prevent race conditions
+    await transactionLock.withMultipleLocks(
+      [trade.senderId, trade.receiverId],
+      async () => {
+        // Check sender still has the coins
+        const senderEconomy = db.get('economy', trade.senderId) || {
+          coins: 0,
+          bank: 0,
+        };
+        if (senderEconomy.coins < trade.amount) {
+          db.delete(`trade_${tradeId}`, tradeId);
+          return interaction.update({
+            content: '❌ Trade failed! Sender no longer has enough coins.',
+            embeds: [],
+            components: [],
+          });
         }
-      )
-      .setTimestamp();
 
-    tradeRequests.delete(tradeId);
-    return interaction.update({ embeds: [successEmbed], components: [] });
+        // Get receiver economy
+        const receiverEconomy = db.get('economy', trade.receiverId) || {
+          coins: 0,
+          bank: 0,
+        };
+
+        // Transfer coins atomically
+        senderEconomy.coins -= trade.amount;
+        receiverEconomy.coins += trade.amount;
+
+        db.set('economy', trade.senderId, senderEconomy);
+        db.set('economy', trade.receiverId, receiverEconomy);
+
+        const successEmbed = new EmbedBuilder()
+          .setColor(0x00ff00)
+          .setTitle('✅ Trade Completed!')
+          .setDescription(
+            `Successfully traded **${trade.amount.toLocaleString()} coins**!`
+          )
+          .addFields(
+            { name: 'From', value: `<@${trade.senderId}>`, inline: true },
+            { name: 'To', value: `<@${trade.receiverId}>`, inline: true },
+            {
+              name: 'Amount',
+              value: `${trade.amount.toLocaleString()} coins`,
+              inline: true,
+            }
+          )
+          .setTimestamp();
+
+        db.delete(`trade_${tradeId}`, tradeId);
+        return interaction.update({ embeds: [successEmbed], components: [] });
+      }
+    );
   } else {
     // Declined
     const declineEmbed = new EmbedBuilder()
@@ -191,7 +214,7 @@ module.exports.handleTradeButton = async interaction => {
       .setDescription(`<@${trade.receiverId}> declined the trade request.`)
       .setTimestamp();
 
-    tradeRequests.delete(tradeId);
+    db.delete(`trade_${tradeId}`, tradeId);
     return interaction.update({ embeds: [declineEmbed], components: [] });
   }
 };

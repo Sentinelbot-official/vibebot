@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const math = require('mathjs');
 
 module.exports = {
   name: 'calculator',
@@ -17,21 +18,26 @@ module.exports = {
 
     const expression = args.join(' ');
 
-    // Sanitize input - only allow numbers and basic operators
-    const sanitized = expression.replace(/[^0-9+\-*/().% ]/g, '');
-
-    if (sanitized !== expression) {
+    // Validate expression length
+    if (expression.length > 200) {
       return message.reply(
-        '❌ Invalid expression! Only numbers and operators (+, -, *, /, %, parentheses) are allowed.'
+        '❌ Expression is too long! Maximum 200 characters.'
       );
     }
 
     try {
-      // Evaluate the expression safely
-      const result = Function(`"use strict"; return (${sanitized})`)();
+      // Use math.js for safe evaluation with limited scope
+      const result = math.evaluate(expression, {
+        // Restrict to basic math functions only
+      });
 
       if (!isFinite(result)) {
         return message.reply('❌ Result is not a finite number!');
+      }
+
+      // Prevent extremely large results
+      if (Math.abs(result) > Number.MAX_SAFE_INTEGER) {
+        return message.reply('❌ Result is too large to display accurately!');
       }
 
       const embed = new EmbedBuilder()
@@ -40,7 +46,7 @@ module.exports = {
         .addFields(
           {
             name: 'Expression',
-            value: `\`${expression}\``,
+            value: `\`${expression.substring(0, 1000)}\``,
             inline: false,
           },
           {

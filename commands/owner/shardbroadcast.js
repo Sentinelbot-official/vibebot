@@ -3,7 +3,8 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
   name: 'shardbroadcast',
   aliases: ['sbroadcast', 'shardbc'],
-  description: 'Broadcast a message to all shards (execute code across all shards)',
+  description:
+    'Broadcast a message to all shards (execute code across all shards)',
   usage: 'shardbroadcast <message>',
   category: 'owner',
   ownerOnly: true,
@@ -61,7 +62,9 @@ module.exports = {
       const results = await shardManager.broadcastEval(
         (client, context) => {
           const logger = require('./utils/logger');
-          logger.info(`[SHARD ${client.shard.ids[0]}] Broadcast: ${context.message}`);
+          logger.info(
+            `[SHARD ${client.shard.ids[0]}] Broadcast: ${context.message}`
+          );
           return {
             shardId: client.shard.ids[0],
             guilds: client.guilds.cache.size,

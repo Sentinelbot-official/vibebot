@@ -61,12 +61,19 @@ module.exports = {
               guilds
                 .map((guildCount, index) => {
                   const isCurrent = index === currentShardId;
-                  const status = pings[index] < 200 ? '🟢' : pings[index] < 500 ? '🟡' : '🔴';
-                  return `${status} **Shard ${index + 1}${isCurrent ? ' (Current)' : ''}**\n` +
+                  const status =
+                    pings[index] < 200
+                      ? '🟢'
+                      : pings[index] < 500
+                        ? '🟡'
+                        : '🔴';
+                  return (
+                    `${status} **Shard ${index + 1}${isCurrent ? ' (Current)' : ''}**\n` +
                     `├ Guilds: ${guildCount.toLocaleString()}\n` +
                     `├ Users: ${users[index].toLocaleString()}\n` +
                     `├ Ping: ${Math.round(pings[index])}ms\n` +
-                    `└ Uptime: ${ms(uptimes[index], { long: true })}`;
+                    `└ Uptime: ${ms(uptimes[index], { long: true })}`
+                  );
                 })
                 .join('\n\n') || 'No shards available',
             inline: false,

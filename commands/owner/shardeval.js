@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const util = require('util');
+const auditLog = require('../../utils/auditLog');
 
 module.exports = {
   name: 'shardeval',
@@ -12,6 +13,15 @@ module.exports = {
 
   async execute(message, args) {
     try {
+      // Log this critical operation
+      auditLog.logOwnerCommand({
+        userId: message.author.id,
+        username: message.author.tag,
+        command: 'shardeval',
+        args,
+        guildId: message.guild?.id || 'DM',
+        guildName: message.guild?.name || 'Direct Message',
+      });
       // Check if bot is sharded
       if (!message.client.shard) {
         return message.reply('❌ This bot is not running in sharded mode!');
@@ -30,6 +40,51 @@ module.exports = {
       const shardManager = message.client.shard;
       const target = args[0].toLowerCase();
       const code = args.slice(1).join(' ');
+
+      // Validate code length
+      if (code.length > 1000) {
+        return message.reply('❌ Code is too long! Maximum 1000 characters.');
+      }
+
+      // Warn about dangerous operations
+      const dangerousPatterns = [
+        'process.exit',
+        'process.kill',
+        'require(',
+        'import(',
+        'eval(',
+        'Function(',
+        'child_process',
+        'fs.unlink',
+        'fs.rmdir',
+        'db.clear',
+      ];
+
+      const foundDangerous = dangerousPatterns.filter(pattern =>
+        code.includes(pattern)
+      );
+
+      if (foundDangerous.length > 0) {
+        await message.reply(
+          `⚠️ **WARNING**: Code contains potentially dangerous operations: \`${foundDangerous.join(', ')}\`\n` +
+            'React with ✅ to confirm execution or wait 30s to cancel.'
+        );
+
+        const filter = (reaction, user) =>
+          reaction.emoji.name === '✅' && user.id === message.author.id;
+
+        const collected = await message
+          .awaitReactions({
+            filter,
+            max: 1,
+            time: 30000,
+          })
+          .catch(() => null);
+
+        if (!collected || collected.size === 0) {
+          return message.reply('❌ Eval cancelled - no confirmation received.');
+        }
+      }
 
       let results;
       let shardIds;
@@ -53,6 +108,15 @@ module.exports = {
           }),
         ];
       }
+
+      // Log the execution
+      auditLog.logCodeExecution({
+        userId: message.author.id,
+        username: message.author.tag,
+        code,
+        result: JSON.stringify(results).substring(0, 500),
+        error: null,
+      });
 
       // Format results
       const formattedResults = results.map((result, index) => {

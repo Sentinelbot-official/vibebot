@@ -65,15 +65,13 @@ module.exports = {
       }
     }
 
-    // Check cooldown
+    // Check cooldown (database-backed)
     const cooldownTime = command.cooldown || 3; // Default 3 seconds
-    const timeLeft = cooldowns.check(
-      message.author.id,
-      command.name,
-      cooldownTime
-    );
-
-    if (timeLeft) {
+    const cooldownKey = `${message.author.id}-${command.name}`;
+    const cooldownData = db.get('cooldowns', cooldownKey);
+    
+    if (cooldownData && Date.now() < cooldownData) {
+      const timeLeft = Math.ceil((cooldownData - Date.now()) / 1000);
       return message.reply(
         `⏱️ Please wait ${timeLeft} second${timeLeft !== 1 ? 's' : ''} before using \`${command.name}\` again.`
       );
@@ -81,10 +79,10 @@ module.exports = {
 
     // Execute command
     try {
-      command.execute(message, args);
+      await command.execute(message, args);
 
-      // Set cooldown
-      cooldowns.set(message.author.id, command.name, cooldownTime);
+      // Set cooldown in database
+      db.set('cooldowns', cooldownKey, Date.now() + (cooldownTime * 1000));
 
       logger.info(
         `Command executed: ${command.name} | User: ${message.author.tag} | Guild: ${message.guild?.name || 'DM'}`

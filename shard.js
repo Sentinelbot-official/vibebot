@@ -126,30 +126,33 @@ process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 
 // Shard stats logging (every 30 minutes)
-setInterval(async () => {
-  try {
-    const promises = [
-      manager.fetchClientValues('guilds.cache.size'),
-      manager.fetchClientValues('users.cache.size'),
-      manager.fetchClientValues('ws.ping'),
-    ];
+setInterval(
+  async () => {
+    try {
+      const promises = [
+        manager.fetchClientValues('guilds.cache.size'),
+        manager.fetchClientValues('users.cache.size'),
+        manager.fetchClientValues('ws.ping'),
+      ];
 
-    const results = await Promise.all(promises);
+      const results = await Promise.all(promises);
 
-    const totalGuilds = results[0].reduce((acc, val) => acc + val, 0);
-    const totalUsers = results[1].reduce((acc, val) => acc + val, 0);
-    const avgPing = Math.round(
-      results[2].reduce((acc, val) => acc + val, 0) / results[2].length
-    );
+      const totalGuilds = results[0].reduce((acc, val) => acc + val, 0);
+      const totalUsers = results[1].reduce((acc, val) => acc + val, 0);
+      const avgPing = Math.round(
+        results[2].reduce((acc, val) => acc + val, 0) / results[2].length
+      );
 
-    logger.info('📊 Shard Statistics:');
-    logger.info(`   Total Shards: ${manager.shards.size}`);
-    logger.info(`   Total Guilds: ${totalGuilds}`);
-    logger.info(`   Total Users: ${totalUsers}`);
-    logger.info(`   Average Ping: ${avgPing}ms`);
-  } catch (error) {
-    logger.error('Error fetching shard stats:', error);
-  }
-}, 30 * 60 * 1000); // Every 30 minutes
+      logger.info('📊 Shard Statistics:');
+      logger.info(`   Total Shards: ${manager.shards.size}`);
+      logger.info(`   Total Guilds: ${totalGuilds}`);
+      logger.info(`   Total Users: ${totalUsers}`);
+      logger.info(`   Average Ping: ${avgPing}ms`);
+    } catch (error) {
+      logger.error('Error fetching shard stats:', error);
+    }
+  },
+  30 * 60 * 1000
+); // Every 30 minutes
 
 module.exports = manager;

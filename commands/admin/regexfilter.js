@@ -1,6 +1,44 @@
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
 
+/**
+ * Check if a regex pattern is safe (no catastrophic backtracking)
+ * @param {string} pattern - Regex pattern to check
+ * @returns {boolean} True if safe
+ */
+function isSafeRegex(pattern) {
+  // Check for dangerous patterns that can cause ReDoS
+  const dangerousPatterns = [
+    /(\w+\+)+/, // Nested quantifiers
+    /(\w*)+/, // Nested star quantifiers
+    /(\w+)*\+/, // Mixed quantifiers
+    /(\w+\*)+/, // Multiple star quantifiers
+    /(\(.*\)\+)+/, // Nested group quantifiers
+    /(\[.*\]\+)+/, // Nested bracket quantifiers
+    /(a+)+/, // Classic ReDoS pattern
+    /(\d+)+/, // Numeric ReDoS
+  ];
+
+  for (const dangerous of dangerousPatterns) {
+    if (dangerous.test(pattern)) {
+      return false;
+    }
+  }
+
+  // Check pattern length
+  if (pattern.length > 200) {
+    return false;
+  }
+
+  // Check for excessive nesting
+  const openParens = (pattern.match(/\(/g) || []).length;
+  if (openParens > 10) {
+    return false;
+  }
+
+  return true;
+}
+
 module.exports = {
   name: 'regexfilter',
   description: 'Manage regex-based filters for advanced pattern matching',
@@ -97,6 +135,14 @@ module.exports = {
       const name = args[2];
       const flags = args[3] || 'gi';
 
+      // Validate pattern safety (prevent ReDoS)
+      if (!isSafeRegex(pattern)) {
+        return message.reply(
+          '❌ This regex pattern is potentially dangerous and could cause performance issues (ReDoS)!\n' +
+            'Avoid nested quantifiers like `(a+)+` or `(.*)+`'
+        );
+      }
+
       // Test if regex is valid
       try {
         new RegExp(pattern, flags);
@@ -110,8 +156,8 @@ module.exports = {
         );
       }
 
-      if (regexFilters.length >= 20) {
-        return message.reply('❌ Maximum of 20 regex filters per server!');
+      if (regexFilters.length >= 10) {
+        return message.reply('❌ Maximum of 10 regex filters per server!');
       }
 
       regexFilters.push({
@@ -130,7 +176,11 @@ module.exports = {
         .setTitle('✅ Regex Filter Added')
         .addFields(
           { name: '📝 Name', value: name, inline: true },
-          { name: '🔍 Pattern', value: `\`${pattern}\``, inline: false },
+          {
+            name: '🔍 Pattern',
+            value: `\`${pattern.substring(0, 100)}\``,
+            inline: false,
+          },
           { name: '🚩 Flags', value: `\`${flags}\``, inline: true }
         )
         .setFooter({ text: `Total: ${regexFilters.length} regex filter(s)` })

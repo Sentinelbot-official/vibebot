@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
+const transactionLock = require('../../utils/transactionLock');
 
 module.exports = {
   name: 'gift',
@@ -27,45 +28,59 @@ module.exports = {
       return message.reply('❌ Please enter a valid amount!');
     }
 
-    const senderEconomy = db.get('economy', message.author.id) || {
-      coins: 0,
-      bank: 0,
-    };
-
-    if (amount > senderEconomy.coins) {
-      return message.reply(
-        `❌ You don't have enough coins! You have ${senderEconomy.coins.toLocaleString()} coins.`
-      );
+    // Maximum gift amount to prevent abuse
+    if (amount > 1000000) {
+      return message.reply('❌ Maximum gift amount is 1,000,000 coins!');
     }
 
-    // Transfer coins
-    senderEconomy.coins -= amount;
-    db.set('economy', message.author.id, senderEconomy);
+    // Use transaction lock to prevent race conditions
+    await transactionLock.withMultipleLocks(
+      [message.author.id, user.id],
+      async () => {
+        const senderEconomy = db.get('economy', message.author.id) || {
+          coins: 0,
+          bank: 0,
+        };
 
-    const receiverEconomy = db.get('economy', user.id) || { coins: 0, bank: 0 };
-    receiverEconomy.coins += amount;
-    db.set('economy', user.id, receiverEconomy);
-
-    const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
-      .setTitle('🎁 Gift Sent!')
-      .setDescription(
-        `${message.author} gifted **${amount.toLocaleString()} coins** to ${user}!`
-      )
-      .addFields(
-        {
-          name: 'Your Balance',
-          value: `${senderEconomy.coins.toLocaleString()} coins`,
-          inline: true,
-        },
-        {
-          name: `${user.username}'s Balance`,
-          value: `${receiverEconomy.coins.toLocaleString()} coins`,
-          inline: true,
+        if (amount > senderEconomy.coins) {
+          return message.reply(
+            `❌ You don't have enough coins! You have ${senderEconomy.coins.toLocaleString()} coins.`
+          );
         }
-      )
-      .setTimestamp();
 
-    message.reply({ embeds: [embed] });
+        // Transfer coins atomically
+        senderEconomy.coins -= amount;
+        db.set('economy', message.author.id, senderEconomy);
+
+        const receiverEconomy = db.get('economy', user.id) || {
+          coins: 0,
+          bank: 0,
+        };
+        receiverEconomy.coins += amount;
+        db.set('economy', user.id, receiverEconomy);
+
+        const embed = new EmbedBuilder()
+          .setColor(0x00ff00)
+          .setTitle('🎁 Gift Sent!')
+          .setDescription(
+            `${message.author} gifted **${amount.toLocaleString()} coins** to ${user}!`
+          )
+          .addFields(
+            {
+              name: 'Your Balance',
+              value: `${senderEconomy.coins.toLocaleString()} coins`,
+              inline: true,
+            },
+            {
+              name: `${user.username}'s Balance`,
+              value: `${receiverEconomy.coins.toLocaleString()} coins`,
+              inline: true,
+            }
+          )
+          .setTimestamp();
+
+        message.reply({ embeds: [embed] });
+      }
+    );
   },
 };
