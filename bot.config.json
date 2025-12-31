@@ -8,7 +8,7 @@
   "support_server": "DISCORD_SERVER_COMING_SOON",
   "twitch": "https://twitch.tv/projectdraguk",
   "invite_link": "https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=8&scope=bot",
-  "repository_notice": "This repository is for viewing only. Cloning, forking, or redistribution is prohibited.",
+  "repository_notice": "Proprietary software. Forking for contributions is allowed. Public redistribution or hosting requires permission.",
   "features": [
     "Advanced Moderation (19 commands)",
     "Economy System (16 commands)",

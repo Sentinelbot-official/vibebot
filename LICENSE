@@ -7,26 +7,34 @@ property of Airis and are protected by copyright law.
 
 RESTRICTIONS:
 
-1. NO CLONING: You may NOT clone, fork, copy, or duplicate this repository or any 
-   portion of the Software.
+1. NO PUBLIC REDISTRIBUTION: You may NOT publicly distribute, publish, share, or make 
+   available the Software or modified versions to third parties for public use.
 
-2. NO REDISTRIBUTION: You may NOT distribute, publish, share, or make available the 
-   Software or any portion thereof to any third party.
-
-3. NO MODIFICATION: You may NOT modify, adapt, translate, reverse engineer, decompile, 
-   or disassemble the Software or create derivative works based on the Software.
-
-4. NO COMMERCIAL USE: You may NOT use the Software for any commercial purposes without 
+2. NO COMMERCIAL USE: You may NOT use the Software for any commercial purposes without 
    explicit written permission from the copyright holder.
 
-5. NO HOSTING: You may NOT host, run, or deploy your own instance of this bot without 
-   explicit written permission from the copyright holder.
+3. NO PUBLIC HOSTING: You may NOT host, run, or deploy your own public instance of 
+   this bot without explicit written permission from the copyright holder.
+
+4. NO REBRANDING: You may NOT rebrand, rename, or claim this Software as your own work.
 
 PERMITTED USE:
 
-- You may VIEW the source code for educational and reference purposes only.
+- You may VIEW the source code for educational and reference purposes.
+- You may FORK the repository for personal development and contributions.
+- You may MODIFY the code for personal use and development purposes.
+- You may SUBMIT pull requests with improvements, bug fixes, and new features.
+- You may RUN a private instance for personal testing and development.
 - You may INVITE the official bot to your Discord server.
 - You may REPORT bugs and SUGGEST features through official channels.
+
+CONTRIBUTION TERMS:
+
+- By submitting a pull request, you grant the copyright holder perpetual, worldwide, 
+  non-exclusive, royalty-free rights to use, modify, and distribute your contributions.
+- You retain credit for your contributions.
+- Your contributions will be licensed under this same proprietary license.
+- The copyright holder reserves the right to accept or reject any contributions.
 
 DISCLAIMER:
 
@@ -39,8 +47,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ENFORCEMENT:
 
-Any violation of this license will result in immediate termination of your rights 
-to view or access the Software and may result in legal action.
+Violations of this license (particularly public redistribution, commercial use, or 
+public hosting without permission) will result in immediate termination of your 
+rights to use the Software and may result in legal action.
 
 For permissions beyond the scope of this license, please contact: vibetbot0@proton.me
 

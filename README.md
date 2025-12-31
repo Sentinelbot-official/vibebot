@@ -258,22 +258,32 @@ Join our support server or open an issue on GitHub!
 - **Terms of Service:** [TERMS_OF_SERVICE.md](TERMS_OF_SERVICE.md)
 - **Privacy Policy:** [PRIVACY_POLICY.md](PRIVACY_POLICY.md)
 
-**⚠️ Important:** This software is proprietary. You may NOT clone, fork, redistribute, or host your own instance without explicit written permission.
+**⚠️ Important:** This software is proprietary. You may NOT redistribute or host your own instance for public use without explicit written permission. However, you may fork for personal development and submit pull requests.
 
 Use `!terms` and `!privacy` commands in Discord to view summaries.
 
-## 🤝 Community Feedback
+## 🤝 Contributing
 
-While this is proprietary software, we still value community input!
+While this is proprietary software, we welcome community contributions!
 
 ### How You Can Help:
 
-- **Report Bugs** - Open an issue on GitHub
-- **Suggest Features** - Share your ideas in our Discord
-- **Provide Feedback** - Let us know what you think
-- **Spread the Word** - Tell others about Vibe Bot!
+1. **Fork the Repository** - Create your own fork
+2. **Create a Feature Branch** - `git checkout -b feature/AmazingFeature`
+3. **Commit Your Changes** - `git commit -m 'Add some AmazingFeature'`
+4. **Push to the Branch** - `git push origin feature/AmazingFeature`
+5. **Open a Pull Request** - We'll review and merge if approved!
 
-**Note:** We do not accept pull requests or code contributions due to the proprietary nature of this project. However, your feedback and bug reports are invaluable!
+### Contribution Ideas:
+
+- 🐛 **Bug Fixes** - Fix issues and improve stability
+- ✨ **New Features** - Add commands or functionality
+- 📝 **Documentation** - Improve guides and examples
+- 🎨 **UI/UX** - Enhance embeds and user experience
+- ⚡ **Performance** - Optimize code and database queries
+- 🔒 **Security** - Identify and fix vulnerabilities
+
+**Note:** By contributing, you agree that your contributions will be licensed under the same proprietary license. You retain credit for your work!
 
 ## 📞 Support
 
