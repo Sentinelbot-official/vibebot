@@ -21,7 +21,7 @@ class BackupManager {
 
   /**
    * Create a backup of the database
-   * @returns {boolean} Success status
+   * @returns {Object} Backup result with success status and details
    */
   createBackup() {
     try {
@@ -29,20 +29,31 @@ class BackupManager {
         .toISOString()
         .replace(/:/g, '-')
         .split('.')[0];
-      const backupPath = path.join(this.backupDir, `backup-${timestamp}.db`);
+      const filename = `backup-${timestamp}.db`;
+      const backupPath = path.join(this.backupDir, filename);
 
       const success = db.backup(backupPath);
 
       if (success) {
+        const stats = fs.statSync(backupPath);
+        const sizeInMB = (stats.size / (1024 * 1024)).toFixed(2);
+
         logger.success(`Database backup created: ${backupPath}`);
         this.cleanOldBackups();
-        return true;
+
+        return {
+          success: true,
+          filename,
+          path: backupPath,
+          size: `${sizeInMB} MB`,
+          timestamp: new Date(),
+        };
       }
 
-      return false;
+      return { success: false };
     } catch (error) {
       logger.error('Failed to create backup:', error);
-      return false;
+      return { success: false, error: error.message };
     }
   }
 
