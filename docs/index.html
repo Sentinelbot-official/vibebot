@@ -245,6 +245,26 @@
                     <h3>AI Image Generation</h3>
                     <p>Generate images with DALL-E 3 and Stability AI (Early Access)</p>
                 </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚖️</div>
+                    <h3>Advanced Moderation</h3>
+                    <p>Warning decay, appeal system, case tracking, and detailed history</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Achievement System</h3>
+                    <p>25+ achievements across 6 categories with automatic rewards</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Database Analytics</h3>
+                    <p>Optimization tools, health metrics, and advanced search capabilities</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎭</div>
+                    <h3>Enhanced Memes</h3>
+                    <p>35+ templates with Reddit integration and custom generation</p>
+                </div>
             </div>
         </div>
     </section>
@@ -273,6 +293,24 @@
                     <div class="command-demo">
                         <code>//shop</code>
                         <p>Browse and buy items from the shop</p>
+                    </div>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-header">
+                        <span class="showcase-icon">⚖️</span>
+                        <h3>Moderation Tools</h3>
+                    </div>
+                    <div class="command-demo">
+                        <code>//warn @user [reason]</code>
+                        <p>Warn users with automatic decay after 90 days</p>
+                    </div>
+                    <div class="command-demo">
+                        <code>//history @user [filter]</code>
+                        <p>View full moderation history with pagination</p>
+                    </div>
+                    <div class="command-demo">
+                        <code>//appeal [case_id] [reason]</code>
+                        <p>Users can appeal warnings within 180 days</p>
                     </div>
                 </div>
                 <div class="showcase-card">
@@ -759,25 +797,37 @@
             <div class="roadmap-timeline">
                 <div class="roadmap-item completed">
                     <div class="roadmap-status">✅ Completed</div>
+                    <h3>v2.5 - Major System Overhaul</h3>
+                    <p>Advanced moderation, 25+ achievements, database optimization, enhanced logging</p>
+                    <span class="roadmap-date">December 31, 2025</span>
+                </div>
+                <div class="roadmap-item completed">
+                    <div class="roadmap-status">✅ Completed</div>
+                    <h3>v2.3 - Premium Features & Sharding</h3>
+                    <p>Custom bot status, premium badges, sharding support, transaction locks</p>
+                    <span class="roadmap-date">December 2025</span>
+                </div>
+                <div class="roadmap-item completed">
+                    <div class="roadmap-status">✅ Completed</div>
                     <h3>v2.2 - Premium System</h3>
                     <p>Activation key system, per-server premium, Ko-fi integration</p>
                     <span class="roadmap-date">December 2025</span>
                 </div>
                 <div class="roadmap-item in-progress">
                     <div class="roadmap-status">🚧 In Progress</div>
-                    <h3>v2.3 - Enhanced AI</h3>
+                    <h3>v2.6 - Enhanced AI</h3>
                     <p>Improved AI moderation, conversation memory, image analysis</p>
                     <span class="roadmap-date">Q1 2026</span>
                 </div>
                 <div class="roadmap-item planned">
                     <div class="roadmap-status">📋 Planned</div>
-                    <h3>v2.4 - Voice Features</h3>
+                    <h3>v2.7 - Voice Features</h3>
                     <p>Music player, voice recording, soundboard, voice XP enhancements</p>
                     <span class="roadmap-date">Q1 2026</span>
                 </div>
                 <div class="roadmap-item planned">
                     <div class="roadmap-status">📋 Planned</div>
-                    <h3>v2.5 - Dashboard</h3>
+                    <h3>v3.0 - Web Dashboard</h3>
                     <p>Web dashboard for server management, analytics, and settings</p>
                     <span class="roadmap-date">Q2 2026</span>
                 </div>
@@ -899,9 +949,29 @@
             <div class="changelog-grid">
                 <div class="changelog-card latest">
                     <div class="changelog-header">
-                        <h3>v2.3.0 - Premium Features & Sharding</h3>
+                        <h3>v2.5.0 - Major System Overhaul</h3>
                         <span class="changelog-date">December 31, 2025</span>
                         <span class="changelog-badge new">Latest</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>⚖️ Advanced Moderation System with warning decay (90 days)</li>
+                        <li>📋 Enhanced history command with pagination & filters</li>
+                        <li>📝 Warning appeal system for users</li>
+                        <li>🔍 Detailed case lookup with interactive buttons</li>
+                        <li>🏆 Expanded achievements: 25+ achievements across 6 categories</li>
+                        <li>📊 Database optimization with VACUUM & ANALYZE</li>
+                        <li>🔧 Advanced database analytics & health metrics</li>
+                        <li>📝 Enhanced logger with rotation & compression</li>
+                        <li>💓 System health monitoring every 5 minutes</li>
+                        <li>🎨 35+ meme templates (up from 10!)</li>
+                        <li>🌐 Improved guild join/leave analytics</li>
+                        <li>✨ Better startup diagnostics & feature detection</li>
+                    </ul>
+                </div>
+                <div class="changelog-card">
+                    <div class="changelog-header">
+                        <h3>v2.3.0 - Premium Features & Sharding</h3>
+                        <span class="changelog-date">December 31, 2025</span>
                     </div>
                     <ul class="changelog-list">
                         <li>🎨 Custom Bot Status (Premium feature)</li>
