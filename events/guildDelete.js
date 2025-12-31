@@ -43,21 +43,51 @@ module.exports = {
 
       try {
         const axios = require('axios');
+        // Calculate retention metrics
+        const retentionDays = timeInGuild !== 'Unknown' ? timeInGuild : 0;
+        let retentionCategory = '🔴 Very Short';
+        if (retentionDays >= 365) retentionCategory = '🟢 Excellent (1+ year)';
+        else if (retentionDays >= 180) retentionCategory = '🟡 Good (6+ months)';
+        else if (retentionDays >= 90) retentionCategory = '🟠 Fair (3+ months)';
+        else if (retentionDays >= 30) retentionCategory = '🟤 Short (1+ month)';
+
+        // Check if premium
+        const premium = require('../utils/premium');
+        const premiumData = premium.getServerPremium(guild.id);
+        const wasPremium = premiumData ? `💎 ${premiumData.tier.toUpperCase()}` : 'Free';
+
         const webhookEmbed = {
           color: 0xff0000,
           title: '❌ Bot Left Guild',
           description:
             `**Guild:** ${guild.name}\n` +
             `**ID:** \`${guild.id}\`\n` +
-            `**Members:** ${guild.memberCount}\n` +
+            `**Members:** ${guild.memberCount.toLocaleString()}\n` +
             `**Owner:** <@${guild.ownerId}> (\`${guild.ownerId}\`)\n` +
-            `**Time in Guild:** ${timeInGuild !== 'Unknown' ? `${timeInGuild} days` : 'Unknown'}\n` +
             `**Reason:** ${guild.available ? 'Kicked/Removed' : 'Guild Outage'}`,
+          fields: [
+            {
+              name: '⏱️ Retention',
+              value: 
+                `**Time in Guild:** ${timeInGuild !== 'Unknown' ? `${timeInGuild} days` : 'Unknown'}\n` +
+                `**Category:** ${retentionCategory}\n` +
+                `**Premium:** ${wasPremium}`,
+              inline: true,
+            },
+            {
+              name: '📊 Impact',
+              value: 
+                `**Channels Lost:** ${guild.channels.cache.size}\n` +
+                `**Roles Lost:** ${guild.roles.cache.size}\n` +
+                `**Members Lost:** ${guild.memberCount.toLocaleString()}`,
+              inline: true,
+            },
+          ],
           thumbnail: {
             url: guild.iconURL() || guild.client.user.displayAvatarURL(),
           },
           footer: {
-            text: `Total Guilds: ${guild.client.guilds.cache.size}`,
+            text: `Remaining Guilds: ${guild.client.guilds.cache.size} | Total Members: ${guild.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString()}`,
           },
           timestamp: new Date().toISOString(),
         };

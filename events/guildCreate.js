@@ -45,35 +45,71 @@ module.exports = {
         );
       }
 
+      // Calculate server age
+      const serverAge = Math.floor((Date.now() - guild.createdTimestamp) / (1000 * 60 * 60 * 24));
+      const serverAgeYears = (serverAge / 365).toFixed(1);
+
+      // Determine server size category
+      let sizeCategory = '🌱 Small';
+      if (guild.memberCount >= 10000) sizeCategory = '🏰 Massive';
+      else if (guild.memberCount >= 1000) sizeCategory = '🏙️ Large';
+      else if (guild.memberCount >= 100) sizeCategory = '🏘️ Medium';
+
       // Send welcome message if channel found
       if (welcomeChannel) {
         const welcomeEmbed = new EmbedBuilder()
           .setColor(0x00ff00)
           .setTitle('🎵 Thanks for inviting Vibe Bot!')
           .setDescription(
-            '**Hey there!** Thanks for adding me to your server!\n\n' +
-              '**Getting Started:**\n' +
-              '• Use `//help` to see all commands\n' +
-              '• Use `//setup` to configure the bot\n' +
-              '• Use `//prefix <new_prefix>` to change my prefix\n\n' +
-              '**Quick Links:**\n' +
-              '🌐 [Website](https://sentinelbot-official.github.io/vibebot/)\n' +
-              '💬 [Support Server](https://discord.gg/zFMgG6ZN68)\n' +
-              '📺 [24/7 Live Stream](https://twitch.tv/projectdraguk)\n' +
-              '💎 [Get Premium](https://ko-fi.com/airis0)\n\n' +
-              '**Built 24/7 live on Twitch with the community!** 💜'
+            `**Hey ${guild.name}!** Thanks for adding me to your ${sizeCategory} server!\n\n` +
+              `I'm excited to serve your **${guild.memberCount.toLocaleString()} members**! 💜\n\u200b`
+          )
+          .addFields(
+            {
+              name: '🚀 Quick Start',
+              value: 
+                '• `//help` - See all commands\n' +
+                '• `//setup` - Configure the bot\n' +
+                '• `//prefix <new>` - Change prefix\n' +
+                '• `//premium` - Learn about premium features',
+              inline: true,
+            },
+            {
+              name: '⭐ Popular Features',
+              value: 
+                '• Economy & Leveling System\n' +
+                '• Advanced Moderation Tools\n' +
+                '• Auto-Moderation & Anti-Raid\n' +
+                '• Custom Embeds & Announcements\n' +
+                '• Giveaways & Reaction Roles',
+              inline: true,
+            },
+            {
+              name: '🔗 Quick Links',
+              value: 
+                '[Website](https://sentinelbot-official.github.io/vibebot/) • ' +
+                '[Support](https://discord.gg/zFMgG6ZN68) • ' +
+                '[Live Stream](https://twitch.tv/projectdraguk) • ' +
+                '[Premium](https://ko-fi.com/airis0)',
+              inline: false,
+            }
           )
           .setThumbnail(guild.client.user.displayAvatarURL())
+          .setImage('https://sentinelbot-official.github.io/vibebot/banner.png')
           .setFooter({
-            text: 'Need help? Join our support server!',
+            text: `Built 24/7 live on Twitch with the community! | Server #${guild.client.guilds.cache.size}`,
+            iconURL: guild.iconURL(),
           })
           .setTimestamp();
 
         try {
           await welcomeChannel.send({ embeds: [welcomeEmbed] });
+          logger.info(`✅ Welcome message sent to ${guild.name}`);
         } catch (error) {
           logger.error('Failed to send welcome message:', error);
         }
+      } else {
+        logger.warn(`⚠️ Could not find suitable channel in ${guild.name} for welcome message`);
       }
 
       // Send notification to webhook
@@ -88,20 +124,50 @@ module.exports = {
 
       try {
         const axios = require('axios');
+        // Enhanced analytics
+        const verificationLevel = ['None', 'Low', 'Medium', 'High', 'Very High'][guild.verificationLevel] || 'Unknown';
+        const boostTier = guild.premiumTier || 0;
+        const boostCount = guild.premiumSubscriptionCount || 0;
+
         const webhookEmbed = {
           color: 0x00ff00,
           title: '✅ Bot Joined New Guild',
           description:
             `**Guild:** ${guild.name}\n` +
             `**ID:** \`${guild.id}\`\n` +
-            `**Members:** ${guild.memberCount}\n` +
+            `**Members:** ${guild.memberCount.toLocaleString()} (${sizeCategory})\n` +
             `**Owner:** <@${guild.ownerId}> (\`${guild.ownerId}\`)\n` +
-            `**Created:** <t:${Math.floor(guild.createdTimestamp / 1000)}:R>`,
+            `**Created:** <t:${Math.floor(guild.createdTimestamp / 1000)}:R> (${serverAgeYears} years old)`,
+          fields: [
+            {
+              name: '📊 Server Stats',
+              value: 
+                `**Channels:** ${guild.channels.cache.size}\n` +
+                `**Roles:** ${guild.roles.cache.size}\n` +
+                `**Emojis:** ${guild.emojis.cache.size}`,
+              inline: true,
+            },
+            {
+              name: '🔒 Security',
+              value: 
+                `**Verification:** ${verificationLevel}\n` +
+                `**Boost Tier:** ${boostTier}\n` +
+                `**Boosts:** ${boostCount}`,
+              inline: true,
+            },
+            {
+              name: '🌐 Features',
+              value: guild.features.length > 0 
+                ? guild.features.slice(0, 5).join(', ') + (guild.features.length > 5 ? '...' : '')
+                : 'None',
+              inline: false,
+            },
+          ],
           thumbnail: {
             url: guild.iconURL() || guild.client.user.displayAvatarURL(),
           },
           footer: {
-            text: `Total Guilds: ${guild.client.guilds.cache.size}`,
+            text: `Total Guilds: ${guild.client.guilds.cache.size} | Total Members: ${guild.client.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString()}`,
           },
           timestamp: new Date().toISOString(),
         };
