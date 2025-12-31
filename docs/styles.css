@@ -180,7 +180,7 @@ body {
 }
 
 .live-badge {
-    background: var(--danger);
+    background: #7f8c8d;
     color: var(--white);
     padding: 0.5rem 1rem;
     border-radius: 50px;
@@ -190,12 +190,15 @@ body {
 }
 
 .live-badge.live {
-    background: var(--danger);
+    background: #00ff00;
+    background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+    color: #000;
     animation: pulse 2s infinite;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
 }
 
 .live-badge.offline {
-    background: #7f8c8d;
+    background: var(--danger);
     animation: none;
 }
 
@@ -206,6 +209,13 @@ body {
 
 .live-badge:hover {
     transform: translateY(-2px);
+}
+
+.live-badge.live:hover {
+    box-shadow: 0 5px 25px rgba(0, 255, 0, 0.6);
+}
+
+.live-badge.offline:hover {
     box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
 }
 
