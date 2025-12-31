@@ -6,12 +6,11 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg)](CODE_OF_CONDUCT.md)
-[![Production Ready](https://img.shields.io/badge/production-ready-success.svg)](MODERNIZATION_GUIDE.md)
+[![Production Ready](https://img.shields.io/badge/production-ready-success.svg)]
 [![Docker](https://img.shields.io/badge/docker-supported-blue.svg)](Dockerfile)
 
 > **🎉 Now Production-Ready with 2026 Standards!**  
 > Enhanced with modern error handling, health monitoring, graceful shutdown, Docker support, and more!  
-> See [MODERNIZATION_GUIDE.md](MODERNIZATION_GUIDE.md) for details.
 
 > **Built Live on Twitch by the Community!** 🎥
 
@@ -39,7 +38,6 @@ This isn't just a bot - it's a testament to what a community can build together.
 - Learned alongside the stream
 - Made this project possible!
 
-**Want to see how it was made? Check out the VOD!** _(link coming soon)_
 
 **GitHub Repository:** https://github.com/Sentinelbot-official/vibebot
 
