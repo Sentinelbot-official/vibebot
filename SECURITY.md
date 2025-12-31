@@ -128,7 +128,7 @@ For security concerns, contact:
 For non-security issues, please use:
 
 - **GitHub Issues:** https://github.com/Sentinelbot-official/vibebot/issues
-- **Discord:** (Support server link coming soon)
+- **Discord:** https://discord.gg/zFMgG6ZN68
 
 ## 🏆 Hall of Fame
 

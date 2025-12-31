@@ -203,7 +203,7 @@ These Terms are governed by the laws of England and Wales. Any disputes shall be
 
 For questions or concerns about these Terms:
 
-- Support Server: [SUPPORT SERVER - COMING SOON]
+- Support Server: https://discord.gg/zFMgG6ZN68
 - Email: vibetbot0@proton.me
 - GitHub: https://github.com/Sentinelbot-official/vibebot
 

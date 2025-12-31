@@ -281,7 +281,7 @@ In the event of a data breach:
 For privacy-related questions or requests:
 
 **Email:** vibetbot0@proton.me  
-**Support Server:** [SUPPORT SERVER - COMING SOON]  
+**Support Server:** https://discord.gg/zFMgG6ZN68  
 **GitHub:** https://github.com/Sentinelbot-official/vibebot  
 **Response Time:** We aim to respond within 7 business days
 

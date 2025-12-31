@@ -12,7 +12,7 @@ module.exports = {
       .setTitle('💬 Support Server')
       .setDescription(
         'Need help? Have suggestions? Join our support server!\n\n' +
-          '**Support Server:** [COMING SOON]\n' +
+          '**Support Server:** https://discord.gg/zFMgG6ZN68\n' +
           '**Email:** vibetbot0@proton.me'
       )
       .setThumbnail(message.client.user.displayAvatarURL())
