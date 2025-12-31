@@ -7,14 +7,18 @@ module.exports = {
   once: true,
   execute(client) {
     try {
-      const botConfig = config.getBotConfig();
+      // Get individual config values
+      const version = config.getBotConfig('version') || '2.2.0';
+      const originStory = config.getBotConfig('origin_story') || 'Built 24/7 on stream';
+      const tagline = config.getBotConfig('tagline') || 'Let\'s vibe together!';
+      const twitchUrl = config.getBotConfig('twitch') || 'https://twitch.tv/projectdraguk';
 
       logger.success(`🎵 ${client.user.tag} is now LIVE!`);
       logger.info(`📊 Serving ${client.guilds.cache.size} servers`);
       logger.info(`👥 Watching over ${client.users.cache.size} users`);
       logger.info(`⚡ ${client.commands.size} commands loaded and ready`);
-      logger.info(`🎬 ${botConfig.origin_story || 'Built on stream'}`);
-      logger.success(`💜 ${botConfig.tagline || 'Let\'s vibe together!'}`);
+      logger.info(`🎬 ${originStory}`);
+      logger.success(`💜 ${tagline}`);
 
       // Set dynamic status messages
       const activities = [
@@ -25,7 +29,7 @@ module.exports = {
         {
           name: `🔴 Built 24/7 live on Twitch!`,
           type: ActivityType.Streaming,
-          url: botConfig.twitch || 'https://twitch.tv/projectdraguk',
+          url: twitchUrl,
         },
         {
           name: `💜 ${client.users.cache.size} community members`,
@@ -35,12 +39,12 @@ module.exports = {
           name: `⚡ ${client.commands.size} commands ready!`,
           type: ActivityType.Playing,
         },
-        { name: `🚀 v${botConfig.version || '2.2.0'} | !help`, type: ActivityType.Playing },
+        { name: `🚀 v${version} | !help`, type: ActivityType.Playing },
         { name: `🎮 Coded 24/7 with global chat!`, type: ActivityType.Playing },
         {
           name: `🔴 LIVE NOW - twitch.tv/projectdraguk`,
           type: ActivityType.Streaming,
-          url: botConfig.twitch || 'https://twitch.tv/projectdraguk',
+          url: twitchUrl,
         },
       ];
 
