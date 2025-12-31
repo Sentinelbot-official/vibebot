@@ -30,49 +30,63 @@ module.exports = {
     const commandCount = client.commands.size;
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
-      .setTitle('🤖 Bot Information')
+      .setColor(0x9b59b6) // Purple vibe!
+      .setTitle('🎵 Vibe Bot - Our Story')
+      .setDescription(
+        `**Not just a bot - a journey!** 🎬\n\n` +
+          `Created on **December 31, 2025** live on Twitch with the community. ` +
+          `Every feature, every command, and every line of code was written with ` +
+          `chat watching, learning, and contributing ideas!\n\n` +
+          `From **130 commands** to **220+ commands** - this represents hundreds of ` +
+          `hours of collaborative coding, debugging sessions at 3 AM, and an amazing ` +
+          `community coming together. 💜\n\n` +
+          `**Watch the journey:** https://twitch.tv/projectdraguk`
+      )
       .setThumbnail(client.user.displayAvatarURL())
       .addFields(
         { name: '📛 Bot Name', value: client.user.username, inline: true },
-        { name: '🆔 Bot ID', value: client.user.id, inline: true },
+        { name: '🎬 Origin', value: 'Built Live on Twitch!', inline: true },
         {
-          name: '📅 Created',
-          value: `<t:${Math.floor(client.user.createdTimestamp / 1000)}:R>`,
+          name: '📅 Birthday',
+          value: 'Dec 31, 2025',
           inline: true,
         },
-        { name: '⏰ Uptime', value: uptimeString, inline: true },
+        { name: '⏰ Current Uptime', value: uptimeString, inline: true },
         {
-          name: '📊 Servers',
+          name: '📊 Servers Vibing',
           value: `${client.guilds.cache.size}`,
           inline: true,
         },
-        { name: '👥 Users', value: `${client.users.cache.size}`, inline: true },
-        { name: '📝 Commands', value: `${commandCount}`, inline: true },
+        { name: '👥 Community Members', value: `${client.users.cache.size}`, inline: true },
+        { name: '⚡ Commands', value: `${commandCount}+`, inline: true },
         {
-          name: '🏓 Ping',
+          name: '🏓 Latency',
           value: `${Math.round(client.ws.ping)}ms`,
           inline: true,
         },
         {
-          name: '💾 Memory',
-          value: `${memoryUsage} MB / ${totalMemory} GB`,
+          name: '💾 Memory Usage',
+          value: `${memoryUsage} MB`,
           inline: true,
         },
         { name: '🖥️ Platform', value: os.platform(), inline: true },
         { name: '📦 Node.js', value: nodeVersion, inline: true },
         { name: '📚 Discord.js', value: `v${djsVersion}`, inline: true },
-        { name: '👨‍💻 Developer', value: 'Airis', inline: true },
-        { name: '📜 License', value: 'MIT', inline: true },
+        { name: '👨‍💻 Creator', value: 'Airis', inline: true },
+        { name: '💜 Built By', value: 'The Community', inline: true },
+        { name: '📜 License', value: 'Proprietary', inline: true },
+        {
+          name: '🎯 Special Features',
+          value: '🤖 AI-Powered | 🎮 220+ Commands | 🎨 Mini-Games | 💰 Economy | 🛡️ Auto-Mod',
+          inline: false,
+        },
         {
           name: '🔗 Links',
-          value: `[Support Server](https://discord.gg/COMING_SOON) | [Invite Bot](https://discord.com/oauth2/authorize?client_id=${
-            client.user.id
-          }&permissions=8&scope=bot)`,
+          value: `[Twitch Stream](https://twitch.tv/projectdraguk) | [GitHub](https://github.com/Sentinelbot-official/vibebot) | [Invite Bot](https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot)`,
           inline: false,
         }
       )
-      .setFooter({ text: 'Vibe Bot v1.0.0' })
+      .setFooter({ text: '💜 Built with love by Airis & The Community | Vibe Bot v2.2.0' })
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

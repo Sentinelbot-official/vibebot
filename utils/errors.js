@@ -129,18 +129,21 @@ class ErrorHandler {
     // Log the error
     logger.error(`Command error in ${message.content}:`, error);
 
-    // Determine user-facing message
+    // Determine user-facing message with personality!
     let userMessage =
-      '❌ An unexpected error occurred. Please try again later.';
+      '❌ Oops! Something went wrong on my end. Even bots built live on stream have bad days! 😅\n' +
+      'Try again in a moment, or let Airis know on stream if this keeps happening!';
 
     if (error instanceof UserError || error instanceof ValidationError) {
       userMessage = `❌ ${error.message}`;
     } else if (error instanceof PermissionError) {
-      userMessage = `❌ ${error.message}`;
+      userMessage = `🔒 ${error.message}\n*Psst... make sure I have the right permissions!*`;
     } else if (error instanceof CooldownError) {
-      userMessage = `⏱️ ${error.message}`;
+      userMessage = `⏱️ ${error.message}\n*Even stream-built bots need a breather!* 😊`;
     } else if (error instanceof CommandError) {
       userMessage = `❌ ${error.message}`;
+    } else if (error instanceof APIError) {
+      userMessage = `🌐 External API hiccup! ${error.message}\n*The internet is having a moment...* 🤷`;
     }
 
     // Send error message to user

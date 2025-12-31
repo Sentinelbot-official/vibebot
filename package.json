@@ -1,7 +1,7 @@
 {
   "name": "vibe-bot",
-  "version": "2.1.0",
-  "description": "A feature-rich Discord bot with 200+ commands, advanced moderation, economy, leveling, social features, mini-games, and comprehensive auto-mod systems",
+  "version": "2.2.0",
+  "description": "🎵 220+ commands | AI-powered | Built LIVE on Twitch with the community! A Discord bot with a story - featuring economy, mini-games, auto-mod, social features, and more!",
   "main": "index.js",
   "type": "commonjs",
   "engines": {
@@ -22,12 +22,23 @@
     "discord",
     "bot",
     "discord-bot",
+    "twitch",
+    "community-built",
+    "live-coded",
     "moderation",
     "economy",
     "leveling",
-    "automod"
+    "automod",
+    "ai-powered",
+    "mini-games",
+    "social",
+    "open-source"
   ],
-  "author": "Airis",
+  "author": "Airis & The Twitch Community",
+  "contributors": [
+    "Airis (Creator & Lead Developer)",
+    "The amazing Twitch community (Feature suggestions, testing, and support)"
+  ],
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",

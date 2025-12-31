@@ -1,48 +1,88 @@
-# Vibe Bot 🎵
+# 🎵 Vibe Bot - Built Live on Stream! 🎬
+
+<div align="center">
 
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.2.0-purple.svg)](CHANGELOG.md)
 [![Discord.js](https://img.shields.io/badge/discord.js-v14-blue.svg)](https://discord.js.org/)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
+[![Built on Twitch](https://img.shields.io/badge/Built%20on-Twitch-9146FF.svg)](https://twitch.tv/projectdraguk)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg)](CODE_OF_CONDUCT.md)
 [![Production Ready](https://img.shields.io/badge/production-ready-success.svg)]
-[![Docker](https://img.shields.io/badge/docker-supported-blue.svg)](Dockerfile)
+[![AI Powered](https://img.shields.io/badge/AI-Powered-ff69b4.svg)]
 
-> **🎉 Now Production-Ready with 2026 Standards!**  
-> Enhanced with modern error handling, health monitoring, graceful shutdown, Docker support, and more!
+### 🎬 **Not Just a Bot - A Journey!**
 
-> **Built Live on Twitch by the Community!** 🎥
+**220+ Commands** | **AI-Powered** | **Built with ❤️ Live on Twitch**
 
-A feature-rich, enterprise-level Discord bot with 100+ commands, built entirely live on stream with the help of an amazing Twitch community. This bot showcases what's possible when streamers and viewers collaborate to create something awesome!
+[Watch the Stream](https://twitch.tv/projectdraguk) • [GitHub](https://github.com/Sentinelbot-official/vibebot) • [Invite Bot](#) • [Support Server](#)
 
-## 🌟 About This Project
+</div>
 
-**Vibe Bot** was created live on [Airis's Twitch stream](https://twitch.tv/projectdraguk) on **December 31, 2025**, with real-time input and suggestions from the community. Every feature, every command, and every line of code was written with chat watching, learning, and contributing ideas.
+---
 
-### 🎬 Stream Highlights
+## 🌟 What Makes Vibe Bot Special?
 
-- **100+ commands** built in one session
-- **Real-time debugging** with chat's help
-- **Community-driven features** based on viewer suggestions
-- **Educational coding** - showing the entire development process
-- **Open collaboration** - chat voted on features and design decisions
+**This isn't your average Discord bot.** Every single feature, every command, every line of code was written **LIVE on Twitch** with the community watching, learning, and contributing ideas in real-time!
 
-### 💜 Community-Powered Development
+### 🎭 The Story
 
-This isn't just a bot - it's a testament to what a community can build together. Shoutout to everyone who:
+On **December 31, 2025**, streamer [Airis](https://twitch.tv/projectdraguk) went live with a challenge: *"Let's build a Discord bot from scratch with chat's help!"*
 
-- Suggested features and commands
-- Helped debug issues
-- Voted on design decisions
-- Learned alongside the stream
-- Made this project possible!
+What started as 130 basic commands evolved into a **220+ command powerhouse** with:
+- 🤖 AI integration (OpenAI & Anthropic)
+- 💰 Full economy system with jobs, stocks, and property
+- 🎮 15+ mini-games built with chat
+- 🛡️ AI-powered auto-moderation
+- 👥 Social features (marriage, clans, profiles)
+- 🎨 Image generation and manipulation
+- 📊 Advanced analytics and insights
 
-**GitHub Repository:** https://github.com/Sentinelbot-official/vibebot
+**Every feature was suggested, debated, coded, and tested with viewers.** That's what makes this bot unique - it's built BY the community, FOR the community!
+
+## 💜 Community-Powered Development
+
+### 🎬 The Journey So Far
+
+| Version | Features | Stream Hours | Community Contributions |
+|---------|----------|--------------|------------------------|
+| **v1.0** | 130 basic commands | 8+ hours | Feature suggestions, bug reports |
+| **v2.0** | Economy, leveling, games | 12+ hours | Game ideas, balance testing |
+| **v2.1** | AI integration, advanced features | 15+ hours | API suggestions, feature voting |
+| **v2.2** | 220+ commands, full ecosystem | 20+ hours | Everything! 💜 |
+
+### 🏆 What Chat Built
+
+Every feature has a story! Here are some community highlights:
+
+- 🎮 **Mini-Games**: Chat suggested Hangman, Wordle, Poker, and 2048
+- 💰 **Economy System**: Community voted on job types and stock mechanics
+- 🤖 **AI Integration**: Viewers requested OpenAI and Anthropic support
+- 🛡️ **Auto-Mod**: Chat helped fine-tune spam detection thresholds
+- 👥 **Social Features**: Marriage and clan systems were viewer ideas
+- 🎨 **Image Tools**: Community wanted image manipulation filters
+
+### 🙏 Thank You
+
+**To everyone who:**
+- Watched the streams and learned with us
+- Suggested features and voted on designs
+- Helped debug at 3 AM
+- Tested commands in real-time
+- Made this journey possible
+
+**You're not just users - you're co-creators!** 🎵
+
+---
+
+**📺 Watch Development Live:** https://twitch.tv/projectdraguk  
+**💻 Contribute on GitHub:** https://github.com/Sentinelbot-official/vibebot
 
 ## 🚀 Features
 
-### 💎 **100+ Commands Across 8 Categories**
+### 💎 **220+ Commands Across 8 Categories**
+
+> 🎬 **Every command was coded live with chat!** Use `!story` in Discord to learn more!
 
 **🛡️ Advanced Moderation (19 commands)**
 

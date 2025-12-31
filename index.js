@@ -1,8 +1,23 @@
 /**
- * VibeBot - Main Entry Point
- * @description A feature-rich Discord bot with 130+ commands
- * @version 2.0.0
- * @author Airis
+ * ════════════════════════════════════════════════════════════════════════════
+ *                            🎵 VIBE BOT v2.2 🎵
+ * ════════════════════════════════════════════════════════════════════════════
+ * 
+ * 🎬 Built LIVE on Twitch by Airis & The Community
+ * 📺 https://twitch.tv/projectdraguk
+ * 
+ * 🌟 This bot is special - every feature was coded live on stream with
+ *    real-time input from viewers. From 130 commands to 220+ commands,
+ *    this journey represents hundreds of hours of collaborative coding,
+ *    debugging sessions at 3 AM, and an amazing community coming together.
+ * 
+ * 💜 Thank you to everyone who watched, suggested features, helped debug,
+ *    and made this possible. This isn't just a bot - it's OUR bot.
+ * 
+ * @version 2.2.0
+ * @author Airis (with help from the best Twitch community ever!)
+ * @description 220+ commands | AI-powered | Built with ❤️ live on stream
+ * ════════════════════════════════════════════════════════════════════════════
  */
 
 const {
@@ -152,28 +167,54 @@ shutdown.register(async () => {
 }, 'database-cleanup');
 
 /**
- * Start the bot
+ * Start the bot with style! 🚀
  */
 async function start() {
   try {
-    logger.info('Starting VibeBot...');
-    logger.info(`Environment: ${config.get('nodeEnv')}`);
-    logger.info(`Prefix: ${config.get('prefix')}`);
+    logger.info('════════════════════════════════════════════════════════════');
+    logger.info('🎵 Starting Vibe Bot - Built Live on Twitch! 🎵');
+    logger.info('════════════════════════════════════════════════════════════');
+    logger.info(`📺 Stream: https://twitch.tv/projectdraguk`);
+    logger.info(`🌍 Environment: ${config.get('nodeEnv')}`);
+    logger.info(`⚡ Prefix: ${config.get('prefix')}`);
+    logger.info(`📦 Commands: ${client.commands.size}`);
+    logger.info('════════════════════════════════════════════════════════════');
 
     // Login to Discord
+    logger.info('🔐 Connecting to Discord...');
     await client.login(config.get('token'));
-    logger.success('Bot logged in successfully');
+    logger.success('✅ Connected to Discord successfully!');
 
-    // Start systems
-    logger.info('Starting background systems...');
+    // Start background systems
+    logger.info('🔧 Starting background systems...');
     backup.startAutoBackup();
+    logger.success('  ✓ Auto-backup system online');
+    
     automod.startWarningCleanup();
+    logger.success('  ✓ Auto-moderation online');
+    
     health.startMonitoring();
+    logger.success('  ✓ Health monitoring online');
 
-    logger.success('All systems operational');
-    logger.success(`VibeBot v${config.getBotConfig('version')} is ready!`);
+    // Initialize reminders
+    try {
+      const remindCommand = require('./commands/utility/remind');
+      if (remindCommand.initReminders) {
+        remindCommand.initReminders(client);
+        logger.success('  ✓ Recurring reminders initialized');
+      }
+    } catch (err) {
+      logger.warn('  ⚠ Reminders not available');
+    }
+
+    logger.info('════════════════════════════════════════════════════════════');
+    logger.success(`🎉 Vibe Bot v${config.getBotConfig('version')} is LIVE!`);
+    logger.success('💜 Built with love by Airis & The Community');
+    logger.success('🚀 All systems operational - Ready to vibe!');
+    logger.info('════════════════════════════════════════════════════════════');
   } catch (error) {
-    logger.error('Failed to start bot:', error);
+    logger.error('❌ Failed to start bot:', error);
+    logger.error('💔 Something went wrong... check your configuration!');
     process.exit(1);
   }
 }

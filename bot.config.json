@@ -1,14 +1,21 @@
 {
   "name": "Vibe Bot",
-  "version": "2.1.0",
-  "author": "Airis",
+  "version": "2.2.0",
+  "author": "Airis & The Twitch Community",
   "license": "Proprietary - All Rights Reserved",
-  "description": "A feature-rich Discord bot with 200+ commands, built live on Twitch with the community",
+  "description": "220+ commands | AI-powered | Built LIVE on Twitch with the community - A bot with a story!",
+  "tagline": "Not just a bot - a journey built live on stream! 🎬",
+  "origin_story": "Created December 31, 2025 on Twitch - Every feature coded live with chat!",
   "website": "https://github.com/Sentinelbot-official/vibebot",
   "support_server": "DISCORD_SERVER_COMING_SOON",
   "twitch": "https://twitch.tv/projectdraguk",
   "invite_link": "https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=8&scope=bot",
   "repository_notice": "Proprietary software. Forking for contributions is allowed. Public redistribution or hosting requires permission.",
+  "personality": {
+    "vibe": "Friendly, helpful, and built by the community",
+    "catchphrase": "Let's vibe together! 🎵",
+    "emoji": "🎵"
+  },
   "features": [
     "Advanced Moderation (23 commands)",
     "Economy System (25+ commands with trading, stocks, property, crafting)",

@@ -47,19 +47,24 @@ module.exports = {
         categories[category].push(cmd);
       });
 
-      // Build embed
+      // Build embed with personality!
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(0x9b59b6) // Purple for the vibe!
         .setAuthor({
-          name: `${message.client.user.username} Help`,
+          name: `🎵 ${message.client.user.username} - Built Live on Twitch!`,
           iconURL: message.client.user.displayAvatarURL(),
         })
         .setDescription(
-          `Use \`${prefix}help [command]\` for detailed information about a command.\n\u200b`
+          `**Hey there!** 👋 I'm Vibe Bot, created live on stream with the community!\n\n` +
+            `🎬 **Watch the journey:** https://twitch.tv/projectdraguk\n` +
+            `💜 **${commands.size} commands** coded with chat's help!\n` +
+            `⚡ **Prefix:** \`${prefix}\`\n\n` +
+            `Use \`${prefix}help [command]\` for detailed info about any command.\n` +
+            `**Let's vibe together!** 🎵\n\u200b`
         )
         .setThumbnail(message.client.user.displayAvatarURL())
         .setFooter({
-          text: `Requested by ${message.author.tag}`,
+          text: `Requested by ${message.author.tag} | Built with ❤️ by Airis & Community`,
           iconURL: message.author.displayAvatarURL(),
         })
         .setTimestamp();
