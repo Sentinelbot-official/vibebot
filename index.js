@@ -47,10 +47,9 @@ const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.MessageContent, // Privileged: Required for commands, auto-mod, modmail
+    GatewayIntentBits.GuildMembers, // Privileged: Required for member events, moderation
     GatewayIntentBits.GuildVoiceStates,
-    GatewayIntentBits.GuildPresences,
     GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.GuildIntegrations,
     GatewayIntentBits.GuildWebhooks,
