@@ -41,6 +41,7 @@ const backup = require('./utils/backup');
 const automod = require('./utils/automod');
 const health = require('./utils/health');
 const shutdown = require('./utils/shutdown');
+const statsApi = require('./utils/statsApi');
 
 const client = new Client({
   intents: [
@@ -230,6 +231,9 @@ async function start() {
     } catch (err) {
       logger.warn('  ⚠ Reminders not available');
     }
+
+    // Initialize Stats API
+    statsApi.init(client);
 
     logger.info('════════════════════════════════════════════════════════════');
     logger.success(`🎉 Vibe Bot v${config.getBotConfig('version')} is LIVE!`);

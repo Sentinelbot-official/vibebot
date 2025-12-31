@@ -228,22 +228,98 @@ function updateStats() {
             element.textContent = value.toLocaleString();
             if (progress < 1) {
                 window.requestAnimationFrame(step);
+            } else {
+                // Add "+" for large numbers
+                if (end >= 1000) {
+                    element.textContent = value.toLocaleString() + '+';
+                }
             }
         };
         window.requestAnimationFrame(step);
     };
 
-    // Example: Fetch real stats from an API
-    // For now, using placeholder values
     const serverCount = document.getElementById('serverCount');
     const userCount = document.getElementById('userCount');
+    const commandCount = document.getElementById('commandCount');
     
-    if (serverCount && userCount) {
-        // Simulate loading
-        setTimeout(() => {
-            animateValue(serverCount, 0, 0, 1000); // Will be updated when bot is live
-            animateValue(userCount, 0, 0, 1000);   // Will be updated when bot is live
-        }, 500);
+    // Try to fetch real stats from the API
+    // You'll need to update this URL to your actual API endpoint
+    const API_URL = 'http://localhost:3000/api/stats'; // Change this to your production URL
+    
+    fetch(API_URL)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('API not available');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('📊 Stats loaded:', data);
+            
+            // Animate the stats
+            if (serverCount) {
+                animateValue(serverCount, 0, data.servers || 0, 1500);
+            }
+            if (userCount) {
+                animateValue(userCount, 0, data.users || 0, 1500);
+            }
+            if (commandCount) {
+                animateValue(commandCount, 0, data.commands || 220, 1500);
+            }
+            
+            // Update bot status
+            updateBotStatusFromData(data);
+        })
+        .catch(error => {
+            console.warn('⚠️ Could not fetch stats from API:', error.message);
+            console.log('💡 Using fallback values. To enable real stats:');
+            console.log('   1. Set ENABLE_STATS_API=true in your .env file');
+            console.log('   2. Update API_URL in script.js to your production URL');
+            
+            // Use fallback values
+            if (serverCount) {
+                serverCount.textContent = '---';
+                serverCount.title = 'Stats API not available';
+            }
+            if (userCount) {
+                userCount.textContent = '---';
+                userCount.title = 'Stats API not available';
+            }
+            if (commandCount) {
+                commandCount.textContent = '220+';
+            }
+        });
+    
+    // Refresh stats every 30 seconds
+    setInterval(() => {
+        fetch(API_URL)
+            .then(response => response.json())
+            .then(data => {
+                if (serverCount) serverCount.textContent = data.servers.toLocaleString();
+                if (userCount) userCount.textContent = data.users.toLocaleString();
+                if (commandCount) commandCount.textContent = data.commands + '+';
+                updateBotStatusFromData(data);
+            })
+            .catch(() => {
+                // Silently fail on refresh
+            });
+    }, 30000);
+}
+
+function updateBotStatusFromData(data) {
+    const statusElement = document.querySelector('.bot-status');
+    if (statusElement && data.online !== undefined) {
+        if (data.online) {
+            statusElement.classList.add('online');
+            statusElement.classList.remove('offline');
+            statusElement.textContent = '● Online';
+            statusElement.title = `Ping: ${data.ping}ms | Uptime: ${data.uptimeFormatted || 'N/A'}`;
+        } else {
+            statusElement.classList.add('offline');
+            statusElement.classList.remove('online');
+            statusElement.textContent = '● Offline';
+            statusElement.title = 'Bot is currently offline';
+        }
     }
 }
 
@@ -252,28 +328,58 @@ function updateStats() {
 // ============================================
 function checkBotStatus() {
     const statusElement = document.querySelector('.bot-status');
+    const API_URL = 'http://localhost:3000/api/status';
     
-    // Example: Check bot status via API
-    // For now, assuming bot is online
-    if (statusElement) {
-        statusElement.classList.add('online');
-        statusElement.textContent = '● Online';
-    }
+    fetch(API_URL)
+        .then(response => response.json())
+        .then(data => {
+            if (statusElement) {
+                if (data.online) {
+                    statusElement.classList.add('online');
+                    statusElement.classList.remove('offline');
+                    statusElement.textContent = '● Online';
+                } else {
+                    statusElement.classList.add('offline');
+                    statusElement.classList.remove('online');
+                    statusElement.textContent = '● Offline';
+                }
+            }
+        })
+        .catch(() => {
+            // Fallback to showing offline if API is not available
+            if (statusElement) {
+                statusElement.classList.add('offline');
+                statusElement.classList.remove('online');
+                statusElement.textContent = '● Offline';
+                statusElement.title = 'Cannot connect to stats API';
+            }
+        });
     
-    // You can implement real status checking here:
-    // fetch('/api/status')
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         if (data.online) {
-    //             statusElement.classList.add('online');
-    //             statusElement.classList.remove('offline');
-    //             statusElement.textContent = '● Online';
-    //         } else {
-    //             statusElement.classList.add('offline');
-    //             statusElement.classList.remove('online');
-    //             statusElement.textContent = '● Offline';
-    //         }
-    //     });
+    // Check status every 60 seconds
+    setInterval(() => {
+        fetch(API_URL)
+            .then(response => response.json())
+            .then(data => {
+                if (statusElement) {
+                    if (data.online) {
+                        statusElement.classList.add('online');
+                        statusElement.classList.remove('offline');
+                        statusElement.textContent = '● Online';
+                    } else {
+                        statusElement.classList.add('offline');
+                        statusElement.classList.remove('online');
+                        statusElement.textContent = '● Offline';
+                    }
+                }
+            })
+            .catch(() => {
+                if (statusElement) {
+                    statusElement.classList.add('offline');
+                    statusElement.classList.remove('online');
+                    statusElement.textContent = '● Offline';
+                }
+            });
+    }, 60000);
 }
 
 // Mobile menu toggle (if needed in future)

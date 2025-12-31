@@ -28,6 +28,8 @@ class ConfigManager {
       MAX_COMMANDS_PER_MINUTE: '30',
       ENABLE_METRICS: 'false',
       OWNER_IDS: '1169281832416723028', // Comma-separated list of owner Discord IDs
+      ENABLE_STATS_API: 'false', // Enable stats API for website
+      STATS_API_PORT: '3000', // Port for stats API
     };
 
     // Check required variables

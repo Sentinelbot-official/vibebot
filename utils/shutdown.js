@@ -97,6 +97,17 @@ class ShutdownHandler {
         }
       }
 
+      // Shutdown Stats API
+      try {
+        const statsApi = require('./statsApi');
+        if (statsApi) {
+          logger.info('Shutting down Stats API...');
+          statsApi.shutdown();
+        }
+      } catch (error) {
+        logger.warn('Stats API shutdown skipped:', error.message);
+      }
+
       // Destroy Discord client
       if (client && client.isReady()) {
         logger.info('Destroying Discord client...');
