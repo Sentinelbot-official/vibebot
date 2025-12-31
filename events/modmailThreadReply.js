@@ -14,7 +14,7 @@ module.exports = {
     // Check if this is a modmail thread
     const threadName = message.channel.name;
     const ticketMatch = threadName.match(/MM-[A-Z0-9]+/);
-    
+
     if (!ticketMatch) return;
 
     const ticketId = ticketMatch[0];
@@ -56,7 +56,9 @@ module.exports = {
 
       // Add attachments if any
       if (message.attachments.size > 0) {
-        const attachmentUrls = message.attachments.map(att => att.url).join('\n');
+        const attachmentUrls = message.attachments
+          .map(att => att.url)
+          .join('\n');
         userEmbed.addFields({
           name: '📎 Attachments',
           value: attachmentUrls,
@@ -95,9 +97,7 @@ module.exports = {
           '❌ Could not send DM to the user - they may have DMs disabled or blocked the bot.'
         );
       } else {
-        await message.reply(
-          '❌ Failed to send reply. Please try again later.'
-        );
+        await message.reply('❌ Failed to send reply. Please try again later.');
       }
     }
   },

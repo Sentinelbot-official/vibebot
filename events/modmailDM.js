@@ -81,9 +81,9 @@ async function handleServerSelection(message, userSessions) {
   const filter = m =>
     m.author.id === message.author.id &&
     (m.content.toLowerCase() === 'cancel' ||
-      !isNaN(parseInt(m.content)) &&
+      (!isNaN(parseInt(m.content)) &&
         parseInt(m.content) > 0 &&
-        parseInt(m.content) <= mutualServers.size);
+        parseInt(m.content) <= mutualServers.size));
 
   try {
     const collected = await message.channel.awaitMessages({
@@ -259,9 +259,7 @@ async function forwardToModmail(message, userSessions) {
 
     // Add attachments if any
     if (message.attachments.size > 0) {
-      const attachmentUrls = message.attachments
-        .map(att => att.url)
-        .join('\n');
+      const attachmentUrls = message.attachments.map(att => att.url).join('\n');
       staffEmbed.addFields({
         name: '📎 Attachments',
         value: attachmentUrls,

@@ -129,14 +129,18 @@ module.exports = {
           .setColor('#00ff00')
           .setTitle('🎨 Image Generated!')
           .setDescription(`**Prompt:** ${prompt}\n**Model:** ${model}`)
-          .setImage(typeof imageUrl === 'string' ? imageUrl : 'attachment://generated.png')
+          .setImage(
+            typeof imageUrl === 'string'
+              ? imageUrl
+              : 'attachment://generated.png'
+          )
           .setFooter({
             text: 'Early Access Feature 🧪 | Built live on stream',
           })
           .setTimestamp();
 
         const messageOptions = { embeds: [resultEmbed] };
-        
+
         // If using Stability AI (buffer), attach as file
         if (Buffer.isBuffer(imageUrl)) {
           messageOptions.files = [

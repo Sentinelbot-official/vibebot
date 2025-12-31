@@ -66,9 +66,7 @@ module.exports = {
       }
 
       // Update the modmail message
-      const modmailChannel = message.guild.channels.cache.get(
-        ticket.channelId
-      );
+      const modmailChannel = message.guild.channels.cache.get(ticket.channelId);
       if (modmailChannel) {
         const staffMsg = await modmailChannel.messages
           .fetch(ticket.staffMessageId)

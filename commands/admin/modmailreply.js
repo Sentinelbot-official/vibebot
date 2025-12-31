@@ -18,7 +18,7 @@ module.exports = {
     if (isThread) {
       // Staff is replying directly in the thread
       replyMessage = args.join(' ');
-      
+
       if (!replyMessage) {
         return message.reply('❌ Please provide a message to send!');
       }
@@ -26,11 +26,11 @@ module.exports = {
       // Extract ticket ID from thread name
       const threadName = message.channel.name;
       const match = threadName.match(/MM-[A-Z0-9]+/);
-      
+
       if (!match) {
         return message.reply('❌ Could not find ticket ID from thread name!');
       }
-      
+
       ticketId = match[0];
     } else {
       // Traditional command usage
@@ -133,9 +133,7 @@ module.exports = {
       await message.reply({ embeds: [confirmEmbed] });
 
       // Update the original modmail message
-      const modmailChannel = message.guild.channels.cache.get(
-        ticket.channelId
-      );
+      const modmailChannel = message.guild.channels.cache.get(ticket.channelId);
       if (modmailChannel) {
         const staffMsg = await modmailChannel.messages
           .fetch(ticket.staffMessageId)
