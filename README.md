@@ -165,7 +165,7 @@ Every feature has a story! Here are some community highlights:
 
 ### Option 1: Invite the Official Bot (Recommended)
 
-[**Invite Vibe Bot to Your Server**](https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=8&scope=bot)
+[**Invite Vibe Bot to Your Server**](https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=268446806&scope=bot)
 
 ### Option 2: View Source Code (Educational Only)
 

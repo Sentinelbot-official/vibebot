@@ -61,7 +61,7 @@ In `index.html`, replace `YOUR_BOT_ID_HERE` with your actual Discord bot client 
 
 ```html
 <a
-  href="https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=8&scope=bot"
+  href="https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=268446806&scope=bot"
 ></a>
 ```
 

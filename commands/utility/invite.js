@@ -6,7 +6,7 @@ module.exports = {
   category: 'utility',
   cooldown: 5,
   execute(message, args) {
-    const invite = `https://discord.com/api/oauth2/authorize?client_id=${message.client.user.id}&permissions=8&scope=bot`;
+    const invite = `https://discord.com/api/oauth2/authorize?client_id=${message.client.user.id}&permissions=268446806&scope=bot`;
 
     const embed = new EmbedBuilder()
       .setColor(0x0099ff)

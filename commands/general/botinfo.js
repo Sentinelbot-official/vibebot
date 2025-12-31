@@ -93,7 +93,7 @@ module.exports = {
         },
         {
           name: '🔗 Links',
-          value: `[Twitch Stream](https://twitch.tv/projectdraguk) | [GitHub](https://github.com/Sentinelbot-official/vibebot) | [Invite Bot](https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot)`,
+          value: `[Twitch Stream](https://twitch.tv/projectdraguk) | [GitHub](https://github.com/Sentinelbot-official/vibebot) | [Invite Bot](https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=268446806&scope=bot)`,
           inline: false,
         }
       )
