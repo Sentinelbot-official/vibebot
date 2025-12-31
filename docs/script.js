@@ -41,15 +41,6 @@ function initCookieConsent() {
   });
 }
 
-@keyframes slideDown {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(100%);
-  }
-}
-
 // ============================================
 // Privacy-Friendly Analytics
 // ============================================
