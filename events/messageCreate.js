@@ -65,27 +65,35 @@ module.exports = {
       }
     }
 
-    // Check cooldown (database-backed)
-    const cooldownTime = command.cooldown || 3; // Default 3 seconds
-    const cooldownKey = `${message.author.id}-${command.name}`;
-    const cooldownData = db.get('cooldowns', cooldownKey);
+    // Check cooldown (database-backed) - skip for owners
+    const isOwner = ownerCheck.isOwner(message.author.id);
     
-    if (cooldownData && Date.now() < cooldownData) {
-      const timeLeft = Math.ceil((cooldownData - Date.now()) / 1000);
-      return message.reply(
-        `⏱️ Please wait ${timeLeft} second${timeLeft !== 1 ? 's' : ''} before using \`${command.name}\` again.`
-      );
+    if (!isOwner) {
+      const cooldownTime = command.cooldown || 3; // Default 3 seconds
+      const cooldownKey = `${message.author.id}-${command.name}`;
+      const cooldownData = db.get('cooldowns', cooldownKey);
+      
+      if (cooldownData && Date.now() < cooldownData) {
+        const timeLeft = Math.ceil((cooldownData - Date.now()) / 1000);
+        return message.reply(
+          `⏱️ Please wait ${timeLeft} second${timeLeft !== 1 ? 's' : ''} before using \`${command.name}\` again.`
+        );
+      }
     }
 
     // Execute command
     try {
       await command.execute(message, args);
 
-      // Set cooldown in database
-      db.set('cooldowns', cooldownKey, Date.now() + (cooldownTime * 1000));
+      // Set cooldown in database (skip for owners)
+      if (!isOwner) {
+        const cooldownTime = command.cooldown || 3;
+        const cooldownKey = `${message.author.id}-${command.name}`;
+        db.set('cooldowns', cooldownKey, Date.now() + cooldownTime * 1000);
+      }
 
       logger.info(
-        `Command executed: ${command.name} | User: ${message.author.tag} | Guild: ${message.guild?.name || 'DM'}`
+        `Command executed: ${command.name} | User: ${message.author.tag} | Guild: ${message.guild?.name || 'DM'}${isOwner ? ' [OWNER]' : ''}`
       );
     } catch (error) {
       logger.error(`Error executing command ${command.name}:`, {
