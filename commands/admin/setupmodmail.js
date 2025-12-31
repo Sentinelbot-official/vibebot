@@ -36,7 +36,7 @@ module.exports = {
             '• Staff can reply using `//modmailreply`\n' +
             '• Tickets can be closed with `//modmailclose`'
         )
-        .setFooter({ text: 'Requires Manage Server permission' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -113,7 +113,7 @@ module.exports = {
           '• `//modmailclose <id>` - Close a ticket\n' +
           '• `//modmailreopen <id>` - Reopen a ticket'
       )
-      .setFooter({ text: 'Modmail is now active!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     await message.reply({ embeds: [confirmEmbed] });
@@ -126,7 +126,7 @@ module.exports = {
         'This channel is now configured for modmail!\n\n' +
           'User modmail messages will appear here. Staff can reply using the commands shown in each ticket.'
       )
-      .setFooter({ text: `Setup by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     await channel.send({ embeds: [testEmbed] });

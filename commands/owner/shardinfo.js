@@ -79,9 +79,7 @@ module.exports = {
             inline: false,
           }
         )
-        .setFooter({
-          text: `Requested by ${message.author.tag}`,
-          iconURL: message.author.displayAvatarURL({ dynamic: true }),
+        .setFooter(branding.footers.default),
         })
         .setTimestamp();
 

@@ -14,7 +14,7 @@ module.exports = {
     const reason = args.join(' ') || 'Manual shutdown by owner';
 
     const embed = new EmbedBuilder()
-      .setColor(0xff0000)
+      .setColor(branding.colors.error)
       .setTitle('🔴 Bot Shutting Down')
       .setDescription(
         `**Initiated by:** ${message.author.tag}\n` +
@@ -22,10 +22,7 @@ module.exports = {
           `The bot will shut down gracefully in 3 seconds...`
       )
       .setTimestamp()
-      .setFooter({
-        text: '🔴 Owner Command | Vibe Bot',
-        iconURL: message.client.user.displayAvatarURL(),
-      });
+      .setFooter(branding.footers.default);
 
     await message.reply({ embeds: [embed] });
 

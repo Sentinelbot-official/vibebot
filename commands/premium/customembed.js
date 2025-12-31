@@ -27,7 +27,7 @@ module.exports = {
             '• And more!\n\n' +
             'Use `//premium` to learn more!'
         )
-        .setFooter({ text: 'Support the 24/7 live coding journey! 💜' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -76,7 +76,7 @@ module.exports = {
           value: `**Embeds Created:** ${embedCount}/${limit}\n**Tier:** ${premiumPerks.getTierBadge(guildId)} ${premiumPerks.getTierDisplayName(guildId)}`,
           inline: false,
         })
-        .setFooter({ text: 'Premium Feature 💎' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [exampleEmbed] });
     }
@@ -128,10 +128,7 @@ module.exports = {
         .setTitle(title)
         .setDescription(description)
         .setColor(color)
-        .setFooter({
-          text: `Created by ${message.author.tag} | Premium Feature 💎`,
-          iconURL: message.author.displayAvatarURL(),
-        })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       if (imageUrl) {
@@ -157,7 +154,7 @@ module.exports = {
           `Your custom embed has been posted in <#${message.channel.id}>!\n\n` +
             `**Embeds Created:** ${embedCount + 1}/${limit}`
         )
-        .setFooter({ text: 'Premium Feature 💎' });
+        .setFooter(branding.footers.default);
 
       await message.author.send({ embeds: [confirmEmbed] }).catch(() => {
         // If DM fails, send in channel

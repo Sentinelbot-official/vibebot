@@ -30,10 +30,10 @@ module.exports = {
     db.set('profiles', message.author.id, profileData);
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('✅ Bio Updated!')
       .setDescription(`Your new bio:\n\n*${bio}*`)
-      .setFooter({ text: 'View your profile with: profile' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

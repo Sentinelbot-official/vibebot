@@ -43,7 +43,7 @@ module.exports = {
             '• Staff can reply to you via DM\n' +
             '• Please be respectful and provide details'
         )
-        .setFooter({ text: 'Modmail is monitored by server staff' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -95,45 +95,7 @@ module.exports = {
           }
         )
         .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-        .setFooter({
-          text: `Use //modmailreply ${ticketId} <message> to respond`,
-        })
-        .setTimestamp();
-
-      const staffMsg = await modmailChannel.send({ embeds: [staffEmbed] });
-
-      // Save ticket to database
-      const tickets = db.get('modmail_tickets', message.guild.id) || {};
-      tickets[ticketId] = {
-        userId: message.author.id,
-        username: message.author.tag,
-        message: modmailMessage,
-        createdAt: Date.now(),
-        status: 'open',
-        staffMessageId: staffMsg.id,
-        channelId: modmailChannel.id,
-      };
-      db.set('modmail_tickets', message.guild.id, tickets);
-
-      // Delete user's message for privacy
-      await message.delete().catch(() => {});
-
-      // Send confirmation to user via DM
-      const userEmbed = new EmbedBuilder()
-        .setColor('#00ff00')
-        .setTitle('✅ Modmail Sent!')
-        .setDescription(
-          `Your message has been sent to the staff of **${message.guild.name}**!\n\n` +
-            `**Ticket ID:** ${ticketId}\n\n` +
-            '**Your Message:**\n' +
-            modmailMessage +
-            '\n\n' +
-            '**What happens next?**\n' +
-            '• Staff will review your message\n' +
-            '• They may reply to you via DM\n' +
-            '• Please keep your DMs open to receive replies'
-        )
-        .setFooter({ text: 'Thank you for contacting us!' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       await message.author

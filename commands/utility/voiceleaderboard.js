@@ -63,7 +63,7 @@ module.exports = {
     const userRank = userIndex !== -1 ? userIndex + 1 : 'Unranked';
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle(`🎤 ${message.guild.name} Voice Leaderboard`)
       .setDescription(leaderboard)
       .addFields({
@@ -71,7 +71,7 @@ module.exports = {
         value: `#${userRank} / ${guildMemberStats.length}`,
         inline: true,
       })
-      .setFooter({ text: 'Based on total time in voice channels' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

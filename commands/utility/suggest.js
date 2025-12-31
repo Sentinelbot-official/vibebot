@@ -37,7 +37,7 @@ module.exports = {
     const suggestionId = Object.keys(suggestions).length + 1;
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setAuthor({
         name: message.author.tag,
         iconURL: message.author.displayAvatarURL(),
@@ -48,7 +48,7 @@ module.exports = {
         { name: 'Status', value: '⏳ Pending', inline: true },
         { name: 'Votes', value: '👍 0 | 👎 0', inline: true }
       )
-      .setFooter({ text: `Suggested by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const suggestionMsg = await channel.send({ embeds: [embed] });

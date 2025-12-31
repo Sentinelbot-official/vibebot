@@ -63,10 +63,7 @@ module.exports = {
       });
     }
 
-    embed.setFooter({
-      text: `Requested by ${message.author.tag} | User ID: ${user.id}`,
-      iconURL: message.author.displayAvatarURL(),
-    });
+    embed.setFooter(branding.footers.default);
     embed.setTimestamp();
 
     // Create buttons for quick actions

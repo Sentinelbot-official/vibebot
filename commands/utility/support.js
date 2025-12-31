@@ -8,7 +8,7 @@ module.exports = {
   cooldown: 5,
   execute(message, args) {
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle('💬 Support Server')
       .setDescription(
         'Need help? Have suggestions? Join our support server!\n\n' +

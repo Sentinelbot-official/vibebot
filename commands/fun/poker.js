@@ -144,7 +144,7 @@ module.exports = {
           `**Bet:** ${betAmount} coins\n\n` +
           `Choose to **Hold** (keep all cards) or **Draw** (replace cards)`
       )
-      .setFooter({ text: 'Click buttons to play' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const msg = await message.reply({ embeds: [embed], components: [buttons] });

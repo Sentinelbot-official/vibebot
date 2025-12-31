@@ -49,7 +49,7 @@ module.exports = {
           `${ratingBar}\n\n` +
           `**${rating}/10** - ${messages[rating]}`
       )
-      .setFooter({ text: `Rated by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

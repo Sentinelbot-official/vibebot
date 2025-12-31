@@ -67,7 +67,7 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('✅ Account Age Verification Enabled')
         .setDescription(
           `New members must have accounts older than **${ageVerification.minDays} days**, or they will be **${ageVerification.action}ed**.`
@@ -88,7 +88,7 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .setTitle('❌ Account Age Verification Disabled')
         .setDescription(
           'New members will no longer be checked for account age.'
@@ -118,7 +118,7 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('⚙️ Account Age Verification Configured')
         .addFields(
           { name: '📅 Minimum Age', value: `${minDays} days`, inline: true },

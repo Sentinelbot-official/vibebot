@@ -28,7 +28,7 @@ module.exports = {
     db.set('guild_settings', message.guild.id, settings);
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('✅ Suggestions Setup Complete!')
       .setDescription(`Suggestions will be sent to ${channel}`)
       .setTimestamp();

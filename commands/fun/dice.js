@@ -39,7 +39,7 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle(`🎲 Rolling ${dice}`)
       .addFields(
         { name: 'Rolls', value: rolls.join(', '), inline: false },

@@ -56,7 +56,7 @@ module.exports = {
     try {
       const dmEmbed = new EmbedBuilder()
         .setTitle(`You have been banned from ${message.guild.name}`)
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .addFields(
           { name: 'Reason', value: reason },
           { name: 'Moderator', value: message.author.tag }
@@ -75,7 +75,7 @@ module.exports = {
       });
 
       const embed = new EmbedBuilder()
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .setTitle('🔨 Member Banned')
         .setThumbnail(member.user.displayAvatarURL())
         .addFields(
@@ -93,7 +93,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: `Banned by ${message.author.tag}` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       const reply = await message.reply({ embeds: [embed] });

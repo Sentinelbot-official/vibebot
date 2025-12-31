@@ -98,7 +98,7 @@ module.exports = {
     );
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle('🤔 Would You Rather...')
       .setDescription(
         `**1️⃣ ${question.option1}**\n\n**OR**\n\n**2️⃣ ${question.option2}**\n\n` +
@@ -116,7 +116,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({ text: 'Poll ends in 60 seconds' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const msg = await message.reply({
@@ -175,8 +175,8 @@ module.exports = {
           `${votes.option2.size} votes (${percent2}%)\n\n` +
           '**Poll Ended!**'
       );
-      embed.setFooter({ text: 'Poll ended' });
-      embed.setColor(0xff0000);
+      embed.setFooter(branding.footers.default);
+      embed.setColor(branding.colors.error);
 
       msg.edit({ embeds: [embed], components: [] });
     });

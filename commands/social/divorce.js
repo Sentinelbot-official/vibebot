@@ -24,7 +24,7 @@ module.exports = {
     db.delete('marriages', partnerId);
 
     const embed = new EmbedBuilder()
-      .setColor(0x808080)
+      .setColor(branding.colors.warning)
       .setTitle('💔 Divorce')
       .setDescription(`${message.author} and <@${partnerId}> are now divorced.`)
       .addFields(
@@ -35,7 +35,7 @@ module.exports = {
         },
         { name: '⏱️ Marriage Duration', value: `${days} days`, inline: true }
       )
-      .setFooter({ text: "Sometimes things just don't work out..." })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

@@ -27,7 +27,7 @@ module.exports = {
             'Use `//premium` to learn more or visit:\n' +
             'https://sentinelbot-official.github.io/vibebot/activate.html'
         )
-        .setFooter({ text: 'Support the 24/7 live coding journey! 💜' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -54,7 +54,7 @@ module.exports = {
             '**Current Status:**\n' +
             (currentStatus?.status || 'Default (rotating statuses)')
         )
-        .setFooter({ text: 'Premium Feature 💎' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -90,7 +90,7 @@ module.exports = {
           "**Note:** The bot's status will update within a few minutes.\n" +
           'The custom status is only visible in this server.'
       )
-      .setFooter({ text: 'Premium Feature 💎' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

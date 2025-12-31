@@ -20,13 +20,13 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0xff0000)
+      .setColor(branding.colors.error)
       .setAuthor({
         name: snipedMessage.author.tag,
         iconURL: snipedMessage.author.displayAvatarURL(),
       })
       .setDescription(snipedMessage.content || '*No content*')
-      .setFooter({ text: 'Deleted' })
+      .setFooter(branding.footers.default)
       .setTimestamp(snipedMessage.deletedAt);
 
     if (snipedMessage.attachments.length > 0) {

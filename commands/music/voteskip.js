@@ -79,17 +79,14 @@ module.exports = {
       musicManager.skip(message.guild.id);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('⏭️ Vote Skip Passed!')
         .setDescription(
           `**The community has spoken!** ✨\n\n` +
           `**${currentSong.title}** has been skipped!\n` +
           `**Final Vote:** ${currentVotes}/${votesNeeded} (${percentage}%)`
         )
-        .setFooter({ 
-          text: '💜 Built live with the community on Twitch!',
-          iconURL: 'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png'
-        })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -99,7 +96,7 @@ module.exports = {
     const progressBar = generateProgressBar(currentVotes, votesNeeded);
     
     const embed = new EmbedBuilder()
-      .setColor(0xffa500)
+      .setColor(branding.colors.warning)
       .setTitle('🗳️ Vote Skip in Progress')
       .setDescription(
         `**${message.author.username}** voted to skip!\n\n` +

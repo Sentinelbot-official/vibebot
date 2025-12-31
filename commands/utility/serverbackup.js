@@ -88,7 +88,7 @@ module.exports = {
       fs.writeFileSync(filepath, JSON.stringify(backup, null, 2));
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('✅ Server Backup Created')
         .setDescription('Server settings have been backed up successfully!')
         .addFields(

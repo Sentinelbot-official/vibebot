@@ -106,7 +106,7 @@ module.exports = {
         embed.setThumbnail(post.thumbnail);
       }
 
-      embed.setFooter({ text: `${sort} posts` });
+      embed.setFooter(branding.footers.default);
       embed.setTimestamp(new Date(post.created_utc * 1000));
 
       // Add other results

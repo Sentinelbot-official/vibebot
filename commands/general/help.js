@@ -175,10 +175,7 @@ module.exports = {
               `**Let's vibe together!** ${branding.emojis.vibe}\n\u200b`
           )
           .setThumbnail(message.client.user.displayAvatarURL())
-          .setFooter({
-            text: `Page ${page + 1}/${totalPages} | ${branding.footers.default.text}`,
-            iconURL: branding.footers.default.iconURL,
-          })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         // Add fields for each category on this page
@@ -392,10 +389,7 @@ module.exports = {
             .setDescription(
               `Here are all **${categoryCommands.length}** commands in the **${categoryName}** category:\n\u200b`
             )
-            .setFooter({
-              text: `Use ${prefix}help [command] for detailed info | ${message.author.tag}`,
-              iconURL: message.author.displayAvatarURL(),
-            })
+            .setFooter(branding.footers.default)
             .setTimestamp();
 
           // Add each command with its description
@@ -426,10 +420,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setColor(command.premiumOnly ? 0xffd700 : 0x0099ff)
         .setTitle(`📖 ${premiumBadge}${ownerBadge}${command.name}`)
-        .setFooter({
-          text: `Requested by ${message.author.tag}`,
-          iconURL: message.author.displayAvatarURL(),
-        })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       if (command.description) {

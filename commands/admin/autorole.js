@@ -47,12 +47,12 @@ module.exports = {
         .join('\n');
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('⚙️ Auto-Roles')
         .setDescription(
           `Roles automatically given to new members:\n\n${roleList}`
         )
-        .setFooter({ text: `${autoRoles.length} auto-role(s) configured` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -90,7 +90,7 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('✅ Auto-Role Added')
         .setDescription(
           `New members will now automatically receive the ${role} role!`
@@ -116,7 +116,7 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .setTitle('❌ Auto-Role Removed')
         .setDescription(`New members will no longer receive the ${role} role.`)
         .addFields({

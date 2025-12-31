@@ -74,10 +74,10 @@ module.exports = {
     const joke = jokes[Math.floor(Math.random() * jokes.length)];
 
     const embed = new EmbedBuilder()
-      .setColor(0xffa500)
+      .setColor(branding.colors.warning)
       .setTitle('😂 Random Joke')
       .setDescription(`**${joke.setup}**\n\n||${joke.punchline}||`)
-      .setFooter({ text: 'Click to reveal the punchline!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

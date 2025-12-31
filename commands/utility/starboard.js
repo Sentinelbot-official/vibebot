@@ -34,7 +34,7 @@ module.exports = {
     db.set('guild_settings', message.guild.id, settings);
 
     const embed = new EmbedBuilder()
-      .setColor(0xffd700)
+      .setColor(branding.colors.premium)
       .setTitle('⭐ Starboard Setup Complete!')
       .setDescription(
         `Starboard channel: ${channel}\n` + `Threshold: ${threshold} ⭐`

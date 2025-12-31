@@ -39,10 +39,10 @@ module.exports = {
           .join('\n');
 
         const embed = new EmbedBuilder()
-          .setColor(0x0099ff)
+          .setColor(branding.colors.info)
           .setTitle('🚫 Word Filter')
           .setDescription(filterList)
-          .setFooter({ text: `${wordFilter.length} word(s) in filter` })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         await message.author.send({ embeds: [embed] });
@@ -94,10 +94,10 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('✅ Word Added to Filter')
         .setDescription(`Added: \`${word}\``)
-        .setFooter({ text: `Total: ${wordFilter.length} word(s) in filter` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       // Delete the command message for privacy
@@ -127,10 +127,10 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .setTitle('❌ Word Removed from Filter')
         .setDescription(`Removed: \`${word}\``)
-        .setFooter({ text: `Total: ${wordFilter.length} word(s) in filter` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

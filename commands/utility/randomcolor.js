@@ -76,7 +76,7 @@ module.exports = {
         }
       )
       .setDescription(`**Color Preview:**\n${'█'.repeat(20)}`)
-      .setFooter({ text: `Generated for ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

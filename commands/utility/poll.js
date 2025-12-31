@@ -39,10 +39,10 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle(`📊 ${question}`)
       .setDescription(description)
-      .setFooter({ text: `Poll by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const pollMsg = await message.channel.send({ embeds: [embed] });

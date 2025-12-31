@@ -33,7 +33,7 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('✅ Prefix Reset!')
         .setDescription(`Prefix reset to default: \`${defaultPrefix}\``)
         .addFields({
@@ -55,7 +55,7 @@ module.exports = {
     db.set('guild_settings', message.guild.id, settings);
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('✅ Prefix Updated!')
       .setDescription(`New prefix: \`${newPrefix}\``)
       .addFields({

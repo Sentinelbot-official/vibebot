@@ -20,7 +20,7 @@ module.exports = {
 
     if (!openaiKey && !anthropicKey) {
       const embed = new EmbedBuilder()
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .setTitle('❌ AI Not Configured')
         .setDescription('This feature requires an API key to be configured.')
         .addFields(
@@ -76,7 +76,7 @@ module.exports = {
         const aiResponse = response.data.choices[0].message.content;
 
         const embed = new EmbedBuilder()
-          .setColor(0x00ff00)
+          .setColor(branding.colors.success)
           .setAuthor({
             name: message.author.username,
             iconURL: message.author.displayAvatarURL(),
@@ -87,7 +87,7 @@ module.exports = {
             name: '🤖 AI Response (GPT-3.5)',
             value: aiResponse.substring(0, 1024),
           })
-          .setFooter({ text: 'Powered by OpenAI' })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         return thinkingMsg.edit({ content: null, embeds: [embed] });
@@ -114,7 +114,7 @@ module.exports = {
         const aiResponse = response.data.content[0].text;
 
         const embed = new EmbedBuilder()
-          .setColor(0x00ff00)
+          .setColor(branding.colors.success)
           .setAuthor({
             name: message.author.username,
             iconURL: message.author.displayAvatarURL(),
@@ -125,7 +125,7 @@ module.exports = {
             name: '🤖 AI Response (Claude)',
             value: aiResponse.substring(0, 1024),
           })
-          .setFooter({ text: 'Powered by Anthropic' })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         return thinkingMsg.edit({ content: null, embeds: [embed] });
@@ -134,7 +134,7 @@ module.exports = {
       console.error('AI API Error:', error.response?.data || error.message);
 
       const errorEmbed = new EmbedBuilder()
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .setTitle('❌ AI Error')
         .setDescription(
           error.response?.data?.error?.message ||

@@ -67,7 +67,7 @@ module.exports = {
       const stats = statsResponse.data.items[0];
 
       const embed = new EmbedBuilder()
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .setTitle(video.snippet.title)
         .setURL(`https://www.youtube.com/watch?v=${video.id.videoId}`)
         .setDescription(
@@ -92,7 +92,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: 'YouTube' })
+        .setFooter(branding.footers.default)
         .setTimestamp(new Date(video.snippet.publishedAt));
 
       // Add other results

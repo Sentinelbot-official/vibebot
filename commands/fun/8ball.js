@@ -71,7 +71,7 @@ module.exports = {
           inline: false,
         }
       )
-      .setFooter({ text: `Asked by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

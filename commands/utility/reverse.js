@@ -16,7 +16,7 @@ module.exports = {
     const reversed = text.split('').reverse().join('');
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle('🔄 Text Reverser')
       .addFields(
         {
@@ -30,7 +30,7 @@ module.exports = {
           inline: false,
         }
       )
-      .setFooter({ text: `Reversed by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

@@ -47,7 +47,7 @@ module.exports = {
       : 0;
 
     const embed = new EmbedBuilder()
-      .setColor(0x9b59b6)
+      .setColor(branding.colors.primary)
       .setAuthor({
         name: `${target.username}'s Music Stats 🎵`,
         iconURL: target.displayAvatarURL(),
@@ -105,10 +105,7 @@ module.exports = {
       inline: false,
     });
 
-    embed.setFooter({ 
-      text: '🔴 Music system built live on Twitch • twitch.tv/projectdraguk',
-      iconURL: 'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png'
-    });
+    embed.setFooter(branding.footers.default);
     embed.setTimestamp();
 
     return message.reply({ embeds: [embed] });

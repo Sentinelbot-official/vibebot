@@ -56,7 +56,7 @@ module.exports = {
       .setColor(0x3498db)
       .setTitle('💡 Random Fact')
       .setDescription(fact)
-      .setFooter({ text: 'Did you know?' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

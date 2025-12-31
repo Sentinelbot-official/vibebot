@@ -59,7 +59,7 @@ module.exports = {
               `**Reason:** ${reason}\n\n` +
               'If you need further assistance, feel free to send another modmail!'
           )
-          .setFooter({ text: 'Thank you for contacting us!' })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         await user.send({ embeds: [userEmbed] }).catch(() => {});

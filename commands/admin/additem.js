@@ -58,7 +58,7 @@ module.exports = {
     db.set('shop', message.guild.id, shopItems);
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('✅ Item Added to Shop!')
       .addFields(
         { name: 'ID', value: itemId, inline: true },

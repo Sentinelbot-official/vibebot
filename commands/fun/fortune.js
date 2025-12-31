@@ -79,7 +79,7 @@ module.exports = {
     const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
 
     const embed = new EmbedBuilder()
-      .setColor(0xffd700)
+      .setColor(branding.colors.premium)
       .setTitle('🔮 Your Daily Fortune')
       .setDescription(fortune)
       .addFields(
@@ -91,7 +91,7 @@ module.exports = {
         { name: '🎨 Lucky Color', value: luckyColor, inline: true },
         { name: '📅 Lucky Day', value: luckyDay, inline: true }
       )
-      .setFooter({ text: `Fortune for ${message.author.username}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

@@ -17,7 +17,7 @@ module.exports = {
     // This is a placeholder - you would integrate with an AI image generation API
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle('🎨 AI Image Generation')
       .setDescription(
         '⚠️ **Image Generation API Not Configured**\n\n' +

@@ -35,7 +35,7 @@ module.exports = {
 
       const job = jobs[userData.job];
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle(`${job.emoji} Your Job`)
         .setDescription(`**${job.name}**`)
         .addFields(
@@ -65,10 +65,10 @@ module.exports = {
         .join('\n');
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('💼 Available Jobs')
         .setDescription(jobList)
-        .setFooter({ text: 'Use "job apply <job>" to apply for a job' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -99,7 +99,7 @@ module.exports = {
       db.set('economy', message.author.id, userData);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('🎉 Job Accepted!')
         .setDescription(`You are now a **${job.name}**!`)
         .addFields({

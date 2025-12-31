@@ -53,7 +53,7 @@ module.exports = {
           `**Ends:** ${discordTimestamp(endTime, 'R')}\n\n` +
           'React with 🎉 to enter!'
       )
-      .setFooter({ text: `Hosted by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp(endTime);
 
     const giveawayMsg = await message.channel.send({ embeds: [embed] });
@@ -89,14 +89,14 @@ module.exports = {
         const winnerMentions = winnerList.map(w => `<@${w.id}>`).join(', ');
 
         const endEmbed = new EmbedBuilder()
-          .setColor(0x00ff00)
+          .setColor(branding.colors.success)
           .setTitle('🎉 GIVEAWAY ENDED 🎉')
           .setDescription(
             `**Prize:** ${prize}\n` +
               `**Winner(s):** ${winnerMentions}\n\n` +
               'Congratulations!'
           )
-          .setFooter({ text: `Hosted by ${message.author.tag}` })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         await fetchedMsg.edit({ embeds: [endEmbed] });

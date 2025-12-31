@@ -38,7 +38,7 @@ module.exports = {
     db.set('guild_settings', message.guild.id, settings);
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('✅ Level Role Set!')
       .setDescription(
         `Users who reach **Level ${level}** will receive the ${role} role!`

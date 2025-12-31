@@ -79,7 +79,7 @@ module.exports = {
             '• Access to premium features\n' +
             (tier === 'vip' ? '• VIP-only perks and commands' : '')
         )
-        .setFooter({ text: 'Thank you for supporting the 24/7 journey!' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

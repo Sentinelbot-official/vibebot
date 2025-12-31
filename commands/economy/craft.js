@@ -33,10 +33,10 @@ module.exports = {
         .join('\n');
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('🔨 Crafting Recipes')
         .setDescription(recipeList)
-        .setFooter({ text: 'Use "craft <recipe>" to craft' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

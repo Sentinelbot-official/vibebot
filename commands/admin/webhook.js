@@ -56,10 +56,10 @@ module.exports = {
           .join('\n\n');
 
         const embed = new EmbedBuilder()
-          .setColor(0x5865f2)
+          .setColor(branding.colors.info)
           .setTitle('🔗 Channel Webhooks')
           .setDescription(list)
-          .setFooter({ text: `Total: ${webhooks.size} webhooks` })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         return message.reply({ embeds: [embed] });

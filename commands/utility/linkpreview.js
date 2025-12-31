@@ -50,7 +50,7 @@ module.exports = {
       const image = imageMatch ? imageMatch[1] : null;
 
       const embed = new EmbedBuilder()
-        .setColor(0x5865f2)
+        .setColor(branding.colors.info)
         .setTitle(title.substring(0, 256))
         .setURL(url)
         .setDescription(description.substring(0, 2048))
@@ -67,7 +67,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: 'Link Preview' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       if (image && image.startsWith('http')) {

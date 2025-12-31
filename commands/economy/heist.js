@@ -124,7 +124,7 @@ module.exports = {
           `**${winnings >= 0 ? 'Won' : 'Lost'}:** ${Math.abs(winnings)} coins\n\n` +
           `**New Balance:** ${userData.wallet} coins`
       )
-      .setFooter({ text: `${message.author.tag}'s heist` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

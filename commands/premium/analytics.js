@@ -28,7 +28,7 @@ module.exports = {
             '• All Premium features\n\n' +
             'Use `//premium` to upgrade!'
         )
-        .setFooter({ text: 'Support the 24/7 live coding journey! 💜' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -142,77 +142,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({
-          text: '👑 VIP Feature | Use //analytics <members/activity/commands/growth> for details',
-        })
-        .setTimestamp();
-
-      return message.reply({ embeds: [embed] });
-    }
-
-    if (category === 'members') {
-      const guild = message.guild;
-
-      // Get member join data
-      const joinData = db.get('member_joins', guildId) || {};
-      const last30Days = Object.entries(joinData)
-        .filter(
-          ([date]) =>
-            Date.now() - new Date(date).getTime() < 30 * 24 * 60 * 60 * 1000
-        )
-        .reduce((sum, [, count]) => sum + count, 0);
-
-      const last7Days = Object.entries(joinData)
-        .filter(
-          ([date]) =>
-            Date.now() - new Date(date).getTime() < 7 * 24 * 60 * 60 * 1000
-        )
-        .reduce((sum, [, count]) => sum + count, 0);
-
-      // Get member leave data
-      const leaveData = db.get('member_leaves', guildId) || {};
-      const left30Days = Object.entries(leaveData)
-        .filter(
-          ([date]) =>
-            Date.now() - new Date(date).getTime() < 30 * 24 * 60 * 60 * 1000
-        )
-        .reduce((sum, [, count]) => sum + count, 0);
-
-      const netGrowth30Days = last30Days - left30Days;
-      const retentionRate =
-        last30Days > 0 ? ((last30Days - left30Days) / last30Days) * 100 : 0;
-
-      const embed = new EmbedBuilder()
-        .setColor('#0099ff')
-        .setTitle('👥 Member Analytics')
-        .setDescription('**Member Growth & Retention**')
-        .addFields(
-          {
-            name: '📊 Current Stats',
-            value:
-              `**Total Members:** ${guild.memberCount.toLocaleString()}\n` +
-              `**Humans:** ${guild.members.cache.filter(m => !m.bot).size.toLocaleString()}\n` +
-              `**Bots:** ${guild.members.cache.filter(m => m.bot).size.toLocaleString()}`,
-            inline: true,
-          },
-          {
-            name: '📈 Last 7 Days',
-            value:
-              `**Joined:** ${last7Days}\n` +
-              `**Growth Rate:** ${(last7Days / 7).toFixed(1)}/day`,
-            inline: true,
-          },
-          {
-            name: '📅 Last 30 Days',
-            value:
-              `**Joined:** ${last30Days}\n` +
-              `**Left:** ${left30Days}\n` +
-              `**Net Growth:** ${netGrowth30Days >= 0 ? '+' : ''}${netGrowth30Days}\n` +
-              `**Retention:** ${retentionRate.toFixed(1)}%`,
-            inline: true,
-          }
-        )
-        .setFooter({ text: '👑 VIP Feature | Member insights' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -261,7 +191,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: '👑 VIP Feature | Activity tracking' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -295,7 +225,7 @@ module.exports = {
               )
               .join('\n')
         )
-        .setFooter({ text: '👑 VIP Feature | Command usage tracking' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -328,7 +258,7 @@ module.exports = {
               )
               .join('\n')
         )
-        .setFooter({ text: '👑 VIP Feature | Growth tracking' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

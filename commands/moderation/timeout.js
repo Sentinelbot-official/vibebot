@@ -123,7 +123,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: `Timed out by ${message.author.tag}` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       const reply = await message.reply({ embeds: [embed] });

@@ -176,7 +176,7 @@ module.exports = {
       inline: false,
     });
 
-    embed.setFooter({ text: `Server ID: ${guild.id}` }).setTimestamp();
+    embed.setFooter(branding.footers.default).setTimestamp();
 
     return message.reply({ embeds: [embed] });
   },

@@ -61,7 +61,7 @@ module.exports = {
 
     // Send confirmation embed
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('✅ Warning Removed')
       .setThumbnail(member.user.displayAvatarURL())
       .addFields(
@@ -93,7 +93,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({ text: `Removed by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     await message.reply({ embeds: [embed] });
@@ -102,7 +102,7 @@ module.exports = {
     try {
       const dmEmbed = new EmbedBuilder()
         .setTitle(`Warning removed in ${message.guild.name}`)
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .addFields(
           { name: 'Case ID', value: caseId },
           { name: 'Removed By', value: message.author.tag },

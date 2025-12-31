@@ -35,11 +35,11 @@ module.exports = {
         const screenshotUrl = `https://api.screenshotmachine.com/?key=${screenshotMachineKey}&url=${encodeURIComponent(url)}&dimension=1024x768&format=png&cacheLimit=0`;
 
         const embed = new EmbedBuilder()
-          .setColor(0x0099ff)
+          .setColor(branding.colors.info)
           .setTitle('📸 Website Screenshot')
           .setDescription(`Preview of: ${url}`)
           .setImage(screenshotUrl)
-          .setFooter({ text: 'Powered by Screenshot Machine' })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         return loadingMsg.edit({ content: null, embeds: [embed] });
@@ -51,11 +51,11 @@ module.exports = {
         const screenshotUrl = `https://api.screenshotlayer.com/api/capture?access_key=${screenshotlayerKey}&url=${encodeURIComponent(url)}&viewport=1024x768&format=PNG`;
 
         const embed = new EmbedBuilder()
-          .setColor(0x0099ff)
+          .setColor(branding.colors.info)
           .setTitle('📸 Website Screenshot')
           .setDescription(`Preview of: ${url}`)
           .setImage(screenshotUrl)
-          .setFooter({ text: 'Powered by Screenshotlayer' })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         return loadingMsg.edit({ content: null, embeds: [embed] });
@@ -67,11 +67,11 @@ module.exports = {
         const screenshotUrl = `https://api.apiflash.com/v1/urltoimage?access_key=${apiflashKey}&url=${encodeURIComponent(url)}&width=1024&height=768&format=png&fresh=true`;
 
         const embed = new EmbedBuilder()
-          .setColor(0x0099ff)
+          .setColor(branding.colors.info)
           .setTitle('📸 Website Screenshot')
           .setDescription(`Preview of: ${url}`)
           .setImage(screenshotUrl)
-          .setFooter({ text: 'Powered by ApiFlash' })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         return loadingMsg.edit({ content: null, embeds: [embed] });
@@ -87,11 +87,11 @@ module.exports = {
         await axios.head(freeUrl, { timeout: 5000 });
 
         const embed = new EmbedBuilder()
-          .setColor(0x0099ff)
+          .setColor(branding.colors.info)
           .setTitle('📸 Website Screenshot')
           .setDescription(`Preview of: ${url}`)
           .setImage(freeUrl)
-          .setFooter({ text: 'Free Screenshot Service' })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         return loadingMsg.edit({ content: null, embeds: [embed] });
@@ -101,7 +101,7 @@ module.exports = {
 
       // Fallback: Provide setup instructions
       const setupEmbed = new EmbedBuilder()
-        .setColor(0xffa500)
+        .setColor(branding.colors.warning)
         .setTitle('📸 Screenshot Service Not Configured')
         .setDescription(
           'To use the screenshot feature, add one of these API keys to your .env file:'
@@ -126,7 +126,7 @@ module.exports = {
             inline: false,
           }
         )
-        .setFooter({ text: 'All services offer free tiers!' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return loadingMsg.edit({ content: null, embeds: [setupEmbed] });

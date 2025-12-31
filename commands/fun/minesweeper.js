@@ -80,14 +80,14 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle('💣 Minesweeper')
       .setDescription(
         `**Size:** ${size}x${size}\n` +
           `**Bombs:** ${bombCount}\n\n` +
           `Click the spoilers to reveal!\n\n${gameBoard}`
       )
-      .setFooter({ text: `Started by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

@@ -82,7 +82,7 @@ module.exports = {
     };
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle('⭕ Tic-Tac-Toe ❌')
       .setDescription(
         `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n` +
@@ -122,7 +122,7 @@ module.exports = {
             `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n` +
               '**Game Over: Draw!** 🤝'
           );
-          embed.setColor(0xffa500);
+          embed.setColor(branding.colors.warning);
         } else {
           const winnerId =
             result === players[message.author.id]
@@ -132,7 +132,7 @@ module.exports = {
             `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n` +
               `**Winner: <@${winnerId}>!** 🎉`
           );
-          embed.setColor(0x00ff00);
+          embed.setColor(branding.colors.success);
         }
 
         // Disable all buttons
@@ -176,7 +176,7 @@ module.exports = {
     collector.on('end', (collected, reason) => {
       if (reason === 'time') {
         embed.setDescription('⏱️ Game timed out!');
-        embed.setColor(0xff0000);
+        embed.setColor(branding.colors.error);
         gameMessage.edit({ embeds: [embed], components: [] });
       }
     });

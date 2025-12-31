@@ -58,7 +58,7 @@ module.exports = {
         .join('\n\n');
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('⚙️ Auto-Responders')
         .setDescription(responderList)
         .setFooter({
@@ -125,7 +125,7 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('✅ Auto-Responder Added')
         .addFields(
           { name: '🔔 Trigger', value: `\`${trigger}\``, inline: false },
@@ -162,7 +162,7 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .setTitle('❌ Auto-Responder Removed')
         .addFields(
           {

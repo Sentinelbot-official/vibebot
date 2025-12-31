@@ -89,7 +89,7 @@ module.exports = {
           inline: false,
         }
       )
-      .setFooter({ text: 'This action cannot be undone!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const confirmMessage = await message.reply({
@@ -111,7 +111,7 @@ module.exports = {
         prestigeConfirmations.delete(confirmId);
         const expiredEmbed = EmbedBuilder.from(embed)
           .setColor(branding.colors.warning)
-          .setFooter({ text: 'Prestige confirmation expired' });
+          .setFooter(branding.footers.default);
         confirmMessage
           .edit({ embeds: [expiredEmbed], components: [] })
           .catch(() => {});
@@ -196,14 +196,14 @@ module.exports.handlePrestigeButton = async interaction => {
           inline: false,
         }
       )
-      .setFooter({ text: 'Your journey begins anew!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     prestigeConfirmations.delete(confirmId);
     return interaction.update({ embeds: [successEmbed], components: [] });
   } else {
     const cancelEmbed = new EmbedBuilder()
-      .setColor(0x808080)
+      .setColor(branding.colors.warning)
       .setTitle('❌ Prestige Cancelled')
       .setDescription('You have cancelled the prestige process.')
       .setTimestamp();

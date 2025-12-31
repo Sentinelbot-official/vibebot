@@ -62,7 +62,7 @@ module.exports = {
       }
 
       const embed = new EmbedBuilder()
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .setTitle('🔒 Server Lockdown')
         .setDescription(reason)
         .addFields(
@@ -93,7 +93,7 @@ module.exports = {
             await channel.send({
               embeds: [
                 new EmbedBuilder()
-                  .setColor(0xff0000)
+                  .setColor(branding.colors.error)
                   .setTitle('🔒 Channel Locked')
                   .setDescription(
                     `This channel has been locked.\n**Reason:** ${reason}`

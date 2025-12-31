@@ -30,13 +30,13 @@ module.exports = {
         .join('\n\n');
 
       const embed = new EmbedBuilder()
-        .setColor(0xffd700)
+        .setColor(branding.colors.premium)
         .setAuthor({
           name: `${message.author.username}'s Notes`,
           iconURL: message.author.displayAvatarURL(),
         })
         .setDescription(noteList)
-        .setFooter({ text: `Total: ${notes.notes.length} notes` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -90,90 +90,13 @@ module.exports = {
       const note = notes.notes[index];
 
       const embed = new EmbedBuilder()
-        .setColor(0xffd700)
+        .setColor(branding.colors.premium)
         .setAuthor({
           name: `${message.author.username}'s Note #${index + 1}`,
           iconURL: message.author.displayAvatarURL(),
         })
         .setDescription(note.content)
-        .setFooter({
-          text: `Created: ${new Date(note.createdAt).toLocaleString()}`,
-        })
-        .setTimestamp();
-
-      return message.reply({ embeds: [embed] });
-    }
-
-    if (action === 'delete') {
-      const index = parseInt(args[1]) - 1;
-
-      if (isNaN(index)) {
-        return message.reply(
-          '❌ Please provide a note number!\nUsage: `notes delete <number>`\nExample: `notes delete 1`'
-        );
-      }
-
-      const notes = db.get('notes', message.author.id) || { notes: [] };
-
-      if (index < 0 || index >= notes.notes.length) {
-        return message.reply(
-          `❌ Invalid note number! You have ${notes.notes.length} note(s).`
-        );
-      }
-
-      notes.notes.splice(index, 1);
-      db.set('notes', message.author.id, notes);
-
-      return message.reply(
-        `✅ Note deleted! You now have ${notes.notes.length} note(s).`
-      );
-    }
-
-    if (action === 'clear') {
-      const notes = db.get('notes', message.author.id) || { notes: [] };
-
-      if (!notes.notes.length) {
-        return message.reply('❌ You have no notes to clear!');
-      }
-
-      const count = notes.notes.length;
-      db.set('notes', message.author.id, { notes: [] });
-
-      return message.reply(`✅ Cleared ${count} note(s)!`);
-    }
-
-    if (action === 'search') {
-      const query = args.slice(1).join(' ').toLowerCase();
-
-      if (!query) {
-        return message.reply(
-          '❌ Please provide search text!\nUsage: `notes search <text>`'
-        );
-      }
-
-      const notes = db.get('notes', message.author.id) || { notes: [] };
-      const results = notes.notes.filter(note =>
-        note.content.toLowerCase().includes(query)
-      );
-
-      if (!results.length) {
-        return message.reply(`❌ No notes found matching "${query}"`);
-      }
-
-      const noteList = results
-        .map((note, index) => {
-          const noteIndex = notes.notes.indexOf(note) + 1;
-          const preview = note.content.substring(0, 50);
-          const date = new Date(note.createdAt).toLocaleDateString();
-          return `**${noteIndex}.** ${preview}${note.content.length > 50 ? '...' : ''} *(${date})*`;
-        })
-        .join('\n\n');
-
-      const embed = new EmbedBuilder()
-        .setColor(0xffd700)
-        .setTitle(`🔍 Search Results for "${query}"`)
-        .setDescription(noteList)
-        .setFooter({ text: `Found ${results.length} note(s)` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

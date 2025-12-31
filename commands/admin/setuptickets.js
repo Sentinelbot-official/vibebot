@@ -38,14 +38,14 @@ module.exports = {
 
     // Create ticket panel
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle('🎫 Support Tickets')
       .setDescription(
         'Need help? Create a ticket!\n\n' +
           'Click the button below to open a support ticket.\n' +
           'Our staff will assist you as soon as possible.'
       )
-      .setFooter({ text: 'Vibe Bot Ticket System' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const row = new ActionRowBuilder().addComponents(

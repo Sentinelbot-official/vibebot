@@ -64,7 +64,7 @@ module.exports = {
 
       // Build embed
       const embed = new EmbedBuilder()
-        .setColor(0xffd700)
+        .setColor(branding.colors.premium)
         .setTitle(details.title)
         .setURL(`https://www.themoviedb.org/movie/${details.id}`)
         .setDescription(details.overview || 'No description available');
@@ -169,7 +169,7 @@ module.exports = {
       }
 
       embed.addFields(fields);
-      embed.setFooter({ text: 'Powered by TMDB' });
+      embed.setFooter(branding.footers.default);
       embed.setTimestamp();
 
       return searchingMsg.edit({ content: null, embeds: [embed] });

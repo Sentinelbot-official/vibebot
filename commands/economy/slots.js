@@ -79,7 +79,7 @@ module.exports = {
         value: `${economy.coins.toLocaleString()} coins`,
         inline: true,
       })
-      .setFooter({ text: 'Match 3 symbols to win!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

@@ -37,10 +37,10 @@ module.exports = {
         .join('\n');
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('🏘️ Properties')
         .setDescription(propList)
-        .setFooter({ text: 'Use "property buy <name>" to purchase' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -73,7 +73,7 @@ module.exports = {
       db.set('properties', message.author.id, userData);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('🎉 Property Purchased!')
         .setDescription(`You bought a **${prop.name}**!`)
         .addFields(
@@ -124,7 +124,7 @@ module.exports = {
       db.set('properties', message.author.id, userData);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('💰 Income Collected!')
         .setDescription(
           `You collected **${totalIncome.toLocaleString()}** coins from your properties!`

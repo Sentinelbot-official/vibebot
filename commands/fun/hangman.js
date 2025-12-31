@@ -139,7 +139,7 @@ module.exports = {
       if (reason === 'won') {
         const timeTaken = Math.floor((Date.now() - gameData.startTime) / 1000);
         const embed = new EmbedBuilder()
-          .setColor(0x00ff00)
+          .setColor(branding.colors.success)
           .setTitle('🎉 Hangman - You Won!')
           .setDescription(
             `**Word:** ${word}\n\n✅ Congratulations! You guessed the word!`
@@ -161,7 +161,7 @@ module.exports = {
         await message.channel.send({ embeds: [embed] });
       } else if (reason === 'lost') {
         const embed = new EmbedBuilder()
-          .setColor(0xff0000)
+          .setColor(branding.colors.error)
           .setTitle('💀 Hangman - Game Over!')
           .setDescription(
             `${hangmanStages[6]}\n\n**Word:** ${word}\n\n❌ You ran out of guesses!`
@@ -171,7 +171,7 @@ module.exports = {
         await message.channel.send({ embeds: [embed] });
       } else {
         const embed = new EmbedBuilder()
-          .setColor(0x808080)
+          .setColor(branding.colors.warning)
           .setTitle("⏱️ Hangman - Time's Up!")
           .setDescription(
             `**Word:** ${word}\n\nThe game has ended due to inactivity.`
@@ -194,7 +194,7 @@ async function updateGame(channel, gameData) {
   const wrongLetters = wrongGuesses.join(', ') || 'None';
 
   const embed = new EmbedBuilder()
-    .setColor(0x0099ff)
+    .setColor(branding.colors.info)
     .setTitle('🎮 Hangman')
     .setDescription(
       `${hangmanStages[wrongGuesses.length]}\n\n**Word:** ${displayWord}`
@@ -212,7 +212,7 @@ async function updateGame(channel, gameData) {
         inline: false,
       }
     )
-    .setFooter({ text: 'Game expires in 2 minutes' })
+    .setFooter(branding.footers.default)
     .setTimestamp();
 
   await channel.send({ embeds: [embed] });

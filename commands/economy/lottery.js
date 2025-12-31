@@ -23,7 +23,7 @@ module.exports = {
 
     if (action === 'info') {
       const embed = new EmbedBuilder()
-        .setColor(0xffd700)
+        .setColor(branding.colors.premium)
         .setTitle('🎫 Lottery Information')
         .setDescription(
           'The lottery is a server-wide game where you can win big!\n\n' +
@@ -33,7 +33,7 @@ module.exports = {
             'Use `lottery buy` to purchase a ticket!\n' +
             'Draw happens automatically when 10+ tickets are sold.'
         )
-        .setFooter({ text: 'Good luck!' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -65,7 +65,7 @@ module.exports = {
       db.set('lottery', 'global', lotteryData);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('🎫 Lottery Ticket Purchased!')
         .setDescription(
           `You bought a lottery ticket for **${ticketPrice}** coins!\n\n` +
@@ -73,7 +73,7 @@ module.exports = {
             `**Your Chances:** 1/${lotteryData.participants.length}\n\n` +
             'Good luck! 🍀'
         )
-        .setFooter({ text: `Remaining balance: ${userData.wallet} coins` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       await message.reply({ embeds: [embed] });
@@ -105,7 +105,7 @@ module.exports = {
       db.set('economy', winnerId, userData);
 
       const embed = new EmbedBuilder()
-        .setColor(0xffd700)
+        .setColor(branding.colors.premium)
         .setTitle('🎰 LOTTERY DRAW! 🎰')
         .setDescription(
           `**Winner:** ${winner.tag}\n` +

@@ -9,14 +9,14 @@ module.exports = {
     const invite = `https://discord.com/api/oauth2/authorize?client_id=${message.client.user.id}&permissions=268446806&scope=bot`;
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle('🤖 Invite Vibe Bot')
       .setDescription(
         'Click the link below to invite me to your server!\n\n' +
           `[Invite Vibe Bot](${invite})`
       )
       .setThumbnail(message.client.user.displayAvatarURL())
-      .setFooter({ text: 'Thanks for using Vibe Bot!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

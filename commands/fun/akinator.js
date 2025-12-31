@@ -64,7 +64,7 @@ module.exports = {
 
     const getEmbed = () => {
       const embed = new EmbedBuilder()
-        .setColor(0x5865f2)
+        .setColor(branding.colors.info)
         .setTitle('🔮 Akinator Game')
         .setDescription(
           "I'm thinking of a character...\n\n" +
@@ -76,7 +76,7 @@ module.exports = {
             `\n\n**Guesses remaining:** ${guesses}\n\n` +
             'Type your guess in chat or click buttons below!'
         )
-        .setFooter({ text: 'You have 60 seconds to guess!' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return embed;
@@ -128,7 +128,7 @@ module.exports = {
         buttonCollector.stop();
 
         const winEmbed = new EmbedBuilder()
-          .setColor(0x00ff00)
+          .setColor(branding.colors.success)
           .setTitle('🎉 Correct!')
           .setDescription(
             `You guessed it! The character was **${character.name}**!\n\n` +
@@ -147,7 +147,7 @@ module.exports = {
           buttonCollector.stop();
 
           const loseEmbed = new EmbedBuilder()
-            .setColor(0xff0000)
+            .setColor(branding.colors.error)
             .setTitle('❌ Game Over!')
             .setDescription(
               'You ran out of guesses!\n\n' +
@@ -186,7 +186,7 @@ module.exports = {
         buttonCollector.stop();
 
         const giveUpEmbed = new EmbedBuilder()
-          .setColor(0xffa500)
+          .setColor(branding.colors.warning)
           .setTitle('🏳️ You Gave Up!')
           .setDescription(`The character was **${character.name}**.`)
           .setTimestamp();
@@ -198,7 +198,7 @@ module.exports = {
     messageCollector.on('end', () => {
       if (!gameEnded) {
         const timeoutEmbed = new EmbedBuilder()
-          .setColor(0xff0000)
+          .setColor(branding.colors.error)
           .setTitle("⏱️ Time's Up!")
           .setDescription(`The character was **${character.name}**.`)
           .setTimestamp();

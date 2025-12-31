@@ -101,14 +101,14 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle(`📊 ${question}`)
       .setDescription(
         options
           .map((opt, i) => `${numberEmojis[i]} **${opt}** - 0 votes (0%)`)
           .join('\n')
       )
-      .setFooter({ text: `Poll by ${message.author.username} | Ends` })
+      .setFooter(branding.footers.default)
       .setTimestamp(Date.now() + duration);
 
     const pollMsg = await message.channel.send({
@@ -170,10 +170,10 @@ module.exports = {
         .join('\n');
 
       const newEmbed = new EmbedBuilder()
-        .setColor(0x5865f2)
+        .setColor(branding.colors.info)
         .setTitle(`📊 ${poll.question}`)
         .setDescription(description)
-        .setFooter({ text: `Poll by ${message.author.username} | Ends` })
+        .setFooter(branding.footers.default)
         .setTimestamp(poll.endTime);
 
       await i.update({ embeds: [newEmbed] });
@@ -230,7 +230,7 @@ async function endPoll(pollId, client) {
       .join('\n');
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle(`📊 ${poll.question} [ENDED]`)
       .setDescription(description)
       .addFields({
@@ -238,7 +238,7 @@ async function endPoll(pollId, client) {
         value: winners.map(i => poll.options[i]).join(', ') || 'No votes',
         inline: false,
       })
-      .setFooter({ text: `Total votes: ${totalVotes}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     await pollMsg.edit({ embeds: [embed], components: [] });

@@ -25,7 +25,7 @@ module.exports = {
     const offline = total - online - idle - dnd;
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle(`📊 ${guild.name} Member Count`)
       .setThumbnail(guild.iconURL({ dynamic: true }))
       .addFields(

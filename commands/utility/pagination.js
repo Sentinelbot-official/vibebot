@@ -25,10 +25,10 @@ async function createPagination(message, items, itemsPerPage, title) {
     const start = page * itemsPerPage;
     const pageItems = items.slice(start, start + itemsPerPage);
     return new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle(title)
       .setDescription(pageItems.join('\n'))
-      .setFooter({ text: `Page ${page + 1}/${totalPages}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
   };
 

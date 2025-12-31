@@ -41,7 +41,7 @@ module.exports = {
     const voiceChannels = client.channels.cache.filter(c => c.type === 2).size;
 
     const embed = new EmbedBuilder()
-      .setColor(0x9b59b6)
+      .setColor(branding.colors.primary)
       .setTitle('🔴 Owner Bot Statistics')
       .setDescription(
         `Detailed system and bot information for ${client.user.tag}`
@@ -105,10 +105,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({
-        text: `🔴 Owner Command | Requested by ${message.author.tag}`,
-        iconURL: message.author.displayAvatarURL(),
-      })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

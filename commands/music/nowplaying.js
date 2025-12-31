@@ -18,7 +18,7 @@ module.exports = {
     const song = queue.songs[0];
 
     const embed = new EmbedBuilder()
-      .setColor(0x9b59b6)
+      .setColor(branding.colors.primary)
       .setTitle('🎵 Now Playing')
       .setDescription(`**[${song.title}](${song.url})**`)
       .addFields(
@@ -54,7 +54,7 @@ module.exports = {
         }
       )
       .setThumbnail(song.thumbnail || '')
-      .setFooter({ text: 'Vibe Bot Music System' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

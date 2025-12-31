@@ -27,11 +27,8 @@ module.exports = {
     try {
       const embed = new EmbedBuilder()
         .setDescription(text)
-        .setColor(0x5865f2)
-        .setFooter({
-          text: `Sent by ${message.author.tag}`,
-          iconURL: message.author.displayAvatarURL(),
-        })
+        .setColor(branding.colors.info)
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       await message.delete();

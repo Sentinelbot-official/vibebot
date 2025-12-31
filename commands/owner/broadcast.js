@@ -22,7 +22,7 @@ module.exports = {
 
     // Confirmation
     const confirmEmbed = new EmbedBuilder()
-      .setColor(0xffa500)
+      .setColor(branding.colors.warning)
       .setTitle('⚠️ Broadcast Confirmation')
       .setDescription(
         `You are about to send this message to **${message.client.guilds.cache.size} servers**:\n\n` +
@@ -30,10 +30,7 @@ module.exports = {
           `React with ✅ to confirm or ❌ to cancel.\n` +
           `This will expire in 30 seconds.`
       )
-      .setFooter({
-        text: '🔴 Owner Command',
-        iconURL: message.author.displayAvatarURL(),
-      })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const confirmMsg = await message.reply({ embeds: [confirmEmbed] });
@@ -58,7 +55,7 @@ module.exports = {
         return confirmMsg.edit({
           embeds: [
             new EmbedBuilder()
-              .setColor(0xff0000)
+              .setColor(branding.colors.error)
               .setTitle('❌ Broadcast Cancelled')
               .setDescription('The broadcast has been cancelled.')
               .setTimestamp(),
@@ -68,7 +65,7 @@ module.exports = {
 
       // Start broadcasting
       const statusEmbed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('📡 Broadcasting...')
         .setDescription('Sending message to all servers...')
         .setTimestamp();
@@ -79,13 +76,10 @@ module.exports = {
       let failCount = 0;
 
       const broadcastEmbed = new EmbedBuilder()
-        .setColor(0x9b59b6)
+        .setColor(branding.colors.primary)
         .setTitle('📢 Announcement from Bot Owner')
         .setDescription(broadcastMessage)
-        .setFooter({
-          text: 'Vibe Bot | Built 24/7 on Twitch',
-          iconURL: message.client.user.displayAvatarURL(),
-        })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       for (const guild of message.client.guilds.cache.values()) {
@@ -115,17 +109,14 @@ module.exports = {
       }
 
       const resultEmbed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('✅ Broadcast Complete')
         .setDescription(
           `**Message sent to ${successCount} servers**\n` +
             `**Failed:** ${failCount} servers\n\n` +
             `**Message:**\n${broadcastMessage}`
         )
-        .setFooter({
-          text: '🔴 Owner Command',
-          iconURL: message.author.displayAvatarURL(),
-        })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       await confirmMsg.edit({ embeds: [resultEmbed] });
@@ -138,7 +129,7 @@ module.exports = {
         return confirmMsg.edit({
           embeds: [
             new EmbedBuilder()
-              .setColor(0xff0000)
+              .setColor(branding.colors.error)
               .setTitle('⏱️ Broadcast Timed Out')
               .setDescription('The broadcast confirmation timed out.')
               .setTimestamp(),

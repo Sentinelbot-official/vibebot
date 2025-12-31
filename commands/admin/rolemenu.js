@@ -105,10 +105,10 @@ module.exports = {
 
     // Create embed
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle(title)
       .setDescription(description)
-      .setFooter({ text: 'Click a button to toggle a role!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     // Create buttons (max 5 per row, max 5 rows)

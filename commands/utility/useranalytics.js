@@ -105,7 +105,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({ text: `User ID: ${user.id}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     if (user.bannerURL()) {

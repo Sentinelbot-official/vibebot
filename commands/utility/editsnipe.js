@@ -20,7 +20,7 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0xffa500)
+      .setColor(branding.colors.warning)
       .setAuthor({
         name: snipedEdit.author.tag,
         iconURL: snipedEdit.author.displayAvatarURL(),
@@ -37,7 +37,7 @@ module.exports = {
           inline: false,
         }
       )
-      .setFooter({ text: 'Edited' })
+      .setFooter(branding.footers.default)
       .setTimestamp(snipedEdit.editedAt);
 
     message.reply({ embeds: [embed] });

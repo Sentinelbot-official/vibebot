@@ -79,7 +79,7 @@ module.exports = {
       db.set('events', message.guild.id, events);
 
       const embed = new EmbedBuilder()
-        .setColor(0x5865f2)
+        .setColor(branding.colors.info)
         .setTitle('📅 Event Created!')
         .addFields(
           { name: '📌 Name', value: name, inline: false },
@@ -99,43 +99,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({
-          text: `Event ID: ${eventId} | Use 'event join ${eventId}' to attend`,
-        })
-        .setTimestamp();
-
-      return message.reply({ embeds: [embed] });
-    }
-
-    if (action === 'list') {
-      const events = db.get('events', message.guild.id) || { events: [] };
-
-      if (!events.events.length) {
-        return message.reply('❌ No upcoming events!');
-      }
-
-      // Filter out past events
-      const upcoming = events.events.filter(e => e.date > Date.now());
-
-      if (!upcoming.length) {
-        return message.reply('❌ No upcoming events!');
-      }
-
-      const list = upcoming
-        .sort((a, b) => a.date - b.date)
-        .map(
-          e =>
-            `**${e.name}** (ID: ${e.id})\n` +
-            `📅 <t:${Math.floor(e.date / 1000)}:F>\n` +
-            `👥 ${e.attendees.length} attending`
-        )
-        .join('\n\n');
-
-      const embed = new EmbedBuilder()
-        .setColor(0x5865f2)
-        .setTitle('📅 Upcoming Events')
-        .setDescription(list)
-        .setFooter({ text: `Use 'event join <id>' to attend an event` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

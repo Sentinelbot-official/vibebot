@@ -28,7 +28,7 @@ module.exports = {
             '• All Premium features\n\n' +
             'Use `//premium` to upgrade!'
         )
-        .setFooter({ text: 'Support the 24/7 live coding journey! 💜' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -58,7 +58,7 @@ module.exports = {
             '• Advanced auto-mod rules\n' +
             '• Member behavior tracking'
         )
-        .setFooter({ text: '💎 Premium Feature' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -108,7 +108,7 @@ module.exports = {
             .join('\n'),
           inline: false,
         })
-        .setFooter({ text: '💎 Premium Feature | Extended audit logs' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -177,7 +177,7 @@ module.exports = {
         });
       }
 
-      embed.setFooter({ text: '💎 Premium Feature | Moderation insights' });
+      embed.setFooter(branding.footers.default);
       embed.setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -206,7 +206,7 @@ module.exports = {
             '• Member screening\n\n' +
             '**Note:** Configure advanced auto-mod in your server settings or contact support for setup assistance.'
         )
-        .setFooter({ text: '💎 Premium Feature | Advanced protection' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }

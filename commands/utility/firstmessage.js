@@ -20,7 +20,7 @@ module.exports = {
       }
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('📜 First Message')
         .setDescription(firstMessage.content || '*No content*')
         .setAuthor({

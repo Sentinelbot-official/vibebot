@@ -90,7 +90,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: `Kicked by ${message.author.tag}` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       const reply = await message.reply({ embeds: [embed] });

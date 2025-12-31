@@ -133,7 +133,7 @@ module.exports = {
         .setColor(0xff69b4)
         .setTitle('🎂 Server Birthdays')
         .setDescription(list || 'No birthdays set!')
-        .setFooter({ text: `Total: ${guildBirthdays.length} birthdays` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -202,7 +202,7 @@ module.exports = {
         .setColor(0xff69b4)
         .setTitle('🎂 Upcoming Birthdays')
         .setDescription(list)
-        .setFooter({ text: 'Top 10 upcoming birthdays' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

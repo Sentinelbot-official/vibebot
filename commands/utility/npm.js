@@ -49,7 +49,7 @@ module.exports = {
           { name: '📅 Published', value: packageData.published, inline: true },
           { name: '🔄 Last Update', value: packageData.modified, inline: true }
         )
-        .setFooter({ text: 'Powered by NPM Registry' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       if (packageData.keywords && packageData.keywords.length > 0) {

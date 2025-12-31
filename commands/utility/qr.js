@@ -18,13 +18,13 @@ module.exports = {
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${data}`;
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle('📱 QR Code Generated')
       .setDescription(
         `Scan this QR code to access:\n\`\`\`${args.join(' ').substring(0, 100)}\`\`\``
       )
       .setImage(qrUrl)
-      .setFooter({ text: 'Powered by QR Server API' });
+      .setFooter(branding.footers.default);
 
     message.reply({ embeds: [embed] });
   },

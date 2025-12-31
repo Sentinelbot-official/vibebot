@@ -43,7 +43,7 @@ module.exports = {
         .join(', ');
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle(`🎮 Minecraft Player: ${correctName}`)
         .setThumbnail(faceUrl)
         .setImage(skinUrl)
@@ -66,7 +66,7 @@ module.exports = {
             inline: false,
           }
         )
-        .setFooter({ text: 'Minecraft Stats' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return fetchingMsg.edit({ content: null, embeds: [embed] });

@@ -28,7 +28,7 @@ module.exports = {
         .slice(0, 5);
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('📊 Recent Guild Activity')
         .setTimestamp();
 
@@ -112,7 +112,7 @@ module.exports = {
         .sort((a, b) => a.value.joinedAt - b.value.joinedAt)[0];
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('📊 Guild Statistics')
         .setDescription(
           `**Current Guilds:** ${totalGuilds}\n` +

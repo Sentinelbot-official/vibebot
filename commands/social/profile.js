@@ -105,7 +105,7 @@ module.exports = {
     }
 
     embed
-      .setFooter({ text: 'Use "setbio <text>" to set your bio' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

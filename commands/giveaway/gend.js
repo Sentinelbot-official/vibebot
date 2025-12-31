@@ -61,14 +61,14 @@ module.exports = {
       // Update embed
       const { EmbedBuilder } = require('discord.js');
       const embed = EmbedBuilder.from(giveawayMsg.embeds[0])
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setDescription(
           `**Prize:** ${giveaway.prize}\n\n` +
             `**Winners:** ${winners.map(w => w.toString()).join(', ')}\n` +
             `**Hosted by:** <@${giveaway.hostId}>\n\n` +
             'Giveaway ended early!'
         )
-        .setFooter({ text: 'Ended at' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       await giveawayMsg.edit({ embeds: [embed] });

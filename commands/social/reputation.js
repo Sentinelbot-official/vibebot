@@ -18,7 +18,7 @@ module.exports = {
     };
 
     const embed = new EmbedBuilder()
-      .setColor(0xffd700)
+      .setColor(branding.colors.premium)
       .setTitle(`⭐ ${targetUser.username}'s Reputation`)
       .setThumbnail(targetUser.displayAvatarURL({ dynamic: true }))
       .addFields(
@@ -58,7 +58,7 @@ module.exports = {
     }
 
     embed
-      .setFooter({ text: 'Give reputation with: rep @user [reason]' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

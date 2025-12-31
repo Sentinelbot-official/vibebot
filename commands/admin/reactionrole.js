@@ -37,7 +37,7 @@ module.exports = {
 
     // Create embed
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle('🎭 Reaction Roles')
       .setDescription('React to get your role!')
       .addFields({
@@ -45,7 +45,7 @@ module.exports = {
         value: description,
         inline: false,
       })
-      .setFooter({ text: 'React below to get the role!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const msg = await message.channel.send({ embeds: [embed] });

@@ -160,9 +160,7 @@ module.exports = {
             formattedResults.join('\n\n')
         )
         .setColor('#5865F2')
-        .setFooter({
-          text: `Executed by ${message.author.tag}`,
-          iconURL: message.author.displayAvatarURL({ dynamic: true }),
+        .setFooter(branding.footers.default),
         })
         .setTimestamp();
 

@@ -47,7 +47,7 @@ module.exports = {
     );
 
     const embed = new EmbedBuilder()
-      .setColor(0x9b59b6)
+      .setColor(branding.colors.primary)
       .setTitle('🔴 Server List')
       .setDescription(
         `**Total Servers:** ${guilds.size}\n` +
@@ -55,10 +55,7 @@ module.exports = {
           `**Page:** ${page}/${maxPages}\n\n` +
           guildList
       )
-      .setFooter({
-        text: `🔴 Owner Command | Page ${page}/${maxPages}`,
-        iconURL: message.author.displayAvatarURL(),
-      })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

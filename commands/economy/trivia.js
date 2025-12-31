@@ -98,14 +98,14 @@ module.exports = {
     const row2 = new ActionRowBuilder().addComponents(buttons.slice(2, 4));
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle('🧠 Trivia Question')
       .setDescription(
         `${question.question}\n\n` +
           `**Reward:** ${question.reward} coins\n` +
           '**Time Limit:** 15 seconds'
       )
-      .setFooter({ text: `Trivia for ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const msg = await message.reply({
@@ -144,7 +144,7 @@ module.exports = {
         db.set('economy', message.author.id, userData);
 
         const winEmbed = new EmbedBuilder()
-          .setColor(0x00ff00)
+          .setColor(branding.colors.success)
           .setTitle('✅ Correct!')
           .setDescription(
             'You answered correctly!\n\n' +
@@ -156,7 +156,7 @@ module.exports = {
         await interaction.update({ embeds: [winEmbed], components: [] });
       } else {
         const loseEmbed = new EmbedBuilder()
-          .setColor(0xff0000)
+          .setColor(branding.colors.error)
           .setTitle('❌ Wrong!')
           .setDescription(
             "That's incorrect!\n\n" +
@@ -173,7 +173,7 @@ module.exports = {
     collector.on('end', _collected => {
       if (!answered) {
         const timeoutEmbed = new EmbedBuilder()
-          .setColor(0xff0000)
+          .setColor(branding.colors.error)
           .setTitle("⏱️ Time's Up!")
           .setDescription(
             "You didn't answer in time!\n\n" +

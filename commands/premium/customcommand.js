@@ -28,7 +28,7 @@ module.exports = {
             '• And more!\n\n' +
             'Use `//premium` to learn more!'
         )
-        .setFooter({ text: 'Support the 24/7 live coding journey! 💜' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -71,7 +71,7 @@ module.exports = {
           value: `**Commands:** ${commandCount}/${limit}\n**Tier:** 👑 VIP`,
           inline: false,
         })
-        .setFooter({ text: 'VIP Feature 👑' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -94,70 +94,7 @@ module.exports = {
         .setColor('#0099ff')
         .setTitle('🔧 Custom Commands')
         .setDescription(commandList)
-        .setFooter({
-          text: `Total: ${Object.keys(customCommands).length}/${premiumPerks.getLimit(guildId, 'maxCustomCommands')} | VIP Feature 👑`,
-        });
-
-      return message.reply({ embeds: [embed] });
-    }
-
-    if (action === 'add') {
-      const commandName = args[1]?.toLowerCase();
-      const response = args.slice(2).join(' ');
-
-      if (!commandName || !response) {
-        return message.reply(
-          '❌ Usage: `//cc add <name> <response>`\n' +
-            'Example: `//cc add hello Hello {user}!`'
-        );
-      }
-
-      // Validate command name
-      if (!/^[a-z0-9_-]+$/.test(commandName)) {
-        return message.reply(
-          '❌ Command name can only contain lowercase letters, numbers, hyphens, and underscores!'
-        );
-      }
-
-      if (commandName.length > 32) {
-        return message.reply('❌ Command name must be 32 characters or less!');
-      }
-
-      // Check if command already exists
-      if (customCommands[commandName]) {
-        return message.reply(
-          `❌ Command \`${commandName}\` already exists! Use \`//cc edit\` to modify it.`
-        );
-      }
-
-      // Check limit
-      const limit = premiumPerks.getLimit(guildId, 'maxCustomCommands');
-      if (Object.keys(customCommands).length >= limit) {
-        return message.reply(
-          `❌ You've reached your custom command limit! (${limit})\n` +
-            'Remove some commands to add new ones.'
-        );
-      }
-
-      // Add command
-      customCommands[commandName] = {
-        response,
-        createdBy: message.author.id,
-        createdAt: Date.now(),
-        uses: 0,
-      };
-
-      db.set('custom_commands', guildId, customCommands);
-
-      const embed = new EmbedBuilder()
-        .setColor('#00ff00')
-        .setTitle('✅ Custom Command Added!')
-        .setDescription(
-          `**Command:** \`//${commandName}\`\n` +
-            `**Response:** ${response}\n\n` +
-            'Users can now use this command!'
-        )
-        .setFooter({ text: 'VIP Feature 👑' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -207,7 +144,7 @@ module.exports = {
           `**Command:** \`//${commandName}\`\n` +
             `**New Response:** ${newResponse}`
         )
-        .setFooter({ text: 'VIP Feature 👑' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }

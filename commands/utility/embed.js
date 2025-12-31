@@ -70,7 +70,7 @@ module.exports = {
       .setTitle(title.substring(0, 256))
       .setDescription(description.substring(0, 4096))
       .setColor(color)
-      .setFooter({ text: `Created by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     // Validate and set image URL

@@ -26,7 +26,7 @@ module.exports = {
     const emojiUrl = `https://cdn.discordapp.com/emojis/${emojiId}.${extension}`;
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle(`:${emojiName}:`)
       .setImage(emojiUrl)
       .addFields(

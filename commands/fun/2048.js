@@ -153,7 +153,7 @@ module.exports = {
     );
 
     const embed = new EmbedBuilder()
-      .setColor(0xffd700)
+      .setColor(branding.colors.premium)
       .setTitle('🎮 2048 Game')
       .setDescription(boardToString(board))
       .addFields({
@@ -161,7 +161,7 @@ module.exports = {
         value: getScore(board).toString(),
         inline: true,
       })
-      .setFooter({ text: 'Use the buttons to move tiles!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const msg = await message.reply({ embeds: [embed], components: [buttons] });

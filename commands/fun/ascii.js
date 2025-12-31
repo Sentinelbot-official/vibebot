@@ -72,10 +72,10 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle('ASCII Art')
       .setDescription('```\n' + asciiArt + '\n```')
-      .setFooter({ text: `Requested by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

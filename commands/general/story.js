@@ -8,7 +8,7 @@ module.exports = {
   cooldown: 10,
   execute(message, args) {
     const embed = new EmbedBuilder()
-      .setColor(0x9b59b6)
+      .setColor(branding.colors.primary)
       .setTitle('🔴 The Vibe Bot 24/7 Story')
       .setThumbnail(message.client.user.displayAvatarURL())
       .setDescription(
@@ -77,10 +77,7 @@ module.exports = {
           inline: false,
         }
       )
-      .setFooter({
-        text: '🔴 Built 24/7 with ❤️ by Airis & The Global Community | Every feature has a story',
-        iconURL: message.author.displayAvatarURL(),
-      })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

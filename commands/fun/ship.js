@@ -86,7 +86,7 @@ module.exports = {
       )
       .setThumbnail(user1.displayAvatarURL())
       .setImage(user2.displayAvatarURL())
-      .setFooter({ text: `Shipped by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

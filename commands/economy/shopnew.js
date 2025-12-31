@@ -97,10 +97,10 @@ module.exports = {
         .join('\n\n');
 
       const embed = new EmbedBuilder()
-        .setColor(0xffd700)
+        .setColor(branding.colors.premium)
         .setTitle('🏪 Shop Categories')
         .setDescription(categories)
-        .setFooter({ text: 'Use "shopnew <category>" to browse' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -183,10 +183,10 @@ module.exports = {
       .join('\n\n');
 
     const embed = new EmbedBuilder()
-      .setColor(0xffd700)
+      .setColor(branding.colors.premium)
       .setTitle(`${cat.name} Shop`)
       .setDescription(items)
-      .setFooter({ text: 'Use "shopnew buy <category> <item>" to purchase' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

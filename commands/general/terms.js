@@ -8,7 +8,7 @@ module.exports = {
   cooldown: 5,
   execute(message, args) {
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle('📜 Terms of Service')
       .setDescription('By using this bot, you agree to the following terms:')
       .addFields(
@@ -46,7 +46,7 @@ module.exports = {
           inline: false,
         }
       )
-      .setFooter({ text: 'Last Updated: December 31, 2025' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

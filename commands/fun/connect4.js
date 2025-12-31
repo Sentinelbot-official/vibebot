@@ -135,7 +135,7 @@ module.exports = {
     };
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle('🔴 Connect 4 🟡')
       .setDescription(
         `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n${renderBoard()}\nCurrent turn: <@${currentPlayer}>`
@@ -176,7 +176,7 @@ module.exports = {
         embed.setDescription(
           `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n${renderBoard()}\n\n**Winner: <@${currentPlayer}>!** 🎉`
         );
-        embed.setColor(0x00ff00);
+        embed.setColor(branding.colors.success);
 
         await interaction.update({
           embeds: [embed],
@@ -188,7 +188,7 @@ module.exports = {
         embed.setDescription(
           `${players[message.author.id]} ${message.author.username} vs ${players[opponent.id]} ${opponent.username}\n\n${renderBoard()}\n\n**Game Over: Draw!** 🤝`
         );
-        embed.setColor(0xffa500);
+        embed.setColor(branding.colors.warning);
 
         await interaction.update({
           embeds: [embed],
@@ -213,7 +213,7 @@ module.exports = {
     collector.on('end', (collected, reason) => {
       if (reason === 'time') {
         embed.setDescription(`${renderBoard()}\n\n⏱️ Game timed out!`);
-        embed.setColor(0xff0000);
+        embed.setColor(branding.colors.error);
         gameMessage.edit({ embeds: [embed], components: [] });
       }
     });

@@ -81,10 +81,10 @@ module.exports = {
         .join('\n\n');
 
       const embed = new EmbedBuilder()
-        .setColor(0x5865f2)
+        .setColor(branding.colors.info)
         .setTitle('🛡️ Server Clans')
         .setDescription(list)
-        .setFooter({ text: `Total: ${clanList.length} clans` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -109,7 +109,7 @@ module.exports = {
       const memberList = clan.members.map(id => `<@${id}>`).join(', ');
 
       const embed = new EmbedBuilder()
-        .setColor(0x5865f2)
+        .setColor(branding.colors.info)
         .setTitle(`🛡️ ${clan.name}`)
         .addFields(
           { name: '👑 Leader', value: `<@${clan.leader}>`, inline: true },
@@ -122,7 +122,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: `Clan ID: ${clan.id}` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

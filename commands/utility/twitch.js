@@ -54,7 +54,7 @@ module.exports = {
 
     if (!clientId || !clientSecret) {
       const embed = new EmbedBuilder()
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .setTitle('❌ Twitch Not Configured')
         .setDescription(
           'Add `TWITCH_CLIENT_ID` and `TWITCH_CLIENT_SECRET` to your .env file'
@@ -159,7 +159,7 @@ module.exports = {
         );
       }
 
-      embed.setFooter({ text: 'Twitch' }).setTimestamp();
+      embed.setFooter(branding.footers.default).setTimestamp();
 
       return loadingMsg.edit({ content: null, embeds: [embed] });
     } catch (error) {

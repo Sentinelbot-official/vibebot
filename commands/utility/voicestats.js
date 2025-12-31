@@ -54,7 +54,7 @@ module.exports = {
         : 0;
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle(`🎤 ${targetUser.username}'s Voice Stats`)
       .setThumbnail(targetUser.displayAvatarURL({ dynamic: true }))
       .addFields(

@@ -25,7 +25,7 @@ module.exports = {
 
     if (!action) {
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('🛡️ Anti-Raid Settings')
         .addFields(
           {
@@ -56,7 +56,7 @@ module.exports = {
             inline: false,
           }
         )
-        .setFooter({ text: 'Protects against mass join raids' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -99,7 +99,7 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('✅ Anti-Raid Settings Updated')
         .addFields(
           { name: 'Threshold', value: `${threshold} joins`, inline: true },

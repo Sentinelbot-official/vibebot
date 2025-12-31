@@ -72,10 +72,10 @@ module.exports = {
       db.set('confessions', message.guild.id, confessionData);
 
       const embed = new EmbedBuilder()
-        .setColor(0x9b59b6)
+        .setColor(branding.colors.primary)
         .setTitle(`📮 Anonymous Confession #${confessionData.count}`)
         .setDescription(confession)
-        .setFooter({ text: 'Sent anonymously' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       try {
@@ -121,7 +121,7 @@ module.exports = {
       };
 
       const embed = new EmbedBuilder()
-        .setColor(0x9b59b6)
+        .setColor(branding.colors.primary)
         .setTitle('📮 Confession Status')
         .addFields(
           {

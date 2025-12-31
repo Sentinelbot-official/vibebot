@@ -38,7 +38,7 @@ module.exports = {
             '• All Premium features\n\n' +
             'Use `//premium` to upgrade!'
         )
-        .setFooter({ text: 'Support the 24/7 live coding journey! 💜' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -61,7 +61,7 @@ module.exports = {
               .map(([symbol, data]) => `• **${symbol}** - ${data.name}`)
               .join('\n')
         )
-        .setFooter({ text: '👑 VIP Feature | Prices update every 5 minutes' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -92,71 +92,7 @@ module.exports = {
         });
       }
 
-      embed.setFooter({
-        text: '👑 VIP Feature | Use //stocks buy <symbol> <shares>',
-      });
-
-      return message.reply({ embeds: [embed] });
-    }
-
-    if (action === 'buy') {
-      const symbol = args[1]?.toUpperCase();
-      const shares = parseInt(args[2]);
-
-      if (!symbol || !STOCKS[symbol]) {
-        return message.reply(
-          `❌ Invalid stock symbol! Available: ${Object.keys(STOCKS).join(', ')}`
-        );
-      }
-
-      if (!shares || shares < 1) {
-        return message.reply('❌ Please specify a valid number of shares!');
-      }
-
-      const price = stockPrices[symbol];
-      const totalCost = price * shares;
-
-      // Get user economy
-      const economy = db.get('economy', message.author.id) || {
-        coins: 0,
-        bank: 0,
-      };
-
-      if (economy.coins < totalCost) {
-        return message.reply(
-          `❌ You don't have enough coins! You need ${totalCost.toLocaleString()} coins in your wallet.`
-        );
-      }
-
-      // Deduct coins
-      economy.coins -= totalCost;
-      db.set('economy', message.author.id, economy);
-
-      // Add to portfolio
-      const portfolio = db.get('stock_portfolio', message.author.id) || {};
-      if (!portfolio[symbol]) {
-        portfolio[symbol] = { shares: 0, avgPrice: 0 };
-      }
-
-      const totalShares = portfolio[symbol].shares + shares;
-      const totalValue =
-        portfolio[symbol].shares * portfolio[symbol].avgPrice + totalCost;
-      portfolio[symbol].avgPrice = totalValue / totalShares;
-      portfolio[symbol].shares = totalShares;
-
-      db.set('stock_portfolio', message.author.id, portfolio);
-
-      const embed = new EmbedBuilder()
-        .setColor('#00ff00')
-        .setTitle('✅ Stock Purchase Successful!')
-        .setDescription(
-          `**Stock:** ${STOCKS[symbol].name} (${symbol})\n` +
-            `**Shares:** ${shares}\n` +
-            `**Price per Share:** ${price.toLocaleString()} coins\n` +
-            `**Total Cost:** ${totalCost.toLocaleString()} coins\n\n` +
-            `**New Balance:** ${economy.coins.toLocaleString()} coins`
-        )
-        .setFooter({ text: '👑 VIP Feature | Prices fluctuate!' })
+      embed.setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -217,7 +153,7 @@ module.exports = {
             `**Profit/Loss:** ${profit >= 0 ? '+' : ''}${profit.toLocaleString()} coins (${profitPercent >= 0 ? '+' : ''}${profitPercent.toFixed(2)}%)\n\n` +
             `**New Balance:** ${economy.coins.toLocaleString()} coins`
         )
-        .setFooter({ text: '👑 VIP Feature | Well done!' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

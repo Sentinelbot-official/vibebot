@@ -22,7 +22,7 @@ module.exports = {
 
       if (result.success) {
         const embed = new EmbedBuilder()
-          .setColor(0x00ff00)
+          .setColor(branding.colors.success)
           .setTitle('✅ Backup Created')
           .setDescription('Database backup created successfully!')
           .addFields(

@@ -39,7 +39,7 @@ module.exports = {
             '• All Premium features\n\n' +
             'Use `//premium` to upgrade!'
         )
-        .setFooter({ text: 'Support the 24/7 live coding journey! 💜' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -70,7 +70,7 @@ module.exports = {
             '\n\n' +
             `**Current Theme:** ${PROFILE_THEMES[profile.theme].emoji} ${profile.theme}`
         )
-        .setFooter({ text: '💎 Premium Feature' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -97,7 +97,7 @@ module.exports = {
           `Your profile theme has been set to **${themeName}**!\n\n` +
             'Use `//profile` to see your updated profile!'
         )
-        .setFooter({ text: '💎 Premium Feature' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -128,7 +128,7 @@ module.exports = {
           `Your custom badge: **${badgeText}**\n\n` +
             'Use `//profile` to see your updated profile!'
         )
-        .setFooter({ text: '💎 Premium Feature' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -159,7 +159,7 @@ module.exports = {
           `**Your Bio:**\n${bioText}\n\n` +
             'Use `//profile` to see your updated profile!'
         )
-        .setFooter({ text: '💎 Premium Feature' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -211,7 +211,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: '💎 Premium Profile | Customized' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

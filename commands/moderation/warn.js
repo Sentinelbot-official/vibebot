@@ -110,7 +110,7 @@ module.exports = {
           { name: 'Warn Count', value: warnCount.toString() },
           { name: 'Date', value: new Date().toLocaleString() }
         )
-        .setFooter({ text: `Case ID: ${warnData.caseId}` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
       await member.send({ embeds: [dmEmbed] });
     } catch {}

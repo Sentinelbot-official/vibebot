@@ -78,113 +78,10 @@ module.exports = {
         .join('\n\n');
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('🔍 Regex Filters')
         .setDescription(filterList)
-        .setFooter({
-          text: `${regexFilters.length} regex filter(s) configured`,
-        })
-        .setTimestamp();
-
-      return message.reply({ embeds: [embed] });
-    }
-
-    if (action === 'test') {
-      if (args.length < 3) {
-        return message.reply(
-          '❌ Usage: `regexfilter test <pattern> <test string>`\nExample: `regexfilter test discord\\.gg Check discord.gg/test`'
-        );
-      }
-
-      const pattern = args[1];
-      const testString = args.slice(2).join(' ');
-
-      try {
-        const regex = new RegExp(pattern, 'gi');
-        const matches = testString.match(regex);
-
-        const embed = new EmbedBuilder()
-          .setColor(matches ? 0xff0000 : 0x00ff00)
-          .setTitle('🔍 Regex Test')
-          .addFields(
-            { name: 'Pattern', value: `\`${pattern}\``, inline: false },
-            { name: 'Test String', value: testString, inline: false },
-            {
-              name: 'Result',
-              value: matches
-                ? `❌ Matched: ${matches.join(', ')}`
-                : '✅ No match',
-              inline: false,
-            }
-          )
-          .setTimestamp();
-
-        return message.reply({ embeds: [embed] });
-      } catch (error) {
-        return message.reply(`❌ Invalid regex pattern: ${error.message}`);
-      }
-    }
-
-    if (action === 'add') {
-      if (args.length < 3) {
-        return message.reply(
-          '❌ Usage: `regexfilter add <pattern> <name> [flags]`\nExample: `regexfilter add (discord\\.gg|discordapp\\.com\\/invite) InviteLinks gi`'
-        );
-      }
-
-      const pattern = args[1];
-      const name = args[2];
-      const flags = args[3] || 'gi';
-
-      // Validate pattern safety (prevent ReDoS)
-      if (!isSafeRegex(pattern)) {
-        return message.reply(
-          '❌ This regex pattern is potentially dangerous and could cause performance issues (ReDoS)!\n' +
-            'Avoid nested quantifiers like `(a+)+` or `(.*)+`'
-        );
-      }
-
-      // Test if regex is valid
-      try {
-        new RegExp(pattern, flags);
-      } catch (error) {
-        return message.reply(`❌ Invalid regex pattern: ${error.message}`);
-      }
-
-      if (regexFilters.some(f => f.name === name)) {
-        return message.reply(
-          '❌ A regex filter with this name already exists!'
-        );
-      }
-
-      if (regexFilters.length >= 10) {
-        return message.reply('❌ Maximum of 10 regex filters per server!');
-      }
-
-      regexFilters.push({
-        pattern,
-        name,
-        flags,
-        createdBy: message.author.id,
-        createdAt: Date.now(),
-      });
-
-      settings.regexFilters = regexFilters;
-      db.set('guild_settings', message.guild.id, settings);
-
-      const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
-        .setTitle('✅ Regex Filter Added')
-        .addFields(
-          { name: '📝 Name', value: name, inline: true },
-          {
-            name: '🔍 Pattern',
-            value: `\`${pattern.substring(0, 100)}\``,
-            inline: false,
-          },
-          { name: '🚩 Flags', value: `\`${flags}\``, inline: true }
-        )
-        .setFooter({ text: `Total: ${regexFilters.length} regex filter(s)` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -209,13 +106,13 @@ module.exports = {
       db.set('guild_settings', message.guild.id, settings);
 
       const embed = new EmbedBuilder()
-        .setColor(0xff0000)
+        .setColor(branding.colors.error)
         .setTitle('❌ Regex Filter Removed')
         .addFields(
           { name: '📝 Name', value: removed.name, inline: true },
           { name: '🔍 Pattern', value: `\`${removed.pattern}\``, inline: false }
         )
-        .setFooter({ text: `Total: ${regexFilters.length} regex filter(s)` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

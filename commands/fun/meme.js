@@ -50,7 +50,7 @@ module.exports = {
             inline: false,
           }
         )
-        .setFooter({ text: 'Use //meme (no args) for random Reddit memes!' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -102,7 +102,7 @@ module.exports = {
             },
             { name: '📱 Subreddit', value: `r/${randomSub}`, inline: true }
           )
-          .setFooter({ text: `Posted by u/${randomPost.author}` })
+          .setFooter(branding.footers.default)
           .setTimestamp(new Date(randomPost.created_utc * 1000));
 
         return message.reply({ embeds: [embed] });
@@ -220,10 +220,7 @@ module.exports = {
         .setColor(branding.colors.error)
         .setTitle('🎨 Your Custom Meme')
         .setImage(response.data.data.url)
-        .setFooter({
-          text: `Template: ${template} | Created by ${message.author.tag}`,
-          iconURL: message.author.displayAvatarURL(),
-        })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return generatingMsg.edit({

@@ -38,13 +38,10 @@ module.exports = {
       .replace(/@here/gi, '@\u200bhere');
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle('📢 Announcement')
       .setDescription(sanitizedAnnouncement)
-      .setFooter({
-        text: `Announced by ${message.author.tag}`,
-        iconURL: message.author.displayAvatarURL(),
-      })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     try {

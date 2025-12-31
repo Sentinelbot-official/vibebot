@@ -76,7 +76,7 @@ module.exports = {
     setTimeout(() => sendReminder(reminder, message.client), duration);
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('⏰ Reminder Set!')
       .setDescription(reminderText)
       .addFields(
@@ -91,7 +91,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({ text: `Reminder ID: ${reminder.id}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });
@@ -106,7 +106,7 @@ async function sendReminder(reminder, client) {
       : null;
 
     const embed = new EmbedBuilder()
-      .setColor(0xffd700)
+      .setColor(branding.colors.premium)
       .setTitle('⏰ Reminder!')
       .setDescription(reminder.message)
       .setFooter({

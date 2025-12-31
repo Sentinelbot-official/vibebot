@@ -75,68 +75,10 @@ module.exports = {
         .join('\n');
 
       const embed = new EmbedBuilder()
-        .setColor(0x5865f2)
+        .setColor(branding.colors.info)
         .setTitle('🌐 Supported Languages')
         .setDescription(langList)
-        .setFooter({
-          text: `Total: ${Object.keys(languageCodes).length} languages`,
-        })
-        .setTimestamp();
-
-      return message.reply({ embeds: [embed] });
-    }
-
-    const targetLang = args[0].toLowerCase();
-    const text = args.slice(1).join(' ');
-
-    if (!languageCodes[targetLang]) {
-      return message.reply(
-        `❌ Unsupported language code: \`${targetLang}\`\nUse \`translate list\` to see all supported languages.`
-      );
-    }
-
-    const translatingMsg = await message.reply('🌐 Translating...');
-
-    try {
-      // Use Google Translate API (free endpoint)
-      // Note: This uses the unofficial API. For production, use official Google Cloud Translation API
-      const response = await axios.get(
-        'https://translate.googleapis.com/translate_a/single',
-        {
-          params: {
-            client: 'gtx',
-            sl: 'auto', // Auto-detect source language
-            tl: targetLang,
-            dt: 't',
-            q: text,
-          },
-          timeout: 10000,
-        }
-      );
-
-      // Parse response
-      const translated = response.data[0].map(item => item[0]).join('');
-
-      // Detect source language
-      const sourceLang = response.data[2] || 'auto';
-      const sourceLangName = languageCodes[sourceLang] || 'Unknown';
-
-      const embed = new EmbedBuilder()
-        .setColor(0x5865f2)
-        .setTitle('🌐 Translation')
-        .addFields(
-          {
-            name: `Original (${sourceLangName})`,
-            value: text.substring(0, 1024),
-            inline: false,
-          },
-          {
-            name: `Translated (${languageCodes[targetLang]})`,
-            value: translated.substring(0, 1024),
-            inline: false,
-          }
-        )
-        .setFooter({ text: 'Powered by Google Translate' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return translatingMsg.edit({ content: null, embeds: [embed] });
@@ -160,7 +102,7 @@ module.exports = {
           const translated = fallbackResponse.data.responseData.translatedText;
 
           const embed = new EmbedBuilder()
-            .setColor(0x5865f2)
+            .setColor(branding.colors.info)
             .setTitle('🌐 Translation')
             .addFields(
               {
@@ -174,7 +116,7 @@ module.exports = {
                 inline: false,
               }
             )
-            .setFooter({ text: 'Powered by MyMemory API' })
+            .setFooter(branding.footers.default)
             .setTimestamp();
 
           return translatingMsg.edit({ content: null, embeds: [embed] });

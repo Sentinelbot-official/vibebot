@@ -21,7 +21,7 @@ module.exports = {
       const weatherData = await fetchWeather(location);
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle(`🌤️ Weather for ${weatherData.location}`)
         .setDescription(weatherData.condition)
         .addFields(
@@ -36,7 +36,7 @@ module.exports = {
           },
           { name: '🌅 UV Index', value: weatherData.uv, inline: true }
         )
-        .setFooter({ text: 'Powered by wttr.in' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       if (weatherData.forecast) {

@@ -18,7 +18,7 @@ module.exports = {
     const animatedEmojis = emojis.filter(e => e.animated);
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle(`${message.guild.name} Emojis`)
       .setDescription(`Total: **${emojis.size}** emojis`)
       .setTimestamp();

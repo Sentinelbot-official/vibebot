@@ -43,7 +43,7 @@ module.exports = {
     const totalDurationStr = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 
     const embed = new EmbedBuilder()
-      .setColor(0x9b59b6)
+      .setColor(branding.colors.primary)
       .setTitle('🎵 Music Queue')
       .setDescription(
         `**Now Playing:**\n` +
@@ -71,7 +71,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({ text: `Page ${currentPage}/${totalPages} | Vibe Bot Music System` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     // Add pagination buttons if needed
@@ -143,7 +143,7 @@ module.exports = {
           return `**${position}.** [${song.title}](${song.url}) - \`${song.duration}\``;
         }).join('\n') || 'No more songs in queue';
 
-        embed.setFooter({ text: `Page ${currentPage}/${totalPages} | Vibe Bot Music System` });
+        embed.setFooter(branding.footers.default);
 
         row.components[0].setDisabled(currentPage === 1);
         row.components[1].setDisabled(currentPage === 1);

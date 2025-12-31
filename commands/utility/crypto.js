@@ -62,7 +62,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: 'Powered by CoinGecko • Data may be delayed' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       if (cryptoData.ath) {

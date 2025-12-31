@@ -95,7 +95,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: "Valorant Stats | Powered by Henrik's API" })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       if (account.card.wide) {

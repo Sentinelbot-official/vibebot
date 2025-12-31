@@ -43,7 +43,7 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle('🔢 Binary Converter')
       .addFields(
         {
@@ -57,7 +57,7 @@ module.exports = {
           inline: false,
         }
       )
-      .setFooter({ text: `Converted by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

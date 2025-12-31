@@ -32,7 +32,7 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle(`📊 ${message.guild.name} - Level Leaderboard`)
       .setThumbnail(message.guild.iconURL({ dynamic: true }))
       .setTimestamp();

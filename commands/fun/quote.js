@@ -167,7 +167,7 @@ module.exports = {
       .setColor(0xe74c3c)
       .setTitle('✨ Inspirational Quote')
       .setDescription(`*"${quote.text}"*`)
-      .setFooter({ text: `— ${quote.author}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

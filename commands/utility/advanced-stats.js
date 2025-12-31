@@ -47,7 +47,7 @@ module.exports = {
     const voiceChannels = client.channels.cache.filter(c => c.type === 2).size;
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle('📊 Advanced Bot Statistics')
       .setDescription('Detailed system and bot performance metrics')
       .addFields(
@@ -82,7 +82,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({ text: `Requested by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

@@ -141,7 +141,7 @@ module.exports = {
         value: 'Type a 5-letter word to make a guess!',
         inline: false,
       })
-      .setFooter({ text: 'Game expires in 3 minutes' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     await message.reply({ embeds: [embed] });
@@ -181,7 +181,7 @@ module.exports = {
       if (reason === 'won') {
         const timeTaken = Math.floor((Date.now() - gameData.startTime) / 1000);
         const embed = new EmbedBuilder()
-          .setColor(0x00ff00)
+          .setColor(branding.colors.success)
           .setTitle('🎉 Wordle - You Won!')
           .setDescription(
             getGameBoard(gameData) +
@@ -200,7 +200,7 @@ module.exports = {
         await message.channel.send({ embeds: [embed] });
       } else if (reason === 'lost') {
         const embed = new EmbedBuilder()
-          .setColor(0xff0000)
+          .setColor(branding.colors.error)
           .setTitle('❌ Wordle - Game Over!')
           .setDescription(
             getGameBoard(gameData) + `\n\n**The word was:** ${word}`
@@ -210,7 +210,7 @@ module.exports = {
         await message.channel.send({ embeds: [embed] });
       } else {
         const embed = new EmbedBuilder()
-          .setColor(0x808080)
+          .setColor(branding.colors.warning)
           .setTitle("⏱️ Wordle - Time's Up!")
           .setDescription(
             `**The word was:** ${word}\n\nThe game has ended due to inactivity.`
@@ -284,7 +284,7 @@ async function updateGame(channel, gameData) {
       value: `${gameData.guesses.length}/6`,
       inline: true,
     })
-    .setFooter({ text: 'Type a 5-letter word to guess!' })
+    .setFooter(branding.footers.default)
     .setTimestamp();
 
   await channel.send({ embeds: [embed] });

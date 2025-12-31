@@ -72,7 +72,7 @@ module.exports = {
 
     // Send confirmation to user
     const userEmbed = new EmbedBuilder()
-      .setColor(0xffa500)
+      .setColor(branding.colors.warning)
       .setTitle('📝 Warning Appeal Submitted')
       .setDescription(
         `Your appeal for warning \`${caseId}\` has been submitted and is pending review.`
@@ -87,7 +87,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({ text: 'Moderators will review your appeal shortly' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     await message.reply({ embeds: [userEmbed] });
@@ -107,7 +107,7 @@ module.exports = {
         .has(PermissionFlagsBits.SendMessages)
     ) {
       const modEmbed = new EmbedBuilder()
-        .setColor(0xffa500)
+        .setColor(branding.colors.warning)
         .setTitle('📝 New Warning Appeal')
         .setDescription(
           `**User:** ${message.author.tag} (${message.author.id})\n` +

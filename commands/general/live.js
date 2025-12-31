@@ -24,7 +24,7 @@ module.exports = {
       if (uptime && !uptime.includes('offline') && !uptime.includes('error')) {
         // Stream is LIVE!
         const embed = new EmbedBuilder()
-          .setColor(0xff0000)
+          .setColor(branding.colors.error)
           .setTitle('🔴 LIVE NOW on Twitch!')
           .setURL(`https://twitch.tv/${twitchUsername}`)
           .setDescription(
@@ -52,17 +52,14 @@ module.exports = {
               inline: false,
             }
           )
-          .setFooter({
-            text: 'Click the title to watch! | Built 24/7 with the community',
-            iconURL: message.author.displayAvatarURL(),
-          })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         return message.reply({ embeds: [embed] });
       } else {
         // Stream is offline
         const embed = new EmbedBuilder()
-          .setColor(0x808080)
+          .setColor(branding.colors.warning)
           .setTitle('📴 Currently Offline')
           .setDescription(
             `**Airis** is not currently streaming right now.\n\n` +
@@ -73,10 +70,7 @@ module.exports = {
           .setThumbnail(
             `https://static-cdn.jtvnw.net/jtv_user_pictures/${twitchUsername}-profile_image-300x300.png`
           )
-          .setFooter({
-            text: 'Built with ❤️ by Airis & The 24/7 Community',
-            iconURL: message.author.displayAvatarURL(),
-          })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         return message.reply({ embeds: [embed] });
@@ -97,10 +91,7 @@ const branding = require('../../utils/branding');
             `Join anytime - we're coding around the clock! 🌍\n\n` +
             `*Unable to check live status right now, but check the link above!*`
         )
-        .setFooter({
-          text: 'Built with ❤️ by Airis & The 24/7 Community',
-          iconURL: message.author.displayAvatarURL(),
-        })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

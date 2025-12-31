@@ -33,7 +33,7 @@ module.exports = {
               : `❌ You lost! You chose ${userChoice}.`
             : '')
       )
-      .setFooter({ text: `Flipped by ${message.author.tag}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

@@ -144,10 +144,7 @@ module.exports = {
           inline: false,
         }
       )
-      .setFooter({
-        text: `Reviewed by ${message.author.tag}`,
-        iconURL: message.author.displayAvatarURL(),
-      })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     await message.reply({ embeds: [confirmEmbed] });
@@ -186,10 +183,7 @@ module.exports = {
               inline: false,
             }
           )
-          .setFooter({
-            text: `Reviewed by ${message.author.tag}`,
-            iconURL: message.author.displayAvatarURL(),
-          })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         if (action === 'approve') {

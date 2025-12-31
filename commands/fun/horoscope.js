@@ -94,7 +94,7 @@ module.exports = {
     const luckStars = '⭐'.repeat(luckRating) + '☆'.repeat(5 - luckRating);
 
     const embed = new EmbedBuilder()
-      .setColor(0x9b59b6)
+      .setColor(branding.colors.primary)
       .setTitle(
         `${signData.emoji} ${sign.charAt(0).toUpperCase() + sign.slice(1)} Horoscope`
       )
@@ -106,7 +106,7 @@ module.exports = {
         { name: '🏥 Health', value: healthHoroscope, inline: false },
         { name: '🍀 Luck Rating', value: luckStars, inline: false }
       )
-      .setFooter({ text: `Daily horoscope for ${message.author.username}` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

@@ -58,7 +58,7 @@ module.exports = {
         },
         { name: '⏱️ Duration', value: durationText, inline: false }
       )
-      .setFooter({ text: '💕 Love is in the air!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

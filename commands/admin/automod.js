@@ -56,7 +56,7 @@ module.exports = {
       if (!option) {
         // Show current settings
         const embed = new EmbedBuilder()
-          .setColor(0x0099ff)
+          .setColor(branding.colors.info)
           .setTitle('🛡️ Auto-Mod Settings')
           .addFields(
             {
@@ -90,7 +90,7 @@ module.exports = {
               inline: true,
             }
           )
-          .setFooter({ text: 'Use !automod settings <option> to toggle' })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         return message.reply({ embeds: [embed] });

@@ -28,7 +28,7 @@ module.exports = {
       const shortUrl = await shortenURL(url);
 
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
+        .setColor(branding.colors.info)
         .setTitle('🔗 URL Shortened')
         .addFields(
           {
@@ -38,7 +38,7 @@ module.exports = {
           },
           { name: '✂️ Shortened URL', value: shortUrl, inline: false }
         )
-        .setFooter({ text: 'Powered by TinyURL' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

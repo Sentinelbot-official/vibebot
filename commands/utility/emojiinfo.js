@@ -28,7 +28,7 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle(`Emoji Information: ${emoji.name}`)
       .setThumbnail(emoji.url)
       .addFields(

@@ -68,7 +68,7 @@ module.exports = {
             '• Custom commands\n\n' +
             'Use `//premium` to upgrade!'
         )
-        .setFooter({ text: 'Support the 24/7 live coding journey! 💜' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -94,7 +94,7 @@ module.exports = {
             '**Income:**\n' +
             'Collect income every 6 hours from your businesses!'
         )
-        .setFooter({ text: '👑 VIP Feature | Build your empire!' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -119,7 +119,7 @@ module.exports = {
         });
       }
 
-      embed.setFooter({ text: '👑 VIP Feature | Use //business buy <type>' });
+      embed.setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -175,7 +175,7 @@ module.exports = {
             `**New Balance:** ${economy.coins.toLocaleString()} coins\n\n` +
             `Use \`//business collect\` to collect income every 6 hours!`
         )
-        .setFooter({ text: '👑 VIP Feature | Congratulations!' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -219,7 +219,7 @@ module.exports = {
             `**Sold for:** ${sellPrice.toLocaleString()} coins\n\n` +
             `**New Balance:** ${economy.coins.toLocaleString()} coins`
         )
-        .setFooter({ text: '👑 VIP Feature' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -293,7 +293,7 @@ module.exports = {
             `\n\n**Total Income:** ${totalIncome.toLocaleString()} coins\n` +
             `**New Balance:** ${economy.coins.toLocaleString()} coins`
         )
-        .setFooter({ text: '👑 VIP Feature | Come back in 6 hours!' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -334,7 +334,7 @@ module.exports = {
         });
       }
 
-      embed.setFooter({ text: '👑 VIP Feature | Use //business collect' });
+      embed.setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -389,7 +389,7 @@ module.exports = {
             `**New Income:** ${(business.income.min * newLevel).toLocaleString()} - ${(business.income.max * newLevel).toLocaleString()} coins/6h\n\n` +
             `**New Balance:** ${economy.coins.toLocaleString()} coins`
         )
-        .setFooter({ text: '👑 VIP Feature | Keep growing!' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

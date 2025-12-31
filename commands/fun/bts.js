@@ -98,7 +98,7 @@ module.exports = {
     const moment = moments[Math.floor(Math.random() * moments.length)];
 
     const embed = new EmbedBuilder()
-      .setColor(0x9b59b6)
+      .setColor(branding.colors.primary)
       .setTitle(`${moment.emoji} ${moment.title}`)
       .setDescription(moment.description)
       .addFields({
@@ -109,10 +109,7 @@ module.exports = {
           'Run this command again for another story!',
         inline: false,
       })
-      .setFooter({
-        text: '🔴 Built 24/7 with ❤️ by Airis & The Global Community | Every bug has a story!',
-        iconURL: message.author.displayAvatarURL(),
-      })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

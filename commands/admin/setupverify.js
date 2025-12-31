@@ -37,7 +37,7 @@ module.exports = {
 
     // Create verification panel
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('✅ Verification')
       .setDescription(
         `Welcome to **${message.guild.name}**!\n\n` +
@@ -45,7 +45,7 @@ module.exports = {
           `You will receive the ${role} role.`
       )
       .setThumbnail(message.guild.iconURL({ dynamic: true }))
-      .setFooter({ text: 'Vibe Bot Verification System' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const row = new ActionRowBuilder().addComponents(

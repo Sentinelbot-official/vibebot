@@ -81,10 +81,10 @@ module.exports = {
         .join('\n');
 
       const embed = new EmbedBuilder()
-        .setColor(0xffd700)
+        .setColor(branding.colors.premium)
         .setTitle('🎁 Gift Codes')
         .setDescription(list)
-        .setFooter({ text: `Total: ${codeList.length} codes` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -152,7 +152,7 @@ module.exports = {
     db.set('economy', message.author.id, economy);
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('🎁 Code Redeemed!')
       .setDescription(
         `You've successfully redeemed code **${code}**!\n\n` +

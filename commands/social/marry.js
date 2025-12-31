@@ -74,7 +74,7 @@ module.exports = {
       .setImage(
         'https://media.tenor.com/images/c6b8e1d8f8f8e8e8e8e8e8e8e8e8e8e8/tenor.gif'
       )
-      .setFooter({ text: 'Proposal expires in 60 seconds' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     const proposalMessage = await message.reply({
@@ -96,8 +96,8 @@ module.exports = {
       if (proposals.has(proposalId)) {
         proposals.delete(proposalId);
         const expiredEmbed = EmbedBuilder.from(embed)
-          .setColor(0x808080)
-          .setFooter({ text: 'Proposal expired' });
+          .setColor(branding.colors.warning)
+          .setFooter(branding.footers.default);
         proposalMessage
           .edit({ embeds: [expiredEmbed], components: [] })
           .catch(() => {});
@@ -168,7 +168,7 @@ module.exports.handleMarriageButton = async interaction => {
         value: new Date().toLocaleDateString(),
         inline: false,
       })
-      .setFooter({ text: 'Wishing you a lifetime of happiness together!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     proposals.delete(proposalId);
@@ -176,7 +176,7 @@ module.exports.handleMarriageButton = async interaction => {
   } else {
     // Declined
     const declineEmbed = new EmbedBuilder()
-      .setColor(0xff0000)
+      .setColor(branding.colors.error)
       .setTitle('💔 Proposal Declined')
       .setDescription(`<@${proposal.targetId}> declined the proposal.`)
       .setTimestamp();

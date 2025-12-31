@@ -34,10 +34,7 @@ module.exports = {
       .setTitle(`⚠️ Warnings for ${member.user.tag}`)
       .setThumbnail(member.user.displayAvatarURL())
       .setDescription(`Total Warnings: **${warns.length}**\n\u200b`)
-      .setFooter({
-        text: `Requested by ${message.author.tag}`,
-        iconURL: message.author.displayAvatarURL(),
-      })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     // Add each warning as a field

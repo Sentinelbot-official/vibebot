@@ -27,7 +27,7 @@ module.exports = {
       }
 
       const embed = new EmbedBuilder()
-        .setColor(0x9b59b6)
+        .setColor(branding.colors.primary)
         .setAuthor({
           name: `${message.author.username}'s Favorite Vibes 💜`,
           iconURL: message.author.displayAvatarURL(),
@@ -43,10 +43,7 @@ module.exports = {
             inline: false,
           }))
         )
-        .setFooter({ 
-          text: `${favorites.length} favorites • Built live on Twitch!`,
-          iconURL: 'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png'
-        })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });

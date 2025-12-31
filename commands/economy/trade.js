@@ -74,7 +74,7 @@ module.exports = {
       );
 
       const embed = new EmbedBuilder()
-        .setColor(0xffd700)
+        .setColor(branding.colors.premium)
         .setTitle('💱 Trade Request')
         .setDescription(
           `${message.author} wants to trade **${amount.toLocaleString()} coins** with ${targetUser}!`
@@ -88,7 +88,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: 'Trade expires in 60 seconds' })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       const tradeMessage = await message.reply({
@@ -112,8 +112,8 @@ module.exports = {
         if (trade) {
           db.delete(`trade_${tradeId}`, tradeId);
           const expiredEmbed = EmbedBuilder.from(embed)
-            .setColor(0x808080)
-            .setFooter({ text: 'Trade expired' });
+            .setColor(branding.colors.warning)
+            .setFooter(branding.footers.default);
           tradeMessage
             .edit({ embeds: [expiredEmbed], components: [] })
             .catch(() => {});
@@ -188,7 +188,7 @@ const branding = require('../../utils/branding');
         db.set('economy', trade.receiverId, receiverEconomy);
 
         const successEmbed = new EmbedBuilder()
-          .setColor(0x00ff00)
+          .setColor(branding.colors.success)
           .setTitle('✅ Trade Completed!')
           .setDescription(
             `Successfully traded **${trade.amount.toLocaleString()} coins**!`
@@ -211,7 +211,7 @@ const branding = require('../../utils/branding');
   } else {
     // Declined
     const declineEmbed = new EmbedBuilder()
-      .setColor(0xff0000)
+      .setColor(branding.colors.error)
       .setTitle('❌ Trade Declined')
       .setDescription(`<@${trade.receiverId}> declined the trade request.`)
       .setTimestamp();

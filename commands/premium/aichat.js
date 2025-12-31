@@ -27,7 +27,7 @@ module.exports = {
             '• And more!\n\n' +
             'Use `//premium` to learn more!'
         )
-        .setFooter({ text: 'Support the 24/7 live coding journey! 💜' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -85,7 +85,7 @@ module.exports = {
             '`//aichat Explain quantum physics simply`\n\n' +
             `**Auto-Response:** ${aiSettings.enabled ? '✅ Enabled' : '❌ Disabled'}`
         )
-        .setFooter({ text: 'VIP Feature 👑 | Powered by OpenAI' });
+        .setFooter(branding.footers.default);
 
       return message.reply({ embeds: [embed] });
     }
@@ -164,10 +164,7 @@ module.exports = {
             iconURL: 'https://cdn.discordapp.com/embed/avatars/0.png',
           })
           .setDescription(aiResponse)
-          .setFooter({
-            text: 'VIP Feature 👑 | Powered by OpenAI GPT-3.5',
-            iconURL: message.author.displayAvatarURL(),
-          })
+          .setFooter(branding.footers.default)
           .setTimestamp();
 
         await message.reply({ embeds: [embed] });

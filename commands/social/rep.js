@@ -54,7 +54,7 @@ module.exports = {
     db.set('reputation', targetUser.id, repData);
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('⭐ Reputation Given!')
       .setDescription(`${message.author} gave reputation to ${targetUser}!`)
       .addFields(
@@ -65,7 +65,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({ text: `You can give rep again in 24 hours` })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     return message.reply({ embeds: [embed] });

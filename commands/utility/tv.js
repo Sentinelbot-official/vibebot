@@ -180,7 +180,7 @@ module.exports = {
       }
 
       embed.addFields(fields);
-      embed.setFooter({ text: 'Powered by TMDB' });
+      embed.setFooter(branding.footers.default);
       embed.setTimestamp();
 
       return searchingMsg.edit({ content: null, embeds: [embed] });

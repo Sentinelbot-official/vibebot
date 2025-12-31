@@ -41,7 +41,7 @@ module.exports = {
       }
 
       const embed = new EmbedBuilder()
-        .setColor(0x5865f2)
+        .setColor(branding.colors.info)
         .setTitle('🔢 Calculator')
         .addFields(
           {
@@ -55,7 +55,7 @@ module.exports = {
             inline: false,
           }
         )
-        .setFooter({ text: `Calculated by ${message.author.tag}` })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       message.reply({ embeds: [embed] });

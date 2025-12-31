@@ -87,7 +87,7 @@ async function adoptPet(message, type) {
   db.set('pets', message.author.id, newPet);
 
   const embed = new EmbedBuilder()
-    .setColor(0x00ff00)
+    .setColor(branding.colors.success)
     .setTitle('🎉 Pet Adopted!')
     .setDescription(
       `Congratulations! You adopted a ${petType.emoji} **${petType.name}**!`
@@ -97,7 +97,7 @@ async function adoptPet(message, type) {
       { name: '🍖 Hunger', value: '100%', inline: true },
       { name: '⭐ Level', value: '1', inline: true }
     )
-    .setFooter({ text: 'Take good care of your pet!' })
+    .setFooter(branding.footers.default)
     .setTimestamp();
 
   return message.reply({ embeds: [embed] });
@@ -135,7 +135,7 @@ async function feedPet(message) {
 
   const petType = petTypes[petData.type];
   const embed = new EmbedBuilder()
-    .setColor(0x00ff00)
+    .setColor(branding.colors.success)
     .setTitle(`${petType.emoji} Fed ${petData.name}!`)
     .setDescription(`You fed your ${petType.name}! They're happy! 🍖`)
     .addFields(
@@ -194,7 +194,7 @@ async function playWithPet(message) {
 
   const petType = petTypes[petData.type];
   const embed = new EmbedBuilder()
-    .setColor(0x00ff00)
+    .setColor(branding.colors.success)
     .setTitle(`${petType.emoji} Played with ${petData.name}!`)
     .setDescription(`You played with your ${petType.name}! They had fun! 🎾`)
     .addFields(
@@ -254,7 +254,7 @@ async function showPetStatus(message) {
   );
 
   const embed = new EmbedBuilder()
-    .setColor(0x0099ff)
+    .setColor(branding.colors.info)
     .setTitle(`${petType.emoji} ${petData.name}`)
     .setDescription(`**Type:** ${petType.name}\n**Mood:** ${mood}`)
     .addFields(
@@ -276,7 +276,7 @@ async function showPetStatus(message) {
       },
       { name: '📅 Days Together', value: adoptedDays.toString(), inline: true }
     )
-    .setFooter({ text: 'Use: pet feed | pet play | pet rename <name>' })
+    .setFooter(branding.footers.default)
     .setTimestamp();
 
   return message.reply({ embeds: [embed] });

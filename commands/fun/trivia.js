@@ -88,11 +88,11 @@ module.exports = {
       triviaQuestions[Math.floor(Math.random() * triviaQuestions.length)];
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle('🧠 Trivia Time!')
       .setDescription(question.question)
       .addFields({ name: 'Category', value: question.category, inline: true })
-      .setFooter({ text: 'You have 30 seconds to answer!' })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

@@ -35,7 +35,7 @@ module.exports = {
     db.delete('warns', member.id);
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle('✅ Warnings Cleared')
       .setDescription(
         `Cleared **${warnCount}** warning(s) for ${member.user.tag}`

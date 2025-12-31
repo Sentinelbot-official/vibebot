@@ -15,7 +15,7 @@ module.exports = {
     }
 
     const embed = new EmbedBuilder()
-      .setColor(0x0099ff)
+      .setColor(branding.colors.info)
       .setTitle(`${message.guild.name} Icon`)
       .setImage(iconURL)
       .addFields({

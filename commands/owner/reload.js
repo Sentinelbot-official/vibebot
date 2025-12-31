@@ -62,17 +62,14 @@ module.exports = {
         loadCommands(commandsPath);
 
         const embed = new EmbedBuilder()
-          .setColor(0x00ff00)
+          .setColor(branding.colors.success)
           .setTitle('✅ All Commands Reloaded')
           .setDescription(
             `Successfully reloaded **${reloadedCommands.length}** commands!\n\n` +
               `**Initiated by:** ${message.author.tag}`
           )
           .setTimestamp()
-          .setFooter({
-            text: '🔴 Owner Command | Vibe Bot',
-            iconURL: message.client.user.displayAvatarURL(),
-          });
+          .setFooter(branding.footers.default);
 
         logger.info(
           `✅ All commands reloaded by ${message.author.tag} (${reloadedCommands.length} commands)`
@@ -137,7 +134,7 @@ module.exports = {
       message.client.commands.set(newCommand.name, newCommand);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('✅ Command Reloaded')
         .setDescription(
           `Successfully reloaded command: **${newCommand.name}**\n\n` +
@@ -145,10 +142,7 @@ module.exports = {
             `**Initiated by:** ${message.author.tag}`
         )
         .setTimestamp()
-        .setFooter({
-          text: '🔴 Owner Command | Vibe Bot',
-          iconURL: message.client.user.displayAvatarURL(),
-        });
+        .setFooter(branding.footers.default);
 
       logger.info(
         `✅ Command '${newCommand.name}' reloaded by ${message.author.tag}`
