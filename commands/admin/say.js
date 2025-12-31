@@ -40,15 +40,20 @@ module.exports = {
     }
 
     try {
+      // Add attribution footer to show who used the command
+      const footer = `\n\n-# Sent by ${message.author.tag} via say command`;
+      const fullMessage = text + footer;
+
       await message.delete();
       await message.channel.send({
-        content: text,
+        content: fullMessage,
         allowedMentions: {
+          // Disable all pings unless user has MentionEveryone permission
           parse: message.member.permissions.has(
             PermissionFlagsBits.MentionEveryone
           )
             ? ['everyone', 'roles', 'users']
-            : ['users'],
+            : [], // No pings at all for regular users
         },
       });
     } catch (error) {
