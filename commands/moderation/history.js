@@ -81,7 +81,7 @@ module.exports = {
       const appealedCount = warns.filter(w => w.appealed).length;
 
       const embed = new EmbedBuilder()
-        .setColor(activeCount > 5 ? 0xff0000 : activeCount > 2 ? 0xffa500 : 0xffff00)
+        .setColor(activeCount > 5 ? branding.colors.error : activeCount > 2 ? branding.colors.warning : branding.colors.success)
         .setTitle(`📋 Moderation History: ${target.user.tag}`)
         .setDescription(
           `**Filter:** ${filter.charAt(0).toUpperCase() + filter.slice(1)}\n` +
@@ -108,8 +108,7 @@ module.exports = {
         });
       }
 
-      embed.setFooter({
-        text: `Page ${page + 1}/${totalPages} | Use buttons to navigate | Case ID format: W[timestamp]-[user]`,
+      embed.setFooter(branding.footers.default)
       });
       embed.setTimestamp();
 

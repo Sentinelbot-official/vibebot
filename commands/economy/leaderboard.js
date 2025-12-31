@@ -156,7 +156,7 @@ module.exports = {
             : 'This Month';
 
       const embed = new EmbedBuilder()
-        .setColor(isPremium ? 0xffd700 : 0x9b59b6)
+        .setColor(isPremium ? branding.colors.premium : branding.colors.primary)
         .setTitle(
           `${typeEmojis[type]} ${typeNames[type]} Leaderboard ${isPremium ? '💎' : ''}`
         )
@@ -166,8 +166,7 @@ module.exports = {
             `**Total Entries:** ${leaderboardData.length.toLocaleString()}\n\u200b`
         )
         .setThumbnail(message.guild.iconURL({ dynamic: true }))
-        .setFooter({
-          text: `Page ${page + 1}/${totalPages} | Your Rank: ${userPosition > 0 ? `#${userPosition}` : 'Unranked'} | ${message.author.tag}`,
+        .setFooter(branding.footers.community)
           iconURL: message.author.displayAvatarURL(),
         })
         .setTimestamp();

@@ -22,7 +22,7 @@ module.exports = {
 
     if (Object.keys(guildInv).length === 0) {
       const emptyEmbed = new EmbedBuilder()
-        .setColor(0x808080)
+        .setColor(branding.colors.warning)
         .setAuthor({
           name: `${user.username}'s Inventory`,
           iconURL: user.displayAvatarURL(),
@@ -80,7 +80,7 @@ module.exports = {
       const pageItems = allItems.slice(start, end);
 
       const embed = new EmbedBuilder()
-        .setColor(0x9b59b6)
+        .setColor(branding.colors.primary)
         .setAuthor({
           name: `${user.username}'s Inventory`,
           iconURL: user.displayAvatarURL(),
@@ -131,8 +131,7 @@ module.exports = {
         }
       }
 
-      embed.setFooter({
-        text: `Page ${page + 1}/${totalPages} | Requested by ${message.author.tag}`,
+      embed.setFooter(branding.footers.community)
         iconURL: message.author.displayAvatarURL(),
       });
       embed.setTimestamp();

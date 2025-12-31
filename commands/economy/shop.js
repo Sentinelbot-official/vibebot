@@ -141,7 +141,7 @@ module.exports = {
     const pageItems = availableItems.slice(startIndex, endIndex);
 
     const embed = new EmbedBuilder()
-      .setColor(0xffd700)
+      .setColor(branding.colors.premium)
       .setTitle(`${tierBadge} Shop`)
       .setDescription(
         'Use `buy <item_id>` to purchase an item!\n' +
@@ -150,8 +150,7 @@ module.exports = {
             ? `${tierBadge} **${tierName} Discount:** ${Math.round(discount * 100)}% off all items!\n\n`
             : '')
       )
-      .setFooter({
-        text: `Page ${page}/${totalPages}${discount === 0 ? ' | Upgrade to Premium for discounts!' : ''}`,
+      .setFooter(branding.footers.community)
       })
       .setTimestamp();
 

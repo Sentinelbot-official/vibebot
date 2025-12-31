@@ -101,7 +101,7 @@ module.exports = {
     const daysAgo = Math.floor(timeSince / (1000 * 60 * 60 * 24));
 
     const embed = new EmbedBuilder()
-      .setColor(foundCase.active === false ? 0x808080 : 0xff9900)
+      .setColor(foundCase.active === false ? branding.colors.warning : branding.colors.error)
       .setTitle(`📋 Case Details: ${caseId}`)
       .setDescription(
         `**Status:** ${status}\n` +
@@ -152,8 +152,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({
-        text: `Case ID: ${caseId} | Use //history @user for full history`,
+      .setFooter(branding.footers.default)
       })
       .setTimestamp(foundCase.timestamp || Date.now());
 

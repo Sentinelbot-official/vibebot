@@ -163,8 +163,7 @@ module.exports = {
       });
     }
 
-    embed.setFooter({
-      text: `Requested by ${message.author.tag} | Keep chatting to level up!`,
+    embed.setFooter(branding.footers.community)
       iconURL: message.author.displayAvatarURL(),
     });
     embed.setTimestamp();
