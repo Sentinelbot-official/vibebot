@@ -176,9 +176,7 @@ module.exports = {
       });
     }
 
-    embed.setFooter(branding.footers.default)
-      iconURL: message.author.displayAvatarURL(),
-    });
+    embed.setFooter(branding.footers.default);
     embed.setTimestamp();
 
     // Create buttons for member list and permissions
@@ -223,8 +221,6 @@ module.exports = {
                 : '')
           )
           .setFooter(branding.footers.default)
-            iconURL: message.author.displayAvatarURL(),
-          })
           .setTimestamp();
 
         await i.reply({ embeds: [memberEmbed], flags: MessageFlags.Ephemeral });
@@ -243,8 +239,6 @@ module.exports = {
           .setTitle(`🔐 All Permissions for ${role.name}`)
           .setDescription(permissionList.substring(0, 4000))
           .setFooter(branding.footers.default)
-            iconURL: message.author.displayAvatarURL(),
-          })
           .setTimestamp();
 
         await i.reply({ embeds: [permEmbed], flags: MessageFlags.Ephemeral });

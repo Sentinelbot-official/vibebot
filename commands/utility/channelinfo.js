@@ -282,9 +282,7 @@ module.exports = {
       inline: true,
     });
 
-    embed.setFooter(branding.footers.default)
-      iconURL: message.author.displayAvatarURL(),
-    });
+    embed.setFooter(branding.footers.default);
     embed.setTimestamp();
 
     message.reply({ embeds: [embed] });

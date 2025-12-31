@@ -167,8 +167,6 @@ module.exports = {
         )
         .setThumbnail(message.guild.iconURL({ dynamic: true }))
         .setFooter(branding.footers.community)
-          iconURL: message.author.displayAvatarURL(),
-        })
         .setTimestamp();
 
       let description = '';
