@@ -190,13 +190,19 @@ module.exports = {
 
       const game = games.get(id);
       if (!game) {
-        return i.reply({ content: '❌ Game expired!', flags: MessageFlags.Ephemeral });
+        return i.reply({
+          content: '❌ Game expired!',
+          flags: MessageFlags.Ephemeral,
+        });
       }
 
       const { board: newBoard, moved } = move(game.board, direction);
 
       if (!moved) {
-        return i.reply({ content: '❌ Invalid move!', flags: MessageFlags.Ephemeral });
+        return i.reply({
+          content: '❌ Invalid move!',
+          flags: MessageFlags.Ephemeral,
+        });
       }
 
       addNewTile(newBoard);

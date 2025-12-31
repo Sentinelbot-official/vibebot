@@ -355,6 +355,7 @@ class DatabaseManager {
         collections: collections.length,
         collectionNames: collections,
         totalEntries: 0,
+        sizeInfo: this.getDatabaseSize(),
       };
 
       for (const collection of collections) {
@@ -370,6 +371,227 @@ class DatabaseManager {
     } catch (error) {
       console.error('[DATABASE] Error getting stats:', error);
       return {};
+    }
+  }
+
+  /**
+   * Get database file size
+   * @returns {Object} Size information
+   */
+  getDatabaseSize() {
+    try {
+      const fs = require('fs');
+      const stats = fs.statSync(this.dbPath);
+      const sizeInMB = (stats.size / (1024 * 1024)).toFixed(2);
+      
+      return {
+        bytes: stats.size,
+        mb: parseFloat(sizeInMB),
+        formatted: `${sizeInMB} MB`,
+      };
+    } catch (error) {
+      console.error('[DATABASE] Error getting size:', error);
+      return { bytes: 0, mb: 0, formatted: '0 MB' };
+    }
+  }
+
+  /**
+   * Optimize database (VACUUM)
+   * @returns {boolean} Success status
+   */
+  optimize() {
+    try {
+      console.log('[DATABASE] Starting optimization (VACUUM)...');
+      this.db.exec('VACUUM');
+      console.log('[DATABASE] Optimization complete');
+      return true;
+    } catch (error) {
+      console.error('[DATABASE] Error optimizing database:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Analyze database for query optimization
+   * @returns {boolean} Success status
+   */
+  analyze() {
+    try {
+      console.log('[DATABASE] Analyzing database...');
+      this.db.exec('ANALYZE');
+      console.log('[DATABASE] Analysis complete');
+      return true;
+    } catch (error) {
+      console.error('[DATABASE] Error analyzing database:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Get collection analytics
+   * @param {string} collection - Collection name
+   * @returns {Object} Analytics data
+   */
+  getCollectionAnalytics(collection) {
+    try {
+      const stmt = this.db.prepare(`
+        SELECT 
+          COUNT(*) as total,
+          MIN(created_at) as oldest,
+          MAX(updated_at) as newest,
+          AVG(LENGTH(value)) as avg_size
+        FROM kv_store 
+        WHERE collection = ?
+      `);
+      
+      const result = stmt.get(collection);
+      
+      return {
+        total: result.total,
+        oldest: result.oldest ? new Date(result.oldest * 1000) : null,
+        newest: result.newest ? new Date(result.newest * 1000) : null,
+        avgSize: Math.round(result.avg_size || 0),
+        avgSizeFormatted: `${Math.round((result.avg_size || 0) / 1024)} KB`,
+      };
+    } catch (error) {
+      console.error('[DATABASE] Error getting collection analytics:', error);
+      return {};
+    }
+  }
+
+  /**
+   * Search across all collections
+   * @param {string} searchTerm - Term to search for
+   * @param {number} limit - Max results (default: 50)
+   * @returns {Array} Search results
+   */
+  search(searchTerm, limit = 50) {
+    try {
+      const stmt = this.db.prepare(`
+        SELECT collection, key, value 
+        FROM kv_store 
+        WHERE value LIKE ? 
+        LIMIT ?
+      `);
+      
+      const results = stmt.all(`%${searchTerm}%`, limit);
+      
+      return results.map(row => ({
+        collection: row.collection,
+        key: row.key,
+        value: JSON.parse(row.value),
+      }));
+    } catch (error) {
+      console.error('[DATABASE] Error searching:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get entries created within a time range
+   * @param {string} collection - Collection name
+   * @param {number} startTime - Start timestamp (seconds)
+   * @param {number} endTime - End timestamp (seconds)
+   * @returns {Array} Entries within range
+   */
+  getEntriesByTimeRange(collection, startTime, endTime) {
+    try {
+      const stmt = this.db.prepare(`
+        SELECT key, value, created_at, updated_at
+        FROM kv_store
+        WHERE collection = ? AND created_at BETWEEN ? AND ?
+        ORDER BY created_at DESC
+      `);
+      
+      const results = stmt.all(collection, startTime, endTime);
+      
+      return results.map(row => ({
+        key: row.key,
+        value: JSON.parse(row.value),
+        createdAt: new Date(row.created_at * 1000),
+        updatedAt: new Date(row.updated_at * 1000),
+      }));
+    } catch (error) {
+      console.error('[DATABASE] Error getting entries by time range:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get recently updated entries
+   * @param {string} collection - Collection name
+   * @param {number} limit - Max results (default: 10)
+   * @returns {Array} Recently updated entries
+   */
+  getRecentlyUpdated(collection, limit = 10) {
+    try {
+      const stmt = this.db.prepare(`
+        SELECT key, value, updated_at
+        FROM kv_store
+        WHERE collection = ?
+        ORDER BY updated_at DESC
+        LIMIT ?
+      `);
+      
+      const results = stmt.all(collection, limit);
+      
+      return results.map(row => ({
+        key: row.key,
+        value: JSON.parse(row.value),
+        updatedAt: new Date(row.updated_at * 1000),
+      }));
+    } catch (error) {
+      console.error('[DATABASE] Error getting recently updated:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Delete old entries from a collection
+   * @param {string} collection - Collection name
+   * @param {number} olderThan - Delete entries older than this (seconds)
+   * @returns {number} Number of deleted entries
+   */
+  deleteOldEntries(collection, olderThan) {
+    try {
+      const stmt = this.db.prepare(`
+        DELETE FROM kv_store
+        WHERE collection = ? AND updated_at < ?
+      `);
+      
+      const result = stmt.run(collection, olderThan);
+      console.log(`[DATABASE] Deleted ${result.changes} old entries from ${collection}`);
+      return result.changes;
+    } catch (error) {
+      console.error('[DATABASE] Error deleting old entries:', error);
+      return 0;
+    }
+  }
+
+  /**
+   * Get database health metrics
+   * @returns {Object} Health metrics
+   */
+  getHealthMetrics() {
+    try {
+      const size = this.getDatabaseSize();
+      const stats = this.getStats();
+      const collections = this.getCollections();
+      
+      // Check for fragmentation
+      const fragmentation = this.db.pragma('freelist_count');
+      
+      return {
+        size: size,
+        totalEntries: stats.totalEntries,
+        collections: collections.length,
+        fragmentation: fragmentation[0]?.freelist_count || 0,
+        needsOptimization: fragmentation[0]?.freelist_count > 100,
+        status: 'healthy',
+      };
+    } catch (error) {
+      console.error('[DATABASE] Error getting health metrics:', error);
+      return { status: 'error', error: error.message };
     }
   }
 

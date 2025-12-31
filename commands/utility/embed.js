@@ -60,7 +60,7 @@ module.exports = {
     if (colorStr) {
       const cleanColor = colorStr.replace('#', '').trim();
       const parsedColor = parseInt(cleanColor, 16);
-      if (!isNaN(parsedColor) && parsedColor >= 0 && parsedColor <= 0xFFFFFF) {
+      if (!isNaN(parsedColor) && parsedColor >= 0 && parsedColor <= 0xffffff) {
         color = parsedColor;
       }
     }

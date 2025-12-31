@@ -137,7 +137,10 @@ module.exports = {
       const poll = activePolls.get(id);
 
       if (!poll) {
-        return i.reply({ content: '❌ Poll expired!', flags: MessageFlags.Ephemeral });
+        return i.reply({
+          content: '❌ Poll expired!',
+          flags: MessageFlags.Ephemeral,
+        });
       }
 
       const option = parseInt(optionIndex);

@@ -162,7 +162,10 @@ module.exports = {
       const game = games.get(id);
 
       if (!game) {
-        return i.reply({ content: '❌ Game expired!', flags: MessageFlags.Ephemeral });
+        return i.reply({
+          content: '❌ Game expired!',
+          flags: MessageFlags.Ephemeral,
+        });
       }
 
       if (action === 'fold') {

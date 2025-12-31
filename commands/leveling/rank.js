@@ -44,7 +44,7 @@ module.exports = {
 
     const rank = guildLevels.findIndex(u => u.userId === user.id) + 1;
     const totalUsers = guildLevels.length;
-    const percentile = ((1 - (rank / totalUsers)) * 100).toFixed(1);
+    const percentile = ((1 - rank / totalUsers) * 100).toFixed(1);
 
     // Get premium status and multiplier
     const tierName = premium.getServerTier(message.guild.id);
@@ -76,7 +76,9 @@ module.exports = {
     const userBelow = rank < totalUsers ? guildLevels[rank] : null;
 
     // Create progress bar (20 characters)
-    const progressBar = '█'.repeat(Math.floor(progress / 5)) + '░'.repeat(20 - Math.floor(progress / 5));
+    const progressBar =
+      '█'.repeat(Math.floor(progress / 5)) +
+      '░'.repeat(20 - Math.floor(progress / 5));
 
     const embed = new EmbedBuilder()
       .setColor(rankColor)
@@ -87,8 +89,8 @@ module.exports = {
       .setThumbnail(user.displayAvatarURL({ size: 256 }))
       .setDescription(
         `**Rank Tier:** ${rankTier}\n` +
-        `**Server Rank:** #${rank} / ${totalUsers} (Top ${percentile}%)\n` +
-        `${isPremium ? `**XP Multiplier:** ${xpMultiplier}x 💎\n` : ''}\u200b`
+          `**Server Rank:** #${rank} / ${totalUsers} (Top ${percentile}%)\n` +
+          `${isPremium ? `**XP Multiplier:** ${xpMultiplier}x 💎\n` : ''}\u200b`
       )
       .addFields(
         {
@@ -113,7 +115,7 @@ module.exports = {
         },
         {
           name: '📊 Statistics',
-          value: 
+          value:
             `**Total XP:** ${totalXP.toLocaleString()}\n` +
             `**Messages/Level:** ${Math.floor(levelData.messages / levelData.level)}\n` +
             `**Avg XP/Level:** ${Math.floor(totalXP / levelData.level)}`,
@@ -121,7 +123,7 @@ module.exports = {
         },
         {
           name: '🏆 Leaderboard',
-          value: 
+          value:
             (userAbove ? `↑ #${rank - 1}: Level ${userAbove.level}\n` : '') +
             `**→ #${rank}: Level ${levelData.level} (You)**\n` +
             (userBelow ? `↓ #${rank + 1}: Level ${userBelow.level}` : ''),
@@ -134,11 +136,11 @@ module.exports = {
     if (levelData.level >= 100) achievements.push('💎 Level 100');
     else if (levelData.level >= 50) achievements.push('🥇 Level 50');
     else if (levelData.level >= 25) achievements.push('🥈 Level 25');
-    
+
     if (levelData.messages >= 10000) achievements.push('💬 10K Messages');
     else if (levelData.messages >= 5000) achievements.push('💬 5K Messages');
     else if (levelData.messages >= 1000) achievements.push('💬 1K Messages');
-    
+
     if (rank === 1) achievements.push('👑 Server Leader');
     else if (rank <= 3) achievements.push('🏆 Top 3');
     else if (rank <= 10) achievements.push('🥇 Top 10');
@@ -160,7 +162,7 @@ module.exports = {
       });
     }
 
-    embed.setFooter({ 
+    embed.setFooter({
       text: `Requested by ${message.author.tag} | Keep chatting to level up!`,
       iconURL: message.author.displayAvatarURL(),
     });

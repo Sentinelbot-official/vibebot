@@ -46,7 +46,9 @@ module.exports = {
       }
 
       // Calculate server age
-      const serverAge = Math.floor((Date.now() - guild.createdTimestamp) / (1000 * 60 * 60 * 24));
+      const serverAge = Math.floor(
+        (Date.now() - guild.createdTimestamp) / (1000 * 60 * 60 * 24)
+      );
       const serverAgeYears = (serverAge / 365).toFixed(1);
 
       // Determine server size category
@@ -67,7 +69,7 @@ module.exports = {
           .addFields(
             {
               name: '🚀 Quick Start',
-              value: 
+              value:
                 '• `//help` - See all commands\n' +
                 '• `//setup` - Configure the bot\n' +
                 '• `//prefix <new>` - Change prefix\n' +
@@ -76,7 +78,7 @@ module.exports = {
             },
             {
               name: '⭐ Popular Features',
-              value: 
+              value:
                 '• Economy & Leveling System\n' +
                 '• Advanced Moderation Tools\n' +
                 '• Auto-Moderation & Anti-Raid\n' +
@@ -86,7 +88,7 @@ module.exports = {
             },
             {
               name: '🔗 Quick Links',
-              value: 
+              value:
                 '[Website](https://sentinelbot-official.github.io/vibebot/) • ' +
                 '[Support](https://discord.gg/zFMgG6ZN68) • ' +
                 '[Live Stream](https://twitch.tv/projectdraguk) • ' +
@@ -109,7 +111,9 @@ module.exports = {
           logger.error('Failed to send welcome message:', error);
         }
       } else {
-        logger.warn(`⚠️ Could not find suitable channel in ${guild.name} for welcome message`);
+        logger.warn(
+          `⚠️ Could not find suitable channel in ${guild.name} for welcome message`
+        );
       }
 
       // Send notification to webhook
@@ -125,7 +129,10 @@ module.exports = {
       try {
         const axios = require('axios');
         // Enhanced analytics
-        const verificationLevel = ['None', 'Low', 'Medium', 'High', 'Very High'][guild.verificationLevel] || 'Unknown';
+        const verificationLevel =
+          ['None', 'Low', 'Medium', 'High', 'Very High'][
+            guild.verificationLevel
+          ] || 'Unknown';
         const boostTier = guild.premiumTier || 0;
         const boostCount = guild.premiumSubscriptionCount || 0;
 
@@ -141,7 +148,7 @@ module.exports = {
           fields: [
             {
               name: '📊 Server Stats',
-              value: 
+              value:
                 `**Channels:** ${guild.channels.cache.size}\n` +
                 `**Roles:** ${guild.roles.cache.size}\n` +
                 `**Emojis:** ${guild.emojis.cache.size}`,
@@ -149,7 +156,7 @@ module.exports = {
             },
             {
               name: '🔒 Security',
-              value: 
+              value:
                 `**Verification:** ${verificationLevel}\n` +
                 `**Boost Tier:** ${boostTier}\n` +
                 `**Boosts:** ${boostCount}`,
@@ -157,9 +164,11 @@ module.exports = {
             },
             {
               name: '🌐 Features',
-              value: guild.features.length > 0 
-                ? guild.features.slice(0, 5).join(', ') + (guild.features.length > 5 ? '...' : '')
-                : 'None',
+              value:
+                guild.features.length > 0
+                  ? guild.features.slice(0, 5).join(', ') +
+                    (guild.features.length > 5 ? '...' : '')
+                  : 'None',
               inline: false,
             },
           ],

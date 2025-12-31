@@ -13,8 +13,8 @@ module.exports = {
     if (!args.length) {
       return message.reply(
         '❌ Please provide a case ID and reason!\n\n' +
-        '**Usage:** `//appeal <case_id> <reason>`\n' +
-        '**Example:** `//appeal W1234567890-1234 I was wrongly accused`'
+          '**Usage:** `//appeal <case_id> <reason>`\n' +
+          '**Example:** `//appeal W1234567890-1234 I was wrongly accused`'
       );
     }
 
@@ -36,7 +36,7 @@ module.exports = {
     if (!warning) {
       return message.reply(
         `❌ Warning with case ID \`${caseId}\` not found!\n\n` +
-        'Use `//warnings` to see your warnings and their case IDs.'
+          'Use `//warnings` to see your warnings and their case IDs.'
       );
     }
 
@@ -49,17 +49,17 @@ module.exports = {
     if (warning.appealed) {
       return message.reply(
         `❌ This warning has already been appealed!\n\n` +
-        `**Status:** ${warning.appealStatus || 'Pending'}\n` +
-        `**Appealed:** <t:${Math.floor(warning.appealedAt / 1000)}:R>`
+          `**Status:** ${warning.appealStatus || 'Pending'}\n` +
+          `**Appealed:** <t:${Math.floor(warning.appealedAt / 1000)}:R>`
       );
     }
 
     // Check if warning is too old (can't appeal after 180 days)
-    const sixMonthsAgo = Date.now() - (180 * 24 * 60 * 60 * 1000);
+    const sixMonthsAgo = Date.now() - 180 * 24 * 60 * 60 * 1000;
     if (warning.timestamp < sixMonthsAgo) {
       return message.reply(
         '❌ This warning is too old to appeal (180+ days)!\n\n' +
-        'Warnings older than 180 days cannot be appealed.'
+          'Warnings older than 180 days cannot be appealed.'
       );
     }
 
@@ -81,7 +81,11 @@ module.exports = {
         { name: 'Original Warning', value: warning.reason, inline: false },
         { name: 'Appeal Reason', value: appealReason, inline: false },
         { name: 'Status', value: '⏳ Pending Review', inline: true },
-        { name: 'Submitted', value: '<t:${Math.floor(Date.now() / 1000)}:R>', inline: true }
+        {
+          name: 'Submitted',
+          value: '<t:${Math.floor(Date.now() / 1000)}:R>',
+          inline: true,
+        }
       )
       .setFooter({ text: 'Moderators will review your appeal shortly' })
       .setTimestamp();
@@ -96,22 +100,37 @@ module.exports = {
         (ch.type === 0 && (ch.name.includes('mod') || ch.name.includes('log')))
     );
 
-    if (logChannel && logChannel.permissionsFor(message.guild.members.me).has(PermissionFlagsBits.SendMessages)) {
+    if (
+      logChannel &&
+      logChannel
+        .permissionsFor(message.guild.members.me)
+        .has(PermissionFlagsBits.SendMessages)
+    ) {
       const modEmbed = new EmbedBuilder()
         .setColor(0xffa500)
         .setTitle('📝 New Warning Appeal')
         .setDescription(
           `**User:** ${message.author.tag} (${message.author.id})\n` +
-          `**Case ID:** \`${caseId}\``
+            `**Case ID:** \`${caseId}\``
         )
         .addFields(
           { name: 'Original Warning', value: warning.reason, inline: false },
-          { name: 'Original Moderator', value: warning.moderator.tag, inline: true },
-          { name: 'Warning Date', value: `<t:${Math.floor(new Date(warning.date).getTime() / 1000)}:R>`, inline: true },
+          {
+            name: 'Original Moderator',
+            value: warning.moderator.tag,
+            inline: true,
+          },
+          {
+            name: 'Warning Date',
+            value: `<t:${Math.floor(new Date(warning.date).getTime() / 1000)}:R>`,
+            inline: true,
+          },
           { name: 'Appeal Reason', value: appealReason, inline: false }
         )
         .setThumbnail(message.author.displayAvatarURL())
-        .setFooter({ text: `Use //reviewappeal ${caseId} <approve|deny> [reason]` })
+        .setFooter({
+          text: `Use //reviewappeal ${caseId} <approve|deny> [reason]`,
+        })
         .setTimestamp();
 
       await logChannel.send({ embeds: [modEmbed] }).catch(() => {});

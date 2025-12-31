@@ -1,4 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 const db = require('../../utils/database');
 
 module.exports = {
@@ -23,11 +28,11 @@ module.exports = {
         })
         .setDescription(
           `${user.id === message.author.id ? '🎒 Your inventory is empty!' : `🎒 ${user.username}'s inventory is empty!`}\n\n` +
-          `${user.id === message.author.id ? 'Use `//shop` to buy items!' : ''}`
+            `${user.id === message.author.id ? 'Use `//shop` to buy items!' : ''}`
         )
         .setThumbnail(user.displayAvatarURL())
         .setTimestamp();
-      
+
       return message.reply({ embeds: [emptyEmbed] });
     }
 
@@ -40,25 +45,35 @@ module.exports = {
     }));
 
     const categories = {
-      'Tools': items.filter(i => i.category === 'Tools'),
-      'Collectibles': items.filter(i => i.category === 'Collectibles'),
-      'Consumables': items.filter(i => i.category === 'Consumables'),
-      'Premium': items.filter(i => i.category === 'Premium'),
-      'Other': items.filter(i => !['Tools', 'Collectibles', 'Consumables', 'Premium'].includes(i.category)),
+      Tools: items.filter(i => i.category === 'Tools'),
+      Collectibles: items.filter(i => i.category === 'Collectibles'),
+      Consumables: items.filter(i => i.category === 'Consumables'),
+      Premium: items.filter(i => i.category === 'Premium'),
+      Other: items.filter(
+        i =>
+          !['Tools', 'Collectibles', 'Consumables', 'Premium'].includes(
+            i.category
+          )
+      ),
     };
 
     // Calculate total value and count
     const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-    const totalValue = items.reduce((sum, item) => sum + (item.value * item.quantity), 0);
+    const totalValue = items.reduce(
+      (sum, item) => sum + item.value * item.quantity,
+      0
+    );
     const uniqueItems = items.length;
 
     // Pagination
     const itemsPerPage = 8;
     let currentPage = 0;
-    const allItems = items.sort((a, b) => (b.value * b.quantity) - (a.value * a.quantity));
+    const allItems = items.sort(
+      (a, b) => b.value * b.quantity - a.value * a.quantity
+    );
     const totalPages = Math.ceil(allItems.length / itemsPerPage);
 
-    const generateEmbed = (page) => {
+    const generateEmbed = page => {
       const start = page * itemsPerPage;
       const end = start + itemsPerPage;
       const pageItems = allItems.slice(start, end);
@@ -72,8 +87,8 @@ module.exports = {
         .setThumbnail(user.displayAvatarURL())
         .setDescription(
           `**Total Items:** ${totalItems.toLocaleString()} (${uniqueItems} unique)\n` +
-          `**Total Value:** ${totalValue.toLocaleString()} coins\n` +
-          `**Capacity:** ${totalItems}/∞\n\u200b`
+            `**Total Value:** ${totalValue.toLocaleString()} coins\n` +
+            `**Capacity:** ${totalItems}/∞\n\u200b`
         );
 
       // Group items by category for this page
@@ -89,18 +104,23 @@ module.exports = {
       for (const [category, categoryItems] of Object.entries(pageCategories)) {
         if (categoryItems.length > 0) {
           const categoryEmoji = {
-            'Tools': '🔧',
-            'Collectibles': '🎨',
-            'Consumables': '🍎',
-            'Premium': '💎',
-            'Other': '📦',
+            Tools: '🔧',
+            Collectibles: '🎨',
+            Consumables: '🍎',
+            Premium: '💎',
+            Other: '📦',
           };
 
-          const itemList = categoryItems.map(item => {
-            const rarity = item.rarity ? ` [${item.rarity}]` : '';
-            const itemValue = item.value > 0 ? ` (${(item.value * item.quantity).toLocaleString()} coins)` : '';
-            return `**${item.name}** x${item.quantity}${rarity}${itemValue}\n*${item.description || 'No description'}*`;
-          }).join('\n\n');
+          const itemList = categoryItems
+            .map(item => {
+              const rarity = item.rarity ? ` [${item.rarity}]` : '';
+              const itemValue =
+                item.value > 0
+                  ? ` (${(item.value * item.quantity).toLocaleString()} coins)`
+                  : '';
+              return `**${item.name}** x${item.quantity}${rarity}${itemValue}\n*${item.description || 'No description'}*`;
+            })
+            .join('\n\n');
 
           embed.addFields({
             name: `${categoryEmoji[category] || '📦'} ${category}`,
@@ -164,8 +184,10 @@ module.exports = {
 
     collector.on('collect', async i => {
       if (i.customId === 'inv_first') currentPage = 0;
-      else if (i.customId === 'inv_prev') currentPage = Math.max(0, currentPage - 1);
-      else if (i.customId === 'inv_next') currentPage = Math.min(totalPages - 1, currentPage + 1);
+      else if (i.customId === 'inv_prev')
+        currentPage = Math.max(0, currentPage - 1);
+      else if (i.customId === 'inv_next')
+        currentPage = Math.min(totalPages - 1, currentPage + 1);
       else if (i.customId === 'inv_last') currentPage = totalPages - 1;
 
       const newEmbed = generateEmbed(currentPage);

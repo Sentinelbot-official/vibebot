@@ -75,16 +75,28 @@ module.exports = {
       const joins = db.getAll('guild_joins') || [];
       const leaves = db.getAll('guild_leaves') || [];
 
-      const totalJoins = joins.filter(j => j.key !== 'initialized' && j.value).length;
-      const totalLeaves = leaves.filter(l => l.key !== 'initialized' && l.value).length;
+      const totalJoins = joins.filter(
+        j => j.key !== 'initialized' && j.value
+      ).length;
+      const totalLeaves = leaves.filter(
+        l => l.key !== 'initialized' && l.value
+      ).length;
 
       // Calculate joins/leaves in last 7 days
       const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
       const recentJoins = joins.filter(
-        j => j.key !== 'initialized' && j.value && j.value.joinedAt && j.value.joinedAt > sevenDaysAgo
+        j =>
+          j.key !== 'initialized' &&
+          j.value &&
+          j.value.joinedAt &&
+          j.value.joinedAt > sevenDaysAgo
       ).length;
       const recentLeaves = leaves.filter(
-        l => l.key !== 'initialized' && l.value && l.value.leftAt && l.value.leftAt > sevenDaysAgo
+        l =>
+          l.key !== 'initialized' &&
+          l.value &&
+          l.value.leftAt &&
+          l.value.leftAt > sevenDaysAgo
       ).length;
 
       // Get largest guild
@@ -134,7 +146,12 @@ module.exports = {
         })
         .setTimestamp();
 
-      if (oldestJoin && oldestJoin.value && oldestJoin.value.name && oldestJoin.value.joinedAt) {
+      if (
+        oldestJoin &&
+        oldestJoin.value &&
+        oldestJoin.value.name &&
+        oldestJoin.value.joinedAt
+      ) {
         embed.addFields({
           name: '⏰ Oldest Guild',
           value: `**${oldestJoin.value.name}**\nJoined <t:${Math.floor(oldestJoin.value.joinedAt / 1000)}:R>`,

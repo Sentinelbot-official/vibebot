@@ -10,7 +10,7 @@ class Logger {
     this.minLevel = options.minLevel || 'DEBUG'; // Minimum log level
     this.enableConsole = options.enableConsole !== false; // Console logging enabled by default
     this.enableFile = options.enableFile !== false; // File logging enabled by default
-    
+
     // Log level hierarchy
     this.levels = {
       DEBUG: 0,
@@ -19,7 +19,7 @@ class Logger {
       WARN: 3,
       ERROR: 4,
     };
-    
+
     this.ensureLogDirectory();
     this.startRotationCheck();
   }
@@ -38,10 +38,13 @@ class Logger {
    */
   startRotationCheck() {
     // Check for rotation every hour
-    setInterval(() => {
-      this.rotateLogsIfNeeded();
-      this.cleanOldLogs();
-    }, 60 * 60 * 1000);
+    setInterval(
+      () => {
+        this.rotateLogsIfNeeded();
+        this.cleanOldLogs();
+      },
+      60 * 60 * 1000
+    );
   }
 
   /**
@@ -77,24 +80,24 @@ class Logger {
   rotateLogsIfNeeded() {
     try {
       const logFile = this.getLogFilePath();
-      
+
       if (!fs.existsSync(logFile)) return;
-      
+
       const stats = fs.statSync(logFile);
-      
+
       if (stats.size > this.maxFileSize) {
         const timestamp = Date.now();
         const rotatedFile = logFile.replace('.log', `.${timestamp}.log`);
-        
+
         // Rename current log
         fs.renameSync(logFile, rotatedFile);
-        
+
         // Compress rotated log
         this.compressLog(rotatedFile);
-        
-        this.info('Log file rotated due to size limit', { 
+
+        this.info('Log file rotated due to size limit', {
           oldFile: rotatedFile,
-          size: stats.size 
+          size: stats.size,
         });
       }
     } catch (error) {
@@ -111,9 +114,9 @@ class Logger {
       const gzip = zlib.createGzip();
       const source = fs.createReadStream(filePath);
       const destination = fs.createWriteStream(`${filePath}.gz`);
-      
+
       source.pipe(gzip).pipe(destination);
-      
+
       destination.on('finish', () => {
         // Delete original file after compression
         fs.unlinkSync(filePath);
@@ -137,7 +140,7 @@ class Logger {
           time: fs.statSync(path.join(this.logDir, f)).mtime.getTime(),
         }))
         .sort((a, b) => b.time - a.time);
-      
+
       // Keep only maxFiles newest logs
       if (logFiles.length > this.maxFiles) {
         const toDelete = logFiles.slice(this.maxFiles);
@@ -160,7 +163,7 @@ class Logger {
   log(level, message, data = null) {
     // Check if this level should be logged
     if (!this.shouldLog(level)) return;
-    
+
     const timestamp = this.getTimestamp();
     const logEntry = {
       timestamp,

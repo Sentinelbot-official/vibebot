@@ -34,16 +34,16 @@ module.exports = {
     const title = parts[0];
     const description = parts[1];
     let color = 0x0099ff;
-    
+
     // Parse color safely
     if (parts[2]) {
       const colorStr = parts[2].replace('#', '');
       const parsedColor = parseInt(colorStr, 16);
-      if (!isNaN(parsedColor) && parsedColor >= 0 && parsedColor <= 0xFFFFFF) {
+      if (!isNaN(parsedColor) && parsedColor >= 0 && parsedColor <= 0xffffff) {
         color = parsedColor;
       }
     }
-    
+
     const footer = parts[3] || null;
 
     if (!title || title.length === 0) {

@@ -64,9 +64,9 @@ module.exports = {
 
     // Advanced: Count active warns and check for escalation thresholds
     const allWarns = db.get('warns', member.id) || [];
-    
+
     // Warning decay: warnings older than 90 days are marked as inactive
-    const ninetyDaysAgo = Date.now() - (90 * 24 * 60 * 60 * 1000);
+    const ninetyDaysAgo = Date.now() - 90 * 24 * 60 * 60 * 1000;
     allWarns.forEach((warn, index) => {
       if (warn.active && warn.timestamp && warn.timestamp < ninetyDaysAgo) {
         warn.active = false;
@@ -151,9 +151,10 @@ module.exports = {
 
     // Calculate decay info
     const decayedWarns = allWarns.filter(w => !w.active && w.decayedAt);
-    const decayInfo = decayedWarns.length > 0 
-      ? `\n*${decayedWarns.length} warning${decayedWarns.length !== 1 ? 's' : ''} decayed (90+ days old)*`
-      : '';
+    const decayInfo =
+      decayedWarns.length > 0
+        ? `\n*${decayedWarns.length} warning${decayedWarns.length !== 1 ? 's' : ''} decayed (90+ days old)*`
+        : '';
 
     // Public feedback
     const publicEmbed = new EmbedBuilder()
@@ -164,21 +165,19 @@ module.exports = {
       .setThumbnail(member.user.displayAvatarURL())
       .setDescription(
         `**User:** ${member.user.tag} (${member.id})\n` +
-        `**Moderator:** ${message.author.tag}\n` +
-        `**Reason:** ${reason}`
+          `**Moderator:** ${message.author.tag}\n` +
+          `**Reason:** ${reason}`
       )
-      .addFields(
-        { 
-          name: '📊 Warning Statistics', 
-          value: 
-            `**Active Warnings:** ${warnCount}\n` +
-            `**Total Warnings:** ${totalWarns}\n` +
-            `**Case ID:** \`${warnData.caseId}\`${decayInfo}`,
-          inline: false 
-        }
-      )
-      .setFooter({ 
-        text: `Warnings decay after 90 days | Use //appeal ${warnData.caseId} to appeal` 
+      .addFields({
+        name: '📊 Warning Statistics',
+        value:
+          `**Active Warnings:** ${warnCount}\n` +
+          `**Total Warnings:** ${totalWarns}\n` +
+          `**Case ID:** \`${warnData.caseId}\`${decayInfo}`,
+        inline: false,
+      })
+      .setFooter({
+        text: `Warnings decay after 90 days | Use //appeal ${warnData.caseId} to appeal`,
       })
       .setTimestamp();
 

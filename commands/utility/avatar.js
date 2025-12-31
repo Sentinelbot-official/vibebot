@@ -1,4 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 
 module.exports = {
   name: 'avatar',
@@ -13,19 +18,21 @@ module.exports = {
 
     // Check if user has a GIF avatar
     const hasGif = user.avatar && user.avatar.startsWith('a_');
-    
+
     // Get global avatar
     const globalAvatar = user.displayAvatarURL({ dynamic: true, size: 4096 });
-    
+
     // Get server-specific avatar if exists
-    const serverAvatar = member?.avatar 
+    const serverAvatar = member?.avatar
       ? member.displayAvatarURL({ dynamic: true, size: 4096 })
       : null;
 
     // Determine which avatar to show
     const showingServer = args.includes('server') || args.includes('guild');
-    const displayAvatar = (showingServer && serverAvatar) ? serverAvatar : globalAvatar;
-    const avatarType = (showingServer && serverAvatar) ? 'Server Avatar' : 'Global Avatar';
+    const displayAvatar =
+      showingServer && serverAvatar ? serverAvatar : globalAvatar;
+    const avatarType =
+      showingServer && serverAvatar ? 'Server Avatar' : 'Global Avatar';
 
     const embed = new EmbedBuilder()
       .setColor(member?.displayHexColor || 0x0099ff)
@@ -33,15 +40,17 @@ module.exports = {
       .setImage(displayAvatar)
       .setDescription(
         `**Format:** ${hasGif ? 'GIF (Animated)' : 'Static'}\n` +
-        `**Resolution:** 4096x4096\n\u200b`
+          `**Resolution:** 4096x4096\n\u200b`
       )
       .addFields({
         name: '🔗 Download Links',
-        value: 
+        value:
           `[PNG](${user.displayAvatarURL({ extension: 'png', size: 4096 })}) • ` +
           `[JPG](${user.displayAvatarURL({ extension: 'jpg', size: 4096 })}) • ` +
           `[WEBP](${user.displayAvatarURL({ extension: 'webp', size: 4096 })})` +
-          (hasGif ? ` • [GIF](${user.displayAvatarURL({ extension: 'gif', size: 4096 })})` : ''),
+          (hasGif
+            ? ` • [GIF](${user.displayAvatarURL({ extension: 'gif', size: 4096 })})`
+            : ''),
         inline: false,
       });
 

@@ -47,14 +47,17 @@ module.exports = {
         const retentionDays = timeInGuild !== 'Unknown' ? timeInGuild : 0;
         let retentionCategory = '🔴 Very Short';
         if (retentionDays >= 365) retentionCategory = '🟢 Excellent (1+ year)';
-        else if (retentionDays >= 180) retentionCategory = '🟡 Good (6+ months)';
+        else if (retentionDays >= 180)
+          retentionCategory = '🟡 Good (6+ months)';
         else if (retentionDays >= 90) retentionCategory = '🟠 Fair (3+ months)';
         else if (retentionDays >= 30) retentionCategory = '🟤 Short (1+ month)';
 
         // Check if premium
         const premium = require('../utils/premium');
         const premiumData = premium.getServerPremium(guild.id);
-        const wasPremium = premiumData ? `💎 ${premiumData.tier.toUpperCase()}` : 'Free';
+        const wasPremium = premiumData
+          ? `💎 ${premiumData.tier.toUpperCase()}`
+          : 'Free';
 
         const webhookEmbed = {
           color: 0xff0000,
@@ -68,7 +71,7 @@ module.exports = {
           fields: [
             {
               name: '⏱️ Retention',
-              value: 
+              value:
                 `**Time in Guild:** ${timeInGuild !== 'Unknown' ? `${timeInGuild} days` : 'Unknown'}\n` +
                 `**Category:** ${retentionCategory}\n` +
                 `**Premium:** ${wasPremium}`,
@@ -76,7 +79,7 @@ module.exports = {
             },
             {
               name: '📊 Impact',
-              value: 
+              value:
                 `**Channels Lost:** ${guild.channels.cache.size}\n` +
                 `**Roles Lost:** ${guild.roles.cache.size}\n` +
                 `**Members Lost:** ${guild.memberCount.toLocaleString()}`,

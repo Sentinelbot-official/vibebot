@@ -28,9 +28,10 @@ module.exports = {
         logger.info(
           `🔷 Shard ${client.shard.ids[0]} of ${client.shard.count} total shards`
         );
-        
+
         try {
-          const shardGuilds = await client.shard.fetchClientValues('guilds.cache.size');
+          const shardGuilds =
+            await client.shard.fetchClientValues('guilds.cache.size');
           const totalGuilds = shardGuilds.reduce((a, b) => a + b, 0);
           logger.info(`🌐 Total guilds across all shards: ${totalGuilds}`);
         } catch (err) {
@@ -39,9 +40,14 @@ module.exports = {
       }
 
       // Server and user statistics
-      const totalMembers = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
+      const totalMembers = client.guilds.cache.reduce(
+        (acc, guild) => acc + guild.memberCount,
+        0
+      );
       logger.info(`📊 Serving ${client.guilds.cache.size} servers`);
-      logger.info(`👥 Watching over ${totalMembers.toLocaleString()} total members`);
+      logger.info(
+        `👥 Watching over ${totalMembers.toLocaleString()} total members`
+      );
       logger.info(`👤 Cached ${client.users.cache.size} users`);
       logger.info(`📺 Monitoring ${client.channels.cache.size} channels`);
       logger.info(`⚡ ${client.commands.size} commands loaded and ready`);
@@ -59,13 +65,16 @@ module.exports = {
       const criticalEnvVars = ['TOKEN', 'PREFIX'];
       const missingVars = criticalEnvVars.filter(v => !process.env[v]);
       if (missingVars.length > 0) {
-        logger.warn(`⚠️ Missing environment variables: ${missingVars.join(', ')}`);
+        logger.warn(
+          `⚠️ Missing environment variables: ${missingVars.join(', ')}`
+        );
       }
 
       // Check optional features
       const optionalFeatures = {
         'Premium System': process.env.PREMIUM_KEY,
-        'AI Features': process.env.OPENAI_API_KEY || process.env.STABILITY_API_KEY,
+        'AI Features':
+          process.env.OPENAI_API_KEY || process.env.STABILITY_API_KEY,
         'Guild Logging': process.env.GUILD_LOG_WEBHOOK,
         'Error Logging': process.env.ERROR_WEBHOOK,
       };
@@ -73,7 +82,7 @@ module.exports = {
       const enabledFeatures = Object.entries(optionalFeatures)
         .filter(([_, value]) => value)
         .map(([name]) => name);
-      
+
       if (enabledFeatures.length > 0) {
         logger.info(`✨ Enabled features: ${enabledFeatures.join(', ')}`);
       }
@@ -81,7 +90,7 @@ module.exports = {
       const disabledFeatures = Object.entries(optionalFeatures)
         .filter(([_, value]) => !value)
         .map(([name]) => name);
-      
+
       if (disabledFeatures.length > 0) {
         logger.debug(`💤 Disabled features: ${disabledFeatures.join(', ')}`);
       }
@@ -155,33 +164,41 @@ module.exports = {
       }
 
       // Health monitoring - check every 5 minutes
-      setInterval(() => {
-        try {
-          const memUsage = process.memoryUsage();
-          const memUsedMB = (memUsage.heapUsed / 1024 / 1024).toFixed(2);
-          const memPercent = ((memUsage.heapUsed / memUsage.heapTotal) * 100).toFixed(1);
-          
-          // Warn if memory usage is high
-          if (memPercent > 85) {
-            logger.warn(`⚠️ High memory usage: ${memUsedMB}MB (${memPercent}%)`);
-          }
+      setInterval(
+        () => {
+          try {
+            const memUsage = process.memoryUsage();
+            const memUsedMB = (memUsage.heapUsed / 1024 / 1024).toFixed(2);
+            const memPercent = (
+              (memUsage.heapUsed / memUsage.heapTotal) *
+              100
+            ).toFixed(1);
 
-          // Check WebSocket ping
-          if (client.ws.ping > 500) {
-            logger.warn(`⚠️ High WebSocket latency: ${client.ws.ping}ms`);
-          }
+            // Warn if memory usage is high
+            if (memPercent > 85) {
+              logger.warn(
+                `⚠️ High memory usage: ${memUsedMB}MB (${memPercent}%)`
+              );
+            }
 
-          // Log health status
-          logger.debug('Health check', {
-            guilds: client.guilds.cache.size,
-            memory: `${memUsedMB}MB`,
-            ping: `${client.ws.ping}ms`,
-            uptime: `${Math.floor(client.uptime / 1000 / 60)}min`,
-          });
-        } catch (error) {
-          logger.error('Health check failed:', error);
-        }
-      }, 5 * 60 * 1000);
+            // Check WebSocket ping
+            if (client.ws.ping > 500) {
+              logger.warn(`⚠️ High WebSocket latency: ${client.ws.ping}ms`);
+            }
+
+            // Log health status
+            logger.debug('Health check', {
+              guilds: client.guilds.cache.size,
+              memory: `${memUsedMB}MB`,
+              ping: `${client.ws.ping}ms`,
+              uptime: `${Math.floor(client.uptime / 1000 / 60)}min`,
+            });
+          } catch (error) {
+            logger.error('Health check failed:', error);
+          }
+        },
+        5 * 60 * 1000
+      );
 
       logger.success('💓 Health monitoring started!');
 
@@ -190,19 +207,23 @@ module.exports = {
       logger.success(`✅ Bot fully initialized and ready to serve!`);
       logger.info(`🕐 Ready at: ${new Date(readyTime).toLocaleString()}`);
       logger.info('─'.repeat(60));
-
     } catch (error) {
       logger.error('Error in clientReady event:', error.message);
       logger.error('Stack trace:', error.stack);
-      
+
       // Try to set a basic status even if something failed
       try {
         client.user.setPresence({
-          activities: [{ name: '⚠️ Startup Error - Recovering...', type: ActivityType.Playing }],
+          activities: [
+            {
+              name: '⚠️ Startup Error - Recovering...',
+              type: ActivityType.Playing,
+            },
+          ],
           status: 'dnd',
         });
       } catch {}
-      
+
       // Continue anyway - bot should still work
     }
   },

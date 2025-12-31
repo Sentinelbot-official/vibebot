@@ -5,7 +5,8 @@ const premium = require('../../utils/premium');
 module.exports = {
   name: 'balance',
   aliases: ['bal', 'coins', 'money', 'wallet'],
-  description: "Check your balance or another user's balance with detailed statistics",
+  description:
+    "Check your balance or another user's balance with detailed statistics",
   usage: '[@user]',
   category: 'economy',
   cooldown: 3,
@@ -44,7 +45,7 @@ module.exports = {
         total: data.coins + data.bank,
       }))
       .sort((a, b) => b.total - a.total);
-    
+
     const position = leaderboard.findIndex(u => u.userId === user.id) + 1;
     const totalUsers = leaderboard.length;
 
@@ -67,7 +68,7 @@ module.exports = {
       .setThumbnail(user.displayAvatarURL())
       .setDescription(
         `**Wealth Tier:** ${wealthTier}\n` +
-        `**Global Rank:** #${position} / ${totalUsers}\n\u200b`
+          `**Global Rank:** #${position} / ${totalUsers}\n\u200b`
       )
       .addFields(
         {
@@ -77,7 +78,7 @@ module.exports = {
         },
         {
           name: '🏦 Bank',
-          value: 
+          value:
             `${economy.bank.toLocaleString()} / ${bankCapacity.toLocaleString()} coins\n` +
             `*${bankUsage}% full*`,
           inline: true,
@@ -89,7 +90,7 @@ module.exports = {
         },
         {
           name: '📊 Statistics',
-          value: 
+          value:
             `**Total Earned:** ${(economy.totalEarned || 0).toLocaleString()}\n` +
             `**Total Spent:** ${(economy.totalSpent || 0).toLocaleString()}\n` +
             `**Profit/Loss:** ${profit >= 0 ? '+' : ''}${profit.toLocaleString()}`,
@@ -97,14 +98,14 @@ module.exports = {
         },
         {
           name: '🔥 Daily Streak',
-          value: 
+          value:
             `**${economy.dailyStreak || 0}** day${(economy.dailyStreak || 0) !== 1 ? 's' : ''}\n` +
             `${economy.lastDaily ? `Last: <t:${Math.floor(economy.lastDaily / 1000)}:R>` : 'Never claimed'}`,
           inline: true,
         },
         {
           name: '💼 Activity',
-          value: 
+          value:
             `**Last Work:** ${economy.lastWork ? `<t:${Math.floor(economy.lastWork / 1000)}:R>` : 'Never'}\n` +
             `**Bank Space:** ${isPremium ? '5x capacity! 💎' : 'Standard'}`,
           inline: true,
@@ -116,10 +117,11 @@ module.exports = {
     if (netWorth >= 1000000) achievements.push('💎 Millionaire');
     else if (netWorth >= 500000) achievements.push('💍 Half Million');
     else if (netWorth >= 100000) achievements.push('🥇 100K Club');
-    
+
     if ((economy.dailyStreak || 0) >= 30) achievements.push('🔥 30 Day Streak');
-    else if ((economy.dailyStreak || 0) >= 7) achievements.push('🔥 Week Streak');
-    
+    else if ((economy.dailyStreak || 0) >= 7)
+      achievements.push('🔥 Week Streak');
+
     if (achievements.length > 0) {
       embed.addFields({
         name: '🏆 Achievements',
@@ -128,7 +130,7 @@ module.exports = {
       });
     }
 
-    embed.setFooter({ 
+    embed.setFooter({
       text: `Requested by ${message.author.tag} | Use //shop to spend coins`,
       iconURL: message.author.displayAvatarURL(),
     });
