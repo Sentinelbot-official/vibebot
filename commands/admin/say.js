@@ -24,20 +24,20 @@ module.exports = {
       return message.reply('❌ Message is too long! Maximum 2000 characters.');
     }
 
-    // Prevent @everyone/@here abuse unless user has permission
-    if (!message.member.permissions.has(PermissionFlagsBits.MentionEveryone)) {
-      text = text
-        .replace(/@everyone/gi, '@\u200beveryone')
-        .replace(/@here/gi, '@\u200bhere');
-    }
+    // Sanitize ALL mentions to prevent pings (for everyone, including admins)
+    text = text
+      .replace(/@everyone/gi, '@\u200beveryone')
+      .replace(/@here/gi, '@\u200bhere');
 
-    // Sanitize role mentions if user doesn't have permission
-    if (!message.member.permissions.has(PermissionFlagsBits.MentionEveryone)) {
-      // Replace role mentions with zero-width space
-      text = text.replace(/<@&\d+>/g, match => {
-        return match.replace('@', '@\u200b');
-      });
-    }
+    // Sanitize user mentions
+    text = text.replace(/<@!?\d+>/g, match => {
+      return match.replace('@', '@\u200b');
+    });
+
+    // Sanitize role mentions
+    text = text.replace(/<@&\d+>/g, match => {
+      return match.replace('@', '@\u200b');
+    });
 
     try {
       // Add attribution footer to show who used the command
@@ -48,12 +48,10 @@ module.exports = {
       await message.channel.send({
         content: fullMessage,
         allowedMentions: {
-          // Disable all pings unless user has MentionEveryone permission
-          parse: message.member.permissions.has(
-            PermissionFlagsBits.MentionEveryone
-          )
-            ? ['everyone', 'roles', 'users']
-            : [], // No pings at all for regular users
+          // Disable ALL pings for everyone
+          parse: [],
+          users: [],
+          roles: [],
         },
       });
     } catch (error) {
