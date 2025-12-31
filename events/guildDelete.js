@@ -32,7 +32,12 @@ module.exports = {
       db.delete('premium_servers', guild.id);
 
       // Send notification to webhook
-      const webhookUrl = 'https://discord.com/api/webhooks/1455954343399526500/t6DTuNKHWDbnljoEKb9ABKTVVgBWT872JofXX1GQJdVU1W9zj6j_tI-8Gj2Nhm2Lfdq2';
+      const webhookUrl = process.env.GUILD_LOG_WEBHOOK;
+      
+      if (!webhookUrl) {
+        logger.warn('GUILD_LOG_WEBHOOK not configured - skipping webhook notification');
+        return;
+      }
       
       try {
         const axios = require('axios');
