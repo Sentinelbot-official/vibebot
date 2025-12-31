@@ -111,6 +111,21 @@ body {
     color: var(--primary);
 }
 
+.premium-link {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: all 0.3s;
+}
+
+.premium-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3);
+    color: white !important;
+}
+
 .bot-status {
     font-size: 0.9rem;
     font-weight: 600;
@@ -660,6 +675,120 @@ section {
 .testimonial-author {
     font-weight: 600;
     color: var(--primary);
+}
+
+/* ============================================
+   Premium Section
+   ============================================ */
+
+.premium-section {
+    background: var(--bg-color);
+}
+
+.premium-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.premium-card {
+    background: var(--card-bg);
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.premium-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.premium-card.featured {
+    border-color: var(--primary);
+    transform: scale(1.05);
+}
+
+.premium-card.featured:hover {
+    transform: scale(1.08) translateY(-10px);
+}
+
+.premium-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    background: var(--light);
+    color: var(--text-color);
+}
+
+.premium-badge.premium {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.premium-badge.vip {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.premium-card h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.premium-price {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--primary);
+    margin-bottom: 2rem;
+}
+
+.premium-price span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.premium-features {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.premium-features li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--light);
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+.premium-features li:last-child {
+    border-bottom: none;
+}
+
+.premium-note {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.premium-note p {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
 }
 
 /* ============================================
