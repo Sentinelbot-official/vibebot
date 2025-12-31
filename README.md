@@ -1,5 +1,12 @@
 # Vibe Bot 🎵
 
+[![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](CHANGELOG.md)
+[![Discord.js](https://img.shields.io/badge/discord.js-v14-blue.svg)](https://discord.js.org/)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D16.9.0-brightgreen.svg)](https://nodejs.org/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg)](CODE_OF_CONDUCT.md)
+
 > **Built Live on Twitch by the Community!** 🎥
 
 A feature-rich, enterprise-level Discord bot with 100+ commands, built entirely live on stream with the help of an amazing Twitch community. This bot showcases what's possible when streamers and viewers collaborate to create something awesome!
@@ -251,6 +258,13 @@ Join our support server or open an issue on GitHub!
 - `better-sqlite3` - SQLite database
 - `dotenv` - Environment variable management
 - `prettier` - Code formatting (dev)
+
+## 📄 Documentation
+
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
+- **[Code of Conduct](CODE_OF_CONDUCT.md)** - Community standards and guidelines
+- **[Security Policy](SECURITY.md)** - How to report security vulnerabilities
+- **[Changelog](CHANGELOG.md)** - Version history and updates
 
 ## 📄 Legal
 
