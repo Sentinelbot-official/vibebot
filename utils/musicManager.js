@@ -188,34 +188,71 @@ class MusicManager {
 
       logger.info(`Now playing: ${song.title} in guild ${guildId}`);
 
+      // Track music stats for the requester
+      this.trackSongPlay(song, queue.voiceChannel);
+
       // Send now playing message
       if (queue.textChannel) {
         try {
+          // Fun random messages for personality
+          const vibeMessages = [
+            "Let's vibe to this! 🎵",
+            "This one's a banger! 🔥",
+            "Turning up the vibes! ✨",
+            "Community choice incoming! 💜",
+            "Time to vibe! 🎶",
+            "Built live, played live! 🔴",
+            "Stream-approved vibes! 🎬",
+          ];
+          const randomVibe = vibeMessages[Math.floor(Math.random() * vibeMessages.length)];
+
           await queue.textChannel.send({
             embeds: [
               {
                 color: 0x9b59b6,
+                author: {
+                  name: randomVibe,
+                  icon_url: 'https://cdn.discordapp.com/emojis/123456789.png', // Optional: Add your bot's icon
+                },
                 title: '🎵 Now Playing',
-                description: `**[${song.title}](${song.url})**`,
+                description: `**[${song.title}](${song.url})**\n\n*Built 24/7 live on stream with the community!*`,
                 fields: [
                   {
-                    name: 'Duration',
-                    value: song.duration || 'Unknown',
+                    name: '⏱️ Duration',
+                    value: song.duration || 'Live Stream',
                     inline: true,
                   },
                   {
-                    name: 'Requested by',
+                    name: '👤 Requested by',
                     value: song.requester,
                     inline: true,
                   },
                   {
-                    name: 'Position',
-                    value: `1 of ${queue.songs.length}`,
+                    name: '📋 Queue',
+                    value: `${queue.songs.length} song${queue.songs.length !== 1 ? 's' : ''}`,
+                    inline: true,
+                  },
+                  {
+                    name: '🔊 Volume',
+                    value: `${queue.volume}%`,
+                    inline: true,
+                  },
+                  {
+                    name: '🔁 Loop',
+                    value: queue.loop ? '✅ Song' : queue.loopQueue ? '✅ Queue' : '❌ Off',
+                    inline: true,
+                  },
+                  {
+                    name: '🎚️ Controls',
+                    value: '`//pause` `//skip` `//queue` `//volume`',
                     inline: true,
                   },
                 ],
                 thumbnail: { url: song.thumbnail || '' },
-                footer: { text: 'Vibe Bot Music System' },
+                footer: { 
+                  text: '🔴 Music coded live on Twitch • twitch.tv/projectdraguk',
+                  icon_url: 'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png'
+                },
                 timestamp: new Date(),
               },
             ],
@@ -271,9 +308,15 @@ class MusicManager {
 
         if (queue.textChannel) {
           try {
-            await queue.textChannel.send(
-              '✅ Queue finished! Use `//play` to add more songs.'
-            );
+            const endMessages = [
+              '✅ Queue finished! **Keep the vibes going** with `//play` 🎵',
+              '🎵 That was fire! **Add more songs** with `//play` 🔥',
+              '✨ Great session! **Queue up more vibes** with `//play` 💜',
+              '🎶 Music paused! **Keep vibing** - use `//play` to continue!',
+              '💜 Thanks for vibing with us! **More music?** Try `//play`',
+            ];
+            const randomEnd = endMessages[Math.floor(Math.random() * endMessages.length)];
+            await queue.textChannel.send(randomEnd);
           } catch {}
         }
 
@@ -433,6 +476,73 @@ class MusicManager {
       queue.loop = false; // Disable song loop if enabling queue loop
     }
     return queue.loopQueue;
+  }
+
+  /**
+   * Track song play for statistics
+   * @param {Object} song - Song object
+   * @param {Object} voiceChannel - Voice channel
+   */
+  trackSongPlay(song, voiceChannel) {
+    try {
+      const db = require('./database');
+      
+      // Get all listeners (excluding bots)
+      const listeners = voiceChannel.members.filter(m => !m.user.bot);
+      
+      listeners.forEach(member => {
+        const userId = member.id;
+        let stats = db.get('music_stats', userId) || {
+          totalSongsPlayed: 0,
+          totalListeningTime: 0,
+          topSongs: {},
+          recentlyPlayed: [],
+          firstSongPlayed: null,
+        };
+
+        // Update stats
+        stats.totalSongsPlayed++;
+        
+        // Parse duration and add to total time
+        if (song.duration) {
+          const parts = song.duration.split(':');
+          let seconds = 0;
+          if (parts.length === 2) {
+            seconds = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+          } else if (parts.length === 3) {
+            seconds = parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
+          }
+          stats.totalListeningTime += seconds;
+        }
+
+        // Track top songs
+        if (!stats.topSongs[song.title]) {
+          stats.topSongs[song.title] = {
+            plays: 0,
+            url: song.url,
+          };
+        }
+        stats.topSongs[song.title].plays++;
+
+        // Add to recently played (keep last 10)
+        stats.recentlyPlayed = stats.recentlyPlayed || [];
+        stats.recentlyPlayed.unshift({
+          title: song.title,
+          url: song.url,
+          playedAt: Date.now(),
+        });
+        stats.recentlyPlayed = stats.recentlyPlayed.slice(0, 10);
+
+        // Set first song played if not set
+        if (!stats.firstSongPlayed) {
+          stats.firstSongPlayed = Date.now();
+        }
+
+        db.set('music_stats', userId, stats);
+      });
+    } catch (error) {
+      logger.error('Failed to track song play:', error);
+    }
   }
 }
 

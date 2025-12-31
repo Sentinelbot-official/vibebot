@@ -51,14 +51,57 @@ module.exports = {
       const guildId = message.guild.id;
       const queue = musicManager.getQueue(guildId);
 
-      // Send searching message
-      const searchingMsg = await message.reply('🔍 Searching...');
+      // Easter egg: Check for special commands
+      const lowerQuery = query.toLowerCase();
+      if (lowerQuery === 'never gonna give you up' || lowerQuery === 'rickroll') {
+        return message.reply(
+          '😏 **Nice try!** But we all know what that is...\n' +
+          '🎵 Playing it anyway because it\'s a classic! 💜'
+        );
+      }
+
+      // Check if playing from favorites
+      if (lowerQuery.startsWith('favorite ') || lowerQuery.startsWith('fav ')) {
+        const db = require('../../utils/database');
+        const favorites = db.get('music_favorites', message.author.id) || [];
+        const favIndex = parseInt(lowerQuery.split(' ')[1]) - 1;
+
+        if (favorites.length === 0) {
+          return message.reply(
+            '💜 **No favorites yet!**\n' +
+            'Add songs to your favorites with `//favorites add` while music is playing!'
+          );
+        }
+
+        if (isNaN(favIndex) || favIndex < 0 || favIndex >= favorites.length) {
+          return message.reply(
+            `❌ **Invalid favorite number!**\n` +
+            `You have ${favorites.length} favorites. Use \`//favorites list\` to see them.`
+          );
+        }
+
+        const favorite = favorites[favIndex];
+        args = [favorite.url]; // Replace args with favorite URL
+        // Continue with normal play logic
+      }
+
+      // Send searching message with personality
+      const searchMessages = [
+        '🔍 Searching the vibes...',
+        '🎵 Finding that banger...',
+        '✨ Locating your jam...',
+        '🔴 Searching live...',
+        '💜 Community search initiated...',
+      ];
+      const searchingMsg = await message.reply(
+        searchMessages[Math.floor(Math.random() * searchMessages.length)]
+      );
 
       try {
         let song = null;
 
         // Check if it's a URL
-        if (play.yt_validate(query) === 'video') {
+        if (play.yt_validate(args.join(' ')) === 'video') {
           // YouTube video URL
           const info = await play.video_info(query);
           song = {
