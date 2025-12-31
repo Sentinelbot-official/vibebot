@@ -1,12 +1,26 @@
+/**
+ * VibeBot - Main Entry Point
+ * @description A feature-rich Discord bot with 130+ commands
+ * @version 2.0.0
+ * @author Airis
+ */
+
 const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
+
+// Load environment variables first
+dotenv.config();
+
+// Import utilities
 const logger = require('./utils/logger');
+const config = require('./utils/config');
 const backup = require('./utils/backup');
 const automod = require('./utils/automod');
-
-dotenv.config();
+const health = require('./utils/health');
+const shutdown = require('./utils/shutdown');
+const { ErrorHandler } = require('./utils/errors');
 
 const client = new Client({
   intents: [
@@ -33,8 +47,29 @@ const client = new Client({
   ],
 });
 
-// Initialize commands collection
+// Initialize collections
 client.commands = new Collection();
+client.cooldowns = new Collection();
+
+// Register health checks
+health.registerCheck('discord', async () => {
+  return {
+    websocket: client.ws.ping !== -1 ? 'connected' : 'disconnected',
+    ping: client.ws.ping,
+    guilds: client.guilds.cache.size,
+  };
+});
+
+health.registerCheck('database', async () => {
+  const db = require('./utils/database');
+  try {
+    // Simple query to check database
+    db.get('health_check', 'test');
+    return { status: 'operational' };
+  } catch (error) {
+    throw new Error('Database check failed');
+  }
+});
 
 // Load command handler (supports subfolders)
 const commandsPath = path.join(__dirname, 'commands');
@@ -90,27 +125,57 @@ if (fs.existsSync(eventsPath)) {
   }
 }
 
-// Error handling
-process.on('unhandledRejection', error => {
-  logger.error('Unhandled promise rejection:', error);
-});
+// Initialize shutdown handler
+shutdown.init(client);
 
-process.on('uncaughtException', error => {
-  logger.error('Uncaught exception:', error);
+// Register cleanup callbacks
+shutdown.register(async () => {
+  logger.info('Stopping health monitoring...');
+  health.stopMonitoring();
+}, 'health-monitor');
+
+shutdown.register(async () => {
+  logger.info('Creating final database backup...');
+  await backup.createBackup();
+}, 'final-backup');
+
+shutdown.register(async () => {
+  logger.info('Closing database connections...');
+  const db = require('./utils/database');
+  if (db.close) {
+    db.close();
+  }
+}, 'database-cleanup');
+
+/**
+ * Start the bot
+ */
+async function start() {
+  try {
+    logger.info('Starting VibeBot...');
+    logger.info(`Environment: ${config.get('nodeEnv')}`);
+    logger.info(`Prefix: ${config.get('prefix')}`);
+
+    // Login to Discord
+    await client.login(config.get('token'));
+    logger.success('Bot logged in successfully');
+
+    // Start systems
+    logger.info('Starting background systems...');
+    backup.startAutoBackup();
+    automod.startWarningCleanup();
+    health.startMonitoring();
+
+    logger.success('All systems operational');
+    logger.success(`VibeBot v${config.getBotConfig('version')} is ready!`);
+  } catch (error) {
+    logger.error('Failed to start bot:', error);
+    process.exit(1);
+  }
+}
+
+// Start the bot
+start().catch(error => {
+  logger.error('Fatal error during startup:', error);
   process.exit(1);
 });
-
-// Login
-client
-  .login(process.env.TOKEN)
-  .then(() => {
-    logger.success('Bot logged in successfully');
-    // Start auto-backup system
-    backup.startAutoBackup();
-    // Start auto-mod warning cleanup
-    automod.startWarningCleanup();
-  })
-  .catch(error => {
-    logger.error('Failed to login:', error);
-    process.exit(1);
-  });

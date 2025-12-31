@@ -1,18 +1,45 @@
 {
   "name": "vibe-bot",
-  "version": "1.0.0",
-  "description": "A feature-rich Discord bot with moderation, economy, leveling, and auto-mod systems",
+  "version": "2.0.0",
+  "description": "A feature-rich Discord bot with 130+ commands, moderation, economy, leveling, and auto-mod systems",
   "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write \"**/*.{js,json,md}\""
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "scripts": {
+    "start": "node --trace-warnings index.js",
+    "dev": "node --watch --trace-warnings index.js",
+    "test": "node --test",
+    "test:watch": "node --test --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,json,md}\"",
+    "validate": "npm run lint && npm run format:check",
+    "db:backup": "node scripts/backup.js",
+    "health": "node scripts/health-check.js"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "discord-bot",
+    "moderation",
+    "economy",
+    "leveling",
+    "automod"
+  ],
+  "author": "Airis",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sentinelbot-official/vibebot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Sentinelbot-official/vibebot/issues"
+  },
+  "homepage": "https://github.com/Sentinelbot-official/vibebot#readme",
   "dependencies": {
     "discord.js": "^14.25.1",
     "dotenv": "^17.2.3",
@@ -20,6 +47,9 @@
     "ms": "^2.1.3"
   },
   "devDependencies": {
-    "prettier": "^3.7.4"
-  }
+    "prettier": "^3.7.4",
+    "eslint": "^9.18.0"
+  },
+  "optionalDependencies": {},
+  "peerDependencies": {}
 }
