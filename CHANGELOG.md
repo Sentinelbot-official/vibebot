@@ -11,9 +11,101 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support server setup
 - Music commands (Spotify, YouTube, SoundCloud)
-- Custom commands builder
 - Slash commands support
 - Web dashboard
+
+## [2.4.0] - 2025-12-31
+
+### 🚀 Premium System Expansion
+
+Major update expanding the premium system with comprehensive perks, multipliers, and exclusive features!
+
+### Added
+
+#### 💎 Premium Perks System
+
+- `utils/premiumPerks.js` - Comprehensive premium perks management system
+- **Economy Multipliers:**
+  - Premium: 1.5x economy, 2x daily rewards
+  - VIP: 2x economy, 3x daily rewards
+- **Cooldown Reductions:**
+  - Premium: 50% faster cooldowns
+  - VIP: 75% faster cooldowns
+- **Shop Discounts:**
+  - Premium: 10% discount on all items
+  - VIP: 25% discount on all items
+- **AI Image Generation Limits:**
+  - Free: 5 images/day
+  - Premium: 50 images/day
+  - VIP: Unlimited images
+
+#### 🎮 Enhanced Economy Commands
+
+- Updated `daily` command with premium multipliers and bonus display
+- Updated `work` command with premium earnings and reduced cooldowns
+- Updated `shop` command with premium discounts and exclusive items
+- Updated `buy` command with automatic discount application
+- **Premium-Exclusive Shop Items:**
+  - 💎 Premium Badge (25,000 coins)
+  - 👑 VIP Pass (50,000 coins)
+  - ✈️ Private Jet (500,000 coins, VIP only)
+
+#### 🎨 New Premium Commands
+
+- `premiumstats` - View detailed premium status, multipliers, and limits
+- `customembed` - Create custom embeds (Premium: 25/day, VIP: 100/day)
+- `autopost` - Schedule automatic posts (VIP only)
+- `customcommand` - Create custom commands (VIP: up to 50 commands)
+- `aichat` - Chat with AI powered by GPT-3.5 (VIP only)
+
+#### 🤖 AI Features
+
+- AI chatbot integration with OpenAI GPT-3.5 (VIP only)
+- Conversation history tracking (last 20 messages)
+- Auto-response mode for designated channels
+- Custom system prompts for Discord context
+
+#### 🔧 Custom Commands System
+
+- VIP-exclusive custom command builder
+- Variable support: `{user}`, `{server}`, `{channel}`, `{membercount}`, `{args}`
+- Usage tracking and statistics
+- Edit and remove commands
+- Up to 50 custom commands per VIP server
+
+#### 📢 Auto-Posting System
+
+- Schedule automatic posts (VIP only)
+- Intervals: 1h, 6h, 12h, 24h, 7d
+- Multiple auto-posts per server
+- Channel-specific posting
+
+### Enhanced
+
+- `imagine` command now respects daily AI image limits
+- All economy commands display premium bonuses
+- Shop shows discounted prices for premium users
+- Premium-exclusive items locked behind tier requirements
+- Website updated with comprehensive premium feature showcase
+
+### Event Handlers
+
+- `events/customCommands.js` - Process custom command executions
+- `events/aiAutoResponse.js` - Handle AI auto-responses in designated channels
+
+### Documentation
+
+- Updated website premium section with detailed feature lists
+- Added premium command showcase to website
+- Updated FAQ with premium information
+
+### Technical Improvements
+
+- Centralized premium perks management
+- Efficient multiplier calculations
+- Daily limit tracking for AI features
+- Conversation history management
+- Custom command variable parsing
 
 ## [2.3.0] - 2025-12-31
 

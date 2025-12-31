@@ -1,13 +1,15 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
+const premiumPerks = require('../../utils/premiumPerks');
 
 module.exports = {
   name: 'daily',
-  description: 'Claim your daily coins',
+  description: 'Claim your daily coins (Premium users get 2-3x rewards!)',
   category: 'economy',
   cooldown: 5,
   async execute(message, _args) {
     const userId = message.author.id;
+    const guildId = message.guild.id;
 
     // Get user economy data
     const economy = db.get('economy', userId) || {
@@ -61,6 +63,14 @@ module.exports = {
       Math.floor((baseReward + streakBonus + levelBonus) * randomMultiplier) +
       weekendBonus;
 
+    // Apply premium multiplier
+    const premiumMultiplier = premiumPerks.getMultiplier(guildId, 'daily');
+    const premiumBonus =
+      premiumMultiplier > 1
+        ? Math.floor(totalReward * (premiumMultiplier - 1))
+        : 0;
+    totalReward = premiumPerks.applyDailyMultiplier(guildId, totalReward);
+
     // Milestone rewards
     const milestones = [7, 30, 100, 365];
     let milestoneBonus = 0;
@@ -78,11 +88,20 @@ module.exports = {
 
     db.set('economy', userId, economy);
 
+    const tierBadge = premiumPerks.getTierBadge(guildId);
+    const tierName = premiumPerks.getTierDisplayName(guildId);
+
     const embed = new EmbedBuilder()
       .setColor(milestoneBonus > 0 ? 0xffd700 : isWeekend ? 0xff69b4 : 0x00ff00)
-      .setTitle(`💰 Daily Reward Claimed!${milestoneBonus > 0 ? ' 🎊' : ''}`)
+      .setTitle(
+        `${tierBadge} Daily Reward Claimed!${milestoneBonus > 0 ? ' 🎊' : ''}`
+      )
       .setDescription(
-        `You received **${totalReward.toLocaleString()} coins**!${milestoneText}`
+        `You received **${totalReward.toLocaleString()} coins**!${milestoneText}${
+          premiumBonus > 0
+            ? `\n\n${tierBadge} **${tierName} Bonus:** +${premiumBonus.toLocaleString()} coins (${premiumMultiplier}x multiplier)`
+            : ''
+        }`
       )
       .addFields(
         {
@@ -119,7 +138,7 @@ module.exports = {
         }
       )
       .setFooter({
-        text: `Next milestone: ${milestones.find(m => m > economy.dailyStreak) || 'MAX'} days | Come back tomorrow!`,
+        text: `Next milestone: ${milestones.find(m => m > economy.dailyStreak) || 'MAX'} days | ${premiumBonus === 0 ? 'Upgrade to Premium for 2-3x rewards!' : 'Come back tomorrow!'}`,
       })
       .setTimestamp();
 

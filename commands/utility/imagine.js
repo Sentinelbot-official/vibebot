@@ -1,5 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const earlyAccess = require('../../utils/earlyAccess');
+const premiumPerks = require('../../utils/premiumPerks');
+const db = require('../../utils/database');
 
 module.exports = {
   name: 'imagine',
@@ -32,10 +34,41 @@ module.exports = {
       return message.reply({ embeds: [embed] });
     }
 
+    // Check AI image generation limit
+    const limitCheck = premiumPerks.checkAIImageLimit(
+      message.guild.id,
+      message.author.id,
+      db
+    );
+
+    if (!limitCheck.canUse) {
+      const tierBadge = premiumPerks.getTierBadge(message.guild.id);
+      const embed = new EmbedBuilder()
+        .setColor('#ff9900')
+        .setTitle('⚠️ Daily Limit Reached')
+        .setDescription(
+          `You've reached your daily AI image generation limit!\n\n` +
+            `**Your Tier:** ${tierBadge} ${premiumPerks.getTierDisplayName(message.guild.id)}\n` +
+            `**Daily Limit:** ${limitCheck.limit} images\n` +
+            `**Remaining:** ${limitCheck.remaining} images\n\n` +
+            '**Upgrade for more:**\n' +
+            '💎 **Premium** - 50 images/day\n' +
+            '👑 **VIP** - Unlimited images\n\n' +
+            'Use `//premium` to upgrade!'
+        )
+        .setFooter({ text: 'Limits reset daily at midnight UTC' });
+
+      return message.reply({ embeds: [embed] });
+    }
+
     // Feature is accessible!
     if (!args.length) {
+      const tierInfo = limitCheck.unlimited
+        ? '👑 Unlimited (VIP)'
+        : `${limitCheck.remaining}/${limitCheck.limit} remaining today`;
+
       return message.reply(
-        '❌ Please provide a prompt!\nUsage: `//imagine <description>`\n\nExample: `//imagine a purple robot with headphones`'
+        `❌ Please provide a prompt!\nUsage: \`//imagine <description>\`\n\nExample: \`//imagine a purple robot with headphones\`\n\n**Daily Limit:** ${tierInfo}`
       );
     }
 
@@ -57,14 +90,28 @@ module.exports = {
       return message.reply({ embeds: [embed] });
     }
 
+    // Increment usage counter
+    premiumPerks.incrementAIImageUsage(message.guild.id, message.author.id, db);
+
     // Send loading message
+    const tierBadge = premiumPerks.getTierBadge(message.guild.id);
+    const newLimit = premiumPerks.checkAIImageLimit(
+      message.guild.id,
+      message.author.id,
+      db
+    );
+    const limitText = newLimit.unlimited
+      ? '👑 Unlimited'
+      : `${newLimit.remaining}/${newLimit.limit} remaining`;
+
     const loadingEmbed = new EmbedBuilder()
       .setColor('#0099ff')
       .setTitle('🎨 Generating Image...')
       .setDescription(
         `**Prompt:** ${prompt}\n\n` +
           '⏳ This may take 10-30 seconds...\n\n' +
-          '💎 **Early Access Feature** - Thank you for supporting Vibe Bot!'
+          `${tierBadge} **Early Access Feature** - Thank you for supporting Vibe Bot!\n` +
+          `**Daily Limit:** ${limitText}`
       );
 
     const loadingMsg = await message.reply({ embeds: [loadingEmbed] });

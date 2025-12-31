@@ -1,10 +1,11 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
+const premiumPerks = require('../../utils/premiumPerks');
 
 module.exports = {
   name: 'buy',
   aliases: ['purchase'],
-  description: 'Buy an item from the shop',
+  description: 'Buy an item from the shop (Premium users get discounts!)',
   usage: '<itemId> [amount]',
   category: 'economy',
   cooldown: 3,
@@ -18,6 +19,7 @@ module.exports = {
 
     const itemId = args[0].toLowerCase();
     const amount = parseInt(args[1]) || 1;
+    const guildId = message.guild.id;
 
     if (amount < 1 || amount > 100) {
       return message.reply('❌ Amount must be between 1 and 100!');
@@ -65,6 +67,28 @@ module.exports = {
       car: { id: 'car', name: '🚗 Car', price: 15000, type: 'vehicle' },
       house: { id: 'house', name: '🏠 House', price: 50000, type: 'property' },
       yacht: { id: 'yacht', name: '🛥️ Yacht', price: 100000, type: 'vehicle' },
+      // Premium-exclusive items
+      premium_badge: {
+        id: 'premium_badge',
+        name: '💎 Premium Badge',
+        price: 25000,
+        type: 'collectible',
+        premiumOnly: true,
+      },
+      vip_pass: {
+        id: 'vip_pass',
+        name: '👑 VIP Pass',
+        price: 50000,
+        type: 'collectible',
+        vipOnly: true,
+      },
+      private_jet: {
+        id: 'private_jet',
+        name: '✈️ Private Jet',
+        price: 500000,
+        type: 'vehicle',
+        vipOnly: true,
+      },
     };
 
     // Get custom shop items or use defaults
@@ -78,6 +102,22 @@ module.exports = {
       );
     }
 
+    // Check premium requirements
+    const hasPremium = premiumPerks.hasFeature(guildId, 'premium_badge');
+    const hasVIP = premiumPerks.hasFeature(guildId, 'custom_commands');
+
+    if (item.vipOnly && !hasVIP) {
+      return message.reply(
+        '❌ This item is VIP-exclusive! Upgrade to VIP to purchase it.\nUse `//premium` to learn more!'
+      );
+    }
+
+    if (item.premiumOnly && !hasPremium) {
+      return message.reply(
+        '❌ This item is Premium-exclusive! Upgrade to Premium to purchase it.\nUse `//premium` to learn more!'
+      );
+    }
+
     // Check stock (only for custom items)
     if (item.stock !== undefined && item.stock !== -1 && item.stock < amount) {
       return message.reply(
@@ -85,7 +125,11 @@ module.exports = {
       );
     }
 
-    const totalPrice = item.price * amount;
+    // Apply premium discount
+    const originalPrice = item.price;
+    const discountedPrice = premiumPerks.applyShopDiscount(guildId, originalPrice);
+    const totalPrice = discountedPrice * amount;
+    const savings = (originalPrice - discountedPrice) * amount;
 
     // Get user economy
     const economy = db.get('economy', message.author.id) || {
@@ -130,11 +174,18 @@ module.exports = {
       }
     }
 
+    const tierBadge = premiumPerks.getTierBadge(guildId);
+    const tierName = premiumPerks.getTierDisplayName(guildId);
+
     const embed = new EmbedBuilder()
       .setColor(0x00ff00)
-      .setTitle('✅ Purchase Successful!')
+      .setTitle(`${tierBadge} Purchase Successful!`)
       .setDescription(
-        `You bought **${amount}x ${item.name}** for **${totalPrice.toLocaleString()} coins**!`
+        `You bought **${amount}x ${item.name}** for **${totalPrice.toLocaleString()} coins**!${
+          savings > 0
+            ? `\n\n${tierBadge} **${tierName} Discount:** You saved ${savings.toLocaleString()} coins!`
+            : ''
+        }`
       )
       .addFields({
         name: '💰 New Balance',

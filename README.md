@@ -3,7 +3,7 @@
 <div align="center">
 
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.3.0-purple.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.4.0-purple.svg)](CHANGELOG.md)
 [![Discord.js](https://img.shields.io/badge/discord.js-v14-blue.svg)](https://discord.js.org/)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![Built on Twitch](https://img.shields.io/badge/Built%20on-Twitch-9146FF.svg)](https://twitch.tv/projectdraguk)
@@ -152,6 +152,46 @@ Every feature has a story! Here are some community highlights:
 - **Button Interactions** - Modern Discord UI
 - **Dynamic Embeds** - Color-coded by context
 - **Smart Cooldowns** - Prevent spam & abuse
+
+## 💎 Premium Features
+
+Vibe Bot offers optional **Premium** ($5/month) and **VIP** ($10/month) tiers to support development and unlock enhanced features!
+
+### 🌟 Premium Benefits
+
+- **2x Daily Rewards** - Double your daily coin rewards
+- **1.5x Economy Earnings** - Earn 50% more from work and activities
+- **50% Faster Cooldowns** - Use commands twice as often
+- **10% Shop Discount** - Save on all shop purchases
+- **50 AI Images/Day** - Generate images with DALL-E 3 and Stability AI
+- **Custom Bot Status** - Set a custom status for your server
+- **Premium Badge** - Exclusive role and badge
+- **Custom Embeds** - Create up to 25 custom embeds per day
+- **Early Access** - Try new features before public release
+- **Priority Support** - Get help faster
+
+### 👑 VIP Benefits (All Premium + More!)
+
+- **3x Daily Rewards** - Triple your daily coin rewards
+- **2x Economy Earnings** - Double earnings from all economy commands
+- **75% Faster Cooldowns** - Use commands 4x as often
+- **25% Shop Discount** - Massive savings on all purchases
+- **Unlimited AI Images** - Generate as many images as you want
+- **Custom Commands** - Create up to 50 custom commands for your server
+- **AI Chatbot** - Chat with GPT-3.5 powered AI assistant
+- **Auto-Posting** - Schedule automatic announcements
+- **Custom Embeds** - Create up to 100 custom embeds per day
+- **VIP Badge** - Exclusive VIP role and badge
+- **Eternal Gratitude** - You're amazing! 💜
+
+### 🔑 How to Activate
+
+1. Purchase on [Ko-fi](https://ko-fi.com/airis0)
+2. Receive your unique activation key
+3. Use `//activate <key>` in your Discord server
+4. Enjoy your premium features instantly!
+
+Use `//premium` in Discord to check your server's tier and `//premiumstats` to see all your active perks!
 
 ## 📋 Prerequisites
 

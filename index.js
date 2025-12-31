@@ -15,7 +15,7 @@
  *    features, helped debug, and made this possible. This isn't just a bot -
  *    it's OUR bot, built together 24/7.
  *
- * @version 2.3.0
+ * @version 2.4.0
  * @author Airis (with help from the best 24/7 Twitch community ever!)
  * @description 220+ commands | AI-powered | Built 24/7 live on stream
  * ════════════════════════════════════════════════════════════════════════════

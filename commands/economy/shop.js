@@ -1,14 +1,20 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
+const premiumPerks = require('../../utils/premiumPerks');
 
 module.exports = {
   name: 'shop',
-  description: 'View the shop and available items',
+  description: 'View the shop and available items (Premium users get discounts!)',
   usage: '[page]',
   aliases: ['store', 'market'],
   category: 'economy',
   cooldown: 3,
   async execute(message, args) {
+    const guildId = message.guild.id;
+    const discount = premiumPerks.getShopDiscount(guildId);
+    const tierBadge = premiumPerks.getTierBadge(guildId);
+    const tierName = premiumPerks.getTierDisplayName(guildId);
+
     // Get shop items
     const shopItems = [
       {
@@ -81,11 +87,46 @@ module.exports = {
         price: 100000,
         type: 'vehicle',
       },
+      // Premium-exclusive items
+      {
+        id: 'premium_badge',
+        name: '💎 Premium Badge',
+        description: 'Exclusive Premium collectible!',
+        price: 25000,
+        type: 'collectible',
+        premiumOnly: true,
+      },
+      {
+        id: 'vip_pass',
+        name: '👑 VIP Pass',
+        description: 'The ultimate status symbol!',
+        price: 50000,
+        type: 'collectible',
+        vipOnly: true,
+      },
+      {
+        id: 'private_jet',
+        name: '✈️ Private Jet',
+        description: 'Travel in style! (VIP only)',
+        price: 500000,
+        type: 'vehicle',
+        vipOnly: true,
+      },
     ];
+
+    // Filter items based on premium status
+    const hasPremium = premiumPerks.hasFeature(guildId, 'premium_badge');
+    const hasVIP = premiumPerks.hasFeature(guildId, 'custom_commands');
+
+    const availableItems = shopItems.filter(item => {
+      if (item.vipOnly && !hasVIP) return false;
+      if (item.premiumOnly && !hasPremium) return false;
+      return true;
+    });
 
     const itemsPerPage = 5;
     const page = parseInt(args[0]) || 1;
-    const totalPages = Math.ceil(shopItems.length / itemsPerPage);
+    const totalPages = Math.ceil(availableItems.length / itemsPerPage);
 
     if (page < 1 || page > totalPages) {
       return message.reply(
@@ -95,25 +136,63 @@ module.exports = {
 
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const pageItems = shopItems.slice(startIndex, endIndex);
+    const pageItems = availableItems.slice(startIndex, endIndex);
 
     const embed = new EmbedBuilder()
       .setColor(0xffd700)
-      .setTitle('🏪 Shop')
+      .setTitle(`${tierBadge} Shop`)
       .setDescription(
         'Use `buy <item_id>` to purchase an item!\n' +
-          'Use `inventory` to view your items.\n\n'
+          'Use `inventory` to view your items.\n\n' +
+          (discount > 0
+            ? `${tierBadge} **${tierName} Discount:** ${Math.round(discount * 100)}% off all items!\n\n`
+            : '')
       )
-      .setFooter({ text: `Page ${page}/${totalPages}` })
+      .setFooter({
+        text: `Page ${page}/${totalPages}${discount === 0 ? ' | Upgrade to Premium for discounts!' : ''}`,
+      })
       .setTimestamp();
 
     pageItems.forEach(item => {
+      const originalPrice = item.price;
+      const discountedPrice = premiumPerks.applyShopDiscount(
+        guildId,
+        originalPrice
+      );
+      const priceDisplay =
+        discount > 0
+          ? `~~${originalPrice.toLocaleString()}~~ **${discountedPrice.toLocaleString()}** coins`
+          : `${originalPrice.toLocaleString()} coins`;
+
       embed.addFields({
-        name: `${item.name} - ${item.price} coins`,
-        value: `${item.description}\nID: \`${item.id}\` | Type: ${item.type}`,
+        name: `${item.name} - ${priceDisplay}`,
+        value: `${item.description}\nID: \`${item.id}\` | Type: ${item.type}${
+          item.premiumOnly ? ' | 💎 Premium' : ''
+        }${item.vipOnly ? ' | 👑 VIP' : ''}`,
         inline: false,
       });
     });
+
+    // Show locked premium items
+    const lockedItems = shopItems.filter(item => {
+      if (item.vipOnly && !hasVIP) return true;
+      if (item.premiumOnly && !hasPremium) return true;
+      return false;
+    });
+
+    if (lockedItems.length > 0 && page === totalPages) {
+      const lockedText = lockedItems
+        .map(
+          item =>
+            `${item.name} - ${item.price.toLocaleString()} coins ${item.vipOnly ? '👑' : '💎'}`
+        )
+        .join('\n');
+      embed.addFields({
+        name: '🔒 Premium Items (Locked)',
+        value: lockedText + '\n\nUpgrade to unlock these items!',
+        inline: false,
+      });
+    }
 
     message.reply({ embeds: [embed] });
   },
