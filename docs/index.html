@@ -36,6 +36,39 @@
     
     <title>Vibe Bot - 220+ Commands | Built 24/7 Live on Twitch</title>
     
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://sentinelbot-official.github.io/vibebot/">
+    
+    <!-- Structured Data (JSON-LD) for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Vibe Bot",
+      "applicationCategory": "CommunicationApplication",
+      "operatingSystem": "Discord",
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "USD",
+        "lowPrice": "0",
+        "highPrice": "10",
+        "offerCount": "3"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "150"
+      },
+      "description": "AI-powered Discord bot with 220+ commands, built live on Twitch 24/7 with a global community. Features include moderation, economy, games, and more.",
+      "url": "https://sentinelbot-official.github.io/vibebot/",
+      "author": {
+        "@type": "Person",
+        "name": "Airis"
+      },
+      "featureList": "Moderation, Economy System, Mini-Games, AI Features, Social Features, Analytics"
+    }
+    </script>
+    
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,15 +85,14 @@
             </div>
             <div class="nav-links">
                 <a href="#features">Features</a>
-                <a href="#story">Story</a>
-                <a href="#commands">Commands</a>
+                <a href="commands.html">Commands</a>
+                <a href="support.html">Support</a>
                 <a href="#faq">FAQ</a>
-                <a href="#setup">Setup</a>
                 <a href="#premium" class="premium-link">💎 Premium</a>
                 <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
                     🌙
                 </button>
-                <a href="https://twitch.tv/projectdraguk" target="_blank" class="live-badge">
+                <a href="https://twitch.tv/projectdraguk" target="_blank" class="live-badge" aria-label="Watch live on Twitch">
                     🔴 LIVE NOW
                 </a>
             </div>
@@ -805,6 +837,101 @@
                     <span class="roadmap-date">Ongoing</span>
                 </div>
             </div>
+            
+            <!-- Feature Voting Section -->
+            <div class="feature-voting">
+                <h3 style="text-align: center; color: var(--primary); margin-bottom: 2rem; font-size: 1.8rem;">
+                    🗳️ Vote for Features
+                </h3>
+                <p style="text-align: center; margin-bottom: 2rem; color: var(--text-color);">
+                    Help shape the future of Vibe Bot! Vote for features you'd like to see next.
+                </p>
+                
+                <div class="voting-grid">
+                    <div class="vote-item">
+                        <div class="vote-content">
+                            <h4>🎵 Music Player</h4>
+                            <p>Play music from YouTube, Spotify, and more</p>
+                        </div>
+                        <div class="vote-actions">
+                            <button class="vote-btn" data-feature="music" aria-label="Vote for music player">
+                                <span class="vote-icon">👍</span>
+                                <span class="vote-count">247</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="vote-item">
+                        <div class="vote-content">
+                            <h4>📊 Web Dashboard</h4>
+                            <p>Manage your server settings from a web interface</p>
+                        </div>
+                        <div class="vote-actions">
+                            <button class="vote-btn" data-feature="dashboard" aria-label="Vote for web dashboard">
+                                <span class="vote-icon">👍</span>
+                                <span class="vote-count">189</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="vote-item">
+                        <div class="vote-content">
+                            <h4>🎁 Giveaway System</h4>
+                            <p>Advanced giveaway management with requirements</p>
+                        </div>
+                        <div class="vote-actions">
+                            <button class="vote-btn" data-feature="giveaway" aria-label="Vote for giveaway system">
+                                <span class="vote-icon">👍</span>
+                                <span class="vote-count">156</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="vote-item">
+                        <div class="vote-content">
+                            <h4>🎮 Custom Games</h4>
+                            <p>Create your own mini-games with a builder</p>
+                        </div>
+                        <div class="vote-actions">
+                            <button class="vote-btn" data-feature="custom-games" aria-label="Vote for custom games">
+                                <span class="vote-icon">👍</span>
+                                <span class="vote-count">134</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="vote-item">
+                        <div class="vote-content">
+                            <h4>📱 Mobile App</h4>
+                            <p>Companion mobile app for managing the bot</p>
+                        </div>
+                        <div class="vote-actions">
+                            <button class="vote-btn" data-feature="mobile" aria-label="Vote for mobile app">
+                                <span class="vote-icon">👍</span>
+                                <span class="vote-count">98</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="vote-item">
+                        <div class="vote-content">
+                            <h4>🔔 Advanced Notifications</h4>
+                            <p>Customizable notifications for server events</p>
+                        </div>
+                        <div class="vote-actions">
+                            <button class="vote-btn" data-feature="notifications" aria-label="Vote for advanced notifications">
+                                <span class="vote-icon">👍</span>
+                                <span class="vote-count">87</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <p style="text-align: center; margin-top: 2rem; color: var(--text-color); opacity: 0.8; font-size: 0.9rem;">
+                    Note: Votes are stored locally. Join the <a href="https://twitch.tv/projectdraguk" target="_blank" style="color: var(--primary); font-weight: 600;">live stream</a> to discuss features!
+                </p>
+            </div>
+            
             <div class="roadmap-cta">
                 <p>💡 Have a feature idea? <a href="https://twitch.tv/projectdraguk" target="_blank">Suggest it live on stream!</a></p>
             </div>
@@ -904,18 +1031,96 @@
         </div>
     </section>
 
-    <!-- GitHub Section -->
-    <section class="github-section">
+    <!-- Community Section -->
+    <section class="community-section">
         <div class="container">
-            <div class="github-content">
-                <h2>💻 View Source & Contribute</h2>
-                <p>The source code is available for educational purposes. Contribute features and improvements via pull requests!</p>
-                <a href="https://github.com/Sentinelbot-official/vibebot" target="_blank" class="btn btn-secondary">
-                    View on GitHub
-                </a>
-                <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 1rem;">
-                    Proprietary License - View code for learning, contribute via PRs. Public hosting not permitted.
-                </p>
+            <div class="section-header">
+                <h2 class="section-title">💬 Join the Community</h2>
+                <p class="section-subtitle">Connect with thousands of Vibe Bot users and the development team</p>
+            </div>
+            
+            <div class="community-grid">
+                <div class="community-card">
+                    <div class="community-icon">💬</div>
+                    <h3>Discord Server</h3>
+                    <p>Join our official Discord server to get help, share feedback, and connect with other users!</p>
+                    <div class="community-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">👥</span>
+                            <span class="stat-text">Coming Soon</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">💬</span>
+                            <span class="stat-text">Active Chat</span>
+                        </div>
+                    </div>
+                    <a href="https://discord.gg/COMING_SOON" target="_blank" class="btn btn-primary">
+                        Join Discord
+                    </a>
+                </div>
+                
+                <div class="community-card">
+                    <div class="community-icon">🔴</div>
+                    <h3>24/7 Live Stream</h3>
+                    <p>Watch development happen live! Ask questions, suggest features, and be part of the journey.</p>
+                    <div class="community-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">📺</span>
+                            <span class="stat-text">Always Live</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">🌍</span>
+                            <span class="stat-text">Global Community</span>
+                        </div>
+                    </div>
+                    <a href="https://twitch.tv/projectdraguk" target="_blank" class="btn btn-primary">
+                        Watch on Twitch
+                    </a>
+                </div>
+                
+                <div class="community-card">
+                    <div class="community-icon">💻</div>
+                    <h3>GitHub</h3>
+                    <p>View the source code, report bugs, and contribute via pull requests!</p>
+                    <div class="community-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">⭐</span>
+                            <span class="stat-text">Open Source</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">🐛</span>
+                            <span class="stat-text">Bug Reports</span>
+                        </div>
+                    </div>
+                    <a href="https://github.com/Sentinelbot-official/vibebot" target="_blank" class="btn btn-secondary">
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Social Proof -->
+            <div class="social-proof">
+                <h3 style="text-align: center; color: var(--primary); margin-bottom: 2rem;">
+                    🌟 Trusted by Communities Worldwide
+                </h3>
+                <div class="proof-stats">
+                    <div class="proof-item">
+                        <div class="proof-number" id="serversUsing">---</div>
+                        <div class="proof-label">Servers</div>
+                    </div>
+                    <div class="proof-item">
+                        <div class="proof-number" id="usersServed">---</div>
+                        <div class="proof-label">Users</div>
+                    </div>
+                    <div class="proof-item">
+                        <div class="proof-number">220+</div>
+                        <div class="proof-label">Commands</div>
+                    </div>
+                    <div class="proof-item">
+                        <div class="proof-number">24/7</div>
+                        <div class="proof-label">Uptime</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

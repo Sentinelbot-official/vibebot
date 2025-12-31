@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Complete command list for Vibe Bot - 220+ commands including moderation, economy, games, AI features, and more!">
+    <meta name="keywords" content="Vibe Bot commands, Discord bot commands, bot command list, Discord moderation, Discord economy">
+    <meta name="author" content="Airis & The 24/7 Twitch Community">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Vibe Bot Commands - Complete Documentation">
+    <meta property="og:description" content="Browse all 220+ commands with examples and descriptions">
+    <meta property="og:type" content="website">
+    
+    <title>Commands Documentation | Vibe Bot</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        .commands-hero {
+            padding: 120px 0 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .commands-hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        
+        .commands-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .commands-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .search-filter-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(155, 89, 182, 0.2);
+        }
+        
+        .category-tabs {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .category-tab {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-tab:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .category-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .command-section {
+            margin-bottom: 4rem;
+        }
+        
+        .command-section.hidden {
+            display: none;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .section-icon {
+            font-size: 2.5rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+        
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .command-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .command-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .command-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .command-description {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .command-usage {
+            background: rgba(155, 89, 182, 0.1);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .command-example {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            font-style: italic;
+        }
+        
+        .command-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+        
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .badge-vip {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .badge-cooldown {
+            background: rgba(52, 152, 219, 0.2);
+            color: var(--secondary);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-color);
+            opacity: 0.6;
+        }
+        
+        .no-results h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .commands-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .commands-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-tabs {
+                gap: 0.5rem;
+            }
+            
+            .category-tab {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .search-filter-section {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="logo">🎵</span>
+                <span class="brand-name">Vibe Bot</span>
+                <span class="bot-status online">● Online</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#features">Features</a>
+                <a href="commands.html">Commands</a>
+                <a href="support.html">Support</a>
+                <a href="index.html#premium" class="premium-link">💎 Premium</a>
+                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                    🌙
+                </button>
+                <a href="https://twitch.tv/projectdraguk" target="_blank" class="live-badge">
+                    🔴 LIVE NOW
+                </a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="commands-hero">
+        <div class="container">
+            <h1>⚡ Complete Command List</h1>
+            <p>Browse all 220+ commands with examples and usage</p>
+        </div>
+    </section>
+
+    <!-- Commands Container -->
+    <div class="commands-container">
+        <!-- Search and Filter -->
+        <div class="search-filter-section">
+            <input 
+                type="text" 
+                id="commandSearchInput" 
+                class="search-box" 
+                placeholder="🔍 Search commands... (e.g., 'ban', 'economy', 'games')"
+                aria-label="Search commands"
+            >
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="all">All Commands</button>
+                <button class="category-tab" data-category="moderation">🛡️ Moderation</button>
+                <button class="category-tab" data-category="economy">💰 Economy</button>
+                <button class="category-tab" data-category="fun">🎮 Fun & Games</button>
+                <button class="category-tab" data-category="utility">🔧 Utility</button>
+                <button class="category-tab" data-category="social">👥 Social</button>
+                <button class="category-tab" data-category="admin">⚙️ Admin</button>
+                <button class="category-tab" data-category="leveling">📊 Leveling</button>
+            </div>
+        </div>
+
+        <!-- Moderation Commands -->
+        <div class="command-section" data-category="moderation">
+            <div class="section-header">
+                <span class="section-icon">🛡️</span>
+                <h2 class="section-title">Moderation Commands (23)</h2>
+            </div>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <div class="command-name">//ban</div>
+                    <div class="command-description">Ban a user from the server permanently or temporarily</div>
+                    <div class="command-usage">//ban @user [reason] [duration]</div>
+                    <div class="command-example">Example: //ban @spammer Advertising 7d</div>
+                    <div class="command-badges">
+                        <span class="badge badge-cooldown">5s cooldown</span>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//kick</div>
+                    <div class="command-description">Kick a user from the server</div>
+                    <div class="command-usage">//kick @user [reason]</div>
+                    <div class="command-example">Example: //kick @user Breaking rules</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//warn</div>
+                    <div class="command-description">Issue a warning to a user</div>
+                    <div class="command-usage">//warn @user [reason]</div>
+                    <div class="command-example">Example: //warn @user Spamming</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//mute</div>
+                    <div class="command-description">Mute a user in text channels</div>
+                    <div class="command-usage">//mute @user [duration] [reason]</div>
+                    <div class="command-example">Example: //mute @user 1h Spamming</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//purge</div>
+                    <div class="command-description">Bulk delete messages from a channel</div>
+                    <div class="command-usage">//purge [amount] [user]</div>
+                    <div class="command-example">Example: //purge 50 @user</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//automod</div>
+                    <div class="command-description">Configure AI-powered auto-moderation</div>
+                    <div class="command-usage">//automod [enable|disable|config]</div>
+                    <div class="command-example">Example: //automod enable</div>
+                    <div class="command-badges">
+                        <span class="badge badge-premium">Premium</span>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//warnings</div>
+                    <div class="command-description">View warnings for a user</div>
+                    <div class="command-usage">//warnings [@user]</div>
+                    <div class="command-example">Example: //warnings @user</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//slowmode</div>
+                    <div class="command-description">Set slowmode for the current channel</div>
+                    <div class="command-usage">//slowmode [seconds]</div>
+                    <div class="command-example">Example: //slowmode 10</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Economy Commands -->
+        <div class="command-section" data-category="economy">
+            <div class="section-header">
+                <span class="section-icon">💰</span>
+                <h2 class="section-title">Economy Commands (31)</h2>
+            </div>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <div class="command-name">//balance</div>
+                    <div class="command-description">Check your or another user's balance</div>
+                    <div class="command-usage">//balance [@user]</div>
+                    <div class="command-example">Example: //balance @user</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//daily</div>
+                    <div class="command-description">Claim your daily coins reward</div>
+                    <div class="command-usage">//daily</div>
+                    <div class="command-example">Claim once every 24 hours!</div>
+                    <div class="command-badges">
+                        <span class="badge badge-cooldown">24h cooldown</span>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//work</div>
+                    <div class="command-description">Work at your job to earn money</div>
+                    <div class="command-usage">//work</div>
+                    <div class="command-example">Work to earn coins!</div>
+                    <div class="command-badges">
+                        <span class="badge badge-cooldown">1h cooldown</span>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//shop</div>
+                    <div class="command-description">Browse and buy items from the shop</div>
+                    <div class="command-usage">//shop [category]</div>
+                    <div class="command-example">Example: //shop roles</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//buy</div>
+                    <div class="command-description">Purchase an item from the shop</div>
+                    <div class="command-usage">//buy [item]</div>
+                    <div class="command-example">Example: //buy laptop</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//inventory</div>
+                    <div class="command-description">View your inventory</div>
+                    <div class="command-usage">//inventory [@user]</div>
+                    <div class="command-example">See all your items!</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//gamble</div>
+                    <div class="command-description">Gamble your coins for a chance to win big</div>
+                    <div class="command-usage">//gamble [amount]</div>
+                    <div class="command-example">Example: //gamble 100</div>
+                    <div class="command-badges">
+                        <span class="badge badge-cooldown">30s cooldown</span>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//rob</div>
+                    <div class="command-description">Attempt to rob another user</div>
+                    <div class="command-usage">//rob @user</div>
+                    <div class="command-example">Example: //rob @user</div>
+                    <div class="command-badges">
+                        <span class="badge badge-cooldown">5m cooldown</span>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//gift</div>
+                    <div class="command-description">Gift coins to another user</div>
+                    <div class="command-usage">//gift @user [amount]</div>
+                    <div class="command-example">Example: //gift @friend 500</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//leaderboard</div>
+                    <div class="command-description">View the richest users</div>
+                    <div class="command-usage">//leaderboard [global|server]</div>
+                    <div class="command-example">Example: //leaderboard global</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//stocks</div>
+                    <div class="command-description">View and trade stocks</div>
+                    <div class="command-usage">//stocks [buy|sell] [symbol] [amount]</div>
+                    <div class="command-example">Example: //stocks buy AAPL 10</div>
+                    <div class="command-badges">
+                        <span class="badge badge-premium">Premium</span>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//property</div>
+                    <div class="command-description">Buy and manage properties</div>
+                    <div class="command-usage">//property [buy|sell|list]</div>
+                    <div class="command-example">Example: //property buy house</div>
+                    <div class="command-badges">
+                        <span class="badge badge-premium">Premium</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fun & Games Commands -->
+        <div class="command-section" data-category="fun">
+            <div class="section-header">
+                <span class="section-icon">🎮</span>
+                <h2 class="section-title">Fun & Games Commands (30)</h2>
+            </div>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <div class="command-name">//8ball</div>
+                    <div class="command-description">Ask the magic 8ball a question</div>
+                    <div class="command-usage">//8ball [question]</div>
+                    <div class="command-example">Example: //8ball Will I win?</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//meme</div>
+                    <div class="command-description">Generate a random meme</div>
+                    <div class="command-usage">//meme [subreddit]</div>
+                    <div class="command-example">Example: //meme dankmemes</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//pet</div>
+                    <div class="command-description">Adopt and manage your virtual pet</div>
+                    <div class="command-usage">//pet [adopt|feed|play|status]</div>
+                    <div class="command-example">Example: //pet adopt dog</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//hangman</div>
+                    <div class="command-description">Play a game of hangman</div>
+                    <div class="command-usage">//hangman [category]</div>
+                    <div class="command-example">Start a fun word game!</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//trivia</div>
+                    <div class="command-description">Play trivia questions</div>
+                    <div class="command-usage">//trivia [category] [difficulty]</div>
+                    <div class="command-example">Example: //trivia science hard</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//wordle</div>
+                    <div class="command-description">Play the popular Wordle game</div>
+                    <div class="command-usage">//wordle</div>
+                    <div class="command-example">Guess the 5-letter word!</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//2048</div>
+                    <div class="command-description">Play the 2048 puzzle game</div>
+                    <div class="command-usage">//2048</div>
+                    <div class="command-example">Combine tiles to reach 2048!</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//poker</div>
+                    <div class="command-description">Play Texas Hold'em poker</div>
+                    <div class="command-usage">//poker [bet]</div>
+                    <div class="command-example">Example: //poker 100</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//rps</div>
+                    <div class="command-description">Play rock paper scissors</div>
+                    <div class="command-usage">//rps [rock|paper|scissors]</div>
+                    <div class="command-example">Example: //rps rock</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//dice</div>
+                    <div class="command-description">Roll dice</div>
+                    <div class="command-usage">//dice [sides] [count]</div>
+                    <div class="command-example">Example: //dice 6 2</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Utility Commands -->
+        <div class="command-section" data-category="utility">
+            <div class="section-header">
+                <span class="section-icon">🔧</span>
+                <h2 class="section-title">Utility Commands (66)</h2>
+            </div>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <div class="command-name">//help</div>
+                    <div class="command-description">View all commands or get help for a specific command</div>
+                    <div class="command-usage">//help [command|category]</div>
+                    <div class="command-example">Example: //help moderation</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//serverinfo</div>
+                    <div class="command-description">View detailed server information</div>
+                    <div class="command-usage">//serverinfo</div>
+                    <div class="command-example">See server stats and info</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//userinfo</div>
+                    <div class="command-description">View user information</div>
+                    <div class="command-usage">//userinfo [@user]</div>
+                    <div class="command-example">Example: //userinfo @user</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//avatar</div>
+                    <div class="command-description">Get a user's avatar</div>
+                    <div class="command-usage">//avatar [@user]</div>
+                    <div class="command-example">Example: //avatar @user</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//weather</div>
+                    <div class="command-description">Check weather for a location</div>
+                    <div class="command-usage">//weather [location]</div>
+                    <div class="command-example">Example: //weather London</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//translate</div>
+                    <div class="command-description">Translate text to another language</div>
+                    <div class="command-usage">//translate [language] [text]</div>
+                    <div class="command-example">Example: //translate spanish Hello</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//calculator</div>
+                    <div class="command-description">Calculate mathematical expressions</div>
+                    <div class="command-usage">//calculator [expression]</div>
+                    <div class="command-example">Example: //calculator 2+2*5</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//poll</div>
+                    <div class="command-description">Create a poll with reactions</div>
+                    <div class="command-usage">//poll [question] | [option1] | [option2]...</div>
+                    <div class="command-example">Create interactive polls!</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//remind</div>
+                    <div class="command-description">Set a reminder</div>
+                    <div class="command-usage">//remind [time] [message]</div>
+                    <div class="command-example">Example: //remind 1h Check stream</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//ai</div>
+                    <div class="command-description">Chat with AI (OpenAI/Anthropic)</div>
+                    <div class="command-usage">//ai [prompt]</div>
+                    <div class="command-example">Example: //ai Explain quantum physics</div>
+                    <div class="command-badges">
+                        <span class="badge badge-premium">Premium</span>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//imagine</div>
+                    <div class="command-description">Generate AI images from text</div>
+                    <div class="command-usage">//imagine [prompt]</div>
+                    <div class="command-example">Example: //imagine sunset over mountains</div>
+                    <div class="command-badges">
+                        <span class="badge badge-vip">VIP</span>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//live</div>
+                    <div class="command-description">Check if the stream is live</div>
+                    <div class="command-usage">//live</div>
+                    <div class="command-example">See Twitch stream status</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Commands -->
+        <div class="command-section" data-category="social">
+            <div class="section-header">
+                <span class="section-icon">👥</span>
+                <h2 class="section-title">Social Commands (10)</h2>
+            </div>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <div class="command-name">//profile</div>
+                    <div class="command-description">View your or another user's profile</div>
+                    <div class="command-usage">//profile [@user]</div>
+                    <div class="command-example">Example: //profile @user</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//marry</div>
+                    <div class="command-description">Propose marriage to another user</div>
+                    <div class="command-usage">//marry @user</div>
+                    <div class="command-example">Example: //marry @user</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//divorce</div>
+                    <div class="command-description">Divorce your partner</div>
+                    <div class="command-usage">//divorce</div>
+                    <div class="command-example">End your marriage</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//rep</div>
+                    <div class="command-description">Give reputation to another user</div>
+                    <div class="command-usage">//rep @user</div>
+                    <div class="command-example">Example: //rep @helpful_user</div>
+                    <div class="command-badges">
+                        <span class="badge badge-cooldown">24h cooldown</span>
+                    </div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//birthday</div>
+                    <div class="command-description">Set your birthday</div>
+                    <div class="command-usage">//birthday [MM/DD]</div>
+                    <div class="command-example">Example: //birthday 12/31</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//clan</div>
+                    <div class="command-description">Create or manage your clan</div>
+                    <div class="command-usage">//clan [create|join|leave|info]</div>
+                    <div class="command-example">Example: //clan create Warriors</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Commands -->
+        <div class="command-section" data-category="admin">
+            <div class="section-header">
+                <span class="section-icon">⚙️</span>
+                <h2 class="section-title">Admin Commands (31)</h2>
+            </div>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <div class="command-name">//prefix</div>
+                    <div class="command-description">Change the bot's command prefix</div>
+                    <div class="command-usage">//prefix [new_prefix]</div>
+                    <div class="command-example">Example: //prefix !</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//announce</div>
+                    <div class="command-description">Send an announcement</div>
+                    <div class="command-usage">//announce [channel] [message]</div>
+                    <div class="command-example">Make server announcements</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//say</div>
+                    <div class="command-description">Make the bot say something</div>
+                    <div class="command-usage">//say [message]</div>
+                    <div class="command-example">Example: //say Welcome!</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//embed</div>
+                    <div class="command-description">Create a custom embed message</div>
+                    <div class="command-usage">//embed [json]</div>
+                    <div class="command-example">Create beautiful embeds</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//autoresponder</div>
+                    <div class="command-description">Set up auto-responses</div>
+                    <div class="command-usage">//autoresponder [add|remove|list]</div>
+                    <div class="command-example">Auto-reply to keywords</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//welcome</div>
+                    <div class="command-description">Configure welcome messages</div>
+                    <div class="command-usage">//welcome [setup|test]</div>
+                    <div class="command-example">Welcome new members!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leveling Commands -->
+        <div class="command-section" data-category="leveling">
+            <div class="section-header">
+                <span class="section-icon">📊</span>
+                <h2 class="section-title">Leveling Commands (4)</h2>
+            </div>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <div class="command-name">//rank</div>
+                    <div class="command-description">View your or another user's rank</div>
+                    <div class="command-usage">//rank [@user]</div>
+                    <div class="command-example">Example: //rank @user</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//levels</div>
+                    <div class="command-description">View the server level leaderboard</div>
+                    <div class="command-usage">//levels</div>
+                    <div class="command-example">See top ranked users</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//setlevel</div>
+                    <div class="command-description">Set a user's level (Admin only)</div>
+                    <div class="command-usage">//setlevel @user [level]</div>
+                    <div class="command-example">Example: //setlevel @user 10</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">//levelroles</div>
+                    <div class="command-description">Configure level-up role rewards</div>
+                    <div class="command-usage">//levelroles [add|remove|list]</div>
+                    <div class="command-example">Reward users with roles!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <h3>🔍 No commands found</h3>
+            <p>Try a different search term or category</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>🎵 Vibe Bot</h4>
+                    <p>Built 24/7 live on Twitch with the community</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="commands.html">Commands</a></li>
+                        <li><a href="support.html">Support</a></li>
+                        <li><a href="index.html#premium">Premium</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Vibe Bot. Built with ❤️ by Airis & The Community</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to top">↑</button>
+
+    <script src="script.js"></script>
+    <script>
+        // Commands page specific JavaScript
+        const searchInput = document.getElementById('commandSearchInput');
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const commandSections = document.querySelectorAll('.command-section');
+        const noResults = document.getElementById('noResults');
+        
+        let activeCategory = 'all';
+        
+        // Category filtering
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                activeCategory = tab.dataset.category;
+                filterCommands();
+            });
+        });
+        
+        // Search functionality
+        searchInput.addEventListener('input', () => {
+            filterCommands();
+        });
+        
+        function filterCommands() {
+            const searchTerm = searchInput.value.toLowerCase();
+            let hasResults = false;
+            
+            commandSections.forEach(section => {
+                const category = section.dataset.category;
+                const shouldShowCategory = activeCategory === 'all' || activeCategory === category;
+                
+                if (!shouldShowCategory) {
+                    section.classList.add('hidden');
+                    return;
+                }
+                
+                if (searchTerm === '') {
+                    section.classList.remove('hidden');
+                    hasResults = true;
+                    return;
+                }
+                
+                // Search within command cards
+                const commandCards = section.querySelectorAll('.command-card');
+                let categoryHasMatch = false;
+                
+                commandCards.forEach(card => {
+                    const name = card.querySelector('.command-name').textContent.toLowerCase();
+                    const description = card.querySelector('.command-description').textContent.toLowerCase();
+                    const usage = card.querySelector('.command-usage').textContent.toLowerCase();
+                    
+                    const matches = name.includes(searchTerm) || 
+                                  description.includes(searchTerm) || 
+                                  usage.includes(searchTerm);
+                    
+                    if (matches) {
+                        card.style.display = 'block';
+                        categoryHasMatch = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                if (categoryHasMatch) {
+                    section.classList.remove('hidden');
+                    hasResults = true;
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+            
+            noResults.style.display = hasResults ? 'none' : 'block';
+        }
+        
+        // Keyboard shortcut for search (Ctrl+K or Cmd+K)
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+        });
+    </script>
+</body>
+</html>

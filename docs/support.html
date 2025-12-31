@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Get help with Vibe Bot - Support, FAQ, troubleshooting, and contact information">
+    <meta name="keywords" content="Vibe Bot support, Discord bot help, bot troubleshooting, contact support">
+    
+    <title>Support & Help | Vibe Bot</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        .support-hero {
+            padding: 120px 0 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .support-hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        
+        .support-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .support-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .support-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .support-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .support-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .support-card p {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .support-card .btn {
+            width: 100%;
+        }
+        
+        .troubleshooting-section {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+        }
+        
+        .troubleshooting-section h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .troubleshooting-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .troubleshooting-item {
+            background: rgba(155, 89, 182, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .troubleshooting-item h4 {
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+        }
+        
+        .troubleshooting-item p {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .troubleshooting-item ul {
+            margin-top: 0.75rem;
+            padding-left: 1.5rem;
+            color: var(--text-color);
+        }
+        
+        .troubleshooting-item li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-section {
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .contact-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .contact-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            margin-top: 1rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #2ecc71;
+            animation: pulse 2s infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .support-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="logo">🎵</span>
+                <span class="brand-name">Vibe Bot</span>
+                <span class="bot-status online">● Online</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#features">Features</a>
+                <a href="commands.html">Commands</a>
+                <a href="support.html">Support</a>
+                <a href="index.html#premium" class="premium-link">💎 Premium</a>
+                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                    🌙
+                </button>
+                <a href="https://twitch.tv/projectdraguk" target="_blank" class="live-badge">
+                    🔴 LIVE NOW
+                </a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="support-hero">
+        <div class="container">
+            <h1>💬 Support & Help</h1>
+            <p>We're here to help you get the most out of Vibe Bot</p>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span>Support Available 24/7</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Container -->
+    <div class="support-container">
+        <!-- Support Options -->
+        <div class="support-grid">
+            <div class="support-card">
+                <div class="support-icon">🔴</div>
+                <h3>Live Stream Support</h3>
+                <p>Get instant help by asking in the 24/7 live Twitch stream chat. The community is always ready to help!</p>
+                <a href="https://twitch.tv/projectdraguk" target="_blank" class="btn btn-primary">
+                    Watch Stream
+                </a>
+            </div>
+            
+            <div class="support-card">
+                <div class="support-icon">💬</div>
+                <h3>Discord Server</h3>
+                <p>Join our Discord community to get help, report bugs, and suggest features.</p>
+                <a href="https://discord.gg/COMING_SOON" target="_blank" class="btn btn-secondary">
+                    Join Discord
+                </a>
+            </div>
+            
+            <div class="support-card">
+                <div class="support-icon">📚</div>
+                <h3>Documentation</h3>
+                <p>Browse our complete command documentation and guides.</p>
+                <a href="commands.html" class="btn btn-secondary">
+                    View Commands
+                </a>
+            </div>
+            
+            <div class="support-card">
+                <div class="support-icon">🐛</div>
+                <h3>Report a Bug</h3>
+                <p>Found a bug? Report it on GitHub and help us improve Vibe Bot.</p>
+                <a href="https://github.com/Sentinelbot-official/vibebot/issues" target="_blank" class="btn btn-secondary">
+                    Report Issue
+                </a>
+            </div>
+            
+            <div class="support-card">
+                <div class="support-icon">💡</div>
+                <h3>Feature Request</h3>
+                <p>Have an idea? Suggest it on GitHub or during the live stream!</p>
+                <a href="https://github.com/Sentinelbot-official/vibebot/issues" target="_blank" class="btn btn-secondary">
+                    Suggest Feature
+                </a>
+            </div>
+            
+            <div class="support-card">
+                <div class="support-icon">☕</div>
+                <h3>Premium Support</h3>
+                <p>Premium and VIP members get priority support via Ko-fi messages.</p>
+                <a href="https://ko-fi.com/airis0" target="_blank" class="btn btn-primary">
+                    Contact on Ko-fi
+                </a>
+            </div>
+        </div>
+
+        <!-- Troubleshooting Section -->
+        <div class="troubleshooting-section">
+            <h2>🔧 Common Issues & Solutions</h2>
+            <div class="troubleshooting-grid">
+                <div class="troubleshooting-item">
+                    <h4>❌ Bot not responding to commands</h4>
+                    <p><strong>Solutions:</strong></p>
+                    <ul>
+                        <li>Check if the bot is online (green status in member list)</li>
+                        <li>Verify you're using the correct prefix (default is <code>//</code>)</li>
+                        <li>Make sure the bot has permission to read and send messages in the channel</li>
+                        <li>Try using the command in a different channel</li>
+                        <li>Use <code>//help</code> to verify the bot is working</li>
+                    </ul>
+                </div>
+                
+                <div class="troubleshooting-item">
+                    <h4>🚫 "Missing Permissions" error</h4>
+                    <p><strong>Solutions:</strong></p>
+                    <ul>
+                        <li>Ensure the bot has Administrator permissions (recommended)</li>
+                        <li>Check that the bot's role is above the roles it needs to manage</li>
+                        <li>Verify channel-specific permissions for the bot</li>
+                        <li>Re-invite the bot with proper permissions using the invite link</li>
+                    </ul>
+                </div>
+                
+                <div class="troubleshooting-item">
+                    <h4>💰 Economy commands not working</h4>
+                    <p><strong>Solutions:</strong></p>
+                    <ul>
+                        <li>Make sure you've used <code>//daily</code> at least once to initialize your account</li>
+                        <li>Check if you're on cooldown with the command</li>
+                        <li>Verify you have enough balance for the action</li>
+                        <li>Try <code>//balance</code> to check your account status</li>
+                    </ul>
+                </div>
+                
+                <div class="troubleshooting-item">
+                    <h4>🎮 Games or commands timing out</h4>
+                    <p><strong>Solutions:</strong></p>
+                    <ul>
+                        <li>This usually means the bot is under heavy load</li>
+                        <li>Wait a few moments and try again</li>
+                        <li>Check the bot's status on our status page</li>
+                        <li>Report persistent issues on GitHub</li>
+                    </ul>
+                </div>
+                
+                <div class="troubleshooting-item">
+                    <h4>🔑 Premium activation not working</h4>
+                    <p><strong>Solutions:</strong></p>
+                    <ul>
+                        <li>Make sure you have "Manage Server" permission</li>
+                        <li>Verify you're using the correct activation key format</li>
+                        <li>Check that the key hasn't already been used</li>
+                        <li>Contact us on Ko-fi if the issue persists</li>
+                        <li>Use <code>//premium</code> to check your server's current status</li>
+                    </ul>
+                </div>
+                
+                <div class="troubleshooting-item">
+                    <h4>⚠️ Moderation commands not working</h4>
+                    <p><strong>Solutions:</strong></p>
+                    <ul>
+                        <li>Ensure you have the required permissions (Ban Members, Kick Members, etc.)</li>
+                        <li>Check that the bot's role is higher than the target user's role</li>
+                        <li>Verify the bot has the necessary server permissions</li>
+                        <li>You cannot moderate users with Administrator permission</li>
+                    </ul>
+                </div>
+                
+                <div class="troubleshooting-item">
+                    <h4>📊 Stats or leaderboards not updating</h4>
+                    <p><strong>Solutions:</strong></p>
+                    <ul>
+                        <li>Stats update every few minutes, not instantly</li>
+                        <li>Try again after a few minutes</li>
+                        <li>Use <code>//rank</code> to see your current XP and level</li>
+                        <li>Report persistent issues on GitHub</li>
+                    </ul>
+                </div>
+                
+                <div class="troubleshooting-item">
+                    <h4>🤖 AI commands not working</h4>
+                    <p><strong>Solutions:</strong></p>
+                    <ul>
+                        <li>AI commands require Premium or VIP subscription</li>
+                        <li>Check your server's premium status with <code>//premium</code></li>
+                        <li>Verify your prompt doesn't violate content policies</li>
+                        <li>AI services may occasionally be unavailable - try again later</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Tips Section -->
+        <div class="troubleshooting-section">
+            <h2>💡 Quick Tips</h2>
+            <div class="troubleshooting-grid">
+                <div class="troubleshooting-item">
+                    <h4>🎯 Getting Started</h4>
+                    <p>After inviting the bot, use <code>//help</code> to see all available commands. Start with <code>//daily</code> to get your first coins!</p>
+                </div>
+                
+                <div class="troubleshooting-item">
+                    <h4>⚡ Command Prefix</h4>
+                    <p>The default prefix is <code>//</code> but server admins can change it with <code>//prefix [new_prefix]</code></p>
+                </div>
+                
+                <div class="troubleshooting-item">
+                    <h4>🔍 Finding Commands</h4>
+                    <p>Use <code>//help [category]</code> to view commands by category, or visit our <a href="commands.html" style="color: var(--primary); font-weight: 600;">complete command list</a></p>
+                </div>
+                
+                <div class="troubleshooting-item">
+                    <h4>💎 Premium Features</h4>
+                    <p>Unlock advanced features with Premium ($5/month) or VIP ($10/month). Visit our <a href="activate.html" style="color: var(--primary); font-weight: 600;">activation page</a> to get started!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <h2>📧 Still Need Help?</h2>
+            <p>Our community is here to support you 24/7!</p>
+            <div class="contact-buttons">
+                <a href="https://twitch.tv/projectdraguk" target="_blank" class="btn btn-secondary btn-large">
+                    🔴 Ask on Stream
+                </a>
+                <a href="https://discord.gg/COMING_SOON" target="_blank" class="btn btn-secondary btn-large">
+                    💬 Join Discord
+                </a>
+                <a href="https://github.com/Sentinelbot-official/vibebot/issues" target="_blank" class="btn btn-secondary btn-large">
+                    🐛 Report Issue
+                </a>
+            </div>
+        </div>
+
+        <!-- FAQ Reference -->
+        <div style="text-align: center; padding: 2rem;">
+            <h3 style="color: var(--primary); margin-bottom: 1rem;">Looking for FAQs?</h3>
+            <p style="color: var(--text-color); margin-bottom: 1.5rem;">Check out our comprehensive FAQ section on the main page</p>
+            <a href="index.html#faq" class="btn btn-primary">View FAQs</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>🎵 Vibe Bot</h4>
+                    <p>Built 24/7 live on Twitch with the community</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="commands.html">Commands</a></li>
+                        <li><a href="support.html">Support</a></li>
+                        <li><a href="index.html#premium">Premium</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Vibe Bot. Built with ❤️ by Airis & The Community</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to top">↑</button>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -285,6 +285,11 @@ function updateStats() {
   const userCount = document.getElementById('userCount');
   const commandCount = document.getElementById('commandCount');
 
+  // Add loading state
+  if (serverCount) serverCount.classList.add('loading');
+  if (userCount) userCount.classList.add('loading');
+  if (commandCount) commandCount.classList.add('loading');
+
   // Try to fetch real stats from the API
   // You'll need to update this URL to your actual API endpoint
   const API_URL = 'http://localhost:3001/api/stats'; // Change this to your production URL
@@ -299,6 +304,11 @@ function updateStats() {
     .then(data => {
       console.log('📊 Stats loaded:', data);
 
+      // Remove loading state
+      if (serverCount) serverCount.classList.remove('loading');
+      if (userCount) userCount.classList.remove('loading');
+      if (commandCount) commandCount.classList.remove('loading');
+
       // Animate the stats
       if (serverCount) {
         animateValue(serverCount, 0, data.servers || 0, 1500);
@@ -310,6 +320,16 @@ function updateStats() {
         animateValue(commandCount, 0, data.commands || 220, 1500);
       }
 
+      // Update social proof stats
+      const serversUsing = document.getElementById('serversUsing');
+      const usersServed = document.getElementById('usersServed');
+      if (serversUsing && data.servers) {
+        animateValue(serversUsing, 0, data.servers, 1500);
+      }
+      if (usersServed && data.users) {
+        animateValue(usersServed, 0, data.users, 1500);
+      }
+
       // Update bot status
       updateBotStatusFromData(data);
     })
@@ -318,6 +338,11 @@ function updateStats() {
       console.log('💡 Using fallback values. To enable real stats:');
       console.log('   1. Set ENABLE_STATS_API=true in your .env file');
       console.log('   2. Update API_URL in script.js to your production URL');
+
+      // Remove loading state
+      if (serverCount) serverCount.classList.remove('loading');
+      if (userCount) userCount.classList.remove('loading');
+      if (commandCount) commandCount.classList.remove('loading');
 
       // Use fallback values
       if (serverCount) {
@@ -365,6 +390,66 @@ function updateBotStatusFromData(data) {
       statusElement.title = 'Bot is currently offline';
     }
   }
+}
+
+// ============================================
+// Live Stream Status Check (using DecAPI)
+// ============================================
+function checkLiveStatus() {
+  const liveBadge = document.querySelector('.live-badge');
+  const TWITCH_USERNAME = 'projectdraguk';
+  
+  if (!liveBadge) return;
+
+  // Show loading state
+  liveBadge.textContent = '⏳ Checking...';
+  liveBadge.classList.add('checking');
+
+  // Check if stream is live using DecAPI
+  fetch(`https://decapi.me/twitch/uptime/${TWITCH_USERNAME}`)
+    .then(response => response.text())
+    .then(uptime => {
+      if (uptime && !uptime.includes('offline') && !uptime.includes('error')) {
+        // Stream is live!
+        liveBadge.textContent = '🔴 LIVE NOW';
+        liveBadge.classList.add('live');
+        liveBadge.classList.remove('offline', 'checking');
+        liveBadge.title = `Live for ${uptime}`;
+      } else {
+        // Stream is offline
+        liveBadge.textContent = '⚫ Offline';
+        liveBadge.classList.add('offline');
+        liveBadge.classList.remove('live', 'checking');
+        liveBadge.title = 'Stream is currently offline';
+      }
+    })
+    .catch(error => {
+      console.warn('Could not check stream status:', error);
+      liveBadge.textContent = '🔴 Watch Stream';
+      liveBadge.classList.remove('checking');
+    });
+
+  // Check every 2 minutes
+  setInterval(() => {
+    fetch(`https://decapi.me/twitch/uptime/${TWITCH_USERNAME}`)
+      .then(response => response.text())
+      .then(uptime => {
+        if (uptime && !uptime.includes('offline') && !uptime.includes('error')) {
+          liveBadge.textContent = '🔴 LIVE NOW';
+          liveBadge.classList.add('live');
+          liveBadge.classList.remove('offline');
+          liveBadge.title = `Live for ${uptime}`;
+        } else {
+          liveBadge.textContent = '⚫ Offline';
+          liveBadge.classList.add('offline');
+          liveBadge.classList.remove('live');
+          liveBadge.title = 'Stream is currently offline';
+        }
+      })
+      .catch(() => {
+        // Silently fail on refresh
+      });
+  }, 120000); // 2 minutes
 }
 
 // ============================================
@@ -546,6 +631,56 @@ if (scrollToTopBtn) {
   });
 }
 
+// ============================================
+// Feature Voting System
+// ============================================
+function initVoting() {
+  const voteButtons = document.querySelectorAll('.vote-btn');
+  
+  // Load votes from localStorage
+  const votes = JSON.parse(localStorage.getItem('vibebot_votes') || '{}');
+  
+  voteButtons.forEach(btn => {
+    const feature = btn.dataset.feature;
+    const countSpan = btn.querySelector('.vote-count');
+    
+    // Check if user has voted
+    if (votes[feature]) {
+      btn.classList.add('voted');
+      btn.title = 'You voted for this!';
+    }
+    
+    btn.addEventListener('click', () => {
+      if (votes[feature]) {
+        // Remove vote
+        delete votes[feature];
+        btn.classList.remove('voted');
+        btn.title = '';
+        const currentCount = parseInt(countSpan.textContent);
+        countSpan.textContent = currentCount - 1;
+      } else {
+        // Add vote
+        votes[feature] = true;
+        btn.classList.add('voted');
+        btn.title = 'You voted for this!';
+        const currentCount = parseInt(countSpan.textContent);
+        countSpan.textContent = currentCount + 1;
+        
+        // Show thank you message
+        const voteItem = btn.closest('.vote-item');
+        const originalBg = voteItem.style.background;
+        voteItem.style.background = 'rgba(46, 204, 113, 0.1)';
+        setTimeout(() => {
+          voteItem.style.background = originalBg;
+        }, 1000);
+      }
+      
+      // Save to localStorage
+      localStorage.setItem('vibebot_votes', JSON.stringify(votes));
+    });
+  });
+}
+
 // Console message for developers
 console.log(
   '%c🎵 Vibe Bot',
@@ -565,11 +700,29 @@ console.log(
 );
 
 // ============================================
+// Social Proof Stats
+// ============================================
+function updateSocialProof() {
+  const serversUsing = document.getElementById('serversUsing');
+  const usersServed = document.getElementById('usersServed');
+  
+  if (serversUsing && usersServed) {
+    // These will be updated by the stats API
+    // For now, show loading state
+    serversUsing.textContent = '...';
+    usersServed.textContent = '...';
+  }
+}
+
+// ============================================
 // Initialize Everything
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
   updateStats();
   checkBotStatus();
+  checkLiveStatus();
+  initVoting();
+  updateSocialProof();
   console.log('✅ Vibe Bot website loaded successfully!');
   console.log('💜 Theme:', document.documentElement.getAttribute('data-theme'));
 });
