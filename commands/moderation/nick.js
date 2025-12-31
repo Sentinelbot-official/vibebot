@@ -25,7 +25,7 @@ module.exports = {
 
     const member = message.mentions.members.first();
     if (!member) {
-      return message.reply('❌ Usage: `!nick <@member> <nickname>`');
+      return message.reply('❌ Usage: `nick <@member> <nickname>`');
     }
 
     const nickname = args.slice(1).join(' ');

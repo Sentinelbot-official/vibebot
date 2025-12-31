@@ -17,7 +17,7 @@ module.exports = {
     }
 
     if (!args[0]) {
-      return message.reply('❌ Usage: `!case <case_id>`');
+      return message.reply('❌ Usage: `case <case_id>`');
     }
 
     const caseId = args[0];

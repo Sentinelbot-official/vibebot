@@ -17,7 +17,7 @@ module.exports = {
 
     if (!args.length) {
       return message.reply(
-        '❌ Usage: `!embed <title> | <description> | [color] | [footer]`\n' +
+        '❌ Usage: `embed <title> | <description> | [color] | [footer]`\n' +
           'Example: `!embed Welcome | Welcome to our server! | #00ff00 | Thanks for joining`'
       );
     }

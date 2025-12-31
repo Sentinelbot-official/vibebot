@@ -7,7 +7,7 @@ module.exports = {
   cooldown: 3,
   execute(message, args) {
     if (args.length < 2) {
-      return message.reply('❌ Usage: `!base64 <encode|decode> <text>`');
+      return message.reply('❌ Usage: `base64 <encode|decode> <text>`');
     }
 
     const action = args[0].toLowerCase();

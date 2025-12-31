@@ -24,7 +24,7 @@ module.exports = {
 
     const member = message.mentions.members.first();
     if (!member) {
-      return message.reply('❌ Usage: `!unmute <@member>`');
+      return message.reply('❌ Usage: `unmute <@member>`');
     }
 
     try {

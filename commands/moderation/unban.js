@@ -22,7 +22,7 @@ module.exports = {
 
     const userId = args[0];
     if (!userId) {
-      return message.reply('❌ Usage: `!unban <user_id> [reason]`');
+      return message.reply('❌ Usage: `unban <user_id> [reason]`');
     }
 
     const reason = args.slice(1).join(' ') || 'No reason provided';

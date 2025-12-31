@@ -8,7 +8,7 @@ module.exports = {
   cooldown: 3,
   execute(message, args) {
     if (args.length < 2) {
-      return message.reply('❌ Usage: `!hash <md5|sha256|sha512> <text>`');
+      return message.reply('❌ Usage: `hash <md5|sha256|sha512> <text>`');
     }
 
     const algorithm = args[0].toLowerCase();

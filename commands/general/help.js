@@ -1,8 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-
-const prefix = process.env.PREFIX || '!';
+const db = require('../../utils/database');
 
 module.exports = {
   name: 'help',
@@ -11,6 +10,10 @@ module.exports = {
   category: 'general',
   execute(message, args) {
     const { commands } = message.client;
+
+    // Get custom prefix for this server or use default
+    const settings = db.get('guild_settings', message.guild.id) || {};
+    const prefix = settings.prefix || process.env.PREFIX || '//';
 
     if (!args.length) {
       // Group commands by category

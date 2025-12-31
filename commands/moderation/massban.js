@@ -23,7 +23,7 @@ module.exports = {
 
     if (args.length < 1) {
       return message.reply(
-        '❌ Usage: `!massban <user_id1> <user_id2> ... [reason]`'
+        '❌ Usage: `massban <user_id1> <user_id2> ... [reason]`'
       );
     }
 

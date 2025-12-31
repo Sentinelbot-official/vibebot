@@ -18,7 +18,7 @@ module.exports = {
     const channel = message.mentions.channels.first();
 
     if (!channel) {
-      return message.reply('❌ Usage: `!announce <#channel> <message>`');
+      return message.reply('❌ Usage: `announce <#channel> <message>`');
     }
 
     const announcement = args.slice(1).join(' ');

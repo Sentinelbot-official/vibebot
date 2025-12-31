@@ -25,7 +25,7 @@ module.exports = {
 
     const user = message.mentions.users.first();
     if (!user) {
-      return message.reply('❌ Usage: `!purgeuser <@user> [amount]`');
+      return message.reply('❌ Usage: `purgeuser <@user> [amount]`');
     }
 
     const amount = Math.min(parseInt(args[1]) || 100, 100);

@@ -7,7 +7,7 @@ module.exports = {
   cooldown: 3,
   execute(message, args) {
     if (!args.length) {
-      return message.reply('❌ Usage: `!choose <option1> | <option2> | ...`');
+      return message.reply('❌ Usage: `choose <option1> | <option2> | ...`');
     }
 
     const options = args

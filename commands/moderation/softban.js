@@ -22,7 +22,7 @@ module.exports = {
 
     const member = message.mentions.members.first();
     if (!member) {
-      return message.reply('❌ Usage: `!softban <@member> [days] [reason]`');
+      return message.reply('❌ Usage: `softban <@member> [days] [reason]`');
     }
 
     // Protection checks

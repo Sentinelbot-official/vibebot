@@ -27,7 +27,7 @@ module.exports = {
     const role = message.mentions.roles.first();
 
     if (!member || !role) {
-      return message.reply('❌ Usage: `!removerole <@member> <@role>`');
+      return message.reply('❌ Usage: `removerole <@member> <@role>`');
     }
 
     // Check if member has role

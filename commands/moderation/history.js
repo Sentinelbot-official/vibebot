@@ -18,7 +18,7 @@ module.exports = {
 
     const target = message.mentions.members.first();
     if (!target) {
-      return message.reply('❌ Usage: `!history <@user>`');
+      return message.reply('❌ Usage: `history <@user>`');
     }
 
     const warns = db.get('warns', target.id) || [];
