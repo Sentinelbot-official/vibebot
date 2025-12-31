@@ -11,19 +11,44 @@ module.exports = {
   cooldown: 5,
 
   async execute(message, args) {
-    if (!args.length) {
-      return message.reply(
-        '❌ Please provide a ticket ID and message!\n\n' +
-          '**Usage:** `//modmailreply <ticket_id> <message>`\n' +
-          '**Example:** `//modmailreply MM-ABC123 Thank you for contacting us...`'
-      );
-    }
+    // Check if message is in a modmail thread
+    const isThread = message.channel.isThread();
+    let ticketId, replyMessage;
 
-    const ticketId = args[0].toUpperCase();
-    const replyMessage = args.slice(1).join(' ');
+    if (isThread) {
+      // Staff is replying directly in the thread
+      replyMessage = args.join(' ');
+      
+      if (!replyMessage) {
+        return message.reply('❌ Please provide a message to send!');
+      }
 
-    if (!replyMessage) {
-      return message.reply('❌ Please provide a message to send!');
+      // Extract ticket ID from thread name
+      const threadName = message.channel.name;
+      const match = threadName.match(/MM-[A-Z0-9]+/);
+      
+      if (!match) {
+        return message.reply('❌ Could not find ticket ID from thread name!');
+      }
+      
+      ticketId = match[0];
+    } else {
+      // Traditional command usage
+      if (!args.length) {
+        return message.reply(
+          '❌ Please provide a ticket ID and message!\n\n' +
+            '**Usage:** `//modmailreply <ticket_id> <message>`\n' +
+            '**Example:** `//modmailreply MM-ABC123 Thank you for contacting us...`\n\n' +
+            '**Tip:** You can also reply directly in the modmail thread without using this command!'
+        );
+      }
+
+      ticketId = args[0].toUpperCase();
+      replyMessage = args.slice(1).join(' ');
+
+      if (!replyMessage) {
+        return message.reply('❌ Please provide a message to send!');
+      }
     }
 
     // Get ticket from database

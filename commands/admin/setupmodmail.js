@@ -102,13 +102,16 @@ module.exports = {
       .setDescription(
         `Modmail has been enabled in ${channel}!\n\n` +
           '**How it works:**\n' +
-          '1️⃣ Users use `//modmail <message>` to contact staff\n' +
-          '2️⃣ Messages appear in this channel with a ticket ID\n' +
-          '3️⃣ Staff use `//modmailreply <ticket_id> <message>` to respond\n' +
-          '4️⃣ Close tickets with `//modmailclose <ticket_id>`\n\n' +
-          '**Additional Commands:**\n' +
-          '• `//modmaillist` - View all open tickets\n' +
-          '• `//modmailreopen <id>` - Reopen a closed ticket'
+          '1️⃣ Users DM the bot to start a modmail session\n' +
+          '2️⃣ A thread is created in this channel for each ticket\n' +
+          '3️⃣ Staff can reply directly in the thread (no commands needed!)\n' +
+          '4️⃣ Users can type `close` in DMs to end the session\n\n' +
+          '**Alternative Method:**\n' +
+          '• Users can also use `//modmail <message>` in the server\n\n' +
+          '**Staff Commands:**\n' +
+          '• `//modmaillist` - View all tickets\n' +
+          '• `//modmailclose <id>` - Close a ticket\n' +
+          '• `//modmailreopen <id>` - Reopen a ticket'
       )
       .setFooter({ text: 'Modmail is now active!' })
       .setTimestamp();
