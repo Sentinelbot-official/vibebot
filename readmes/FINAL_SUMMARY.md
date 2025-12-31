@@ -236,23 +236,15 @@ Built live on stream by **Airis** - December 31, 2025
 
 ---
 
-## 📦 Installation
+## 📦 Usage
 
-```bash
-# Clone repository
-git clone [YOUR_REPO_URL]
-cd vibe-bot
+**⚠️ This bot is proprietary software and cannot be self-hosted without permission.**
 
-# Install dependencies
-npm install
+### Invite the Official Bot
 
-# Setup environment
-cp .env.example .env
-# Edit .env with your bot token
+Use the official invite link to add Vibe Bot to your server.
 
-# Start bot
-npm start
-```
+**Note:** Cloning, forking, or redistributing this code is prohibited. See LICENSE for details.
 
 ---
 
@@ -287,11 +279,13 @@ Bot needs these permissions:
 
 ## 📄 Legal
 
-- **License:** MIT License
+- **License:** Proprietary - All Rights Reserved
 - **Terms of Service:** TERMS_OF_SERVICE.md
 - **Privacy Policy:** PRIVACY_POLICY.md
 - **Contact:** vibetbot0@proton.me
 - **Location:** England/Wales
+
+**⚠️ Important:** This software may NOT be cloned, forked, redistributed, or self-hosted without explicit written permission.
 
 ---
 
@@ -328,9 +322,11 @@ Bot needs these permissions:
 | Starboard      | ✅       | ❌      | ❌      | ✅       |
 | Shop System    | ✅       | ❌      | ❌      | ❌       |
 | Gambling       | ✅       | ❌      | ❌      | ❌       |
-| Open Source    | ✅       | ❌      | ❌      | ❌       |
-| Self-Hostable  | ✅       | ❌      | ❌      | ❌       |
+| Proprietary    | ✅       | ✅      | ✅      | ❌       |
+| Self-Hostable  | ❌*      | ❌      | ❌      | ❌       |
 | Free           | ✅       | Partial | Partial | ✅       |
+
+*Requires written permission from author
 
 ---
 
@@ -348,7 +344,9 @@ Bot needs these permissions:
 
 ---
 
-**Vibe Bot v1.0.0** - Made with ❤️ by Airis
+**Vibe Bot v2.0.0** - Made with ❤️ by Airis
 Built live on stream! 🎥
 
 Ready to compete with the big bots! 🚀
+
+**© 2025 Airis. All Rights Reserved.**

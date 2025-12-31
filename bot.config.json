@@ -2,11 +2,13 @@
   "name": "Vibe Bot",
   "version": "2.0.0",
   "author": "Airis",
+  "license": "Proprietary - All Rights Reserved",
   "description": "A feature-rich Discord bot with 100+ commands, built live on Twitch with the community",
   "website": "https://github.com/Sentinelbot-official/vibebot",
   "support_server": "DISCORD_SERVER_COMING_SOON",
   "twitch": "https://twitch.tv/projectdraguk",
   "invite_link": "https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=8&scope=bot",
+  "repository_notice": "This repository is for viewing only. Cloning, forking, or redistribution is prohibited.",
   "features": [
     "Advanced Moderation (19 commands)",
     "Economy System (16 commands)",

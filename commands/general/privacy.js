@@ -40,7 +40,8 @@ module.exports = {
         },
         {
           name: '📄 Full Policy',
-          value: '[Read Full Privacy Policy](https://github.com/Sentinelbot-official/vibebot/blob/main/PRIVACY_POLICY.md)',
+          value:
+            '[Read Full Privacy Policy](https://github.com/Sentinelbot-official/vibebot/blob/main/PRIVACY_POLICY.md)',
           inline: false,
         }
       )

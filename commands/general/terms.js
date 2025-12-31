@@ -41,7 +41,8 @@ module.exports = {
         },
         {
           name: '📄 Full Terms',
-          value: '[Read Full Terms of Service](https://github.com/Sentinelbot-official/vibebot/blob/main/TERMS_OF_SERVICE.md)',
+          value:
+            '[Read Full Terms of Service](https://github.com/Sentinelbot-official/vibebot/blob/main/TERMS_OF_SERVICE.md)',
           inline: false,
         }
       )

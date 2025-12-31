@@ -107,37 +107,24 @@ This isn't just a bot - it's a testament to what a community can build together.
 - npm or yarn
 - A Discord bot token
 
-## 🔧 Installation
+## 🔧 Usage
 
-1. **Clone the repository**
+**This bot is proprietary software and cannot be self-hosted.**
 
-```bash
-git clone https://github.com/Sentinelbot-official/vibebot.git
-cd vibebot
-```
+### Option 1: Invite the Official Bot (Recommended)
 
-2. **Install dependencies**
+[**Invite Vibe Bot to Your Server**](https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=8&scope=bot)
 
-```bash
-npm install
-```
+### Option 2: View Source Code (Educational Only)
 
-3. **Configure environment variables**
+You may view the source code for educational and reference purposes:
 
 ```bash
-# Copy the example env file
-cp .env.example .env
-
-# Edit .env and add your bot token
-TOKEN=your_bot_token_here
-PREFIX=!
+# View the code (READ-ONLY)
+# DO NOT clone, fork, or redistribute
 ```
 
-4. **Start the bot**
-
-```bash
-node index.js
-```
+**Note:** Running your own instance requires explicit written permission from the author.
 
 ## 📁 Project Structure
 
@@ -179,63 +166,26 @@ projects/
 - `!timeout <@user> <minutes> [reason]` - Timeout a user
 - `!purge <amount>` - Delete messages (1-100)
 
-## 🛠️ Creating Commands
+## 🛠️ Command Reference
 
-1. **Use the template**
+All commands are documented in the bot using `!help [command]`. The bot includes:
 
-```bash
-cp template.command.js commands/general/mycommand.js
-```
+- **19 Moderation Commands** - Full server management
+- **16 Economy Commands** - Virtual currency system
+- **4 Leveling Commands** - XP and progression
+- **34 Utility Commands** - Tools and information
+- **8 Fun Commands** - Entertainment and games
+- **15 Admin Commands** - Server configuration
 
-2. **Edit your command**
+Use `!help` in Discord to see all available commands.
 
-```javascript
-module.exports = {
-  name: 'mycommand',
-  description: 'My awesome command',
-  usage: '[args]',
-  category: 'general',
-  async execute(message, args) {
-    message.reply('Hello World!');
-  },
-};
-```
+## 💾 Database System
 
-3. **Restart the bot** - Commands are loaded automatically!
+The bot uses SQLite3 with automatic backups every 6 hours. All user data is stored securely and complies with our [Privacy Policy](PRIVACY_POLICY.md).
 
-## 💾 Using the Database
+## 📝 Bot Features
 
-```javascript
-const db = require('./utils/database');
-
-// Store data
-db.set('users', userId, { coins: 100, level: 5 });
-
-// Get data
-const user = db.get('users', userId);
-
-// Increment values
-db.increment('economy', userId, 50);
-
-// Array operations
-db.push('inventory', userId, 'sword');
-```
-
-See `utils/README.md` for full database documentation.
-
-## 📝 Logging
-
-```javascript
-const logger = require('./utils/logger');
-
-logger.info('Information message');
-logger.warn('Warning message');
-logger.error('Error message');
-logger.success('Success message');
-logger.debug('Debug message');
-```
-
-Logs are saved to `logs/YYYY-MM-DD.log` files.
+The bot includes advanced logging, error handling, and performance monitoring to ensure reliability and uptime.
 
 ## 🔐 Required Bot Permissions
 
@@ -264,43 +214,36 @@ The bot uses the following intents:
 
 **Note:** You need to enable privileged intents in the Discord Developer Portal.
 
-## 🎨 Customization
+## 🎨 Server Customization
 
-### Change Command Prefix
+Server administrators can customize:
 
-Edit `.env`:
+- **Custom Prefix** - Use `!setprefix` to change the command prefix
+- **Welcome/Goodbye Messages** - Configure with `!setwelcome` and `!setgoodbye`
+- **Auto-Moderation** - Enable/disable rules with `!automod`
+- **Reaction Roles** - Set up with `!reactionrole`
+- **Ticket System** - Configure with `!setuptickets`
+- **Verification System** - Set up with `!setupverify`
 
-```
-PREFIX=?
-```
-
-### Add New Categories
-
-1. Create a new folder in `commands/` (e.g., `commands/fun/`)
-2. Add commands with `category: 'fun'`
-3. Commands will automatically appear in the help menu
-
-### Modify Auto-Escalation
-
-Edit `commands/moderation/warn.js` lines 67-83 to customize warning thresholds.
+All settings are per-server and stored securely.
 
 ## 🐛 Troubleshooting
 
 ### Bot doesn't respond to commands
 
 - Check that the bot has "Read Messages" and "Send Messages" permissions
-- Verify the prefix in your `.env` file
-- Enable "Message Content Intent" in Discord Developer Portal
-
-### Database errors
-
-- Ensure the `data/` folder has write permissions
-- Check that `better-sqlite3` is properly installed
+- Verify your server's prefix with `@Vibe Bot prefix`
+- Ensure the bot role is not restricted by channel permissions
 
 ### Permission errors
 
 - Verify bot role is higher than target user's role
 - Check bot has required permissions in the server
+- Some commands require specific permissions (e.g., `!ban` requires Ban Members)
+
+### Need more help?
+
+Join our support server or open an issue on GitHub!
 
 ## 📦 Dependencies
 
@@ -311,30 +254,26 @@ Edit `commands/moderation/warn.js` lines 67-83 to customize warning thresholds.
 
 ## 📄 Legal
 
-- **License:** MIT License (see [LICENSE](LICENSE))
+- **License:** Proprietary License - All Rights Reserved (see [LICENSE](LICENSE))
 - **Terms of Service:** [TERMS_OF_SERVICE.md](TERMS_OF_SERVICE.md)
 - **Privacy Policy:** [PRIVACY_POLICY.md](PRIVACY_POLICY.md)
 
+**⚠️ Important:** This software is proprietary. You may NOT clone, fork, redistribute, or host your own instance without explicit written permission.
+
 Use `!terms` and `!privacy` commands in Discord to view summaries.
 
-## 🤝 Contributing
+## 🤝 Community Feedback
 
-This project was built with the community, for the community! Contributions are welcome:
+While this is proprietary software, we still value community input!
 
-1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/AmazingFeature`)
-3. **Commit your changes** (`git commit -m 'Add some AmazingFeature'`)
-4. **Push to the branch** (`git push origin feature/AmazingFeature`)
-5. **Open a Pull Request**
+### How You Can Help:
 
-### 💡 Contribution Ideas
+- **Report Bugs** - Open an issue on GitHub
+- **Suggest Features** - Share your ideas in our Discord
+- **Provide Feedback** - Let us know what you think
+- **Spread the Word** - Tell others about Vibe Bot!
 
-- Add new commands or features
-- Improve existing commands
-- Fix bugs or issues
-- Enhance documentation
-- Optimize performance
-- Add API integrations
+**Note:** We do not accept pull requests or code contributions due to the proprietary nature of this project. However, your feedback and bug reports are invaluable!
 
 ## 📞 Support
 
@@ -387,12 +326,14 @@ Huge shoutout to:
 ✅ Implemented 100+ commands  
 ✅ Created enterprise-level features  
 ✅ Wrote comprehensive documentation  
-✅ Made it open source for the community  
+✅ Shared the development journey with the community  
 ✅ Had fun doing it! 🎉
 
 ---
 
 **Vibe Bot v2.0** - Made with ❤️ by Airis and the Twitch Community  
-Built Live | Powered by Discord.js v14 | Open Source | Community-Driven
+Built Live | Powered by Discord.js v14 | Proprietary Software | Community-Inspired
 
 _"This is what happens when a streamer and chat decide to vibe code a Discord bot. Enjoy!"_ - Airis
+
+**© 2025 Airis. All Rights Reserved.**
