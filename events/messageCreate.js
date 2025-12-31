@@ -6,7 +6,7 @@ const defaultPrefix = process.env.PREFIX || '//';
 
 module.exports = {
   name: 'messageCreate',
-  execute(message) {
+  async execute(message) {
     // Ignore bot messages
     if (message.author.bot) return;
 
