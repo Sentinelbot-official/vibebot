@@ -359,8 +359,7 @@ class DatabaseManager {
    */
   backup(backupPath) {
     try {
-      const backup = this.db.backup(backupPath);
-      backup.close();
+      this.db.backup(backupPath);
       console.log(`[DATABASE] Backup created at ${backupPath}`);
       return true;
     } catch (error) {
