@@ -147,7 +147,9 @@ async function sendReminder(reminder, client) {
     } else {
       // Remove one-time reminder
       const reminders = db.get('reminders', 'all') || { reminders: [] };
-      reminders.reminders = reminders.reminders.filter(r => r.id !== reminder.id);
+      reminders.reminders = reminders.reminders.filter(
+        r => r.id !== reminder.id
+      );
       db.set('reminders', 'all', reminders);
     }
   } catch (error) {

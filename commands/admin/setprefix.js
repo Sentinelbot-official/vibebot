@@ -9,9 +9,7 @@ module.exports = {
   cooldown: 5,
   guildOnly: true,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.Administrator)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
       return message.reply('❌ You need Administrator permission!');
     }
 

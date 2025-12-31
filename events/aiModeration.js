@@ -29,7 +29,10 @@ module.exports = {
         }
 
         if (aiMod.action === 'timeout') {
-          await message.member.timeout(5 * 60 * 1000, 'AI Moderation: Toxic message');
+          await message.member.timeout(
+            5 * 60 * 1000,
+            'AI Moderation: Toxic message'
+          );
         }
 
         // Send warning to user

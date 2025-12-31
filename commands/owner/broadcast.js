@@ -93,7 +93,9 @@ module.exports = {
           const channel =
             guild.systemChannel ||
             guild.channels.cache.find(
-              c => c.type === 0 && c.permissionsFor(guild.members.me).has('SendMessages')
+              c =>
+                c.type === 0 &&
+                c.permissionsFor(guild.members.me).has('SendMessages')
             );
 
           if (channel) {

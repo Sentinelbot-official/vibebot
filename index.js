@@ -2,19 +2,19 @@
  * ════════════════════════════════════════════════════════════════════════════
  *                            🎵 VIBE BOT v2.2 🎵
  * ════════════════════════════════════════════════════════════════════════════
- * 
+ *
  * 🔴 Built LIVE on 24/7 Twitch Stream by Airis & The Community
  * 📺 https://twitch.tv/projectdraguk - ALWAYS LIVE!
- * 
+ *
  * 🌟 This bot is special - every feature was coded live on a 24/7 stream with
  *    real-time input from viewers around the world. From 130 commands to 220+,
  *    this journey represents hundreds of hours of collaborative coding,
  *    debugging sessions at 3 AM, and an amazing global community coming together.
- * 
+ *
  * 💜 Thank you to everyone who watched (any time, day or night!), suggested
  *    features, helped debug, and made this possible. This isn't just a bot -
  *    it's OUR bot, built together 24/7.
- * 
+ *
  * @version 2.2.0
  * @author Airis (with help from the best 24/7 Twitch community ever!)
  * @description 220+ commands | AI-powered | Built 24/7 live on stream
@@ -175,7 +175,9 @@ async function start() {
     logger.info('════════════════════════════════════════════════════════════');
     logger.info('🎵 Starting Vibe Bot - Built 24/7 Live on Twitch! 🎵');
     logger.info('════════════════════════════════════════════════════════════');
-    logger.info(`🔴 24/7 Stream: https://twitch.tv/projectdraguk - ALWAYS LIVE!`);
+    logger.info(
+      `🔴 24/7 Stream: https://twitch.tv/projectdraguk - ALWAYS LIVE!`
+    );
     logger.info(`🌍 Environment: ${config.get('nodeEnv')}`);
     logger.info(`⚡ Prefix: ${config.get('prefix')}`);
     logger.info(`📦 Commands: ${client.commands.size}`);
@@ -190,10 +192,10 @@ async function start() {
     logger.info('🔧 Starting background systems...');
     backup.startAutoBackup();
     logger.success('  ✓ Auto-backup system online');
-    
+
     automod.startWarningCleanup();
     logger.success('  ✓ Auto-moderation online');
-    
+
     health.startMonitoring();
     logger.success('  ✓ Health monitoring online');
 
@@ -211,7 +213,9 @@ async function start() {
     logger.info('════════════════════════════════════════════════════════════');
     logger.success(`🎉 Vibe Bot v${config.getBotConfig('version')} is LIVE!`);
     logger.success('💜 Built with love by Airis & The 24/7 Community');
-    logger.success('🔴 Coded live on stream - Watch anytime at twitch.tv/projectdraguk');
+    logger.success(
+      '🔴 Coded live on stream - Watch anytime at twitch.tv/projectdraguk'
+    );
     logger.success('🚀 All systems operational - Ready to vibe!');
     logger.info('════════════════════════════════════════════════════════════');
   } catch (error) {

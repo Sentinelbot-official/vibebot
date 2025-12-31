@@ -8,9 +8,7 @@ module.exports = {
   cooldown: 3,
   guildOnly: true,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ModerateMembers)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
       return message.reply('❌ You need Moderate Members permission!');
     }
 

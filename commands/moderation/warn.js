@@ -9,9 +9,7 @@ module.exports = {
   category: 'moderation',
   async execute(message, args) {
     // Permissions and input checks
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageMessages)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
       return message.reply('❌ You do not have permission to warn members.');
     }
 

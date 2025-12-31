@@ -7,9 +7,7 @@ module.exports = {
   category: 'moderation',
   async execute(message, args) {
     // Permission check
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.KickMembers)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.KickMembers)) {
       return message.reply('❌ You do not have permission to kick members.');
     }
 

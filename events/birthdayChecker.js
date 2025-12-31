@@ -5,7 +5,7 @@ const logger = require('../utils/logger');
 let lastCheckedDate = null;
 
 module.exports = {
-  name: 'ready',
+  name: 'clientReady',
   once: false,
   execute(client) {
     // Check birthdays every hour

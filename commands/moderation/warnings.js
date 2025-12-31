@@ -11,9 +11,7 @@ module.exports = {
   cooldown: 5,
   guildOnly: true,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageMessages)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
       return message.reply('❌ You need Manage Messages permission!');
     }
 

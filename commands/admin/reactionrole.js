@@ -11,9 +11,7 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     // Permission check
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageRoles)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageRoles)) {
       return message.reply(
         '❌ You need Manage Roles permission to use this command!'
       );

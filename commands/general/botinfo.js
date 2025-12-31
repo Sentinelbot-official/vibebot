@@ -58,7 +58,11 @@ module.exports = {
           value: `${client.guilds.cache.size}`,
           inline: true,
         },
-        { name: '👥 Community Members', value: `${client.users.cache.size}`, inline: true },
+        {
+          name: '👥 Community Members',
+          value: `${client.users.cache.size}`,
+          inline: true,
+        },
         { name: '⚡ Commands', value: `${commandCount}+`, inline: true },
         {
           name: '🏓 Latency',
@@ -83,7 +87,8 @@ module.exports = {
         },
         {
           name: '🎯 Special Features',
-          value: '🤖 AI-Powered | 🎮 220+ Commands | 🎨 Mini-Games | 💰 Economy | 🛡️ Auto-Mod',
+          value:
+            '🤖 AI-Powered | 🎮 220+ Commands | 🎨 Mini-Games | 💰 Economy | 🛡️ Auto-Mod',
           inline: false,
         },
         {
@@ -92,7 +97,9 @@ module.exports = {
           inline: false,
         }
       )
-      .setFooter({ text: '💜 Built 24/7 with love by Airis & The Global Community | Vibe Bot v2.2.0' })
+      .setFooter({
+        text: '💜 Built 24/7 with love by Airis & The Global Community | Vibe Bot v2.2.0',
+      })
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

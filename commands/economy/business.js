@@ -98,7 +98,7 @@ module.exports = {
 
       if (!businesses.businesses.length) {
         return message.reply(
-          '❌ You don\'t own any businesses!\nUse `business list` to see available businesses.'
+          "❌ You don't own any businesses!\nUse `business list` to see available businesses."
         );
       }
 
@@ -116,7 +116,9 @@ module.exports = {
         const maxHours = 24; // Max 24 hours of earnings
 
         const hoursToCollect = Math.min(hoursSinceCollect, maxHours);
-        const earnings = Math.floor(business.income * hoursToCollect * biz.level);
+        const earnings = Math.floor(
+          business.income * hoursToCollect * biz.level
+        );
 
         totalEarnings += earnings;
         biz.lastCollect = now;
@@ -144,7 +146,7 @@ module.exports = {
       };
 
       if (!businesses.businesses.length) {
-        return message.reply('❌ You don\'t own any businesses yet!');
+        return message.reply("❌ You don't own any businesses yet!");
       }
 
       const list = businesses.businesses

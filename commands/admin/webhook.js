@@ -7,9 +7,7 @@ module.exports = {
   category: 'admin',
   cooldown: 5,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageWebhooks)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageWebhooks)) {
       return message.reply('❌ You need Manage Webhooks permission!');
     }
 

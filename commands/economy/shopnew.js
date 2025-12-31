@@ -62,7 +62,11 @@ const shopCategories = {
     name: '✨ Cosmetics',
     items: {
       badge_1: { name: '⭐ Star Badge', price: 3000, description: 'Show off!' },
-      badge_2: { name: '🏆 Trophy Badge', price: 5000, description: 'Epic badge' },
+      badge_2: {
+        name: '🏆 Trophy Badge',
+        price: 5000,
+        description: 'Epic badge',
+      },
       title: {
         name: 'Custom Title',
         price: 20000,

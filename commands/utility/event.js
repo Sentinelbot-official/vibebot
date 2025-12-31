@@ -12,9 +12,7 @@ module.exports = {
     const action = args[0]?.toLowerCase();
 
     if (action === 'create') {
-      if (
-        !message.member.permissions.has(PermissionFlagsBits.ManageEvents)
-      ) {
+      if (!message.member.permissions.has(PermissionFlagsBits.ManageEvents)) {
         return message.reply('❌ You need Manage Events permission!');
       }
 
@@ -100,7 +98,9 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: `Event ID: ${eventId} | Use 'event join ${eventId}' to attend` })
+        .setFooter({
+          text: `Event ID: ${eventId} | Use 'event join ${eventId}' to attend`,
+        })
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -196,9 +196,7 @@ module.exports = {
     }
 
     if (action === 'delete') {
-      if (
-        !message.member.permissions.has(PermissionFlagsBits.ManageEvents)
-      ) {
+      if (!message.member.permissions.has(PermissionFlagsBits.ManageEvents)) {
         return message.reply('❌ You need Manage Events permission!');
       }
 

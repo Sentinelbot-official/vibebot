@@ -27,9 +27,10 @@
 
 ### 🎭 The Story
 
-On **December 31, 2025**, streamer [Airis](https://twitch.tv/projectdraguk) went live with a challenge: *"Let's build a Discord bot from scratch 24/7 with chat's help!"*
+On **December 31, 2025**, streamer [Airis](https://twitch.tv/projectdraguk) went live with a challenge: _"Let's build a Discord bot from scratch 24/7 with chat's help!"_
 
 **The stream never stopped.** With viewers from every timezone contributing, what started as 130 basic commands evolved into a **220+ command powerhouse** with:
+
 - 🤖 AI integration (OpenAI & Anthropic)
 - 💰 Full economy system with jobs, stocks, and property
 - 🎮 15+ mini-games built with chat
@@ -44,12 +45,12 @@ On **December 31, 2025**, streamer [Airis](https://twitch.tv/projectdraguk) went
 
 ### 🎬 The Journey So Far
 
-| Version | Features | Stream Hours | Community Contributions |
-|---------|----------|--------------|------------------------|
-| **v1.0** | 130 basic commands | 8+ hours (24/7) | Feature suggestions, bug reports |
-| **v2.0** | Economy, leveling, games | 12+ hours (24/7) | Game ideas, balance testing |
-| **v2.1** | AI integration, advanced features | 15+ hours (24/7) | API suggestions, feature voting |
-| **v2.2** | 220+ commands, full ecosystem | 20+ hours (24/7) | Global viewers, every timezone! 💜 |
+| Version  | Features                          | Stream Hours     | Community Contributions            |
+| -------- | --------------------------------- | ---------------- | ---------------------------------- |
+| **v1.0** | 130 basic commands                | 8+ hours (24/7)  | Feature suggestions, bug reports   |
+| **v2.0** | Economy, leveling, games          | 12+ hours (24/7) | Game ideas, balance testing        |
+| **v2.1** | AI integration, advanced features | 15+ hours (24/7) | API suggestions, feature voting    |
+| **v2.2** | 220+ commands, full ecosystem     | 20+ hours (24/7) | Global viewers, every timezone! 💜 |
 
 ### 🏆 What Chat Built
 
@@ -65,6 +66,7 @@ Every feature has a story! Here are some community highlights:
 ### 🙏 Thank You
 
 **To everyone who:**
+
 - Watched the streams and learned with us
 - Suggested features and voted on designs
 - Helped debug at 3 AM

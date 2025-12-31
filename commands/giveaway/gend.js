@@ -11,9 +11,7 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     // Permission check
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       return message.reply(
         '❌ You need Manage Server permission to end giveaways!'
       );

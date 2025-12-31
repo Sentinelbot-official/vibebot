@@ -208,9 +208,7 @@ module.exports = {
     }
 
     if (action === 'channel') {
-      if (
-        !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
-      ) {
+      if (!message.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
         return message.reply('❌ You need Manage Server permission!');
       }
 

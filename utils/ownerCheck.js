@@ -1,7 +1,7 @@
 /**
  * Owner-Only Command System
  * @module utils/ownerCheck
- * 
+ *
  * Security system for sensitive bot owner commands.
  * Prevents unauthorized access to dangerous commands.
  */
@@ -17,9 +17,11 @@ class OwnerCheck {
    */
   static isOwner(userId) {
     const ownerIds = config.get('ownerIds');
-    
+
     if (!ownerIds || ownerIds.length === 0) {
-      logger.warn('⚠️ No owner IDs configured! Owner-only commands are disabled.');
+      logger.warn(
+        '⚠️ No owner IDs configured! Owner-only commands are disabled.'
+      );
       return false;
     }
 

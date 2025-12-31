@@ -9,16 +9,15 @@ module.exports = {
   category: 'admin',
   cooldown: 5,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       return message.reply('❌ You need Manage Server permission!');
     }
 
     const action = args[0]?.toLowerCase();
 
     if (action === 'enable') {
-      const apiKey = process.env.OPENAI_API_KEY || process.env.PERSPECTIVE_API_KEY;
+      const apiKey =
+        process.env.OPENAI_API_KEY || process.env.PERSPECTIVE_API_KEY;
 
       if (!apiKey) {
         return message.reply(
@@ -76,7 +75,9 @@ module.exports = {
 
       const settings = db.get('guild_settings', message.guild.id) || {};
       if (!settings.aiModeration) {
-        return message.reply('❌ AI Moderation is not enabled! Use `aimod enable` first.');
+        return message.reply(
+          '❌ AI Moderation is not enabled! Use `aimod enable` first.'
+        );
       }
 
       if (setting === 'threshold') {
@@ -107,10 +108,14 @@ module.exports = {
         }
         settings.aiModeration.logChannel = channel.id;
         db.set('guild_settings', message.guild.id, settings);
-        return message.reply(`✅ AI Moderation logs will be sent to ${channel}`);
+        return message.reply(
+          `✅ AI Moderation logs will be sent to ${channel}`
+        );
       }
 
-      return message.reply('❌ Invalid setting! Use: threshold, action, or logchannel');
+      return message.reply(
+        '❌ Invalid setting! Use: threshold, action, or logchannel'
+      );
     }
 
     if (action === 'test') {

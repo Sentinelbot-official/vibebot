@@ -8,9 +8,7 @@ module.exports = {
   cooldown: 10,
   guildOnly: true,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageChannels)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageChannels)) {
       return message.reply('❌ You need Manage Channels permission!');
     }
 

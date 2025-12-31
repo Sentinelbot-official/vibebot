@@ -36,12 +36,8 @@ module.exports = {
 
     // Bot stats
     const totalChannels = client.channels.cache.size;
-    const textChannels = client.channels.cache.filter(
-      c => c.type === 0
-    ).size;
-    const voiceChannels = client.channels.cache.filter(
-      c => c.type === 2
-    ).size;
+    const textChannels = client.channels.cache.filter(c => c.type === 0).size;
+    const voiceChannels = client.channels.cache.filter(c => c.type === 2).size;
 
     const embed = new EmbedBuilder()
       .setColor(0x9b59b6)

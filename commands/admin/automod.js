@@ -10,9 +10,7 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     // Permission check
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.Administrator)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
       return message.reply(
         '❌ You need Administrator permission to use this command!'
       );

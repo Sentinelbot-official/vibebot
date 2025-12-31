@@ -8,9 +8,7 @@ module.exports = {
   category: 'admin',
   cooldown: 5,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.Administrator)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
       const premium = db.get('premium', message.author.id);
 
       if (!premium || premium.expiresAt < Date.now()) {

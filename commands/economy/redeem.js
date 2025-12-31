@@ -13,9 +13,7 @@ module.exports = {
 
     // Admin actions
     if (action === 'create') {
-      if (
-        !message.member.permissions.has(PermissionFlagsBits.Administrator)
-      ) {
+      if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
         return message.reply('❌ You need Administrator permission!');
       }
 
@@ -64,9 +62,7 @@ module.exports = {
     }
 
     if (action === 'list') {
-      if (
-        !message.member.permissions.has(PermissionFlagsBits.Administrator)
-      ) {
+      if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
         return message.reply('❌ You need Administrator permission!');
       }
 
@@ -79,8 +75,7 @@ module.exports = {
 
       const list = codeList
         .map(
-          c =>
-            `**${c.code}** - ${c.coins} coins | ${c.uses}/${c.maxUses} uses`
+          c => `**${c.code}** - ${c.coins} coins | ${c.uses}/${c.maxUses} uses`
         )
         .join('\n');
 
@@ -95,9 +90,7 @@ module.exports = {
     }
 
     if (action === 'delete') {
-      if (
-        !message.member.permissions.has(PermissionFlagsBits.Administrator)
-      ) {
+      if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
         return message.reply('❌ You need Administrator permission!');
       }
 

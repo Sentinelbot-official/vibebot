@@ -15,18 +15,14 @@ module.exports = {
   category: 'admin',
   cooldown: 10,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageRoles)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageRoles)) {
       return message.reply(
         '❌ You need the Manage Roles permission to use this command!'
       );
     }
 
     if (
-      !message.guild.members.me.permissions.has(
-        PermissionFlagsBits.ManageRoles
-      )
+      !message.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)
     ) {
       return message.reply(
         '❌ I need the Manage Roles permission to manage role menus!'

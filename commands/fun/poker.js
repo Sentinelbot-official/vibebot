@@ -9,7 +9,21 @@ const db = require('../../utils/database');
 const games = new Map();
 
 const suits = ['♠️', '♥️', '♦️', '♣️'];
-const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+const ranks = [
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  'J',
+  'Q',
+  'K',
+  'A',
+];
 
 function createDeck() {
   const deck = [];
@@ -46,7 +60,8 @@ function evaluateHand(hand) {
 
   if (isStraight && isFlush) return { rank: 8, name: 'Straight Flush' };
   if (groups[0] === 4) return { rank: 7, name: 'Four of a Kind' };
-  if (groups[0] === 3 && groups[1] === 2) return { rank: 6, name: 'Full House' };
+  if (groups[0] === 3 && groups[1] === 2)
+    return { rank: 6, name: 'Full House' };
   if (isFlush) return { rank: 5, name: 'Flush' };
   if (isStraight) return { rank: 4, name: 'Straight' };
   if (groups[0] === 3) return { rank: 3, name: 'Three of a Kind' };
@@ -201,8 +216,16 @@ module.exports = {
         collector.stop();
 
         const resultEmbed = new EmbedBuilder()
-          .setColor(result === 'won' ? 0x00ff00 : result === 'lost' ? 0xff0000 : 0xffff00)
-          .setTitle(`🃏 Poker - ${result === 'won' ? 'You Win!' : result === 'lost' ? 'You Lose!' : 'Tie!'}`)
+          .setColor(
+            result === 'won'
+              ? 0x00ff00
+              : result === 'lost'
+                ? 0xff0000
+                : 0xffff00
+          )
+          .setTitle(
+            `🃏 Poker - ${result === 'won' ? 'You Win!' : result === 'lost' ? 'You Lose!' : 'Tie!'}`
+          )
           .setDescription(
             `**Your Hand:** ${game.playerHand.map(cardToString).join(' ')}\n` +
               `**Your Result:** ${playerEval.name}\n\n` +
@@ -211,7 +234,12 @@ module.exports = {
           )
           .addFields(
             {
-              name: result === 'won' ? '✅ Won' : result === 'lost' ? '❌ Lost' : '🤝 Tie',
+              name:
+                result === 'won'
+                  ? '✅ Won'
+                  : result === 'lost'
+                    ? '❌ Lost'
+                    : '🤝 Tie',
               value:
                 result === 'won'
                   ? `+${winnings} coins`

@@ -9,9 +9,7 @@ module.exports = {
   category: 'admin',
   cooldown: 5,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.Administrator)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
       return message.reply(
         '❌ You need the Administrator permission to use this command!'
       );

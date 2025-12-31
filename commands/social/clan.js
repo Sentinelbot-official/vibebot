@@ -35,7 +35,11 @@ module.exports = {
       const clans = db.get('clans', message.guild.id) || { clans: {} };
 
       // Check if clan name exists
-      if (Object.values(clans.clans).some(c => c.name.toLowerCase() === name.toLowerCase())) {
+      if (
+        Object.values(clans.clans).some(
+          c => c.name.toLowerCase() === name.toLowerCase()
+        )
+      ) {
         return message.reply('❌ A clan with that name already exists!');
       }
 
@@ -162,9 +166,7 @@ module.exports = {
       db.set('clans', message.guild.id, clans);
       db.set('user_clans', target.id, { clanId: clan.id, name: clan.name });
 
-      return message.reply(
-        `✅ ${target} has been added to **${clan.name}**!`
-      );
+      return message.reply(`✅ ${target} has been added to **${clan.name}**!`);
     }
 
     if (action === 'leave') {
@@ -229,7 +231,9 @@ module.exports = {
       db.set('clans', message.guild.id, clans);
       db.delete('user_clans', target.id);
 
-      return message.reply(`✅ Kicked ${target.username} from **${clan.name}**!`);
+      return message.reply(
+        `✅ Kicked ${target.username} from **${clan.name}**!`
+      );
     }
 
     return message.reply(

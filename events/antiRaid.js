@@ -43,9 +43,7 @@ module.exports = {
 
       // Kick the raiders if bot has permission
       if (
-        member.guild.members.me.permissions.has(
-          PermissionFlagsBits.KickMembers
-        )
+        member.guild.members.me.permissions.has(PermissionFlagsBits.KickMembers)
       ) {
         for (const join of validJoins) {
           try {

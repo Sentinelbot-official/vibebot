@@ -14,9 +14,7 @@ module.exports = {
     }
 
     if (
-      !message.guild.members.me.permissions.has(
-        PermissionFlagsBits.BanMembers
-      )
+      !message.guild.members.me.permissions.has(PermissionFlagsBits.BanMembers)
     ) {
       return message.reply('❌ I need Ban Members permission!');
     }

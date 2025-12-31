@@ -3,7 +3,8 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
   name: 'bts',
   aliases: ['behindthescenes', 'streammoments', 'memories'],
-  description: 'Behind-the-scenes moments from building Vibe Bot live on stream!',
+  description:
+    'Behind-the-scenes moments from building Vibe Bot live on stream!',
   category: 'fun',
   cooldown: 10,
   execute(message, args) {
@@ -62,15 +63,15 @@ module.exports = {
         description:
           'When the bot first came online and responded to !ping, ' +
           'chat went WILD with hype emotes. That feeling was incredible! ' +
-          'That\'s when we knew we were building something special. 🎵',
+          "That's when we knew we were building something special. 🎵",
         emoji: '🚀',
       },
       {
         title: '📊 The Command Counter',
         description:
           'We started with a goal of 50 commands. Chat kept suggesting more. ' +
-          'And more. And MORE. Now we\'re at 220+! ' +
-          'Chat\'s ambition knows no bounds! 📈',
+          "And more. And MORE. Now we're at 220+! " +
+          "Chat's ambition knows no bounds! 📈",
         emoji: '📊',
       },
       {
@@ -87,7 +88,7 @@ module.exports = {
           'After 20+ hours of coding, someone in chat said: ' +
           '"This isn\'t just a bot anymore, it\'s OUR bot." Then viewers from different ' +
           'timezones started chiming in - "Our bot!" in different languages! ' +
-          'That\'s when I realized: with a 24/7 stream, we\'d built something truly ' +
+          "That's when I realized: with a 24/7 stream, we'd built something truly " +
           'special with a GLOBAL community. Thank you all! 🌍🙏',
         emoji: '💜',
       },

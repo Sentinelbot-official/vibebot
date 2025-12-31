@@ -71,7 +71,10 @@ module.exports = {
 
       return fetchingMsg.edit({ content: null, embeds: [embed] });
     } catch (error) {
-      console.error('Minecraft API Error:', error.response?.data || error.message);
+      console.error(
+        'Minecraft API Error:',
+        error.response?.data || error.message
+      );
 
       let errorMsg = 'Failed to fetch Minecraft stats. ';
       if (error.response?.status === 404) {

@@ -9,16 +9,12 @@ module.exports = {
   cooldown: 60,
   guildOnly: true,
   async execute(message, _args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.Administrator)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
       return message.reply('❌ You need Administrator permission!');
     }
 
     if (
-      !message.guild.members.me.permissions.has(
-        PermissionFlagsBits.BanMembers
-      )
+      !message.guild.members.me.permissions.has(PermissionFlagsBits.BanMembers)
     ) {
       return message.reply('❌ I need Ban Members permission!');
     }

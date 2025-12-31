@@ -9,16 +9,12 @@ module.exports = {
   cooldown: 3,
   guildOnly: true,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageRoles)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageRoles)) {
       return message.reply('❌ You need Manage Roles permission!');
     }
 
     if (
-      !message.guild.members.me.permissions.has(
-        PermissionFlagsBits.ManageRoles
-      )
+      !message.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)
     ) {
       return message.reply('❌ I need Manage Roles permission!');
     }

@@ -21,7 +21,7 @@ module.exports = {
       return message.reply(
         '❌ Valorant API not configured!\n\n' +
           '**Setup:**\n' +
-          '1. Get API key from [Henrik\'s Valorant API](https://github.com/Henrik-3/unofficial-valorant-api)\n' +
+          "1. Get API key from [Henrik's Valorant API](https://github.com/Henrik-3/unofficial-valorant-api)\n" +
           '2. Add `VALORANT_API_KEY=your_key` to .env\n\n' +
           '**Note:** You can also use the free tier without a key (limited requests)'
       );
@@ -95,7 +95,7 @@ module.exports = {
             inline: true,
           }
         )
-        .setFooter({ text: 'Valorant Stats | Powered by Henrik\'s API' })
+        .setFooter({ text: "Valorant Stats | Powered by Henrik's API" })
         .setTimestamp();
 
       if (account.card.wide) {
@@ -104,7 +104,10 @@ module.exports = {
 
       return fetchingMsg.edit({ content: null, embeds: [embed] });
     } catch (error) {
-      console.error('Valorant API Error:', error.response?.data || error.message);
+      console.error(
+        'Valorant API Error:',
+        error.response?.data || error.message
+      );
 
       let errorMsg = 'Failed to fetch Valorant stats. ';
       if (error.response?.status === 404) {

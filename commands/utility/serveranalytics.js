@@ -8,9 +8,7 @@ module.exports = {
   category: 'utility',
   cooldown: 30,
   async execute(message) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       return message.reply(
         '❌ You need the Manage Server permission to view analytics!'
       );

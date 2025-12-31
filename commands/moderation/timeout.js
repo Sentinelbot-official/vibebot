@@ -7,9 +7,7 @@ module.exports = {
   category: 'moderation',
   async execute(message, args) {
     // Permission check
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ModerateMembers)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
       return message.reply('❌ You do not have permission to timeout members.');
     }
 

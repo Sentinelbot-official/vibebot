@@ -9,9 +9,7 @@ module.exports = {
   category: 'admin',
   cooldown: 5,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageMessages)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageMessages)) {
       return message.reply(
         '❌ You need the Manage Messages permission to use this command!'
       );

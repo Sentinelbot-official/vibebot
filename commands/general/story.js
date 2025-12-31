@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
   name: 'story',
   aliases: ['origin', 'journey', 'about'],
-  description: 'Learn about Vibe Bot\'s unique origin story!',
+  description: "Learn about Vibe Bot's unique origin story!",
   category: 'general',
   cooldown: 10,
   execute(message, args) {

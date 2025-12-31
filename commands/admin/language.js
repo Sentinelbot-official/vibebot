@@ -9,9 +9,7 @@ module.exports = {
   category: 'admin',
   cooldown: 5,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       return message.reply('❌ You need Manage Server permission!');
     }
 

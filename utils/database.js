@@ -146,6 +146,27 @@ class DatabaseManager {
   }
 
   /**
+   * Get all values from a collection
+   * @param {string} collection - The collection name
+   * @returns {Array} Array of parsed values with their keys
+   */
+  getAll(collection) {
+    try {
+      const stmt = this.db.prepare(
+        'SELECT key, value FROM kv_store WHERE collection = ?'
+      );
+      const rows = stmt.all(collection);
+      return rows.map(row => ({
+        key: row.key,
+        ...JSON.parse(row.value),
+      }));
+    } catch (error) {
+      console.error('[DATABASE] Error getting all values:', error);
+      return [];
+    }
+  }
+
+  /**
    * Get all entries from a collection
    * @param {string} collection - The collection name
    * @returns {Object} All entries as key-value pairs

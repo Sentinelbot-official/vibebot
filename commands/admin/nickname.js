@@ -9,9 +9,7 @@ module.exports = {
   cooldown: 3,
   guildOnly: true,
   async execute(message, args) {
-    if (
-      !message.member.permissions.has(PermissionFlagsBits.ManageNicknames)
-    ) {
+    if (!message.member.permissions.has(PermissionFlagsBits.ManageNicknames)) {
       return message.reply('❌ You need Manage Nicknames permission!');
     }
 
