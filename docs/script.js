@@ -244,7 +244,7 @@ function updateStats() {
     
     // Try to fetch real stats from the API
     // You'll need to update this URL to your actual API endpoint
-    const API_URL = 'http://localhost:3000/api/stats'; // Change this to your production URL
+    const API_URL = 'http://localhost:3001/api/stats'; // Change this to your production URL
     
     fetch(API_URL)
         .then(response => {
@@ -328,7 +328,7 @@ function updateBotStatusFromData(data) {
 // ============================================
 function checkBotStatus() {
     const statusElement = document.querySelector('.bot-status');
-    const API_URL = 'http://localhost:3000/api/status';
+    const API_URL = 'http://localhost:3001/api/status';
     
     fetch(API_URL)
         .then(response => response.json())
