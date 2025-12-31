@@ -1,68 +1,118 @@
-const { EmbedBuilder } = require('discord.js');
-const https = require('https');
+const { AttachmentBuilder } = require('discord.js');
+const axios = require('axios');
 
 module.exports = {
   name: 'meme',
-  aliases: ['reddit'],
-  description: 'Get a random meme from Reddit',
+  description: 'Generate memes or get random memes',
+  usage: '[template] [top text] | [bottom text]',
+  aliases: ['memegen'],
   category: 'fun',
   cooldown: 5,
   async execute(message, args) {
-    const subreddits = ['memes', 'dankmemes', 'wholesomememes', 'me_irl'];
-    const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
+    if (!args.length) {
+      // Get random meme from Reddit
+      try {
+        const response = await axios.get(
+          'https://www.reddit.com/r/memes/hot.json?limit=50',
+          {
+            headers: { 'User-Agent': 'DiscordBot/1.0' },
+          }
+        );
+
+        const posts = response.data.data.children.filter(
+          p => !p.data.over_18 && p.data.url.match(/\.(jpg|jpeg|png|gif)$/i)
+        );
+
+        if (!posts.length) {
+          return message.reply('❌ No memes found!');
+        }
+
+        const randomPost = posts[Math.floor(Math.random() * posts.length)].data;
+
+        return message.reply({
+          content: `**${randomPost.title}**\n⬆️ ${randomPost.ups} | 💬 ${randomPost.num_comments}\n${randomPost.url}`,
+        });
+      } catch (error) {
+        return message.reply('❌ Failed to fetch meme!');
+      }
+    }
+
+    // Meme generation with imgflip API
+    const apiUsername = process.env.IMGFLIP_USERNAME;
+    const apiPassword = process.env.IMGFLIP_PASSWORD;
+
+    if (!apiUsername || !apiPassword) {
+      return message.reply(
+        '❌ Meme generation not configured!\n\n' +
+          '**Setup:**\n' +
+          '1. Create account at [imgflip.com](https://imgflip.com)\n' +
+          '2. Add `IMGFLIP_USERNAME` and `IMGFLIP_PASSWORD` to .env\n\n' +
+          '**Or use:** `meme` (no args) for random memes from Reddit!'
+      );
+    }
+
+    // Popular meme templates
+    const templates = {
+      drake: '181913649',
+      distracted: '112126428',
+      twobuttons: '87743020',
+      changemymind: '129242436',
+      exitramp: '124822590',
+      expanding: '188390779',
+      pikachu: '155067746',
+      spiderman: '101470',
+      batman: '438680',
+      yoda: '14371066',
+    };
+
+    const template = args[0].toLowerCase();
+    const text = args.slice(1).join(' ');
+
+    if (!templates[template]) {
+      const list = Object.keys(templates).join(', ');
+      return message.reply(
+        `❌ Invalid template!\n\n**Available:** ${list}\n\n**Usage:** \`meme <template> <top text> | <bottom text>\`\n**Example:** \`meme drake coding | sleeping\``
+      );
+    }
+
+    const [topText, bottomText] = text.split('|').map(t => t?.trim() || '');
+
+    if (!topText) {
+      return message.reply(
+        '❌ Please provide text!\n**Usage:** `meme <template> <top text> | <bottom text>`'
+      );
+    }
+
+    const generatingMsg = await message.reply('🎨 Generating meme...');
 
     try {
-      const data = await new Promise((resolve, reject) => {
-        https
-          .get(`https://www.reddit.com/r/${subreddit}/random.json`, res => {
-            let body = '';
-            res.on('data', chunk => (body += chunk));
-            res.on('end', () => {
-              try {
-                resolve(JSON.parse(body));
-              } catch (e) {
-                reject(e);
-              }
-            });
-          })
-          .on('error', reject);
-      });
+      const response = await axios.post(
+        'https://api.imgflip.com/caption_image',
+        new URLSearchParams({
+          template_id: templates[template],
+          username: apiUsername,
+          password: apiPassword,
+          text0: topText,
+          text1: bottomText || '',
+        }),
+        {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        }
+      );
 
-      if (
-        !data ||
-        !data[0] ||
-        !data[0].data ||
-        !data[0].data.children ||
-        !data[0].data.children[0]
-      ) {
-        return message.reply('❌ Failed to fetch meme! Try again.');
-      }
-
-      const post = data[0].data.children[0].data;
-
-      // Skip if NSFW
-      if (post.over_18 && !message.channel.nsfw) {
-        return message.reply(
-          '❌ That meme was NSFW! Try again or use this command in an NSFW channel.'
+      if (!response.data.success) {
+        return generatingMsg.edit(
+          `❌ Failed to generate meme: ${response.data.error_message}`
         );
       }
 
-      const embed = new EmbedBuilder()
-        .setColor(0xff4500)
-        .setTitle(post.title.substring(0, 256))
-        .setURL(`https://reddit.com${post.permalink}`)
-        .setImage(post.url)
-        .setFooter({
-          text: `👍 ${post.ups} | r/${subreddit} | Posted by u/${post.author}`,
-        })
-        .setTimestamp();
-
-      message.reply({ embeds: [embed] });
+      return generatingMsg.edit({
+        content: `🎨 **Your Meme:**`,
+        files: [response.data.data.url],
+      });
     } catch (error) {
-      console.error('Error fetching meme:', error);
-      message.reply(
-        '❌ Failed to fetch meme! Reddit might be down or rate-limiting us.'
-      );
+      console.error('Meme generation error:', error.message);
+      return generatingMsg.edit('❌ Failed to generate meme!');
     }
   },
 };
