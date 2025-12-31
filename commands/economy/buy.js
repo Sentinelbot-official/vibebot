@@ -23,17 +23,33 @@ module.exports = {
       return message.reply('❌ Amount must be between 1 and 100!');
     }
 
-    const shopItems = db.get('shop', message.guild.id) || {};
+    // Default shop items
+    const defaultShopItems = {
+      fishing_rod: { id: 'fishing_rod', name: '🎣 Fishing Rod', price: 500, type: 'tool' },
+      hunting_rifle: { id: 'hunting_rifle', name: '🔫 Hunting Rifle', price: 750, type: 'tool' },
+      lucky_coin: { id: 'lucky_coin', name: '🍀 Lucky Coin', price: 1000, type: 'item' },
+      bank_note: { id: 'bank_note', name: '💳 Bank Note', price: 2500, type: 'item' },
+      trophy: { id: 'trophy', name: '🏆 Trophy', price: 5000, type: 'collectible' },
+      crown: { id: 'crown', name: '👑 Crown', price: 10000, type: 'collectible' },
+      laptop: { id: 'laptop', name: '💻 Laptop', price: 3000, type: 'tool' },
+      car: { id: 'car', name: '🚗 Car', price: 15000, type: 'vehicle' },
+      house: { id: 'house', name: '🏠 House', price: 50000, type: 'property' },
+      yacht: { id: 'yacht', name: '🛥️ Yacht', price: 100000, type: 'vehicle' },
+    };
+
+    // Get custom shop items or use defaults
+    const customShopItems = db.get('shop', message.guild.id) || {};
+    const shopItems = { ...defaultShopItems, ...customShopItems };
     const item = shopItems[itemId];
 
     if (!item) {
       return message.reply(
-        '❌ Item not found! Use `!shop` to see available items.'
+        '❌ Item not found! Use `shop` to see available items.'
       );
     }
 
-    // Check stock
-    if (item.stock !== -1 && item.stock < amount) {
+    // Check stock (only for custom items)
+    if (item.stock !== undefined && item.stock !== -1 && item.stock < amount) {
       return message.reply(
         `❌ Not enough stock! Only ${item.stock} available.`
       );
@@ -43,24 +59,25 @@ module.exports = {
 
     // Get user economy
     const economy = db.get('economy', message.author.id) || {
-      coins: 0,
+      wallet: 0,
       bank: 0,
     };
 
-    if (economy.coins < totalPrice) {
+    if (economy.wallet < totalPrice) {
       return message.reply(
-        `❌ You don't have enough coins! You need ${totalPrice.toLocaleString()} coins.`
+        `❌ You don't have enough coins! You need ${totalPrice.toLocaleString()} coins in your wallet.`
       );
     }
 
     // Deduct coins
-    economy.coins -= totalPrice;
+    economy.wallet -= totalPrice;
     db.set('economy', message.author.id, economy);
 
-    // Update stock
-    if (item.stock !== -1) {
+    // Update stock (only for custom items)
+    if (item.stock !== undefined && item.stock !== -1) {
       item.stock -= amount;
-      db.set('shop', message.guild.id, shopItems);
+      customShopItems[itemId] = item;
+      db.set('shop', message.guild.id, customShopItems);
     }
 
     // Add to inventory
@@ -91,7 +108,7 @@ module.exports = {
       )
       .addFields({
         name: '💰 New Balance',
-        value: `${economy.coins.toLocaleString()} coins`,
+        value: `${economy.wallet.toLocaleString()} coins`,
         inline: true,
       })
       .setTimestamp();
