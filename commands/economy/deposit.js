@@ -53,7 +53,7 @@ module.exports = {
       db.set('economy', userId, economy);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('🏦 Deposit Successful!')
         .setDescription(
           `Deposited **${amount.toLocaleString()} coins** into your bank.`

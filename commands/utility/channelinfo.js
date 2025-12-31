@@ -45,7 +45,7 @@ module.exports = {
     const ageInYears = (ageInDays / 365).toFixed(1);
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.info)
       .setTitle(`${typeEmojis[channel.type] || '📺'} ${channel.name}`)
       .setDescription(
         channel.topic
@@ -282,8 +282,7 @@ module.exports = {
       inline: true,
     });
 
-    embed.setFooter({
-      text: `Requested by ${message.author.tag}`,
+    embed.setFooter(branding.footers.default)
       iconURL: message.author.displayAvatarURL(),
     });
     embed.setTimestamp();

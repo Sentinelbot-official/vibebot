@@ -53,7 +53,7 @@ module.exports = {
       db.set('economy', userId, economy);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor(branding.colors.success)
         .setTitle('🏦 Withdrawal Successful!')
         .setDescription(
           `Withdrew **${amount.toLocaleString()} coins** from your bank.`

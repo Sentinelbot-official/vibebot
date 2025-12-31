@@ -182,7 +182,7 @@ module.exports = {
     const tierName = premiumPerks.getTierDisplayName(guildId);
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(branding.colors.success)
       .setTitle(`${tierBadge} Purchase Successful!`)
       .setDescription(
         `You bought **${amount}x ${item.name}** for **${totalPrice.toLocaleString()} coins**!${

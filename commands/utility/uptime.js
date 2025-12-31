@@ -175,8 +175,7 @@ module.exports = {
       });
     }
 
-    embed.setFooter({
-      text: `Requested by ${message.author.tag} | Bot running since ${new Date(Date.now() - botUptime * 1000).toLocaleDateString()}`,
+    embed.setFooter(branding.footers.default)
       iconURL: message.author.displayAvatarURL(),
     });
     embed.setTimestamp();

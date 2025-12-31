@@ -61,7 +61,7 @@ module.exports = {
         db.set('economy', user.id, receiverEconomy);
 
         const embed = new EmbedBuilder()
-          .setColor(0x00ff00)
+          .setColor(branding.colors.success)
           .setTitle('🎁 Gift Sent!')
           .setDescription(
             `${message.author} gifted **${amount.toLocaleString()} coins** to ${user}!`

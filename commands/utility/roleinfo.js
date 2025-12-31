@@ -176,8 +176,7 @@ module.exports = {
       });
     }
 
-    embed.setFooter({
-      text: `Requested by ${message.author.tag}`,
+    embed.setFooter(branding.footers.default)
       iconURL: message.author.displayAvatarURL(),
     });
     embed.setTimestamp();
@@ -223,8 +222,7 @@ module.exports = {
                 ? `\n\n*...and ${role.members.size - 50} more members*`
                 : '')
           )
-          .setFooter({
-            text: `Total: ${role.members.size} members | ${message.author.tag}`,
+          .setFooter(branding.footers.default)
             iconURL: message.author.displayAvatarURL(),
           })
           .setTimestamp();
@@ -244,8 +242,7 @@ module.exports = {
           .setColor(role.color || 0x99aab5)
           .setTitle(`🔐 All Permissions for ${role.name}`)
           .setDescription(permissionList.substring(0, 4000))
-          .setFooter({
-            text: `Total: ${allPerms.length} permissions | ${message.author.tag}`,
+          .setFooter(branding.footers.default)
             iconURL: message.author.displayAvatarURL(),
           })
           .setTimestamp();
