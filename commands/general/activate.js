@@ -117,9 +117,10 @@ module.exports = {
 
     await loadingMsg.edit({ content: null, embeds: [successEmbed] });
 
-    // Log to console
-    console.log(
-      `[PREMIUM] ${result.tier.toUpperCase()} activated for ${message.guild.name} (${message.guild.id})`
+    // Log activation
+    const logger = require('../../utils/logger');
+    logger.success(
+      `[PREMIUM] ${result.tier.toUpperCase()} activated for ${message.guild.name} (${message.guild.id}) by ${message.author.tag}`
     );
   },
 };

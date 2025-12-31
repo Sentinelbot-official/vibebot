@@ -82,7 +82,8 @@ module.exports = {
         return message.reply({ embeds: [embed] });
       }
     } catch (error) {
-      console.error('Error checking Twitch stream:', error);
+      const logger = require('../../utils/logger');
+      logger.error('Error checking Twitch stream:', error);
 
       // Fallback response
       const embed = new EmbedBuilder()

@@ -92,7 +92,8 @@ module.exports = {
 
       await loadingMsg.edit({ embeds: [resultEmbed] });
     } catch (error) {
-      console.error('AI Image Generation error:', error);
+      const logger = require('../../utils/logger');
+      logger.error('AI Image Generation error:', error);
 
       const errorEmbed = new EmbedBuilder()
         .setColor('#ff0000')

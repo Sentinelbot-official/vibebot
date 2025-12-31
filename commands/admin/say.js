@@ -37,7 +37,8 @@ module.exports = {
       await message.delete();
       await message.channel.send({ embeds: [embed] });
     } catch (error) {
-      console.error('Error sending message:', error);
+      const logger = require('../../utils/logger');
+      logger.error('Error sending message:', error);
       message.reply('❌ Failed to send message!');
     }
   },

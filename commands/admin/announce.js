@@ -57,7 +57,8 @@ module.exports = {
       // Delete command message
       setTimeout(() => message.delete().catch(() => {}), 3000);
     } catch (error) {
-      console.error('Error sending announcement:', error);
+      const logger = require('../../utils/logger');
+      logger.error('Error sending announcement:', error);
       message.reply('❌ Failed to send announcement!');
     }
   },
