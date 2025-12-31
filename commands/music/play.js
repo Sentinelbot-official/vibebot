@@ -188,6 +188,13 @@ module.exports = {
               }
             }
 
+            // Check if any songs were added
+            if (addedCount === 0) {
+              return searchingMsg.edit(
+                '❌ Could not find any songs from that Spotify playlist on YouTube!'
+              );
+            }
+
             // Join voice channel if not already in
             if (!queue.voiceChannel) {
               await musicManager.joinChannel(

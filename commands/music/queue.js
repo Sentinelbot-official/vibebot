@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const musicManager = require('../../utils/musicManager');
 
 module.exports = {
@@ -114,7 +114,7 @@ module.exports = {
         if (interaction.user.id !== message.author.id) {
           return interaction.reply({
             content: '❌ Only the command user can use these buttons!',
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
           });
         }
 

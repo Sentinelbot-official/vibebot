@@ -21,6 +21,7 @@ class MusicManager {
     this.queues = new Map(); // guildId => queue object
     this.players = new Map(); // guildId => audio player
     this.connections = new Map(); // guildId => voice connection
+    this.disconnectTimers = new Map(); // guildId => timeout ID
   }
 
   /**
@@ -84,18 +85,20 @@ class MusicManager {
       queue.textChannel = textChannel;
 
       // Handle connection state changes
-      connection.on(VoiceConnectionStatus.Disconnected, async () => {
-        try {
-          await Promise.race([
-            entersState(connection, VoiceConnectionStatus.Signalling, 5000),
-            entersState(connection, VoiceConnectionStatus.Connecting, 5000),
-          ]);
-          // Seems to be reconnecting
-        } catch (error) {
-          // Disconnect is permanent
-          connection.destroy();
-          this.cleanup(guildId);
-          logger.warn(`Voice connection lost for guild ${guildId}`);
+      connection.on('stateChange', async (oldState, newState) => {
+        if (newState.status === VoiceConnectionStatus.Disconnected) {
+          try {
+            await Promise.race([
+              entersState(connection, VoiceConnectionStatus.Signalling, 5000),
+              entersState(connection, VoiceConnectionStatus.Connecting, 5000),
+            ]);
+            // Seems to be reconnecting
+          } catch (error) {
+            // Disconnect is permanent
+            connection.destroy();
+            this.cleanup(guildId);
+            logger.warn(`Voice connection lost for guild ${guildId}`);
+          }
         }
       });
 
@@ -155,6 +158,12 @@ class MusicManager {
 
     const song = queue.songs[0];
     queue.playing = true;
+
+    // Clear any disconnect timer since we're playing again
+    if (this.disconnectTimers.has(guildId)) {
+      clearTimeout(this.disconnectTimers.get(guildId));
+      this.disconnectTimers.delete(guildId);
+    }
 
     try {
       // Get stream from play-dl
@@ -268,13 +277,20 @@ class MusicManager {
           } catch {}
         }
 
+        // Clear any existing disconnect timer
+        if (this.disconnectTimers.has(guildId)) {
+          clearTimeout(this.disconnectTimers.get(guildId));
+        }
+
         // Disconnect after 5 minutes of inactivity
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           const currentQueue = this.queues.get(guildId);
           if (currentQueue && !currentQueue.playing) {
             this.leave(guildId);
           }
         }, 5 * 60 * 1000);
+
+        this.disconnectTimers.set(guildId, timer);
       }
     }
   }
@@ -352,6 +368,12 @@ class MusicManager {
    * @param {string} guildId - Guild ID
    */
   cleanup(guildId) {
+    // Clear disconnect timer if exists
+    if (this.disconnectTimers.has(guildId)) {
+      clearTimeout(this.disconnectTimers.get(guildId));
+      this.disconnectTimers.delete(guildId);
+    }
+
     this.queues.delete(guildId);
     this.players.delete(guildId);
     this.connections.delete(guildId);
