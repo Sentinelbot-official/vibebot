@@ -70,27 +70,87 @@ module.exports = {
     const loadingMsg = await message.reply({ embeds: [loadingEmbed] });
 
     try {
-      // TODO: Implement actual AI image generation
-      // This is a placeholder - you'd integrate with OpenAI DALL-E or Stability AI here
+      // Implement AI image generation with OpenAI DALL-E or Stability AI
+      let imageUrl = null;
+      let model = 'unknown';
 
-      // For now, show a placeholder response
-      const resultEmbed = new EmbedBuilder()
-        .setColor('#00ff00')
-        .setTitle('🎨 Image Generated!')
-        .setDescription(
-          `**Prompt:** ${prompt}\n\n` +
-            '**Note:** This is an early access feature. Full implementation coming soon!\n\n' +
-            '**API Integration Needed:**\n' +
-            '• OpenAI DALL-E 3\n' +
-            '• Stability AI Stable Diffusion\n' +
-            '• Midjourney API (when available)'
-        )
-        .setFooter({
-          text: 'Early Access Feature 🧪 | Built live on stream',
-        })
-        .setTimestamp();
+      if (process.env.OPENAI_API_KEY) {
+        // Use OpenAI DALL-E
+        const axios = require('axios');
+        const response = await axios.post(
+          'https://api.openai.com/v1/images/generations',
+          {
+            model: 'dall-e-3',
+            prompt: prompt,
+            n: 1,
+            size: '1024x1024',
+            quality: 'standard',
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+            timeout: 60000,
+          }
+        );
 
-      await loadingMsg.edit({ embeds: [resultEmbed] });
+        imageUrl = response.data.data[0].url;
+        model = 'DALL-E 3';
+      } else if (process.env.STABILITY_API_KEY) {
+        // Use Stability AI
+        const axios = require('axios');
+        const FormData = require('form-data');
+        const formData = new FormData();
+        formData.append('prompt', prompt);
+        formData.append('output_format', 'png');
+
+        const response = await axios.post(
+          'https://api.stability.ai/v2beta/stable-image/generate/core',
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
+              Accept: 'image/*',
+            },
+            responseType: 'arraybuffer',
+            timeout: 60000,
+          }
+        );
+
+        // Convert buffer to base64 for Discord
+        const buffer = Buffer.from(response.data);
+        imageUrl = buffer;
+        model = 'Stable Diffusion';
+      }
+
+      if (imageUrl) {
+        const resultEmbed = new EmbedBuilder()
+          .setColor('#00ff00')
+          .setTitle('🎨 Image Generated!')
+          .setDescription(`**Prompt:** ${prompt}\n**Model:** ${model}`)
+          .setImage(typeof imageUrl === 'string' ? imageUrl : 'attachment://generated.png')
+          .setFooter({
+            text: 'Early Access Feature 🧪 | Built live on stream',
+          })
+          .setTimestamp();
+
+        const messageOptions = { embeds: [resultEmbed] };
+        
+        // If using Stability AI (buffer), attach as file
+        if (Buffer.isBuffer(imageUrl)) {
+          messageOptions.files = [
+            {
+              attachment: imageUrl,
+              name: 'generated.png',
+            },
+          ];
+        }
+
+        await loadingMsg.edit(messageOptions);
+      } else {
+        throw new Error('No API key configured');
+      }
     } catch (error) {
       const logger = require('../../utils/logger');
       logger.error('AI Image Generation error:', error);
