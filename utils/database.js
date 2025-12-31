@@ -383,7 +383,7 @@ class DatabaseManager {
       const fs = require('fs');
       const stats = fs.statSync(this.dbPath);
       const sizeInMB = (stats.size / (1024 * 1024)).toFixed(2);
-      
+
       return {
         bytes: stats.size,
         mb: parseFloat(sizeInMB),
@@ -443,9 +443,9 @@ class DatabaseManager {
         FROM kv_store 
         WHERE collection = ?
       `);
-      
+
       const result = stmt.get(collection);
-      
+
       return {
         total: result.total,
         oldest: result.oldest ? new Date(result.oldest * 1000) : null,
@@ -473,9 +473,9 @@ class DatabaseManager {
         WHERE value LIKE ? 
         LIMIT ?
       `);
-      
+
       const results = stmt.all(`%${searchTerm}%`, limit);
-      
+
       return results.map(row => ({
         collection: row.collection,
         key: row.key,
@@ -502,9 +502,9 @@ class DatabaseManager {
         WHERE collection = ? AND created_at BETWEEN ? AND ?
         ORDER BY created_at DESC
       `);
-      
+
       const results = stmt.all(collection, startTime, endTime);
-      
+
       return results.map(row => ({
         key: row.key,
         value: JSON.parse(row.value),
@@ -532,9 +532,9 @@ class DatabaseManager {
         ORDER BY updated_at DESC
         LIMIT ?
       `);
-      
+
       const results = stmt.all(collection, limit);
-      
+
       return results.map(row => ({
         key: row.key,
         value: JSON.parse(row.value),
@@ -558,9 +558,11 @@ class DatabaseManager {
         DELETE FROM kv_store
         WHERE collection = ? AND updated_at < ?
       `);
-      
+
       const result = stmt.run(collection, olderThan);
-      console.log(`[DATABASE] Deleted ${result.changes} old entries from ${collection}`);
+      console.log(
+        `[DATABASE] Deleted ${result.changes} old entries from ${collection}`
+      );
       return result.changes;
     } catch (error) {
       console.error('[DATABASE] Error deleting old entries:', error);
@@ -577,10 +579,10 @@ class DatabaseManager {
       const size = this.getDatabaseSize();
       const stats = this.getStats();
       const collections = this.getCollections();
-      
+
       // Check for fragmentation
       const fragmentation = this.db.pragma('freelist_count');
-      
+
       return {
         size: size,
         totalEntries: stats.totalEntries,

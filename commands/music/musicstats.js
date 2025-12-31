@@ -26,7 +26,7 @@ module.exports = {
       return message.reply(
         target.id === message.author.id
           ? '🎵 **No listening history yet!**\n\n' +
-            'Start playing music with `//play` and your stats will be tracked! 💜'
+              'Start playing music with `//play` and your stats will be tracked! 💜'
           : `🎵 **${target.username} hasn't played any music yet!**`
       );
     }
@@ -54,15 +54,15 @@ module.exports = {
       })
       .setDescription(
         `**Total Vibes:** ${stats.totalSongsPlayed.toLocaleString()} songs played\n` +
-        `**Listening Time:** ${timeStr}\n` +
-        `**Member Since:** ${daysSinceFirst} days ago\n\u200b`
+          `**Listening Time:** ${timeStr}\n` +
+          `**Member Since:** ${daysSinceFirst} days ago\n\u200b`
       )
       .setThumbnail(target.displayAvatarURL({ size: 256 }));
 
     // Add top songs
     if (topSongs.length > 0) {
       const topSongsText = topSongs
-        .map(([ title, data], index) => {
+        .map(([title, data], index) => {
           const medal = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'][index];
           return `${medal} **${title}**\n   ↳ ${data.plays} play${data.plays !== 1 ? 's' : ''} • [Listen](${data.url})`;
         })
@@ -92,13 +92,14 @@ module.exports = {
     }
 
     // Add fun stats
-    const avgSongsPerDay = daysSinceFirst > 0 
-      ? (stats.totalSongsPlayed / daysSinceFirst).toFixed(1)
-      : stats.totalSongsPlayed;
+    const avgSongsPerDay =
+      daysSinceFirst > 0
+        ? (stats.totalSongsPlayed / daysSinceFirst).toFixed(1)
+        : stats.totalSongsPlayed;
 
     embed.addFields({
       name: '📊 Fun Stats',
-      value: 
+      value:
         `**Average:** ${avgSongsPerDay} songs/day\n` +
         `**Favorites:** ${Object.keys(stats.topSongs || {}).length} unique tracks\n` +
         `**Vibe Score:** ${calculateVibeScore(stats)}/100 💜`,

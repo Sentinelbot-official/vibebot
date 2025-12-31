@@ -89,9 +89,7 @@ module.exports = {
     }
 
     if (foundCase.appealed) {
-      statusParts.push(
-        `⚠️ Appealed (${foundCase.appealStatus || 'Pending'})`
-      );
+      statusParts.push(`⚠️ Appealed (${foundCase.appealStatus || 'Pending'})`);
     }
 
     const status = statusParts.join(' | ');
@@ -101,7 +99,11 @@ module.exports = {
     const daysAgo = Math.floor(timeSince / (1000 * 60 * 60 * 24));
 
     const embed = new EmbedBuilder()
-      .setColor(foundCase.active === false ? branding.colors.warning : branding.colors.error)
+      .setColor(
+        foundCase.active === false
+          ? branding.colors.warning
+          : branding.colors.error
+      )
       .setTitle(`📋 Case Details: ${caseId}`)
       .setDescription(
         `**Status:** ${status}\n` +
@@ -153,7 +155,6 @@ module.exports = {
         }
       )
       .setFooter(branding.footers.default)
-      })
       .setTimestamp(foundCase.timestamp || Date.now());
 
     if (targetUser) {
@@ -194,9 +195,7 @@ module.exports = {
       new ButtonBuilder()
         .setLabel('View User Profile')
         .setStyle(ButtonStyle.Link)
-        .setURL(
-          `https://discord.com/users/${targetUserId}`
-        )
+        .setURL(`https://discord.com/users/${targetUserId}`)
         .setEmoji('👤')
     );
 

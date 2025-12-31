@@ -20,11 +20,15 @@ module.exports = {
     }
 
     if (message.member.voice.channel.id !== queue.voiceChannel.id) {
-      return message.reply('❌ You need to be in the same voice channel as me!');
+      return message.reply(
+        '❌ You need to be in the same voice channel as me!'
+      );
     }
 
     if (!args[0]) {
-      return message.reply(`🔊 Current volume: **${queue.volume}%**\n\nUse \`//volume <0-100>\` to change it.`);
+      return message.reply(
+        `🔊 Current volume: **${queue.volume}%**\n\nUse \`//volume <0-100>\` to change it.`
+      );
     }
 
     const volume = parseInt(args[0]);

@@ -79,8 +79,7 @@ module.exports = {
             inline: false,
           }
         )
-        .setFooter(branding.footers.default),
-        })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       await message.reply({ embeds: [embed] });

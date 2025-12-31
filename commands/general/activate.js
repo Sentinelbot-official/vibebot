@@ -119,7 +119,7 @@ module.exports = {
 
     // Log activation
     const logger = require('../../utils/logger');
-const branding = require('../../utils/branding');
+    const branding = require('../../utils/branding');
     logger.success(
       `[PREMIUM] ${result.tier.toUpperCase()} activated for ${message.guild.name} (${message.guild.id}) by ${message.author.tag}`
     );

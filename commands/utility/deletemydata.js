@@ -123,7 +123,7 @@ module.exports = {
 
       // Log the deletion
       const logger = require('../../utils/logger');
-const branding = require('../../utils/branding');
+      const branding = require('../../utils/branding');
       logger.info(
         `[GDPR] User ${message.author.tag} (${userId}) requested data deletion`
       );

@@ -152,7 +152,7 @@ module.exports = {
 
       // Log the reply
       const logger = require('../../utils/logger');
-const branding = require('../../utils/branding');
+      const branding = require('../../utils/branding');
       logger.info(
         `[MODMAIL] ${message.author.tag} replied to ticket ${ticketId}`
       );

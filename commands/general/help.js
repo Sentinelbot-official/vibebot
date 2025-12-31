@@ -149,7 +149,13 @@ module.exports = {
 
         // Build embed with personality!
         const embed = new EmbedBuilder()
-          .setColor(isOwner ? branding.colors.error : isPremium ? branding.colors.premium : branding.colors.primary)
+          .setColor(
+            isOwner
+              ? branding.colors.error
+              : isPremium
+                ? branding.colors.premium
+                : branding.colors.primary
+          )
           .setAuthor({
             name: `${branding.emojis.vibe} ${message.client.user.username} - ${branding.getTagline()}`,
             iconURL: message.client.user.displayAvatarURL(),

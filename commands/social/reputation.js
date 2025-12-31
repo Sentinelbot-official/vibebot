@@ -57,9 +57,7 @@ module.exports = {
       });
     }
 
-    embed
-      .setFooter(branding.footers.default)
-      .setTimestamp();
+    embed.setFooter(branding.footers.default).setTimestamp();
 
     return message.reply({ embeds: [embed] });
   },

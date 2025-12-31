@@ -39,19 +39,23 @@ module.exports = {
   footers: {
     default: {
       text: '🔴 Built 24/7 live on Twitch • twitch.tv/projectdraguk',
-      iconURL: 'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png',
+      iconURL:
+        'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png',
     },
     community: {
       text: '💜 Made with love by the 24/7 global community',
-      iconURL: 'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png',
+      iconURL:
+        'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png',
     },
     premium: {
       text: '💎 Premium Feature • Support the 24/7 stream!',
-      iconURL: 'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png',
+      iconURL:
+        'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png',
     },
     music: {
       text: '🎵 Music system coded live on Twitch!',
-      iconURL: 'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png',
+      iconURL:
+        'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png',
     },
   },
 
@@ -78,11 +82,11 @@ module.exports = {
     ],
     error: [
       'Oops! Something went wrong.',
-      'Uh oh! That didn\'t work.',
-      'Hmm, that\'s not right...',
+      "Uh oh! That didn't work.",
+      "Hmm, that's not right...",
       'Error detected!',
       'Houston, we have a problem...',
-      'That\'s a bug! (We\'ll fix it live!)',
+      "That's a bug! (We'll fix it live!)",
     ],
     loading: [
       '⏳ Loading vibes...',
@@ -231,12 +235,12 @@ module.exports = {
 
   // Easter eggs for specific inputs
   easterEggs: {
-    '69': 'Nice. 😏',
-    '420': 'Blaze it! 🌿',
-    '666': 'Spooky! 👻',
-    '777': 'Lucky! 🍀',
-    '1337': 'Elite hacker vibes! 💻',
-    '9000': 'It\'s over 9000! 💥',
+    69: 'Nice. 😏',
+    420: 'Blaze it! 🌿',
+    666: 'Spooky! 👻',
+    777: 'Lucky! 🍀',
+    1337: 'Elite hacker vibes! 💻',
+    9000: "It's over 9000! 💥",
   },
 
   // Check for easter egg

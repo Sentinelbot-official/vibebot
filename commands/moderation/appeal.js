@@ -138,7 +138,7 @@ module.exports = {
 
     // Log the appeal
     const logger = require('../../utils/logger');
-const branding = require('../../utils/branding');
+    const branding = require('../../utils/branding');
     logger.info(
       `[APPEAL] ${message.author.tag} appealed warning ${caseId}: ${appealReason}`
     );

@@ -198,13 +198,14 @@ class MusicManager {
           const vibeMessages = [
             "Let's vibe to this! 🎵",
             "This one's a banger! 🔥",
-            "Turning up the vibes! ✨",
-            "Community choice incoming! 💜",
-            "Time to vibe! 🎶",
-            "Built live, played live! 🔴",
-            "Stream-approved vibes! 🎬",
+            'Turning up the vibes! ✨',
+            'Community choice incoming! 💜',
+            'Time to vibe! 🎶',
+            'Built live, played live! 🔴',
+            'Stream-approved vibes! 🎬',
           ];
-          const randomVibe = vibeMessages[Math.floor(Math.random() * vibeMessages.length)];
+          const randomVibe =
+            vibeMessages[Math.floor(Math.random() * vibeMessages.length)];
 
           await queue.textChannel.send({
             embeds: [
@@ -239,7 +240,11 @@ class MusicManager {
                   },
                   {
                     name: '🔁 Loop',
-                    value: queue.loop ? '✅ Song' : queue.loopQueue ? '✅ Queue' : '❌ Off',
+                    value: queue.loop
+                      ? '✅ Song'
+                      : queue.loopQueue
+                        ? '✅ Queue'
+                        : '❌ Off',
                     inline: true,
                   },
                   {
@@ -249,9 +254,10 @@ class MusicManager {
                   },
                 ],
                 thumbnail: { url: song.thumbnail || '' },
-                footer: { 
+                footer: {
                   text: '🔴 Music coded live on Twitch • twitch.tv/projectdraguk',
-                  icon_url: 'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png'
+                  icon_url:
+                    'https://static-cdn.jtvnw.net/jtv_user_pictures/8a6381c7-d0c0-4576-b179-38bd5ce1d6af-profile_image-70x70.png',
                 },
                 timestamp: new Date(),
               },
@@ -315,7 +321,8 @@ class MusicManager {
               '🎶 Music paused! **Keep vibing** - use `//play` to continue!',
               '💜 Thanks for vibing with us! **More music?** Try `//play`',
             ];
-            const randomEnd = endMessages[Math.floor(Math.random() * endMessages.length)];
+            const randomEnd =
+              endMessages[Math.floor(Math.random() * endMessages.length)];
             await queue.textChannel.send(randomEnd);
           } catch {}
         }
@@ -326,12 +333,15 @@ class MusicManager {
         }
 
         // Disconnect after 5 minutes of inactivity
-        const timer = setTimeout(() => {
-          const currentQueue = this.queues.get(guildId);
-          if (currentQueue && !currentQueue.playing) {
-            this.leave(guildId);
-          }
-        }, 5 * 60 * 1000);
+        const timer = setTimeout(
+          () => {
+            const currentQueue = this.queues.get(guildId);
+            if (currentQueue && !currentQueue.playing) {
+              this.leave(guildId);
+            }
+          },
+          5 * 60 * 1000
+        );
 
         this.disconnectTimers.set(guildId, timer);
       }
@@ -486,10 +496,10 @@ class MusicManager {
   trackSongPlay(song, voiceChannel) {
     try {
       const db = require('./database');
-      
+
       // Get all listeners (excluding bots)
       const listeners = voiceChannel.members.filter(m => !m.user.bot);
-      
+
       listeners.forEach(member => {
         const userId = member.id;
         let stats = db.get('music_stats', userId) || {
@@ -502,7 +512,7 @@ class MusicManager {
 
         // Update stats
         stats.totalSongsPlayed++;
-        
+
         // Parse duration and add to total time
         if (song.duration) {
           const parts = song.duration.split(':');
@@ -510,7 +520,10 @@ class MusicManager {
           if (parts.length === 2) {
             seconds = parseInt(parts[0]) * 60 + parseInt(parts[1]);
           } else if (parts.length === 3) {
-            seconds = parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
+            seconds =
+              parseInt(parts[0]) * 3600 +
+              parseInt(parts[1]) * 60 +
+              parseInt(parts[2]);
           }
           stats.totalListeningTime += seconds;
         }

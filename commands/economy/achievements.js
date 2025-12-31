@@ -204,7 +204,7 @@ module.exports = {
           userAch.push(ach);
           totalReward += achievements[ach].reward;
         }
-        
+
         const economy = db.get('economy', user.id) || { coins: 0, bank: 0 };
         economy.coins += totalReward;
         db.set('economy', user.id, economy);
@@ -212,9 +212,12 @@ module.exports = {
 
         // Notify about new achievements
         const newAchList = newAch
-          .map(key => `${achievements[key].emoji} **${achievements[key].name}** (+${achievements[key].reward} coins)`)
+          .map(
+            key =>
+              `${achievements[key].emoji} **${achievements[key].name}** (+${achievements[key].reward} coins)`
+          )
           .join('\n');
-        
+
         await message.channel.send(
           `🎉 **${user.username}** unlocked ${newAch.length} new achievement${newAch.length > 1 ? 's' : ''}!\n\n${newAchList}\n\n💰 Total reward: **${totalReward} coins**`
         );
@@ -223,12 +226,21 @@ module.exports = {
 
     // Category filter
     const filter = args[0]?.toLowerCase();
-    const validFilters = ['starter', 'leveling', 'economy', 'social', 'activity', 'special', 'all'];
+    const validFilters = [
+      'starter',
+      'leveling',
+      'economy',
+      'social',
+      'activity',
+      'special',
+      'all',
+    ];
     const selectedFilter = validFilters.includes(filter) ? filter : 'all';
 
     // Filter achievements by category
-    const filteredAchievements = Object.entries(achievements).filter(([key, ach]) => 
-      selectedFilter === 'all' || ach.category === selectedFilter
+    const filteredAchievements = Object.entries(achievements).filter(
+      ([key, ach]) =>
+        selectedFilter === 'all' || ach.category === selectedFilter
     );
 
     // Group by category
@@ -254,13 +266,16 @@ module.exports = {
       .setTitle(`🏆 ${user.username}'s Achievements`)
       .setDescription(
         `**Filter:** ${selectedFilter.charAt(0).toUpperCase() + selectedFilter.slice(1)}\n` +
-        `**Progress:** ${userAch.length}/${Object.keys(achievements).length} (${Math.round((userAch.length / Object.keys(achievements).length) * 100)}%)\n\u200b`
+          `**Progress:** ${userAch.length}/${Object.keys(achievements).length} (${Math.round((userAch.length / Object.keys(achievements).length) * 100)}%)\n\u200b`
       )
       .setThumbnail(user.displayAvatarURL());
 
     // Add category fields
     for (const [category, achList] of Object.entries(categories)) {
-      if (achList.length > 0 && (selectedFilter === 'all' || selectedFilter === category)) {
+      if (
+        achList.length > 0 &&
+        (selectedFilter === 'all' || selectedFilter === category)
+      ) {
         const categoryName = {
           starter: '🎯 Starter',
           leveling: '⭐ Leveling',
@@ -279,11 +294,14 @@ module.exports = {
     }
 
     // Calculate total rewards earned
-    const totalRewards = userAch.reduce((sum, key) => sum + (achievements[key]?.reward || 0), 0);
+    const totalRewards = userAch.reduce(
+      (sum, key) => sum + (achievements[key]?.reward || 0),
+      0
+    );
 
     embed.addFields({
       name: '📊 Statistics',
-      value: 
+      value:
         `**Unlocked:** ${userAch.length}/${Object.keys(achievements).length}\n` +
         `**Total Rewards:** ${totalRewards.toLocaleString()} coins\n` +
         `**Completion:** ${Math.round((userAch.length / Object.keys(achievements).length) * 100)}%`,
@@ -294,7 +312,9 @@ module.exports = {
     if (userAch.length > 0) {
       // Find rarest achievement (highest reward = rarest)
       const rarestKey = userAch.reduce((rarest, key) => {
-        return achievements[key].reward > achievements[rarest].reward ? key : rarest;
+        return achievements[key].reward > achievements[rarest].reward
+          ? key
+          : rarest;
       });
       const rarest = achievements[rarestKey];
 
@@ -372,7 +392,10 @@ async function checkAchievements(userId, message) {
   if (pet && !userAch.includes('pet_owner')) newAch.push('pet_owner');
 
   const voiceTime = db.get('voice_time', userId) || { total: 0 };
-  if (voiceTime.total >= 24 * 60 * 60 * 1000 && !userAch.includes('voice_active'))
+  if (
+    voiceTime.total >= 24 * 60 * 60 * 1000 &&
+    !userAch.includes('voice_active')
+  )
     newAch.push('voice_active');
 
   // Time-based achievements

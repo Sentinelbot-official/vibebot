@@ -133,7 +133,7 @@ module.exports = {
 
     // Log the setup
     const logger = require('../../utils/logger');
-const branding = require('../../utils/branding');
+    const branding = require('../../utils/branding');
     logger.info(
       `[MODMAIL] Setup by ${message.author.tag} in ${message.guild.name} - Channel: ${channel.name}`
     );

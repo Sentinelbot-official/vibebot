@@ -19,7 +19,9 @@ module.exports = {
     }
 
     if (message.member.voice.channel.id !== queue.voiceChannel.id) {
-      return message.reply('❌ You need to be in the same voice channel as me!');
+      return message.reply(
+        '❌ You need to be in the same voice channel as me!'
+      );
     }
 
     if (queue.songs.length === 0) {
@@ -29,7 +31,9 @@ module.exports = {
     const loopEnabled = musicManager.toggleLoop(message.guild.id);
 
     if (loopEnabled) {
-      return message.reply(`🔂 Loop enabled! **${queue.songs[0].title}** will repeat.`);
+      return message.reply(
+        `🔂 Loop enabled! **${queue.songs[0].title}** will repeat.`
+      );
     } else {
       return message.reply('🔁 Loop disabled!');
     }

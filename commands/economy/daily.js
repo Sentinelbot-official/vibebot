@@ -141,7 +141,10 @@ module.exports = {
       .setFooter(branding.footers.community)
       .setTimestamp()
       .setAuthor({
-        name: economy.dailyStreak >= 7 ? '🔥 You\'re on fire! Keep it up!' : branding.getTagline(),
+        name:
+          economy.dailyStreak >= 7
+            ? "🔥 You're on fire! Keep it up!"
+            : branding.getTagline(),
         iconURL: branding.footers.default.iconURL,
       });
 

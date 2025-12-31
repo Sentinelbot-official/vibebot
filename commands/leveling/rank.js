@@ -163,9 +163,7 @@ module.exports = {
       });
     }
 
-    embed.setFooter(branding.footers.community)
-      iconURL: message.author.displayAvatarURL(),
-    });
+    embed.setFooter(branding.footers.community);
     embed.setTimestamp();
 
     message.reply({ embeds: [embed] });

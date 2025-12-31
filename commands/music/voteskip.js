@@ -23,7 +23,9 @@ module.exports = {
     }
 
     if (message.member.voice.channel.id !== queue.voiceChannel.id) {
-      return message.reply('❌ You need to be in the same voice channel as me!');
+      return message.reply(
+        '❌ You need to be in the same voice channel as me!'
+      );
     }
 
     if (!queue.playing || queue.songs.length === 0) {
@@ -38,7 +40,7 @@ module.exports = {
     if (listenerCount <= 2) {
       musicManager.skip(message.guild.id);
       return message.reply(
-        '⏭️ **Skipped!** Not enough people to vote, so we\'ll skip it! 💜'
+        "⏭️ **Skipped!** Not enough people to vote, so we'll skip it! 💜"
       );
     }
 
@@ -60,10 +62,10 @@ module.exports = {
     if (voteData.votes.has(message.author.id)) {
       const votesNeeded = Math.ceil(listenerCount * 0.5);
       const currentVotes = voteData.votes.size;
-      
+
       return message.reply(
         `❌ **You already voted to skip!**\n` +
-        `**Votes:** ${currentVotes}/${votesNeeded} (${Math.round((currentVotes / votesNeeded) * 100)}%)`
+          `**Votes:** ${currentVotes}/${votesNeeded} (${Math.round((currentVotes / votesNeeded) * 100)}%)`
       );
     }
 
@@ -83,8 +85,8 @@ module.exports = {
         .setTitle('⏭️ Vote Skip Passed!')
         .setDescription(
           `**The community has spoken!** ✨\n\n` +
-          `**${currentSong.title}** has been skipped!\n` +
-          `**Final Vote:** ${currentVotes}/${votesNeeded} (${percentage}%)`
+            `**${currentSong.title}** has been skipped!\n` +
+            `**Final Vote:** ${currentVotes}/${votesNeeded} (${percentage}%)`
         )
         .setFooter(branding.footers.default)
         .setTimestamp();
@@ -94,18 +96,18 @@ module.exports = {
 
     // Not enough votes yet
     const progressBar = generateProgressBar(currentVotes, votesNeeded);
-    
+
     const embed = new EmbedBuilder()
       .setColor(branding.colors.warning)
       .setTitle('🗳️ Vote Skip in Progress')
       .setDescription(
         `**${message.author.username}** voted to skip!\n\n` +
-        `**Current Song:** ${currentSong.title}\n` +
-        `**Votes:** ${currentVotes}/${votesNeeded} (${percentage}%)\n\n` +
-        `${progressBar}\n\n` +
-        `*Use \`//voteskip\` to add your vote!*`
+          `**Current Song:** ${currentSong.title}\n` +
+          `**Votes:** ${currentVotes}/${votesNeeded} (${percentage}%)\n\n` +
+          `${progressBar}\n\n` +
+          `*Use \`//voteskip\` to add your vote!*`
       )
-      .setFooter({ 
+      .setFooter({
         text: `${votesNeeded - currentVotes} more vote${votesNeeded - currentVotes !== 1 ? 's' : ''} needed • Built live on Twitch!`,
       })
       .setTimestamp();
@@ -124,9 +126,9 @@ function generateProgressBar(current, needed) {
   const percentage = current / needed;
   const filled = Math.round(percentage * 10);
   const empty = 10 - filled;
-  
+
   const filledBar = '🟩'.repeat(filled);
   const emptyBar = '⬜'.repeat(empty);
-  
+
   return `${filledBar}${emptyBar} ${Math.round(percentage * 100)}%`;
 }

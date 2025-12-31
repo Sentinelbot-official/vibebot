@@ -1,4 +1,10 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  MessageFlags,
+} = require('discord.js');
 const musicManager = require('../../utils/musicManager');
 
 module.exports = {
@@ -34,29 +40,37 @@ module.exports = {
       if (parts.length === 2) {
         totalDuration += parseInt(parts[0]) * 60 + parseInt(parts[1]);
       } else if (parts.length === 3) {
-        totalDuration += parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
+        totalDuration +=
+          parseInt(parts[0]) * 3600 +
+          parseInt(parts[1]) * 60 +
+          parseInt(parts[2]);
       }
     }
 
     const hours = Math.floor(totalDuration / 3600);
     const minutes = Math.floor((totalDuration % 3600) / 60);
-    const totalDurationStr = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+    const totalDurationStr =
+      hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 
     const embed = new EmbedBuilder()
       .setColor(branding.colors.primary)
       .setTitle('🎵 Music Queue')
       .setDescription(
         `**Now Playing:**\n` +
-        `[${queue.songs[0].title}](${queue.songs[0].url})\n` +
-        `Duration: ${queue.songs[0].duration} | Requested by: ${queue.songs[0].requester}\n\u200b`
+          `[${queue.songs[0].title}](${queue.songs[0].url})\n` +
+          `Duration: ${queue.songs[0].duration} | Requested by: ${queue.songs[0].requester}\n\u200b`
       )
       .setThumbnail(queue.songs[0].thumbnail || '')
       .addFields({
         name: '📋 Up Next',
-        value: pageSongs.slice(1).map((song, i) => {
-          const position = start + i + 2;
-          return `**${position}.** [${song.title}](${song.url}) - \`${song.duration}\``;
-        }).join('\n') || 'No more songs in queue',
+        value:
+          pageSongs
+            .slice(1)
+            .map((song, i) => {
+              const position = start + i + 2;
+              return `**${position}.** [${song.title}](${song.url}) - \`${song.duration}\``;
+            })
+            .join('\n') || 'No more songs in queue',
         inline: false,
       })
       .addFields(
@@ -138,10 +152,14 @@ module.exports = {
         const newEnd = newStart + songsPerPage;
         const newPageSongs = queue.songs.slice(newStart, newEnd);
 
-        embed.data.fields[0].value = newPageSongs.slice(1).map((song, i) => {
-          const position = newStart + i + 2;
-          return `**${position}.** [${song.title}](${song.url}) - \`${song.duration}\``;
-        }).join('\n') || 'No more songs in queue';
+        embed.data.fields[0].value =
+          newPageSongs
+            .slice(1)
+            .map((song, i) => {
+              const position = newStart + i + 2;
+              return `**${position}.** [${song.title}](${song.url}) - \`${song.duration}\``;
+            })
+            .join('\n') || 'No more songs in queue';
 
         embed.setFooter(branding.footers.default);
 

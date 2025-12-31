@@ -164,7 +164,7 @@ module.exports = {
       });
     } catch (error) {
       const logger = require('../../utils/logger');
-const branding = require('../../utils/branding');
+      const branding = require('../../utils/branding');
       logger.error('Custom embed creation error:', error);
 
       return message.reply(

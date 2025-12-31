@@ -160,8 +160,7 @@ module.exports = {
             formattedResults.join('\n\n')
         )
         .setColor('#5865F2')
-        .setFooter(branding.footers.default),
-        })
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       // If description is too long, split into multiple embeds or send as file

@@ -81,7 +81,13 @@ module.exports = {
       const appealedCount = warns.filter(w => w.appealed).length;
 
       const embed = new EmbedBuilder()
-        .setColor(activeCount > 5 ? branding.colors.error : activeCount > 2 ? branding.colors.warning : branding.colors.success)
+        .setColor(
+          activeCount > 5
+            ? branding.colors.error
+            : activeCount > 2
+              ? branding.colors.warning
+              : branding.colors.success
+        )
         .setTitle(`📋 Moderation History: ${target.user.tag}`)
         .setDescription(
           `**Filter:** ${filter.charAt(0).toUpperCase() + filter.slice(1)}\n` +
@@ -94,7 +100,8 @@ module.exports = {
         const moderator = warn.moderator?.tag || 'Unknown';
         const status = [];
         if (warn.active === false) status.push('🔵 Decayed');
-        if (warn.appealed) status.push(`⚠️ Appealed (${warn.appealStatus || 'Pending'})`);
+        if (warn.appealed)
+          status.push(`⚠️ Appealed (${warn.appealStatus || 'Pending'})`);
         if (warn.active !== false && !warn.appealed) status.push('🔴 Active');
 
         embed.addFields({
@@ -108,8 +115,7 @@ module.exports = {
         });
       }
 
-      embed.setFooter(branding.footers.default)
-      });
+      embed.setFooter(branding.footers.default);
       embed.setTimestamp();
 
       return embed;
@@ -146,8 +152,7 @@ module.exports = {
     };
 
     const embed = await generateEmbed(currentPage);
-    const components =
-      totalPages > 1 ? [generateButtons(currentPage)] : [];
+    const components = totalPages > 1 ? [generateButtons(currentPage)] : [];
 
     const reply = await message.reply({
       embeds: [embed],

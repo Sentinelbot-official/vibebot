@@ -151,7 +151,6 @@ module.exports = {
             : '')
       )
       .setFooter(branding.footers.community)
-      })
       .setTimestamp();
 
     pageItems.forEach(item => {

@@ -76,7 +76,7 @@ module.exports = {
       'You crushed it!',
       'Nailed it!',
       'Vibing at work!',
-      'That\'s the hustle!',
+      "That's the hustle!",
       'Work hard, vibe harder!',
     ];
 

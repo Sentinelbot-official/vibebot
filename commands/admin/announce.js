@@ -55,7 +55,7 @@ module.exports = {
       setTimeout(() => message.delete().catch(() => {}), 3000);
     } catch (error) {
       const logger = require('../../utils/logger');
-const branding = require('../../utils/branding');
+      const branding = require('../../utils/branding');
       logger.error('Error sending announcement:', error);
       message.reply('❌ Failed to send announcement!');
     }

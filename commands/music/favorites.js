@@ -21,8 +21,8 @@ module.exports = {
       if (favorites.length === 0) {
         return message.reply(
           '💜 **Your Favorites List is Empty!**\n\n' +
-          'Add songs you love with `//favorites add <song name>`\n' +
-          'Then quickly play them anytime with `//play favorite <number>`!'
+            'Add songs you love with `//favorites add <song name>`\n' +
+            'Then quickly play them anytime with `//play favorite <number>`!'
         );
       }
 
@@ -34,7 +34,7 @@ module.exports = {
         })
         .setDescription(
           '**Your most-played tracks!**\n' +
-          `Use \`//play favorite <number>\` to play any of these!\n\u200b`
+            `Use \`//play favorite <number>\` to play any of these!\n\u200b`
         )
         .addFields(
           favorites.slice(0, 25).map((song, index) => ({
@@ -52,14 +52,16 @@ module.exports = {
     if (subcommand === 'add') {
       // Check if currently playing
       const queue = musicManager.getQueue(message.guild?.id);
-      
+
       if (args.length === 1 && queue.playing && queue.songs.length > 0) {
         // Add currently playing song
         const currentSong = queue.songs[0];
-        
+
         // Check if already in favorites
         if (favorites.some(f => f.url === currentSong.url)) {
-          return message.reply('💜 **Already in your favorites!** This song is already saved.');
+          return message.reply(
+            '💜 **Already in your favorites!** This song is already saved.'
+          );
         }
 
         favorites.push({
@@ -73,15 +75,15 @@ module.exports = {
 
         return message.reply(
           `💜 **Added to Favorites!**\n` +
-          `**${currentSong.title}** is now in your favorites list!\n\n` +
-          `Play it anytime with \`//play favorite ${favorites.length}\``
+            `**${currentSong.title}** is now in your favorites list!\n\n` +
+            `Play it anytime with \`//play favorite ${favorites.length}\``
         );
       }
 
       return message.reply(
         '❌ **No song specified!**\n\n' +
-        '**To add the current song:** `//favorites add` (while music is playing)\n' +
-        '**To add any song:** Play it first, then use `//favorites add`'
+          '**To add the current song:** `//favorites add` (while music is playing)\n' +
+          '**To add any song:** Play it first, then use `//favorites add`'
       );
     }
 
@@ -91,7 +93,7 @@ module.exports = {
       if (isNaN(index) || index < 0 || index >= favorites.length) {
         return message.reply(
           `❌ **Invalid favorite number!**\n\n` +
-          `You have ${favorites.length} favorites. Use \`//favorites list\` to see them.`
+            `You have ${favorites.length} favorites. Use \`//favorites list\` to see them.`
         );
       }
 
@@ -100,7 +102,7 @@ module.exports = {
 
       return message.reply(
         `🗑️ **Removed from Favorites**\n` +
-        `**${removed.title}** has been removed from your favorites.`
+          `**${removed.title}** has been removed from your favorites.`
       );
     }
 
@@ -113,17 +115,17 @@ module.exports = {
 
       return message.reply(
         `🗑️ **Favorites Cleared!**\n` +
-        `Removed ${favorites.length} song${favorites.length !== 1 ? 's' : ''} from your favorites.`
+          `Removed ${favorites.length} song${favorites.length !== 1 ? 's' : ''} from your favorites.`
       );
     }
 
     return message.reply(
       '❌ **Invalid subcommand!**\n\n' +
-      '**Available commands:**\n' +
-      '• `//favorites` or `//favorites list` - View your favorites\n' +
-      '• `//favorites add` - Add current song to favorites\n' +
-      '• `//favorites remove <number>` - Remove a favorite\n' +
-      '• `//favorites clear` - Clear all favorites'
+        '**Available commands:**\n' +
+        '• `//favorites` or `//favorites list` - View your favorites\n' +
+        '• `//favorites add` - Add current song to favorites\n' +
+        '• `//favorites remove <number>` - Remove a favorite\n' +
+        '• `//favorites clear` - Clear all favorites'
     );
   },
 };

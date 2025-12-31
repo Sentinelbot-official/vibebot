@@ -130,7 +130,6 @@ module.exports = {
     }
   } catch (error) {
     const logger = require('../../utils/logger');
-const branding = require('../../utils/branding');
     logger.error('Giveaway end error:', error);
   }
 }

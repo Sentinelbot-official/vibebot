@@ -175,7 +175,7 @@ module.exports = {
       }
     } catch (error) {
       const logger = require('../../utils/logger');
-const branding = require('../../utils/branding');
+      const branding = require('../../utils/branding');
       logger.error('AI Image Generation error:', error);
 
       const errorEmbed = new EmbedBuilder()

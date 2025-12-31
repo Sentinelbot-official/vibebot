@@ -19,7 +19,9 @@ module.exports = {
     }
 
     if (message.member.voice.channel.id !== queue.voiceChannel.id) {
-      return message.reply('❌ You need to be in the same voice channel as me!');
+      return message.reply(
+        '❌ You need to be in the same voice channel as me!'
+      );
     }
 
     if (!queue.playing || queue.songs.length === 0) {

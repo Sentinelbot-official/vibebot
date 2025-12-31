@@ -61,7 +61,13 @@ module.exports = {
     const premiumBadge = isPremium ? `💎 ${tierName}` : '';
 
     const embed = new EmbedBuilder()
-      .setColor(isPremium ? branding.colors.premium : netWorth >= 100000 ? branding.colors.premium : branding.colors.success)
+      .setColor(
+        isPremium
+          ? branding.colors.premium
+          : netWorth >= 100000
+            ? branding.colors.premium
+            : branding.colors.success
+      )
       .setAuthor({
         name: `${user.username}'s Balance ${premiumBadge}`,
         iconURL: user.displayAvatarURL(),
@@ -132,8 +138,6 @@ module.exports = {
     }
 
     embed.setFooter(branding.footers.community);
-      iconURL: message.author.displayAvatarURL(),
-    });
     embed.setTimestamp();
 
     message.reply({ embeds: [embed] });

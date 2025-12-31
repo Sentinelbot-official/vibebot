@@ -53,10 +53,13 @@ module.exports = {
 
       // Easter egg: Check for special commands
       const lowerQuery = query.toLowerCase();
-      if (lowerQuery === 'never gonna give you up' || lowerQuery === 'rickroll') {
+      if (
+        lowerQuery === 'never gonna give you up' ||
+        lowerQuery === 'rickroll'
+      ) {
         return message.reply(
           '😏 **Nice try!** But we all know what that is...\n' +
-          '🎵 Playing it anyway because it\'s a classic! 💜'
+            "🎵 Playing it anyway because it's a classic! 💜"
         );
       }
 
@@ -69,14 +72,14 @@ module.exports = {
         if (favorites.length === 0) {
           return message.reply(
             '💜 **No favorites yet!**\n' +
-            'Add songs to your favorites with `//favorites add` while music is playing!'
+              'Add songs to your favorites with `//favorites add` while music is playing!'
           );
         }
 
         if (isNaN(favIndex) || favIndex < 0 || favIndex >= favorites.length) {
           return message.reply(
             `❌ **Invalid favorite number!**\n` +
-            `You have ${favorites.length} favorites. Use \`//favorites list\` to see them.`
+              `You have ${favorites.length} favorites. Use \`//favorites list\` to see them.`
           );
         }
 
