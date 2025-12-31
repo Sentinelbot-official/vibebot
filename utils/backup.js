@@ -25,6 +25,9 @@ class BackupManager {
    */
   createBackup() {
     try {
+      // Ensure backup directory exists
+      this.ensureBackupDirectory();
+
       const timestamp = new Date()
         .toISOString()
         .replace(/:/g, '-')
@@ -32,9 +35,16 @@ class BackupManager {
       const filename = `backup-${timestamp}.db`;
       const backupPath = path.join(this.backupDir, filename);
 
+      // Perform backup
       const success = db.backup(backupPath);
 
       if (success) {
+        // Verify backup file was created
+        if (!fs.existsSync(backupPath)) {
+          logger.error('Backup file was not created');
+          return { success: false, error: 'Backup file not found after creation' };
+        }
+
         const stats = fs.statSync(backupPath);
         const sizeInMB = (stats.size / (1024 * 1024)).toFixed(2);
 
@@ -50,7 +60,7 @@ class BackupManager {
         };
       }
 
-      return { success: false };
+      return { success: false, error: 'Database backup operation failed' };
     } catch (error) {
       logger.error('Failed to create backup:', error);
       return { success: false, error: error.message };
@@ -90,12 +100,20 @@ class BackupManager {
    */
   startAutoBackup() {
     // Create initial backup
-    this.createBackup();
+    try {
+      this.createBackup();
+    } catch (error) {
+      logger.error('Initial backup failed:', error);
+    }
 
     // Schedule backups every 6 hours
     setInterval(
       () => {
-        this.createBackup();
+        try {
+          this.createBackup();
+        } catch (error) {
+          logger.error('Scheduled backup failed:', error);
+        }
       },
       6 * 60 * 60 * 1000,
     );

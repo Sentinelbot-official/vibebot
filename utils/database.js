@@ -98,7 +98,7 @@ class DatabaseManager {
   get(collection, key) {
     try {
       const stmt = this.db.prepare(
-        'SELECT value FROM kv_store WHERE collection = ? AND key = ?'
+        'SELECT value FROM kv_store WHERE collection = ? AND key = ?',
       );
       const row = stmt.get(collection, key);
       return row ? JSON.parse(row.value) : null;
@@ -117,7 +117,7 @@ class DatabaseManager {
   has(collection, key) {
     try {
       const stmt = this.db.prepare(
-        'SELECT 1 FROM kv_store WHERE collection = ? AND key = ? LIMIT 1'
+        'SELECT 1 FROM kv_store WHERE collection = ? AND key = ? LIMIT 1',
       );
       return stmt.get(collection, key) !== undefined;
     } catch (error) {
@@ -135,7 +135,7 @@ class DatabaseManager {
   delete(collection, key) {
     try {
       const stmt = this.db.prepare(
-        'DELETE FROM kv_store WHERE collection = ? AND key = ?'
+        'DELETE FROM kv_store WHERE collection = ? AND key = ?',
       );
       const result = stmt.run(collection, key);
       return result.changes > 0;
@@ -153,7 +153,7 @@ class DatabaseManager {
   all(collection) {
     try {
       const stmt = this.db.prepare(
-        'SELECT key, value FROM kv_store WHERE collection = ?'
+        'SELECT key, value FROM kv_store WHERE collection = ?',
       );
       const rows = stmt.all(collection);
       const result = {};
@@ -338,7 +338,7 @@ class DatabaseManager {
 
       for (const collection of collections) {
         const stmt = this.db.prepare(
-          'SELECT COUNT(*) as count FROM kv_store WHERE collection = ?'
+          'SELECT COUNT(*) as count FROM kv_store WHERE collection = ?',
         );
         const result = stmt.get(collection);
         stats.totalEntries += result.count;
@@ -359,7 +359,29 @@ class DatabaseManager {
    */
   backup(backupPath) {
     try {
-      this.db.backup(backupPath);
+      // Ensure the directory exists
+      const dir = path.dirname(backupPath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+
+      // Force a checkpoint to ensure all data is written
+      this.db.pragma('wal_checkpoint(TRUNCATE)');
+
+      // Copy the database file
+      fs.copyFileSync(this.dbPath, backupPath);
+
+      // Also copy WAL and SHM files if they exist
+      const walPath = `${this.dbPath}-wal`;
+      const shmPath = `${this.dbPath}-shm`;
+
+      if (fs.existsSync(walPath)) {
+        fs.copyFileSync(walPath, `${backupPath}-wal`);
+      }
+      if (fs.existsSync(shmPath)) {
+        fs.copyFileSync(shmPath, `${backupPath}-shm`);
+      }
+
       console.log(`[DATABASE] Backup created at ${backupPath}`);
       return true;
     } catch (error) {
