@@ -277,9 +277,7 @@ module.exports = {
         embed.setImage(banner);
       }
 
-      embed.setFooter({
-        text: `Requested by ${message.author.tag} | ID: ${user.id}`,
-      });
+      embed.setFooter(branding.footers.default);
       embed.setTimestamp();
 
       message.reply({ embeds: [embed] });

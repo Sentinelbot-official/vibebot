@@ -100,9 +100,7 @@ const branding = require('../../utils/branding');
           inline: true,
         }
       )
-      .setFooter({
-        text: `Requested by ${message.author.tag} | Shard ${shardId}/${totalShards}`,
-      })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     // Add quality indicators

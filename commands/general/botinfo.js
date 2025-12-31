@@ -76,8 +76,12 @@ module.exports = {
     const loadAvg = os.loadavg();
 
     const embed = new EmbedBuilder()
-      .setColor(0x9b59b6)
-      .setTitle('🎵 Vibe Bot - Advanced Statistics')
+      .setColor(branding.colors.primary)
+      .setTitle(`${branding.emojis.vibe} Vibe Bot - Advanced Statistics`)
+      .setAuthor({
+        name: branding.getTagline(),
+        iconURL: branding.footers.default.iconURL,
+      })
       .setDescription(
         `**Not just a bot - a 24/7 journey!** 🔴\n\n` +
           `Created on **December 31, 2025** on a **24/7 LIVE Twitch stream** with the ` +
@@ -179,9 +183,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setFooter({
-        text: `💜 Built 24/7 with love by Airis & The Global Community | Vibe Bot v2.5.0`,
-      })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
     // Add buttons

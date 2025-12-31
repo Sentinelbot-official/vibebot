@@ -61,7 +61,7 @@ module.exports = {
     const premiumBadge = isPremium ? `💎 ${tierName}` : '';
 
     const embed = new EmbedBuilder()
-      .setColor(isPremium ? 0xffd700 : netWorth >= 100000 ? 0xffd700 : 0x00ff00)
+      .setColor(isPremium ? branding.colors.premium : netWorth >= 100000 ? branding.colors.premium : branding.colors.success)
       .setAuthor({
         name: `${user.username}'s Balance ${premiumBadge}`,
         iconURL: user.displayAvatarURL(),
@@ -131,8 +131,7 @@ module.exports = {
       });
     }
 
-    embed.setFooter({
-      text: `Requested by ${message.author.tag} | Use //shop to spend coins`,
+    embed.setFooter(branding.footers.community);
       iconURL: message.author.displayAvatarURL(),
     });
     embed.setTimestamp();

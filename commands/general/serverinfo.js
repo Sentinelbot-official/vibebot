@@ -114,7 +114,7 @@ module.exports = {
     const ageInYears = (ageInDays / 365).toFixed(1);
 
     const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
+      .setColor(branding.colors.primary)
       .setTitle(`${tierBadge} ${guild.name}`)
       .setDescription(
         guild.description ||
@@ -202,9 +202,7 @@ module.exports = {
       embed.setImage(bannerURL);
     }
 
-    embed.setFooter({
-      text: `Requested by ${message.author.tag} | Server created ${createdAgo}`,
-    });
+    embed.setFooter(branding.footers.default);
     embed.setTimestamp();
 
     message.reply({ embeds: [embed] });
