@@ -3,7 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  PermissionsBitField,
+  PermissionFlagsBits,
 } = require('discord.js');
 const db = require('../../utils/database');
 
@@ -16,7 +16,7 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.Administrator)
+      !message.member.permissions.has(PermissionFlagsBits.Administrator)
     ) {
       return message.reply('❌ You need Administrator permission!');
     }

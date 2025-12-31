@@ -1,4 +1,4 @@
-const { PermissionsBitField, EmbedBuilder } = require('discord.js');
+const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
   async execute(message, args) {
     // Permission check
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)
+      !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
     ) {
       return message.reply(
         '❌ You need Manage Server permission to reroll giveaways!'

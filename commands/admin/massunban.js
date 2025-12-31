@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'massunban',
@@ -10,14 +10,14 @@ module.exports = {
   guildOnly: true,
   async execute(message, _args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.Administrator)
+      !message.member.permissions.has(PermissionFlagsBits.Administrator)
     ) {
       return message.reply('❌ You need Administrator permission!');
     }
 
     if (
       !message.guild.members.me.permissions.has(
-        PermissionsBitField.Flags.BanMembers
+        PermissionFlagsBits.BanMembers
       )
     ) {
       return message.reply('❌ I need Ban Members permission!');

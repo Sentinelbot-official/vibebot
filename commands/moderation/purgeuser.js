@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'purgeuser',
@@ -10,14 +10,14 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)
+      !message.member.permissions.has(PermissionFlagsBits.ManageMessages)
     ) {
       return message.reply('❌ You need Manage Messages permission!');
     }
 
     if (
       !message.guild.members.me.permissions.has(
-        PermissionsBitField.Flags.ManageMessages
+        PermissionFlagsBits.ManageMessages
       )
     ) {
       return message.reply('❌ I need Manage Messages permission!');

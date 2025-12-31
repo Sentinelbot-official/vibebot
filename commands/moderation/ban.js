@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'ban',
@@ -7,7 +7,7 @@ module.exports = {
   category: 'moderation',
   async execute(message, args) {
     // Permission check
-    if (!message.member.permissions.has(PermissionsBitField.Flags.BanMembers)) {
+    if (!message.member.permissions.has(PermissionFlagsBits.BanMembers)) {
       return message.reply('❌ You do not have permission to ban members.');
     }
 

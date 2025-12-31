@@ -3,7 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  PermissionsBitField,
+  PermissionFlagsBits,
   ChannelType,
 } = require('discord.js');
 const db = require('../utils/database');
@@ -52,22 +52,22 @@ module.exports = {
           permissionOverwrites: [
             {
               id: guild.id,
-              deny: [PermissionsBitField.Flags.ViewChannel],
+              deny: [PermissionFlagsBits.ViewChannel],
             },
             {
               id: member.id,
               allow: [
-                PermissionsBitField.Flags.ViewChannel,
-                PermissionsBitField.Flags.SendMessages,
-                PermissionsBitField.Flags.ReadMessageHistory,
+                PermissionFlagsBits.ViewChannel,
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.ReadMessageHistory,
               ],
             },
             {
               id: interaction.client.user.id,
               allow: [
-                PermissionsBitField.Flags.ViewChannel,
-                PermissionsBitField.Flags.SendMessages,
-                PermissionsBitField.Flags.ManageChannels,
+                PermissionFlagsBits.ViewChannel,
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.ManageChannels,
               ],
             },
           ],
@@ -123,7 +123,7 @@ module.exports = {
 
       // Check permissions
       if (
-        !member.permissions.has(PermissionsBitField.Flags.ManageChannels) &&
+        !member.permissions.has(PermissionFlagsBits.ManageChannels) &&
         channel.topic !== member.id
       ) {
         return interaction.reply({

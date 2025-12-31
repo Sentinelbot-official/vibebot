@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
   async execute(message, args) {
     // Permission check
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageRoles)
+      !message.member.permissions.has(PermissionFlagsBits.ManageRoles)
     ) {
       return message.reply(
         '❌ You need Manage Roles permission to use this command!'

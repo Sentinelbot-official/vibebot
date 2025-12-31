@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'unmute',
@@ -9,14 +9,14 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)
+      !message.member.permissions.has(PermissionFlagsBits.ModerateMembers)
     ) {
       return message.reply('❌ You need Moderate Members permission!');
     }
 
     if (
       !message.guild.members.me.permissions.has(
-        PermissionsBitField.Flags.ModerateMembers
+        PermissionFlagsBits.ModerateMembers
       )
     ) {
       return message.reply('❌ I need Moderate Members permission!');

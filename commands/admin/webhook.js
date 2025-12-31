@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'webhook',
@@ -8,7 +8,7 @@ module.exports = {
   cooldown: 5,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageWebhooks)
+      !message.member.permissions.has(PermissionFlagsBits.ManageWebhooks)
     ) {
       return message.reply('❌ You need Manage Webhooks permission!');
     }

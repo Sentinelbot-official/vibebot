@@ -1,4 +1,4 @@
-const { ChannelType, PermissionsBitField } = require('discord.js');
+const { ChannelType, PermissionFlagsBits } = require('discord.js');
 const db = require('../utils/database');
 const logger = require('../utils/logger');
 
@@ -26,8 +26,8 @@ module.exports = {
             {
               id: member.id,
               allow: [
-                PermissionsBitField.Flags.ManageChannels,
-                PermissionsBitField.Flags.MoveMembers,
+                PermissionFlagsBits.ManageChannels,
+                PermissionFlagsBits.MoveMembers,
               ],
             },
           ],

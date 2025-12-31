@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 
 /**
  * Check if a member can moderate another member
@@ -23,7 +23,7 @@ function canModerate(moderator, target) {
   // Can't moderate bots (unless you're admin)
   if (
     target.user.bot &&
-    !moderator.permissions.has(PermissionsBitField.Flags.Administrator)
+    !moderator.permissions.has(PermissionFlagsBits.Administrator)
   ) {
     return { canModerate: false, reason: "You can't moderate bots!" };
   }
@@ -95,7 +95,7 @@ function formatPermissions(permissions) {
   };
 
   const perms = [];
-  for (const [key, value] of Object.entries(PermissionsBitField.Flags)) {
+  for (const [key, value] of Object.entries(PermissionFlagsBits)) {
     if (permissions.has(value) && permissionNames[key]) {
       perms.push(permissionNames[key]);
     }

@@ -1,5 +1,5 @@
 const db = require('../../utils/database');
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'removewarn',
@@ -9,7 +9,7 @@ module.exports = {
   async execute(message, args) {
     // Permission check
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)
+      !message.member.permissions.has(PermissionFlagsBits.ManageMessages)
     ) {
       return message.reply('❌ You do not have permission to remove warnings.');
     }

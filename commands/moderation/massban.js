@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'massban',
@@ -9,13 +9,13 @@ module.exports = {
   cooldown: 10,
   guildOnly: true,
   async execute(message, args) {
-    if (!message.member.permissions.has(PermissionsBitField.Flags.BanMembers)) {
+    if (!message.member.permissions.has(PermissionFlagsBits.BanMembers)) {
       return message.reply('❌ You need Ban Members permission!');
     }
 
     if (
       !message.guild.members.me.permissions.has(
-        PermissionsBitField.Flags.BanMembers
+        PermissionFlagsBits.BanMembers
       )
     ) {
       return message.reply('❌ I need Ban Members permission!');

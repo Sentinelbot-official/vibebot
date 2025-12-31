@@ -3,7 +3,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  PermissionsBitField,
+  PermissionFlagsBits,
 } = require('discord.js');
 const db = require('../../utils/database');
 
@@ -16,7 +16,7 @@ module.exports = {
   cooldown: 10,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageRoles)
+      !message.member.permissions.has(PermissionFlagsBits.ManageRoles)
     ) {
       return message.reply(
         '❌ You need the Manage Roles permission to use this command!'
@@ -25,7 +25,7 @@ module.exports = {
 
     if (
       !message.guild.members.me.permissions.has(
-        PermissionsBitField.Flags.ManageRoles
+        PermissionFlagsBits.ManageRoles
       )
     ) {
       return message.reply(

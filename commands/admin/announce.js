@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'announce',
@@ -10,7 +10,7 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)
+      !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
     ) {
       return message.reply('❌ You need Manage Server permission!');
     }

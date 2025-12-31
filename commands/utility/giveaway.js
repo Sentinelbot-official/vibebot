@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const {
   parseTime,
   formatTime,
@@ -15,7 +15,7 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)
+      !message.member.permissions.has(PermissionFlagsBits.ManageMessages)
     ) {
       return message.reply('❌ You need Manage Messages permission!');
     }

@@ -1,5 +1,5 @@
 const db = require('../../utils/database');
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'warn',
@@ -10,7 +10,7 @@ module.exports = {
   async execute(message, args) {
     // Permissions and input checks
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)
+      !message.member.permissions.has(PermissionFlagsBits.ManageMessages)
     ) {
       return message.reply('❌ You do not have permission to warn members.');
     }
@@ -128,7 +128,7 @@ module.exports = {
       logChannel &&
       logChannel
         .permissionsFor(message.guild.members.me)
-        .has(PermissionsBitField.Flags.SendMessages)
+        .has(PermissionFlagsBits.SendMessages)
     ) {
       logChannel.send({ embeds: [logEmbed] }).catch(() => {});
     }

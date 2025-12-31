@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
 
     if (action === 'create') {
       if (
-        !message.member.permissions.has(PermissionsBitField.Flags.ManageEvents)
+        !message.member.permissions.has(PermissionFlagsBits.ManageEvents)
       ) {
         return message.reply('❌ You need Manage Events permission!');
       }
@@ -197,7 +197,7 @@ module.exports = {
 
     if (action === 'delete') {
       if (
-        !message.member.permissions.has(PermissionsBitField.Flags.ManageEvents)
+        !message.member.permissions.has(PermissionFlagsBits.ManageEvents)
       ) {
         return message.reply('❌ You need Manage Events permission!');
       }

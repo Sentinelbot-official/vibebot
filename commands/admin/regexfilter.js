@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
   cooldown: 5,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.Administrator)
+      !message.member.permissions.has(PermissionFlagsBits.Administrator)
     ) {
       return message.reply(
         '❌ You need the Administrator permission to use this command!'

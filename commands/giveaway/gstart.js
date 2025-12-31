@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
 const ms = require('ms');
 
@@ -13,7 +13,7 @@ module.exports = {
   async execute(message, args) {
     // Permission check
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)
+      !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
     ) {
       return message.reply(
         '❌ You need Manage Server permission to start giveaways!'

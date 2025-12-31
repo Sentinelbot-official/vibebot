@@ -1,6 +1,6 @@
 const {
   EmbedBuilder,
-  PermissionsBitField,
+  PermissionFlagsBits,
   ChannelType,
 } = require('discord.js');
 const db = require('../../utils/database');
@@ -14,7 +14,7 @@ module.exports = {
   cooldown: 5,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageChannels)
+      !message.member.permissions.has(PermissionFlagsBits.ManageChannels)
     ) {
       return message.reply('❌ You need Manage Channels permission!');
     }

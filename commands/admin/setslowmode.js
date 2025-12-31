@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 const { parseTime, formatTime } = require('../../utils/timeUtils');
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageChannels)
+      !message.member.permissions.has(PermissionFlagsBits.ManageChannels)
     ) {
       return message.reply('❌ You need Manage Channels permission!');
     }

@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'stealemoji',
@@ -11,7 +11,7 @@ module.exports = {
   async execute(message, args) {
     if (
       !message.member.permissions.has(
-        PermissionsBitField.Flags.ManageGuildExpressions
+        PermissionFlagsBits.ManageGuildExpressions
       )
     ) {
       return message.reply('❌ You need Manage Emojis permission!');
@@ -19,7 +19,7 @@ module.exports = {
 
     if (
       !message.guild.members.me.permissions.has(
-        PermissionsBitField.Flags.ManageGuildExpressions
+        PermissionFlagsBits.ManageGuildExpressions
       )
     ) {
       return message.reply('❌ I need Manage Emojis permission!');

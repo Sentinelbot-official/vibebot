@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'nickname',
@@ -10,14 +10,14 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageNicknames)
+      !message.member.permissions.has(PermissionFlagsBits.ManageNicknames)
     ) {
       return message.reply('❌ You need Manage Nicknames permission!');
     }
 
     if (
       !message.guild.members.me.permissions.has(
-        PermissionsBitField.Flags.ManageNicknames
+        PermissionFlagsBits.ManageNicknames
       )
     ) {
       return message.reply('❌ I need Manage Nicknames permission!');

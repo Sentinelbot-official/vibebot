@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'purge',
@@ -8,7 +8,7 @@ module.exports = {
   async execute(message, args) {
     // Permission check
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)
+      !message.member.permissions.has(PermissionFlagsBits.ManageMessages)
     ) {
       return message.reply('❌ You do not have permission to purge messages.');
     }
@@ -16,7 +16,7 @@ module.exports = {
     // Bot permission check
     if (
       !message.guild.members.me.permissions.has(
-        PermissionsBitField.Flags.ManageMessages
+        PermissionFlagsBits.ManageMessages
       )
     ) {
       return message.reply('❌ I do not have permission to manage messages.');

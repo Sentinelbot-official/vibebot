@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'timeout',
@@ -8,7 +8,7 @@ module.exports = {
   async execute(message, args) {
     // Permission check
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)
+      !message.member.permissions.has(PermissionFlagsBits.ModerateMembers)
     ) {
       return message.reply('❌ You do not have permission to timeout members.');
     }

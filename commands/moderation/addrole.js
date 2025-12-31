@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   name: 'addrole',
@@ -10,14 +10,14 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageRoles)
+      !message.member.permissions.has(PermissionFlagsBits.ManageRoles)
     ) {
       return message.reply('❌ You need Manage Roles permission!');
     }
 
     if (
       !message.guild.members.me.permissions.has(
-        PermissionsBitField.Flags.ManageRoles
+        PermissionFlagsBits.ManageRoles
       )
     ) {
       return message.reply('❌ I need Manage Roles permission!');

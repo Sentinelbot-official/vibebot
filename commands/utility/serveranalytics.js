@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
   cooldown: 30,
   async execute(message) {
     if (
-      !message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)
+      !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
     ) {
       return message.reply(
         '❌ You need the Manage Server permission to view analytics!'

@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../utils/database');
 const logger = require('../utils/logger');
 
@@ -44,7 +44,7 @@ module.exports = {
       // Kick the raiders if bot has permission
       if (
         member.guild.members.me.permissions.has(
-          PermissionsBitField.Flags.KickMembers
+          PermissionFlagsBits.KickMembers
         )
       ) {
         for (const join of validJoins) {
@@ -79,7 +79,7 @@ module.exports = {
               {
                 name: 'Action Taken',
                 value: member.guild.members.me.permissions.has(
-                  PermissionsBitField.Flags.KickMembers
+                  PermissionFlagsBits.KickMembers
                 )
                   ? 'Members kicked'
                   : 'No action (missing permissions)',
