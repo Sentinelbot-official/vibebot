@@ -18,11 +18,12 @@ module.exports = {
         emoji: '🐛',
       },
       {
-        title: '☕ 3 AM Coding Session',
+        title: '☕ The 24/7 Advantage',
         description:
-          'The AI integration took 3 hours longer than expected. ' +
-          'At 3 AM, chat was still there, suggesting fixes and keeping me awake with memes. ' +
-          'We finally got it working at 3:47 AM. The celebration in chat was EPIC! 🎉',
+          'The AI integration took 3 hours longer than expected. At 3 AM my time, ' +
+          'chat was still there - but now it was morning viewers from Europe! ' +
+          'They kept suggesting fixes while having their coffee. When we got it working ' +
+          'at 3:47 AM, the Asian viewers joined the celebration! 24/7 stream = 24/7 help! 🎉',
         emoji: '☕',
       },
       {
@@ -81,12 +82,13 @@ module.exports = {
         emoji: '🎭',
       },
       {
-        title: '💜 The Community Moment',
+        title: '💜 The Global Community Moment',
         description:
           'After 20+ hours of coding, someone in chat said: ' +
-          '"This isn\'t just a bot anymore, it\'s OUR bot." ' +
-          'That\'s when I realized we\'d built something truly special together. ' +
-          'Thank you all! 🙏',
+          '"This isn\'t just a bot anymore, it\'s OUR bot." Then viewers from different ' +
+          'timezones started chiming in - "Our bot!" in different languages! ' +
+          'That\'s when I realized: with a 24/7 stream, we\'d built something truly ' +
+          'special with a GLOBAL community. Thank you all! 🌍🙏',
         emoji: '💜',
       },
     ];
@@ -99,14 +101,15 @@ module.exports = {
       .setTitle(`${moment.emoji} ${moment.title}`)
       .setDescription(moment.description)
       .addFields({
-        name: '🎬 Want to see more moments?',
+        name: '🔴 Want to see more moments?',
         value:
-          'Watch the development live: https://twitch.tv/projectdraguk\n' +
+          '**LIVE NOW (24/7):** https://twitch.tv/projectdraguk\n' +
+          'Watch development happen in real-time, any time!\n' +
           'Run this command again for another story!',
         inline: false,
       })
       .setFooter({
-        text: 'Built with ❤️ by Airis & The Community | Every bug has a story!',
+        text: '🔴 Built 24/7 with ❤️ by Airis & The Global Community | Every bug has a story!',
         iconURL: message.author.displayAvatarURL(),
       })
       .setTimestamp();

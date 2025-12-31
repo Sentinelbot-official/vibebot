@@ -18,11 +18,12 @@ module.exports = {
     // Set dynamic status messages
     const activities = [
       { name: `🎵 ${client.guilds.cache.size} servers vibing!`, type: ActivityType.Watching },
-      { name: `🎬 Built live on Twitch!`, type: ActivityType.Streaming, url: botConfig.twitch },
+      { name: `🔴 Built 24/7 live on Twitch!`, type: ActivityType.Streaming, url: botConfig.twitch },
       { name: `💜 ${client.users.cache.size} community members`, type: ActivityType.Listening },
       { name: `⚡ ${client.commands.size} commands ready!`, type: ActivityType.Playing },
       { name: `🚀 v${botConfig.version} | !help`, type: ActivityType.Playing },
-      { name: `🎮 Made with chat on stream!`, type: ActivityType.Playing },
+      { name: `🎮 Coded 24/7 with global chat!`, type: ActivityType.Playing },
+      { name: `🔴 LIVE NOW - twitch.tv/projectdraguk`, type: ActivityType.Streaming, url: botConfig.twitch },
     ];
 
     let currentActivity = 0;

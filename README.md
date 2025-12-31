@@ -11,11 +11,11 @@
 [![Production Ready](https://img.shields.io/badge/production-ready-success.svg)]
 [![AI Powered](https://img.shields.io/badge/AI-Powered-ff69b4.svg)]
 
-### 🎬 **Not Just a Bot - A Journey!**
+### 🔴 **Not Just a Bot - A 24/7 Journey!**
 
-**220+ Commands** | **AI-Powered** | **Built with ❤️ Live on Twitch**
+**220+ Commands** | **AI-Powered** | **Built 24/7 Live on Twitch**
 
-[Watch the Stream](https://twitch.tv/projectdraguk) • [GitHub](https://github.com/Sentinelbot-official/vibebot) • [Invite Bot](#) • [Support Server](#)
+[🔴 LIVE NOW - 24/7 Stream](https://twitch.tv/projectdraguk) • [GitHub](https://github.com/Sentinelbot-official/vibebot) • [Invite Bot](#) • [Support Server](#)
 
 </div>
 
@@ -23,13 +23,13 @@
 
 ## 🌟 What Makes Vibe Bot Special?
 
-**This isn't your average Discord bot.** Every single feature, every command, every line of code was written **LIVE on Twitch** with the community watching, learning, and contributing ideas in real-time!
+**This isn't your average Discord bot.** Every single feature, every command, every line of code was written **LIVE on a 24/7 Twitch stream** with a global community watching, learning, and contributing ideas in real-time - no matter what timezone!
 
 ### 🎭 The Story
 
-On **December 31, 2025**, streamer [Airis](https://twitch.tv/projectdraguk) went live with a challenge: *"Let's build a Discord bot from scratch with chat's help!"*
+On **December 31, 2025**, streamer [Airis](https://twitch.tv/projectdraguk) went live with a challenge: *"Let's build a Discord bot from scratch 24/7 with chat's help!"*
 
-What started as 130 basic commands evolved into a **220+ command powerhouse** with:
+**The stream never stopped.** With viewers from every timezone contributing, what started as 130 basic commands evolved into a **220+ command powerhouse** with:
 - 🤖 AI integration (OpenAI & Anthropic)
 - 💰 Full economy system with jobs, stocks, and property
 - 🎮 15+ mini-games built with chat
@@ -38,7 +38,7 @@ What started as 130 basic commands evolved into a **220+ command powerhouse** wi
 - 🎨 Image generation and manipulation
 - 📊 Advanced analytics and insights
 
-**Every feature was suggested, debated, coded, and tested with viewers.** That's what makes this bot unique - it's built BY the community, FOR the community!
+**Every feature was suggested, debated, coded, and tested with viewers from around the world, 24/7.** That's what makes this bot unique - it's built BY a global community, FOR the community, around the clock!
 
 ## 💜 Community-Powered Development
 
@@ -46,10 +46,10 @@ What started as 130 basic commands evolved into a **220+ command powerhouse** wi
 
 | Version | Features | Stream Hours | Community Contributions |
 |---------|----------|--------------|------------------------|
-| **v1.0** | 130 basic commands | 8+ hours | Feature suggestions, bug reports |
-| **v2.0** | Economy, leveling, games | 12+ hours | Game ideas, balance testing |
-| **v2.1** | AI integration, advanced features | 15+ hours | API suggestions, feature voting |
-| **v2.2** | 220+ commands, full ecosystem | 20+ hours | Everything! 💜 |
+| **v1.0** | 130 basic commands | 8+ hours (24/7) | Feature suggestions, bug reports |
+| **v2.0** | Economy, leveling, games | 12+ hours (24/7) | Game ideas, balance testing |
+| **v2.1** | AI integration, advanced features | 15+ hours (24/7) | API suggestions, feature voting |
+| **v2.2** | 220+ commands, full ecosystem | 20+ hours (24/7) | Global viewers, every timezone! 💜 |
 
 ### 🏆 What Chat Built
 
@@ -75,14 +75,14 @@ Every feature has a story! Here are some community highlights:
 
 ---
 
-**📺 Watch Development Live:** https://twitch.tv/projectdraguk  
+**🔴 LIVE NOW (24/7):** https://twitch.tv/projectdraguk - **Watch anytime, from anywhere!**  
 **💻 Contribute on GitHub:** https://github.com/Sentinelbot-official/vibebot
 
 ## 🚀 Features
 
 ### 💎 **220+ Commands Across 8 Categories**
 
-> 🎬 **Every command was coded live with chat!** Use `!story` in Discord to learn more!
+> 🔴 **Every command was coded live 24/7 with global chat!** Use `!story` in Discord to learn more!
 
 **🛡️ Advanced Moderation (19 commands)**
 

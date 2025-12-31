@@ -51,14 +51,15 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setColor(0x9b59b6) // Purple for the vibe!
         .setAuthor({
-          name: `🎵 ${message.client.user.username} - Built Live on Twitch!`,
+          name: `🎵 ${message.client.user.username} - Built 24/7 Live on Twitch!`,
           iconURL: message.client.user.displayAvatarURL(),
         })
         .setDescription(
-          `**Hey there!** 👋 I'm Vibe Bot, created live on stream with the community!\n\n` +
-            `🎬 **Watch the journey:** https://twitch.tv/projectdraguk\n` +
-            `💜 **${commands.size} commands** coded with chat's help!\n` +
-            `⚡ **Prefix:** \`${prefix}\`\n\n` +
+          `**Hey there!** 👋 I'm Vibe Bot, created on a 24/7 live stream with the global community!\n\n` +
+            `🔴 **LIVE NOW (24/7):** https://twitch.tv/projectdraguk\n` +
+            `💜 **${commands.size} commands** coded live with chat!\n` +
+            `⚡ **Prefix:** \`${prefix}\`\n` +
+            `🌍 **Built by viewers worldwide, any time, day or night!**\n\n` +
             `Use \`${prefix}help [command]\` for detailed info about any command.\n` +
             `**Let's vibe together!** 🎵\n\u200b`
         )

@@ -31,21 +31,22 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setColor(0x9b59b6) // Purple vibe!
-      .setTitle('🎵 Vibe Bot - Our Story')
+      .setTitle('🎵 Vibe Bot - Our 24/7 Story')
       .setDescription(
-        `**Not just a bot - a journey!** 🎬\n\n` +
-          `Created on **December 31, 2025** live on Twitch with the community. ` +
-          `Every feature, every command, and every line of code was written with ` +
-          `chat watching, learning, and contributing ideas!\n\n` +
+        `**Not just a bot - a 24/7 journey!** 🔴\n\n` +
+          `Created on **December 31, 2025** on a **24/7 LIVE Twitch stream** with the ` +
+          `global community. Every feature, every command, and every line of code was ` +
+          `written with chat watching, learning, and contributing ideas - any time, ` +
+          `day or night!\n\n` +
           `From **130 commands** to **220+ commands** - this represents hundreds of ` +
-          `hours of collaborative coding, debugging sessions at 3 AM, and an amazing ` +
-          `community coming together. 💜\n\n` +
-          `**Watch the journey:** https://twitch.tv/projectdraguk`
+          `hours of collaborative coding, debugging sessions at 3 AM (and 3 PM!), and ` +
+          `an amazing worldwide community coming together. 💜\n\n` +
+          `**🔴 LIVE NOW (24/7):** https://twitch.tv/projectdraguk`
       )
       .setThumbnail(client.user.displayAvatarURL())
       .addFields(
         { name: '📛 Bot Name', value: client.user.username, inline: true },
-        { name: '🎬 Origin', value: 'Built Live on Twitch!', inline: true },
+        { name: '🔴 Origin', value: '24/7 Live Twitch Stream!', inline: true },
         {
           name: '📅 Birthday',
           value: 'Dec 31, 2025',
@@ -73,8 +74,13 @@ module.exports = {
         { name: '📦 Node.js', value: nodeVersion, inline: true },
         { name: '📚 Discord.js', value: `v${djsVersion}`, inline: true },
         { name: '👨‍💻 Creator', value: 'Airis', inline: true },
-        { name: '💜 Built By', value: 'The Community', inline: true },
+        { name: '💜 Built By', value: 'Global 24/7 Community', inline: true },
         { name: '📜 License', value: 'Proprietary', inline: true },
+        {
+          name: '🔴 Stream Status',
+          value: '**LIVE NOW - 24/7!** Watch development happen in real-time!',
+          inline: false,
+        },
         {
           name: '🎯 Special Features',
           value: '🤖 AI-Powered | 🎮 220+ Commands | 🎨 Mini-Games | 💰 Economy | 🛡️ Auto-Mod',
@@ -86,7 +92,7 @@ module.exports = {
           inline: false,
         }
       )
-      .setFooter({ text: '💜 Built with love by Airis & The Community | Vibe Bot v2.2.0' })
+      .setFooter({ text: '💜 Built 24/7 with love by Airis & The Global Community | Vibe Bot v2.2.0' })
       .setTimestamp();
 
     message.reply({ embeds: [embed] });
