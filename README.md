@@ -3,7 +3,7 @@
 <div align="center">
 
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.4.0-purple.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.5.0-purple.svg)](CHANGELOG.md)
 [![Discord.js](https://img.shields.io/badge/discord.js-v14-blue.svg)](https://discord.js.org/)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![Built on Twitch](https://img.shields.io/badge/Built%20on-Twitch-9146FF.svg)](https://twitch.tv/projectdraguk)

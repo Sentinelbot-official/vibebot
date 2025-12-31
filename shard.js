@@ -15,7 +15,7 @@ console.log(`
 ║    ╚████╔╝ ██║██████╔╝███████╗    ██████╔╝╚██████╔╝   ██║      ║
 ║     ╚═══╝  ╚═╝╚═════╝ ╚══════╝    ╚═════╝  ╚═════╝    ╚═╝      ║
 ║                                                                   ║
-║              🎵 SHARDING MANAGER - v2.4.0 🎵                     ║
+║              🎵 SHARDING MANAGER - v2.5.0 🎵                     ║
 ║                                                                   ║
 ║   Built 24/7 LIVE on Twitch with the global community!          ║
 ║   Every shard spawned with love from the stream! 💜              ║

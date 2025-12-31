@@ -14,6 +14,99 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Slash commands support
 - Web dashboard
 
+## [2.5.0] - 2025-12-31
+
+### 🎮 Premium System Phase 2 - Complete Feature Set
+
+Massive expansion adding advanced economy, analytics, and premium features!
+
+### Added
+
+#### ⭐ XP Multipliers
+- Premium: 1.5x XP gain on all messages
+- VIP: 2x XP gain on all messages
+- XP bonuses displayed in level-up messages
+- Integrated with existing leveling system
+
+#### 🎉 Premium Giveaway System
+- Full giveaway management (`//giveaway start/end/reroll/list`)
+- **Premium users get 2x entries**
+- **VIP users get 3x entries**
+- Automatic winner selection with premium multipliers
+- Duration support: minutes, hours, days
+- Automatic giveaway ending
+- Reroll functionality
+
+#### 📈 Stock Market System (VIP Only)
+- 6 stocks with realistic volatility
+- Buy/sell stocks (`//stocks buy/sell`)
+- Portfolio management
+- Real-time price fluctuations (5-minute intervals)
+- Profit/loss tracking
+- Seeded random for consistent prices
+
+#### 🏢 Business Ownership (VIP Only)
+- 6 business types (Café, Restaurant, Gym, Hotel, Casino, Tech Startup)
+- Passive income generation (collect every 6 hours)
+- Business upgrades (increase income)
+- Buy/sell businesses
+- Level system for businesses
+
+#### 📊 Server Analytics Dashboard (VIP Only)
+- **Overview:** Members, channels, activity, commands
+- **Members:** Growth tracking, retention rates
+- **Activity:** Messages, reactions, voice time
+- **Commands:** Usage statistics, top commands
+- **Growth:** Daily join tracking
+- Comprehensive insights for server owners
+
+#### 🎨 Premium Profile Customization
+- 8 custom profile themes (Fire, Ocean, Forest, Sunset, Galaxy, Gold, Ruby)
+- Custom badges (20 characters)
+- Custom bio (200 characters)
+- Enhanced profile display
+- Theme-based colors
+
+#### 🛡️ Advanced Moderation (Premium)
+- Extended audit logs (90 days vs 30 days)
+- Moderation insights & statistics
+- Top moderators tracking
+- Action trends (7-day, 30-day)
+- Advanced auto-mod configuration
+
+### Enhanced
+
+- `events/levelSystem.js` - Added premium XP multipliers
+- All premium features integrated with tier system
+- Automatic giveaway checker (runs every minute)
+
+### New Commands
+
+- `//giveaway` - Create and manage giveaways with premium bonuses
+- `//stocks` - VIP stock market trading
+- `//business` - VIP business ownership and management
+- `//analytics` - VIP server analytics dashboard
+- `//profilecustom` - Premium profile customization
+- `//advancedmod` - Premium advanced moderation tools
+
+### Event Handlers
+
+- `events/giveawayChecker.js` - Automatically end giveaways
+
+### Documentation
+
+- Updated all version numbers to 2.5.0
+- Updated README with Phase 2 features
+- Updated website with new features
+
+### Technical Improvements
+
+- Seeded random for consistent stock prices
+- Business income collection system
+- Analytics data tracking
+- Profile theme system
+- Extended audit log retention
+
 ## [2.4.0] - 2025-12-31
 
 ### 🚀 Premium System Expansion

@@ -1,41 +1,119 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
+const premiumPerks = require('../../utils/premiumPerks');
 
-const businessTypes = {
-  lemonade: { name: 'Lemonade Stand', cost: 5000, income: 100, emoji: '🍋' },
-  cafe: { name: 'Coffee Cafe', cost: 25000, income: 500, emoji: '☕' },
-  restaurant: { name: 'Restaurant', cost: 100000, income: 2500, emoji: '🍽️' },
-  hotel: { name: 'Hotel', cost: 500000, income: 15000, emoji: '🏨' },
-  casino: { name: 'Casino', cost: 2000000, income: 100000, emoji: '🎰' },
+// Available businesses
+const BUSINESSES = {
+  cafe: {
+    name: '☕ Coffee Café',
+    cost: 50000,
+    income: { min: 500, max: 1500 },
+    emoji: '☕',
+  },
+  restaurant: {
+    name: '🍽️ Restaurant',
+    cost: 100000,
+    income: { min: 1000, max: 3000 },
+    emoji: '🍽️',
+  },
+  gym: {
+    name: '💪 Fitness Gym',
+    cost: 150000,
+    income: { min: 1500, max: 4000 },
+    emoji: '💪',
+  },
+  hotel: {
+    name: '🏨 Luxury Hotel',
+    cost: 250000,
+    income: { min: 3000, max: 7000 },
+    emoji: '🏨',
+  },
+  casino: {
+    name: '🎰 Casino',
+    cost: 500000,
+    income: { min: 5000, max: 15000 },
+    emoji: '🎰',
+  },
+  tech: {
+    name: '💻 Tech Startup',
+    cost: 750000,
+    income: { min: 10000, max: 25000 },
+    emoji: '💻',
+  },
 };
 
 module.exports = {
   name: 'business',
-  description: 'Own and manage virtual businesses',
-  usage: '<buy/list/collect/upgrade/sell> [type]',
+  description: 'Own and manage businesses (VIP only)',
+  usage: '//business <buy/sell/collect/list/upgrade> [type]',
   aliases: ['biz', 'company'],
   category: 'economy',
   cooldown: 5,
   async execute(message, args) {
+    const guildId = message.guild.id;
+
+    // Check VIP
+    if (!premiumPerks.hasFeature(guildId, 'custom_commands')) {
+      const embed = new EmbedBuilder()
+        .setColor('#ff0000')
+        .setTitle('❌ VIP Required')
+        .setDescription(
+          'Business ownership is a **VIP-exclusive** feature!\n\n' +
+            '**VIP Benefits:**\n' +
+            '• Own virtual businesses\n' +
+            '• Passive income generation\n' +
+            '• Stock market access\n' +
+            '• AI chatbot\n' +
+            '• Custom commands\n\n' +
+            'Use `//premium` to upgrade!'
+        )
+        .setFooter({ text: 'Support the 24/7 live coding journey! 💜' });
+
+      return message.reply({ embeds: [embed] });
+    }
+
     const action = args[0]?.toLowerCase();
 
-    if (!action || action === 'list') {
-      const list = Object.entries(businessTypes)
-        .map(
-          ([key, biz]) =>
-            `${biz.emoji} **${biz.name}**\n` +
-            `Cost: ${biz.cost.toLocaleString()} coins\n` +
-            `Income: ${biz.income.toLocaleString()} coins/hour\n` +
-            `ID: \`${key}\``
-        )
-        .join('\n\n');
-
+    if (!action || !['buy', 'sell', 'collect', 'list', 'upgrade', 'shop'].includes(action)) {
       const embed = new EmbedBuilder()
-        .setColor(0xffd700)
-        .setTitle('🏢 Available Businesses')
-        .setDescription(list)
-        .setFooter({ text: 'Use "business buy <id>" to purchase' })
+        .setColor('#0099ff')
+        .setTitle('🏢 Business Management')
+        .setDescription(
+          '**Own businesses and earn passive income!**\n\n' +
+            '**Commands:**\n' +
+            '`//business shop` - View available businesses\n' +
+            '`//business buy <type>` - Buy a business\n' +
+            '`//business sell <type>` - Sell a business\n' +
+            '`//business collect` - Collect income from all businesses\n' +
+            '`//business list` - View your businesses\n' +
+            '`//business upgrade <type>` - Upgrade a business\n\n' +
+            '**Income:**\n' +
+            'Collect income every 6 hours from your businesses!'
+        )
+        .setFooter({ text: '👑 VIP Feature | Build your empire!' });
+
+      return message.reply({ embeds: [embed] });
+    }
+
+    if (action === 'shop') {
+      const embed = new EmbedBuilder()
+        .setColor('#0099ff')
+        .setTitle('🏪 Business Shop')
+        .setDescription('**Available Businesses**\n\nBuy businesses to earn passive income!')
         .setTimestamp();
+
+      for (const [type, business] of Object.entries(BUSINESSES)) {
+        embed.addFields({
+          name: `${business.emoji} ${business.name}`,
+          value:
+            `**Cost:** ${business.cost.toLocaleString()} coins\n` +
+            `**Income:** ${business.income.min.toLocaleString()} - ${business.income.max.toLocaleString()} coins/6h\n` +
+            `**ID:** \`${type}\``,
+          inline: true,
+        });
+      }
+
+      embed.setFooter({ text: '👑 VIP Feature | Use //business buy <type>' });
 
       return message.reply({ embeds: [embed] });
     }
@@ -43,135 +121,205 @@ module.exports = {
     if (action === 'buy') {
       const type = args[1]?.toLowerCase();
 
-      if (!type || !businessTypes[type]) {
-        const types = Object.keys(businessTypes).join(', ');
+      if (!type || !BUSINESSES[type]) {
         return message.reply(
-          `❌ Invalid business type!\nAvailable: ${types}\nUsage: \`business buy <type>\``
+          `❌ Invalid business type! Available: ${Object.keys(BUSINESSES).join(', ')}\nUse \`//business shop\` to see details.`
         );
       }
 
+      const business = BUSINESSES[type];
+
+      // Check if already owned
+      const businesses = db.get('businesses', message.author.id) || {};
+      if (businesses[type]) {
+        return message.reply(`❌ You already own a ${business.name}!`);
+      }
+
+      // Get user economy
       const economy = db.get('economy', message.author.id) || {
         coins: 0,
         bank: 0,
       };
-      const businesses = db.get('businesses', message.author.id) || {
-        businesses: [],
-      };
-
-      const business = businessTypes[type];
-
-      // Check if already owns this type
-      if (businesses.businesses.some(b => b.type === type)) {
-        return message.reply(
-          `❌ You already own a ${business.name}! Upgrade it instead.`
-        );
-      }
 
       if (economy.coins < business.cost) {
         return message.reply(
-          `❌ You need ${business.cost.toLocaleString()} coins to buy a ${business.name}!\nYou have: ${economy.coins.toLocaleString()} coins`
+          `❌ You don't have enough coins! You need ${business.cost.toLocaleString()} coins.`
         );
       }
 
+      // Deduct coins
       economy.coins -= business.cost;
-      businesses.businesses.push({
-        type,
+      db.set('economy', message.author.id, economy);
+
+      // Add business
+      businesses[type] = {
         level: 1,
         purchasedAt: Date.now(),
         lastCollect: Date.now(),
-      });
-
-      db.set('economy', message.author.id, economy);
+      };
       db.set('businesses', message.author.id, businesses);
 
-      return message.reply(
-        `✅ Purchased ${business.emoji} **${business.name}**!\n` +
-          `Income: ${business.income.toLocaleString()} coins/hour\n` +
-          `Use \`business collect\` to collect earnings!`
-      );
+      const embed = new EmbedBuilder()
+        .setColor('#00ff00')
+        .setTitle('✅ Business Purchased!')
+        .setDescription(
+          `**Business:** ${business.emoji} ${business.name}\n` +
+            `**Cost:** ${business.cost.toLocaleString()} coins\n` +
+            `**Income:** ${business.income.min.toLocaleString()} - ${business.income.max.toLocaleString()} coins/6h\n\n` +
+            `**New Balance:** ${economy.coins.toLocaleString()} coins\n\n` +
+            `Use \`//business collect\` to collect income every 6 hours!`
+        )
+        .setFooter({ text: '👑 VIP Feature | Congratulations!' })
+        .setTimestamp();
+
+      return message.reply({ embeds: [embed] });
     }
 
-    if (action === 'collect') {
-      const businesses = db.get('businesses', message.author.id) || {
-        businesses: [],
-      };
+    if (action === 'sell') {
+      const type = args[1]?.toLowerCase();
 
-      if (!businesses.businesses.length) {
+      if (!type || !BUSINESSES[type]) {
         return message.reply(
-          "❌ You don't own any businesses!\nUse `business list` to see available businesses."
+          `❌ Invalid business type! Use \`//business list\` to see your businesses.`
         );
       }
 
+      const businesses = db.get('businesses', message.author.id) || {};
+      if (!businesses[type]) {
+        return message.reply(`❌ You don't own a ${BUSINESSES[type].name}!`);
+      }
+
+      const business = BUSINESSES[type];
+      const level = businesses[type].level;
+      const sellPrice = Math.floor(business.cost * 0.7 * level);
+
+      // Add coins
       const economy = db.get('economy', message.author.id) || {
         coins: 0,
         bank: 0,
       };
+      economy.coins += sellPrice;
+      db.set('economy', message.author.id, economy);
 
-      let totalEarnings = 0;
-      const now = Date.now();
+      // Remove business
+      delete businesses[type];
+      db.set('businesses', message.author.id, businesses);
 
-      for (const biz of businesses.businesses) {
-        const business = businessTypes[biz.type];
-        const hoursSinceCollect = (now - biz.lastCollect) / (1000 * 60 * 60);
-        const maxHours = 24; // Max 24 hours of earnings
+      const embed = new EmbedBuilder()
+        .setColor('#ff9900')
+        .setTitle('✅ Business Sold!')
+        .setDescription(
+          `**Business:** ${business.emoji} ${business.name} (Level ${level})\n` +
+            `**Sold for:** ${sellPrice.toLocaleString()} coins\n\n` +
+            `**New Balance:** ${economy.coins.toLocaleString()} coins`
+        )
+        .setFooter({ text: '👑 VIP Feature' })
+        .setTimestamp();
 
-        const hoursToCollect = Math.min(hoursSinceCollect, maxHours);
-        const earnings = Math.floor(
-          business.income * hoursToCollect * biz.level
-        );
+      return message.reply({ embeds: [embed] });
+    }
 
-        totalEarnings += earnings;
-        biz.lastCollect = now;
+    if (action === 'collect') {
+      const businesses = db.get('businesses', message.author.id) || {};
+
+      if (Object.keys(businesses).length === 0) {
+        return message.reply('❌ You don\'t own any businesses yet!');
       }
 
-      if (totalEarnings === 0) {
+      const collectInterval = 6 * 60 * 60 * 1000; // 6 hours
+      let totalIncome = 0;
+      const collected = [];
+
+      for (const [type, data] of Object.entries(businesses)) {
+        const timeSinceCollect = Date.now() - data.lastCollect;
+
+        if (timeSinceCollect >= collectInterval) {
+          const business = BUSINESSES[type];
+          const income =
+            Math.floor(
+              Math.random() * (business.income.max - business.income.min + 1)
+            ) +
+            business.income.min * data.level;
+
+          totalIncome += income;
+          data.lastCollect = Date.now();
+          collected.push({ type, name: business.name, emoji: business.emoji, income });
+        }
+      }
+
+      if (totalIncome === 0) {
+        const nextCollect = Math.min(
+          ...Object.values(businesses).map(b => b.lastCollect + collectInterval)
+        );
+        const timeLeft = nextCollect - Date.now();
+        const hours = Math.floor(timeLeft / (60 * 60 * 1000));
+        const minutes = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+
         return message.reply(
-          '❌ No earnings to collect yet! Wait at least a few minutes.'
+          `⏱️ No income to collect yet! Come back in **${hours}h ${minutes}m**`
         );
       }
 
-      economy.coins += totalEarnings;
+      // Add coins
+      const economy = db.get('economy', message.author.id) || {
+        coins: 0,
+        bank: 0,
+      };
+      economy.coins += totalIncome;
       db.set('economy', message.author.id, economy);
       db.set('businesses', message.author.id, businesses);
 
-      return message.reply(
-        `💰 Collected **${totalEarnings.toLocaleString()} coins** from your businesses!\n` +
-          `New balance: ${economy.coins.toLocaleString()} coins`
-      );
+      const embed = new EmbedBuilder()
+        .setColor('#00ff00')
+        .setTitle('💰 Income Collected!')
+        .setDescription(
+          '**Collected from:**\n' +
+            collected
+              .map(b => `${b.emoji} ${b.name}: ${b.income.toLocaleString()} coins`)
+              .join('\n') +
+            `\n\n**Total Income:** ${totalIncome.toLocaleString()} coins\n` +
+            `**New Balance:** ${economy.coins.toLocaleString()} coins`
+        )
+        .setFooter({ text: '👑 VIP Feature | Come back in 6 hours!' })
+        .setTimestamp();
+
+      return message.reply({ embeds: [embed] });
     }
 
-    if (action === 'mylist' || action === 'owned') {
-      const businesses = db.get('businesses', message.author.id) || {
-        businesses: [],
-      };
+    if (action === 'list') {
+      const businesses = db.get('businesses', message.author.id) || {};
 
-      if (!businesses.businesses.length) {
-        return message.reply("❌ You don't own any businesses yet!");
+      if (Object.keys(businesses).length === 0) {
+        return message.reply('📭 You don\'t own any businesses yet!\nUse `//business shop` to buy one.');
       }
 
-      const list = businesses.businesses
-        .map(biz => {
-          const business = businessTypes[biz.type];
-          const hoursSinceCollect =
-            (Date.now() - biz.lastCollect) / (1000 * 60 * 60);
-          const earnings = Math.floor(
-            Math.min(hoursSinceCollect, 24) * business.income * biz.level
-          );
-
-          return (
-            `${business.emoji} **${business.name}** (Level ${biz.level})\n` +
-            `Income: ${(business.income * biz.level).toLocaleString()} coins/hour\n` +
-            `Pending: ${earnings.toLocaleString()} coins`
-          );
-        })
-        .join('\n\n');
-
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
+        .setColor('#0099ff')
         .setTitle('🏢 Your Businesses')
-        .setDescription(list)
-        .setFooter({ text: 'Use "business collect" to collect earnings' })
+        .setDescription('**Your Business Empire**')
         .setTimestamp();
+
+      const collectInterval = 6 * 60 * 60 * 1000;
+
+      for (const [type, data] of Object.entries(businesses)) {
+        const business = BUSINESSES[type];
+        const timeSinceCollect = Date.now() - data.lastCollect;
+        const canCollect = timeSinceCollect >= collectInterval;
+        const timeLeft = canCollect ? 0 : collectInterval - timeSinceCollect;
+        const hours = Math.floor(timeLeft / (60 * 60 * 1000));
+        const minutes = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+
+        embed.addFields({
+          name: `${business.emoji} ${business.name}`,
+          value:
+            `**Level:** ${data.level}\n` +
+            `**Income:** ${(business.income.min * data.level).toLocaleString()} - ${(business.income.max * data.level).toLocaleString()} coins/6h\n` +
+            `**Status:** ${canCollect ? '✅ Ready to collect!' : `⏱️ ${hours}h ${minutes}m`}`,
+          inline: true,
+        });
+      }
+
+      embed.setFooter({ text: '👑 VIP Feature | Use //business collect' });
 
       return message.reply({ embeds: [embed] });
     }
@@ -179,24 +327,22 @@ module.exports = {
     if (action === 'upgrade') {
       const type = args[1]?.toLowerCase();
 
-      if (!type) {
+      if (!type || !BUSINESSES[type]) {
         return message.reply(
-          '❌ Please specify a business type!\nUsage: `business upgrade <type>`'
+          `❌ Invalid business type! Use \`//business list\` to see your businesses.`
         );
       }
 
-      const businesses = db.get('businesses', message.author.id) || {
-        businesses: [],
-      };
-      const biz = businesses.businesses.find(b => b.type === type);
-
-      if (!biz) {
-        return message.reply(`❌ You don't own a ${type} business!`);
+      const businesses = db.get('businesses', message.author.id) || {};
+      if (!businesses[type]) {
+        return message.reply(`❌ You don't own a ${BUSINESSES[type].name}!`);
       }
 
-      const business = businessTypes[type];
-      const upgradeCost = Math.floor(business.cost * biz.level * 0.5);
+      const business = BUSINESSES[type];
+      const currentLevel = businesses[type].level;
+      const upgradeCost = business.cost * currentLevel;
 
+      // Get user economy
       const economy = db.get('economy', message.author.id) || {
         coins: 0,
         bank: 0,
@@ -204,71 +350,34 @@ module.exports = {
 
       if (economy.coins < upgradeCost) {
         return message.reply(
-          `❌ Upgrade costs ${upgradeCost.toLocaleString()} coins!\nYou have: ${economy.coins.toLocaleString()} coins`
+          `❌ You don't have enough coins! Upgrade cost: ${upgradeCost.toLocaleString()} coins.`
         );
       }
 
+      // Deduct coins
       economy.coins -= upgradeCost;
-      biz.level++;
-
       db.set('economy', message.author.id, economy);
+
+      // Upgrade business
+      businesses[type].level += 1;
       db.set('businesses', message.author.id, businesses);
 
-      return message.reply(
-        `✅ Upgraded ${business.emoji} **${business.name}** to level ${biz.level}!\n` +
-          `New income: ${(business.income * biz.level).toLocaleString()} coins/hour`
-      );
+      const newLevel = businesses[type].level;
+
+      const embed = new EmbedBuilder()
+        .setColor('#00ff00')
+        .setTitle('⬆️ Business Upgraded!')
+        .setDescription(
+          `**Business:** ${business.emoji} ${business.name}\n` +
+            `**Level:** ${currentLevel} → ${newLevel}\n` +
+            `**Cost:** ${upgradeCost.toLocaleString()} coins\n\n` +
+            `**New Income:** ${(business.income.min * newLevel).toLocaleString()} - ${(business.income.max * newLevel).toLocaleString()} coins/6h\n\n` +
+            `**New Balance:** ${economy.coins.toLocaleString()} coins`
+        )
+        .setFooter({ text: '👑 VIP Feature | Keep growing!' })
+        .setTimestamp();
+
+      return message.reply({ embeds: [embed] });
     }
-
-    if (action === 'sell') {
-      const type = args[1]?.toLowerCase();
-
-      if (!type) {
-        return message.reply(
-          '❌ Please specify a business type!\nUsage: `business sell <type>`'
-        );
-      }
-
-      const businesses = db.get('businesses', message.author.id) || {
-        businesses: [],
-      };
-      const index = businesses.businesses.findIndex(b => b.type === type);
-
-      if (index === -1) {
-        return message.reply(`❌ You don't own a ${type} business!`);
-      }
-
-      const biz = businesses.businesses[index];
-      const business = businessTypes[type];
-      const sellPrice = Math.floor(
-        (business.cost + business.cost * biz.level * 0.5) * 0.7
-      );
-
-      const economy = db.get('economy', message.author.id) || {
-        coins: 0,
-        bank: 0,
-      };
-
-      economy.coins += sellPrice;
-      businesses.businesses.splice(index, 1);
-
-      db.set('economy', message.author.id, economy);
-      db.set('businesses', message.author.id, businesses);
-
-      return message.reply(
-        `✅ Sold ${business.emoji} **${business.name}** for ${sellPrice.toLocaleString()} coins!`
-      );
-    }
-
-    return message.reply(
-      '❌ Invalid action!\nUsage: `business <buy/list/collect/mylist/upgrade/sell>`\n\n' +
-        '**Examples:**\n' +
-        '`business list` - View available businesses\n' +
-        '`business buy cafe` - Buy a business\n' +
-        '`business mylist` - View your businesses\n' +
-        '`business collect` - Collect earnings\n' +
-        '`business upgrade cafe` - Upgrade a business\n' +
-        '`business sell cafe` - Sell a business'
-    );
   },
 };

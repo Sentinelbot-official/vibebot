@@ -1,123 +1,156 @@
 const { EmbedBuilder } = require('discord.js');
 const db = require('../../utils/database');
+const premiumPerks = require('../../utils/premiumPerks');
 
-const stocks = {
-  TECH: { name: 'TechCorp', basePrice: 100, volatility: 0.1 },
-  GAME: { name: 'GameStudio', basePrice: 50, volatility: 0.15 },
-  FOOD: { name: 'FoodChain', basePrice: 75, volatility: 0.08 },
-  AUTO: { name: 'AutoMakers', basePrice: 150, volatility: 0.12 },
+// Stock market data
+const STOCKS = {
+  TECH: { name: '💻 TechCorp', volatility: 0.15, basePrice: 1000 },
+  FOOD: { name: '🍔 FoodChain', volatility: 0.08, basePrice: 500 },
+  GAME: { name: '🎮 GameStudio', volatility: 0.20, basePrice: 1500 },
+  MUSIC: { name: '🎵 MusicStream', volatility: 0.12, basePrice: 800 },
+  SPACE: { name: '🚀 SpaceX', volatility: 0.25, basePrice: 2000 },
+  CRYPTO: { name: '₿ CryptoExchange', volatility: 0.30, basePrice: 3000 },
 };
-
-function getStockPrice(symbol) {
-  const stock = stocks[symbol];
-  const randomChange = (Math.random() - 0.5) * 2 * stock.volatility;
-  return Math.floor(stock.basePrice * (1 + randomChange));
-}
 
 module.exports = {
   name: 'stocks',
-  description: 'Buy and sell stocks',
-  usage: '[buy/sell/portfolio/market] [symbol] [amount]',
+  description: 'Invest in the stock market (VIP only)',
+  usage: '//stocks <buy/sell/portfolio/market> [symbol] [amount]',
   aliases: ['stock', 'invest'],
   category: 'economy',
   cooldown: 5,
   async execute(message, args) {
-    const action = args[0]?.toLowerCase();
+    const guildId = message.guild.id;
 
-    if (!action || action === 'market') {
-      const stockList = Object.entries(stocks)
-        .map(([symbol, stock]) => {
-          const price = getStockPrice(symbol);
-          return `**${symbol}** (${stock.name}) - ${price} coins`;
-        })
-        .join('\n');
-
+    // Check VIP
+    if (!premiumPerks.hasFeature(guildId, 'custom_commands')) {
       const embed = new EmbedBuilder()
-        .setColor(0x0099ff)
-        .setTitle('📈 Stock Market')
-        .setDescription(stockList)
-        .setFooter({ text: 'Use "stocks buy <symbol> <amount>" to invest' })
-        .setTimestamp();
+        .setColor('#ff0000')
+        .setTitle('❌ VIP Required')
+        .setDescription(
+          'The stock market is a **VIP-exclusive** feature!\n\n' +
+            '**VIP Benefits:**\n' +
+            '• Access to stock market\n' +
+            '• Business ownership\n' +
+            '• AI chatbot\n' +
+            '• Custom commands\n' +
+            '• All Premium features\n\n' +
+            'Use `//premium` to upgrade!'
+        )
+        .setFooter({ text: 'Support the 24/7 live coding journey! 💜' });
 
       return message.reply({ embeds: [embed] });
     }
 
-    if (action === 'portfolio') {
-      const portfolio = db.get('stocks', message.author.id) || {};
+    const action = args[0]?.toLowerCase();
 
-      if (Object.keys(portfolio).length === 0) {
-        return message.reply("❌ You don't own any stocks!");
+    if (!action || !['buy', 'sell', 'portfolio', 'market'].includes(action)) {
+      const embed = new EmbedBuilder()
+        .setColor('#0099ff')
+        .setTitle('📈 Stock Market')
+        .setDescription(
+          '**Invest in virtual stocks and grow your wealth!**\n\n' +
+            '**Commands:**\n' +
+            '`//stocks market` - View available stocks\n' +
+            '`//stocks buy <symbol> <shares>` - Buy stocks\n' +
+            '`//stocks sell <symbol> <shares>` - Sell stocks\n' +
+            '`//stocks portfolio` - View your portfolio\n\n' +
+            '**Available Stocks:**\n' +
+            Object.entries(STOCKS)
+              .map(([symbol, data]) => `• **${symbol}** - ${data.name}`)
+              .join('\n')
+        )
+        .setFooter({ text: '👑 VIP Feature | Prices update every 5 minutes' });
+
+      return message.reply({ embeds: [embed] });
+    }
+
+    // Get current stock prices
+    const stockPrices = getStockPrices();
+
+    if (action === 'market') {
+      const embed = new EmbedBuilder()
+        .setColor('#0099ff')
+        .setTitle('📊 Stock Market')
+        .setDescription('**Current Stock Prices**\n\nPrices update every 5 minutes')
+        .setTimestamp();
+
+      for (const [symbol, stock] of Object.entries(STOCKS)) {
+        const price = stockPrices[symbol];
+        const change = getStockChange(symbol);
+        const changeEmoji = change >= 0 ? '📈' : '📉';
+        const changeText = change >= 0 ? `+${change.toFixed(2)}%` : `${change.toFixed(2)}%`;
+
+        embed.addFields({
+          name: `${stock.name} (${symbol})`,
+          value: `**${price.toLocaleString()} coins** ${changeEmoji} ${changeText}`,
+          inline: true,
+        });
       }
 
-      let totalValue = 0;
-      const holdings = Object.entries(portfolio)
-        .map(([symbol, amount]) => {
-          const currentPrice = getStockPrice(symbol);
-          const value = currentPrice * amount;
-          totalValue += value;
-          return `**${symbol}** - ${amount} shares (${value.toLocaleString()} coins)`;
-        })
-        .join('\n');
-
-      const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
-        .setTitle('💼 Your Portfolio')
-        .setDescription(holdings)
-        .addFields({
-          name: '💰 Total Value',
-          value: `${totalValue.toLocaleString()} coins`,
-          inline: true,
-        })
-        .setTimestamp();
+      embed.setFooter({ text: '👑 VIP Feature | Use //stocks buy <symbol> <shares>' });
 
       return message.reply({ embeds: [embed] });
     }
 
     if (action === 'buy') {
       const symbol = args[1]?.toUpperCase();
-      const amount = parseInt(args[2]);
+      const shares = parseInt(args[2]);
 
-      if (!symbol || !stocks[symbol]) {
+      if (!symbol || !STOCKS[symbol]) {
         return message.reply(
-          '❌ Invalid stock symbol! Use `stocks market` to see available stocks.'
+          `❌ Invalid stock symbol! Available: ${Object.keys(STOCKS).join(', ')}`
         );
       }
 
-      if (isNaN(amount) || amount < 1) {
-        return message.reply('❌ Please provide a valid amount!');
+      if (!shares || shares < 1) {
+        return message.reply('❌ Please specify a valid number of shares!');
       }
 
-      const price = getStockPrice(symbol);
-      const totalCost = price * amount;
+      const price = stockPrices[symbol];
+      const totalCost = price * shares;
 
+      // Get user economy
       const economy = db.get('economy', message.author.id) || {
         coins: 0,
         bank: 0,
       };
+
       if (economy.coins < totalCost) {
         return message.reply(
-          `❌ You need ${totalCost.toLocaleString()} coins! You have ${economy.coins.toLocaleString()}.`
+          `❌ You don't have enough coins! You need ${totalCost.toLocaleString()} coins in your wallet.`
         );
       }
 
+      // Deduct coins
       economy.coins -= totalCost;
       db.set('economy', message.author.id, economy);
 
-      const portfolio = db.get('stocks', message.author.id) || {};
-      portfolio[symbol] = (portfolio[symbol] || 0) + amount;
-      db.set('stocks', message.author.id, portfolio);
+      // Add to portfolio
+      const portfolio = db.get('stock_portfolio', message.author.id) || {};
+      if (!portfolio[symbol]) {
+        portfolio[symbol] = { shares: 0, avgPrice: 0 };
+      }
+
+      const totalShares = portfolio[symbol].shares + shares;
+      const totalValue =
+        portfolio[symbol].shares * portfolio[symbol].avgPrice + totalCost;
+      portfolio[symbol].avgPrice = totalValue / totalShares;
+      portfolio[symbol].shares = totalShares;
+
+      db.set('stock_portfolio', message.author.id, portfolio);
 
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
-        .setTitle('✅ Stocks Purchased!')
+        .setColor('#00ff00')
+        .setTitle('✅ Stock Purchase Successful!')
         .setDescription(
-          `Bought **${amount}** shares of **${symbol}** for **${totalCost.toLocaleString()}** coins`
+          `**Stock:** ${STOCKS[symbol].name} (${symbol})\n` +
+            `**Shares:** ${shares}\n` +
+            `**Price per Share:** ${price.toLocaleString()} coins\n` +
+            `**Total Cost:** ${totalCost.toLocaleString()} coins\n\n` +
+            `**New Balance:** ${economy.coins.toLocaleString()} coins`
         )
-        .addFields({
-          name: '📊 Price per Share',
-          value: `${price} coins`,
-          inline: true,
-        })
+        .setFooter({ text: '👑 VIP Feature | Prices fluctuate!' })
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -125,30 +158,34 @@ module.exports = {
 
     if (action === 'sell') {
       const symbol = args[1]?.toUpperCase();
-      const amount = parseInt(args[2]);
+      const shares = parseInt(args[2]);
 
-      if (!symbol || !stocks[symbol]) {
-        return message.reply('❌ Invalid stock symbol!');
-      }
-
-      if (isNaN(amount) || amount < 1) {
-        return message.reply('❌ Please provide a valid amount!');
-      }
-
-      const portfolio = db.get('stocks', message.author.id) || {};
-      if (!portfolio[symbol] || portfolio[symbol] < amount) {
+      if (!symbol || !STOCKS[symbol]) {
         return message.reply(
-          `❌ You don't have ${amount} shares of ${symbol}!`
+          `❌ Invalid stock symbol! Available: ${Object.keys(STOCKS).join(', ')}`
         );
       }
 
-      const price = getStockPrice(symbol);
-      const totalValue = price * amount;
+      if (!shares || shares < 1) {
+        return message.reply('❌ Please specify a valid number of shares!');
+      }
 
-      portfolio[symbol] -= amount;
-      if (portfolio[symbol] === 0) delete portfolio[symbol];
-      db.set('stocks', message.author.id, portfolio);
+      // Get portfolio
+      const portfolio = db.get('stock_portfolio', message.author.id) || {};
 
+      if (!portfolio[symbol] || portfolio[symbol].shares < shares) {
+        return message.reply(
+          `❌ You don't have enough shares! You own ${portfolio[symbol]?.shares || 0} shares of ${symbol}.`
+        );
+      }
+
+      const price = stockPrices[symbol];
+      const totalValue = price * shares;
+      const avgPrice = portfolio[symbol].avgPrice;
+      const profit = (price - avgPrice) * shares;
+      const profitPercent = ((price - avgPrice) / avgPrice) * 100;
+
+      // Add coins
       const economy = db.get('economy', message.author.id) || {
         coins: 0,
         bank: 0,
@@ -156,22 +193,124 @@ module.exports = {
       economy.coins += totalValue;
       db.set('economy', message.author.id, economy);
 
+      // Update portfolio
+      portfolio[symbol].shares -= shares;
+      if (portfolio[symbol].shares === 0) {
+        delete portfolio[symbol];
+      }
+      db.set('stock_portfolio', message.author.id, portfolio);
+
       const embed = new EmbedBuilder()
-        .setColor(0x00ff00)
-        .setTitle('✅ Stocks Sold!')
+        .setColor(profit >= 0 ? '#00ff00' : '#ff0000')
+        .setTitle('✅ Stock Sale Successful!')
         .setDescription(
-          `Sold **${amount}** shares of **${symbol}** for **${totalValue.toLocaleString()}** coins`
+          `**Stock:** ${STOCKS[symbol].name} (${symbol})\n` +
+            `**Shares Sold:** ${shares}\n` +
+            `**Price per Share:** ${price.toLocaleString()} coins\n` +
+            `**Total Value:** ${totalValue.toLocaleString()} coins\n\n` +
+            `**Profit/Loss:** ${profit >= 0 ? '+' : ''}${profit.toLocaleString()} coins (${profitPercent >= 0 ? '+' : ''}${profitPercent.toFixed(2)}%)\n\n` +
+            `**New Balance:** ${economy.coins.toLocaleString()} coins`
         )
-        .addFields({
-          name: '📊 Price per Share',
-          value: `${price} coins`,
-          inline: true,
-        })
+        .setFooter({ text: '👑 VIP Feature | Well done!' })
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
     }
 
-    return message.reply('❌ Usage: `stocks [buy/sell/portfolio/market]`');
+    if (action === 'portfolio') {
+      const portfolio = db.get('stock_portfolio', message.author.id) || {};
+
+      if (Object.keys(portfolio).length === 0) {
+        return message.reply('📭 You don\'t own any stocks yet!');
+      }
+
+      let totalValue = 0;
+      let totalInvested = 0;
+
+      const embed = new EmbedBuilder()
+        .setColor('#0099ff')
+        .setTitle('📊 Your Stock Portfolio')
+        .setDescription('**Your Investments**')
+        .setTimestamp();
+
+      for (const [symbol, data] of Object.entries(portfolio)) {
+        const currentPrice = stockPrices[symbol];
+        const currentValue = currentPrice * data.shares;
+        const invested = data.avgPrice * data.shares;
+        const profit = currentValue - invested;
+        const profitPercent = (profit / invested) * 100;
+
+        totalValue += currentValue;
+        totalInvested += invested;
+
+        embed.addFields({
+          name: `${STOCKS[symbol].name} (${symbol})`,
+          value:
+            `**Shares:** ${data.shares}\n` +
+            `**Avg Price:** ${data.avgPrice.toLocaleString()} coins\n` +
+            `**Current Price:** ${currentPrice.toLocaleString()} coins\n` +
+            `**Value:** ${currentValue.toLocaleString()} coins\n` +
+            `**P/L:** ${profit >= 0 ? '+' : ''}${profit.toLocaleString()} (${profitPercent >= 0 ? '+' : ''}${profitPercent.toFixed(2)}%)`,
+          inline: true,
+        });
+      }
+
+      const totalProfit = totalValue - totalInvested;
+      const totalProfitPercent = (totalProfit / totalInvested) * 100;
+
+      embed.addFields({
+        name: '💰 Portfolio Summary',
+        value:
+          `**Total Invested:** ${totalInvested.toLocaleString()} coins\n` +
+          `**Current Value:** ${totalValue.toLocaleString()} coins\n` +
+          `**Total P/L:** ${totalProfit >= 0 ? '+' : ''}${totalProfit.toLocaleString()} coins (${totalProfitPercent >= 0 ? '+' : ''}${totalProfitPercent.toFixed(2)}%)`,
+        inline: false,
+      });
+
+      embed.setFooter({ text: '👑 VIP Feature | Prices update every 5 minutes' });
+
+      return message.reply({ embeds: [embed] });
+    }
   },
 };
+
+// Get current stock prices with fluctuation
+function getStockPrices() {
+  const now = Date.now();
+  const interval = 5 * 60 * 1000; // 5 minutes
+  const seed = Math.floor(now / interval);
+
+  const prices = {};
+  for (const [symbol, stock] of Object.entries(STOCKS)) {
+    // Use seed for consistent prices within interval
+    const random = seededRandom(seed + symbol.charCodeAt(0));
+    const change = (random - 0.5) * 2 * stock.volatility;
+    prices[symbol] = Math.floor(stock.basePrice * (1 + change));
+  }
+
+  return prices;
+}
+
+// Get stock price change percentage
+function getStockChange(symbol) {
+  const now = Date.now();
+  const interval = 5 * 60 * 1000;
+  const currentSeed = Math.floor(now / interval);
+  const previousSeed = currentSeed - 1;
+
+  const stock = STOCKS[symbol];
+
+  const currentRandom = seededRandom(currentSeed + symbol.charCodeAt(0));
+  const previousRandom = seededRandom(previousSeed + symbol.charCodeAt(0));
+
+  const currentPrice = stock.basePrice * (1 + (currentRandom - 0.5) * 2 * stock.volatility);
+  const previousPrice = stock.basePrice * (1 + (previousRandom - 0.5) * 2 * stock.volatility);
+
+  return ((currentPrice - previousPrice) / previousPrice) * 100;
+}
+
+// Seeded random number generator
+function seededRandom(seed) {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}

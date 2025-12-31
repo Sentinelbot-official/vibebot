@@ -1,5 +1,6 @@
 const db = require('../utils/database');
 const { EmbedBuilder } = require('discord.js');
+const premiumPerks = require('../utils/premiumPerks');
 
 module.exports = {
   name: 'messageCreate',
@@ -24,7 +25,13 @@ module.exports = {
     if (now - levelData.lastXP < 60000) return;
 
     // Random XP gain (15-25 per message)
-    const xpGain = Math.floor(Math.random() * 11) + 15;
+    let xpGain = Math.floor(Math.random() * 11) + 15;
+    
+    // Apply premium XP multiplier
+    const baseXP = xpGain;
+    xpGain = premiumPerks.applyXPMultiplier(guildId, xpGain);
+    const bonusXP = xpGain - baseXP;
+    
     levelData.xp += xpGain;
     levelData.messages += 1;
     levelData.lastXP = now;
@@ -37,11 +44,18 @@ module.exports = {
       levelData.xp = 0;
 
       // Level up message
+      const tierBadge = premiumPerks.getTierBadge(guildId);
+      const tierName = premiumPerks.getTierDisplayName(guildId);
+      
       const embed = new EmbedBuilder()
         .setColor(0x00ff00)
-        .setTitle('🎉 Level Up!')
+        .setTitle(`${tierBadge} Level Up!`)
         .setDescription(
-          `${message.author}, you've reached **Level ${levelData.level}**!`
+          `${message.author}, you've reached **Level ${levelData.level}**!${
+            bonusXP > 0
+              ? `\n\n${tierBadge} **${tierName} Bonus:** +${bonusXP} XP per message`
+              : ''
+          }`
         )
         .setThumbnail(message.author.displayAvatarURL())
         .setTimestamp();
