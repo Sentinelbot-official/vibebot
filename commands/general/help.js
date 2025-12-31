@@ -77,7 +77,8 @@ module.exports = {
             (isOwner
               ? `\n🔴 **Owner Mode Active** - Showing all commands including owner-only\n`
               : '') +
-            `\nUse \`${prefix}help [command]\` for detailed info about any command.\n` +
+            `\nUse \`${prefix}help [command]\` for info about a command.\n` +
+            `Use \`${prefix}help [category]\` to view all commands in a category.\n` +
             `**Let's vibe together!** 🎵\n\u200b`
         )
         .setThumbnail(message.client.user.displayAvatarURL())
@@ -133,16 +134,49 @@ module.exports = {
 
       return message.channel.send({ embeds: [embed] });
     } else {
-      // Show info about specific command
+      // Show info about specific command or category
       const name = args[0].toLowerCase();
       const command = commands.get(name);
 
-      if (!command) {
-        return message.reply("❌ That's not a valid command!");
-      }
-
       // Check if user is owner
       const isOwner = ownerCheck.isOwner(message.author.id);
+
+      // If not a command, check if it's a category
+      if (!command) {
+        const categoryName = name.charAt(0).toUpperCase() + name.slice(1);
+        const categoryCommands = Array.from(commands.values()).filter(
+          cmd => cmd.category && cmd.category.toLowerCase() === name.toLowerCase() &&
+          (!cmd.ownerOnly || isOwner)
+        );
+
+        if (categoryCommands.length > 0) {
+          // Show all commands in this category
+          const embed = new EmbedBuilder()
+            .setColor(0x9b59b6)
+            .setTitle(`📂 ${categoryName} Commands`)
+            .setDescription(
+              `Here are all the commands in the **${categoryName}** category:\n\u200b`
+            )
+            .setFooter({
+              text: `Use ${prefix}help [command] for detailed info | ${message.author.tag}`,
+              iconURL: message.author.displayAvatarURL(),
+            })
+            .setTimestamp();
+
+          // Add each command with its description
+          categoryCommands.forEach(cmd => {
+            embed.addFields({
+              name: `${prefix}${cmd.name}`,
+              value: cmd.description || 'No description available',
+              inline: false,
+            });
+          });
+
+          return message.channel.send({ embeds: [embed] });
+        }
+
+        return message.reply("❌ That's not a valid command or category!");
+      }
 
       // Hide owner-only commands from non-owners
       if (command.ownerOnly && !isOwner) {
