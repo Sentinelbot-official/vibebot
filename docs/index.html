@@ -27,16 +27,26 @@
             <div class="nav-brand">
                 <span class="logo">🎵</span>
                 <span class="brand-name">Vibe Bot</span>
+                <span class="bot-status online">● Online</span>
             </div>
             <div class="nav-links">
                 <a href="#features">Features</a>
                 <a href="#story">Story</a>
                 <a href="#commands">Commands</a>
+                <a href="#faq">FAQ</a>
                 <a href="#setup">Setup</a>
+                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                    🌙
+                </button>
                 <a href="https://twitch.tv/projectdraguk" target="_blank" class="live-badge">
                     🔴 LIVE NOW
                 </a>
             </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
@@ -62,16 +72,20 @@
                 </div>
                 <div class="hero-stats">
                     <div class="stat">
-                        <div class="stat-number">220+</div>
+                        <div class="stat-number" id="commandCount">220+</div>
                         <div class="stat-label">Commands</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="serverCount">---</div>
+                        <div class="stat-label">Servers</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="userCount">---</div>
+                        <div class="stat-label">Users</div>
                     </div>
                     <div class="stat">
                         <div class="stat-number">24/7</div>
                         <div class="stat-label">Live Stream</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number">100%</div>
-                        <div class="stat-label">Open Source</div>
                     </div>
                 </div>
             </div>
@@ -147,6 +161,27 @@
         </div>
     </section>
 
+    <!-- Live Stream Section -->
+    <section class="stream-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">🔴 Watch the Development Live</h2>
+                <p class="section-subtitle">Every feature is coded live on Twitch - join the community!</p>
+            </div>
+            <div class="stream-embed">
+                <iframe 
+                    src="https://player.twitch.tv/?channel=projectdraguk&parent=sentinelbot-official.github.io&muted=false"
+                    height="480"
+                    width="100%"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="stream-info">
+                <p>🎬 Coding 24/7 with global chat | 💜 Everyone welcome | 🚀 Watch features come to life</p>
+            </div>
+        </div>
+    </section>
+
     <!-- Commands Section -->
     <section id="commands" class="commands-section">
         <div class="container">
@@ -154,7 +189,17 @@
                 <h2 class="section-title">⚡ Commands</h2>
                 <p class="section-subtitle">220+ commands across 8 categories</p>
             </div>
-            <div class="commands-grid">
+            <div class="command-search">
+                <input type="text" id="commandSearch" placeholder="🔍 Search commands..." aria-label="Search commands">
+                <div class="category-filters">
+                    <button class="filter-btn active" data-category="all">All</button>
+                    <button class="filter-btn" data-category="moderation">🛡️ Moderation</button>
+                    <button class="filter-btn" data-category="economy">💰 Economy</button>
+                    <button class="filter-btn" data-category="fun">🎮 Fun</button>
+                    <button class="filter-btn" data-category="utility">🔧 Utility</button>
+                </div>
+            </div>
+            <div class="commands-grid" id="commandsGrid">
                 <div class="command-category">
                     <h3>🛡️ Moderation (23)</h3>
                     <ul>
@@ -194,6 +239,99 @@
             </div>
             <div class="commands-cta">
                 <p>Use <code>//help</code> in Discord to see all commands!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">❓ Frequently Asked Questions</h2>
+                <p class="section-subtitle">Everything you need to know</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Is Vibe Bot really free?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! Vibe Bot is 100% free and open source. All features are available to everyone. Some advanced features (like AI commands) may require you to add your own API keys.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What permissions does the bot need?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>For full functionality, Vibe Bot needs Administrator permissions. This includes managing roles, channels, messages, and members. You can customize permissions based on your needs.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Can I self-host Vibe Bot?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely! Vibe Bot is open source. Check our GitHub repository for installation instructions. You'll need Node.js 18+ and a Discord bot token.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How do I get support?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Join our Discord server (coming soon), watch the 24/7 Twitch stream and ask in chat, or open an issue on GitHub. The community is always ready to help!</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What makes Vibe Bot unique?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Vibe Bot was built entirely live on a 24/7 Twitch stream with input from a global community. Every feature, every bug fix, every improvement was coded live with viewers from all timezones contributing ideas!</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Can I contribute to the project?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! We welcome contributions. Fork the repository, make your changes, and submit a pull request. You can also suggest features during the live stream!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">💬 What People Say</h2>
+                <p class="section-subtitle">Feedback from the community</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"Watching this bot being built live was incredible! The community involvement makes it so special."</p>
+                    <div class="testimonial-author">- Early Stream Viewer</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"220+ commands and all free? This bot has everything my server needs!"</p>
+                    <div class="testimonial-author">- Server Owner</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"I suggested a feature during the stream and saw it coded live the same day. Amazing!"</p>
+                    <div class="testimonial-author">- Community Member</div>
+                </div>
             </div>
         </div>
     </section>
