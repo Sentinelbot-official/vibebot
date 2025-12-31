@@ -92,7 +92,9 @@ module.exports = {
       if (target === 'all') {
         shardIds = Array.from({ length: shardManager.count }, (_, i) => i);
         // Discord.js v14 requires eval code to be a function
-        results = await shardManager.broadcastEval(client => eval(code), {
+        results = await shardManager.broadcastEval((client, context) => {
+          return eval(context.code);
+        }, {
           context: { code }
         });
       } else {
@@ -107,7 +109,9 @@ module.exports = {
         shardIds = [shardId];
         // Discord.js v14 requires eval code to be a function
         results = [
-          await shardManager.broadcastEval(client => eval(code), {
+          await shardManager.broadcastEval((client, context) => {
+            return eval(context.code);
+          }, {
             context: { code },
             shard: shardId,
           }),
