@@ -37,49 +37,49 @@ module.exports = {
     await transactionLock.withMultipleLocks(
       [message.author.id, user.id],
       async () => {
-    const senderEconomy = db.get('economy', message.author.id) || {
-      coins: 0,
-      bank: 0,
-    };
+        const senderEconomy = db.get('economy', message.author.id) || {
+          coins: 0,
+          bank: 0,
+        };
 
-    if (amount > senderEconomy.coins) {
-      return message.reply(
-        `❌ You don't have enough coins! You have ${senderEconomy.coins.toLocaleString()} coins.`
-      );
-    }
+        if (amount > senderEconomy.coins) {
+          return message.reply(
+            `❌ You don't have enough coins! You have ${senderEconomy.coins.toLocaleString()} coins.`
+          );
+        }
 
         // Transfer coins atomically
-    senderEconomy.coins -= amount;
-    db.set('economy', message.author.id, senderEconomy);
+        senderEconomy.coins -= amount;
+        db.set('economy', message.author.id, senderEconomy);
 
         const receiverEconomy = db.get('economy', user.id) || {
           coins: 0,
           bank: 0,
         };
-    receiverEconomy.coins += amount;
-    db.set('economy', user.id, receiverEconomy);
+        receiverEconomy.coins += amount;
+        db.set('economy', user.id, receiverEconomy);
 
-    const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
-      .setTitle('🎁 Gift Sent!')
-      .setDescription(
-        `${message.author} gifted **${amount.toLocaleString()} coins** to ${user}!`
-      )
-      .addFields(
-        {
-          name: 'Your Balance',
-          value: `${senderEconomy.coins.toLocaleString()} coins`,
-          inline: true,
-        },
-        {
-          name: `${user.username}'s Balance`,
-          value: `${receiverEconomy.coins.toLocaleString()} coins`,
-          inline: true,
-        }
-      )
-      .setTimestamp();
+        const embed = new EmbedBuilder()
+          .setColor(0x00ff00)
+          .setTitle('🎁 Gift Sent!')
+          .setDescription(
+            `${message.author} gifted **${amount.toLocaleString()} coins** to ${user}!`
+          )
+          .addFields(
+            {
+              name: 'Your Balance',
+              value: `${senderEconomy.coins.toLocaleString()} coins`,
+              inline: true,
+            },
+            {
+              name: `${user.username}'s Balance`,
+              value: `${receiverEconomy.coins.toLocaleString()} coins`,
+              inline: true,
+            }
+          )
+          .setTimestamp();
 
-    message.reply({ embeds: [embed] });
+        message.reply({ embeds: [embed] });
       }
     );
   },
