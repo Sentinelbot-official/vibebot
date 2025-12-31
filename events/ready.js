@@ -9,7 +9,7 @@ module.exports = {
   async execute(client) {
     try {
       // Get individual config values
-      const version = config.getBotConfig('version') || '2.5.0';
+      const version = config.getBotConfig('version') || '2.6.0';
       const originStory =
         config.getBotConfig('origin_story') || 'Built 24/7 on stream';
       const tagline = config.getBotConfig('tagline') || "Let's vibe together!";

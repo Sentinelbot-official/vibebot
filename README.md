@@ -13,7 +13,7 @@
 
 ### 🔴 **Not Just a Bot - A 24/7 Journey!**
 
-**220+ Commands** | **AI-Powered** | **Built 24/7 Live on Twitch**
+**230+ Commands** | **AI-Powered** | **Music System** | **Built 24/7 Live on Twitch**
 
 [🔴 LIVE NOW - 24/7 Stream](https://twitch.tv/projectdraguk) • [GitHub](https://github.com/Sentinelbot-official/vibebot) • [Invite Bot](#) • [Support Server](#)
 
@@ -29,8 +29,9 @@
 
 On **December 31, 2025**, streamer [Airis](https://twitch.tv/projectdraguk) went live with a challenge: _"Let's build a Discord bot from scratch 24/7 with chat's help!"_
 
-**The stream never stopped.** With viewers from every timezone contributing, what started as 130 basic commands evolved into a **220+ command powerhouse** with:
+**The stream never stopped.** With viewers from every timezone contributing, what started as 130 basic commands evolved into a **230+ command powerhouse** with:
 
+- 🎵 Full music system (YouTube, Spotify, SoundCloud)
 - 🤖 AI integration (OpenAI & Anthropic)
 - 💰 Full economy system with jobs, stocks, and property
 - 🎮 15+ mini-games built with chat
@@ -82,9 +83,22 @@ Every feature has a story! Here are some community highlights:
 
 ## 🚀 Features
 
-### 💎 **220+ Commands Across 8 Categories**
+### 💎 **230+ Commands Across 9 Categories**
 
 > 🔴 **Every command was coded live 24/7 with global chat!** Use `//story` in Discord to learn more!
+
+**🎵 Music System (10 commands)** ✨ NEW!
+
+- Play music from YouTube, Spotify, and SoundCloud
+- Queue management with pagination
+- Loop and loop queue modes
+- Volume control (0-100%)
+- Pause, resume, skip, and stop controls
+- Now playing with rich embeds
+- Auto-disconnect after inactivity
+- Supports playlists (up to 50 songs)
+- High-quality audio with FFmpeg
+- Robust error handling and reconnection
 
 **🛡️ Advanced Moderation (19 commands)**
 

@@ -1,9 +1,9 @@
 {
   "name": "Vibe Bot",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "author": "Airis & The Twitch Community",
   "license": "Proprietary - All Rights Reserved",
-  "description": "220+ commands | AI-powered | Built on 24/7 LIVE Twitch stream with the community - A bot with a story!",
+  "description": "230+ commands | Music System | AI-powered | Built on 24/7 LIVE Twitch stream with the community - A bot with a story!",
   "tagline": "Not just a bot - a journey built 24/7 live on stream! 🎬",
   "origin_story": "Created December 31, 2025 on 24/7 Twitch stream - Every feature coded live with global chat!",
   "website": "https://github.com/Sentinelbot-official/vibebot",
@@ -18,6 +18,7 @@
     "stream_status": "🔴 ALWAYS LIVE - 24/7 coding stream!"
   },
   "features": [
+    "Music System (10 commands: YouTube, Spotify, SoundCloud)",
     "Advanced Moderation (23 commands)",
     "Economy System (25+ commands with trading, stocks, property, crafting)",
     "Leveling & XP (4 commands + voice XP tracking)",
