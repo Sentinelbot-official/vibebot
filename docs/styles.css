@@ -97,6 +97,7 @@ body {
     display: flex;
     gap: 2rem;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .nav-links a {
@@ -815,7 +816,36 @@ section {
    Responsive Design
    ============================================ */
 
+/* Medium screens */
+@media (max-width: 1024px) {
+    .nav-links {
+        gap: 1rem;
+    }
+    
+    .nav-links a {
+        font-size: 0.9rem;
+    }
+}
+
+/* Tablet and below */
 @media (max-width: 768px) {
+    .navbar .container {
+        padding: 0 1rem;
+    }
+    
+    .nav-brand {
+        font-size: 1.2rem;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .bot-status {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+    }
+
     .hero-title {
         font-size: 2.5rem;
     }
@@ -838,13 +868,16 @@ section {
         top: 70px;
         left: 0;
         right: 0;
-        background: var(--card-bg);
+        background: var(--navbar-bg);
         flex-direction: column;
         padding: 2rem;
         box-shadow: var(--shadow-lg);
         transform: translateX(-100%);
-        transition: transform 0.3s;
+        transition: transform 0.3s ease;
         z-index: 999;
+        gap: 1.5rem;
+        max-height: calc(100vh - 70px);
+        overflow-y: auto;
     }
 
     .nav-links.active {
@@ -886,6 +919,34 @@ section {
     .filter-btn {
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+    .nav-brand {
+        font-size: 1rem;
+    }
+    
+    .brand-name {
+        display: none;
+    }
+    
+    .logo {
+        font-size: 1.8rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-stats {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
     }
 }
 
