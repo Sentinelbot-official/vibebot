@@ -1,6 +1,7 @@
 const logger = require('../utils/logger');
 const cooldowns = require('../utils/cooldowns');
 const db = require('../utils/database');
+const ownerCheck = require('../utils/ownerCheck');
 const defaultPrefix = process.env.PREFIX || '!';
 
 module.exports = {
@@ -54,6 +55,14 @@ module.exports = {
     // Check if command is guild-only
     if (command.guildOnly && !message.guild) {
       return message.reply('❌ This command can only be used in a server!');
+    }
+
+    // Check if command is owner-only
+    if (command.ownerOnly) {
+      const ownerResult = ownerCheck.canExecute(message);
+      if (!ownerResult.canExecute) {
+        return message.reply(ownerResult.reason);
+      }
     }
 
     // Check cooldown

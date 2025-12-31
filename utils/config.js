@@ -27,6 +27,7 @@ class ConfigManager {
       LOG_LEVEL: 'info',
       MAX_COMMANDS_PER_MINUTE: '30',
       ENABLE_METRICS: 'false',
+      OWNER_IDS: '', // Comma-separated list of owner Discord IDs
     };
 
     // Check required variables
@@ -48,6 +49,10 @@ class ConfigManager {
       maxCommandsPerMinute: parseInt(
         process.env.MAX_COMMANDS_PER_MINUTE || optional.MAX_COMMANDS_PER_MINUTE
       ),
+      ownerIds: (process.env.OWNER_IDS || optional.OWNER_IDS)
+        .split(',')
+        .map(id => id.trim())
+        .filter(id => id.length > 0),
       enableMetrics: process.env.ENABLE_METRICS === 'true',
       isDevelopment:
         (process.env.NODE_ENV || optional.NODE_ENV) === 'development',
