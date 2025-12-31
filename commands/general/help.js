@@ -2,6 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const db = require('../../utils/database');
+const ownerCheck = require('../../utils/ownerCheck');
 
 module.exports = {
   name: 'help',
@@ -34,8 +35,16 @@ module.exports = {
 
       getCategories(commandsPath);
 
+      // Check if user is owner
+      const isOwner = ownerCheck.isOwner(message.author.id);
+
       // Add commands to their categories
       commands.forEach(cmd => {
+        // Skip owner-only commands for non-owners
+        if (cmd.ownerOnly && !isOwner) {
+          return;
+        }
+
         const category = cmd.category
           ? cmd.category.charAt(0).toUpperCase() + cmd.category.slice(1)
           : 'Uncategorized';
@@ -47,9 +56,14 @@ module.exports = {
         categories[category].push(cmd);
       });
 
+      // Count visible commands
+      const visibleCommands = Array.from(commands.values()).filter(
+        cmd => !cmd.ownerOnly || isOwner
+      ).length;
+
       // Build embed with personality!
       const embed = new EmbedBuilder()
-        .setColor(0x9b59b6) // Purple for the vibe!
+        .setColor(isOwner ? 0xff0000 : 0x9b59b6) // Red for owners, purple for users
         .setAuthor({
           name: `🎵 ${message.client.user.username} - Built 24/7 Live on Twitch!`,
           iconURL: message.client.user.displayAvatarURL(),
@@ -57,10 +71,11 @@ module.exports = {
         .setDescription(
           `**Hey there!** 👋 I'm Vibe Bot, created on a 24/7 live stream with the global community!\n\n` +
             `🔴 **LIVE NOW (24/7):** https://twitch.tv/projectdraguk\n` +
-            `💜 **${commands.size} commands** coded live with chat!\n` +
+            `💜 **${visibleCommands} commands** coded live with chat!\n` +
             `⚡ **Prefix:** \`${prefix}\`\n` +
-            `🌍 **Built by viewers worldwide, any time, day or night!**\n\n` +
-            `Use \`${prefix}help [command]\` for detailed info about any command.\n` +
+            `🌍 **Built by viewers worldwide, any time, day or night!**\n` +
+            (isOwner ? `\n🔴 **Owner Mode Active** - Showing all commands including owner-only\n` : '') +
+            `\nUse \`${prefix}help [command]\` for detailed info about any command.\n` +
             `**Let's vibe together!** 🎵\n\u200b`
         )
         .setThumbnail(message.client.user.displayAvatarURL())
@@ -121,6 +136,14 @@ module.exports = {
       const command = commands.get(name);
 
       if (!command) {
+        return message.reply("❌ That's not a valid command!");
+      }
+
+      // Check if user is owner
+      const isOwner = ownerCheck.isOwner(message.author.id);
+
+      // Hide owner-only commands from non-owners
+      if (command.ownerOnly && !isOwner) {
         return message.reply("❌ That's not a valid command!");
       }
 

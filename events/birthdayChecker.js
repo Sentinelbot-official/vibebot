@@ -18,7 +18,7 @@ module.exports = {
 
     // Also check immediately on startup (after 5 seconds)
     setTimeout(() => checkBirthdays(client), 5000);
-    
+
     logger.info('✓ Birthday checker initialized');
   },
 };
