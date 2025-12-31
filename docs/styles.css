@@ -1324,18 +1324,22 @@ section {
 }
 
 .message-example {
-    background: var(--darker);
-    color: var(--white);
-    padding: 1.5rem;
-    border-radius: 10px;
-    border-left: 4px solid var(--primary);
+    background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+    color: #1e293b;
+    padding: 2rem;
+    border-radius: 15px;
+    border-left: 5px solid #667eea;
     font-family: 'Courier New', monospace;
     margin: 1rem 0;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
 }
 
 .message-example p {
-    margin: 0.5rem 0 !important;
-    font-size: 1rem !important;
+    margin: 0.8rem 0 !important;
+    font-size: 1.05rem !important;
+    color: #1e293b !important;
+    font-weight: 600;
+    line-height: 1.6 !important;
 }
 
 .key-display,
