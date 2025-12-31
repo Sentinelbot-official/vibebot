@@ -9,7 +9,7 @@
   "website": "https://github.com/Sentinelbot-official/vibebot",
   "support_server": "DISCORD_SERVER_COMING_SOON",
   "twitch": "https://twitch.tv/projectdraguk",
-  "invite_link": "https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_ID_HERE&permissions=8&scope=bot",
+  "invite_link": "https://discord.com/oauth2/authorize?client_id=1455908224958992384&permissions=8&integration_type=0&scope=bot",
   "repository_notice": "Proprietary software. Forking for contributions is allowed. Public redistribution or hosting requires permission.",
   "personality": {
     "vibe": "Friendly, helpful, and built by the 24/7 global community",
