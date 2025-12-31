@@ -78,7 +78,9 @@ module.exports = {
         .setColor(0x5865f2)
         .setTitle('🌐 Supported Languages')
         .setDescription(langList)
-        .setFooter({ text: `Total: ${Object.keys(languageCodes).length} languages` })
+        .setFooter({
+          text: `Total: ${Object.keys(languageCodes).length} languages`,
+        })
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -113,9 +115,7 @@ module.exports = {
       );
 
       // Parse response
-      const translated = response.data[0]
-        .map(item => item[0])
-        .join('');
+      const translated = response.data[0].map(item => item[0]).join('');
 
       // Detect source language
       const sourceLang = response.data[2] || 'auto';

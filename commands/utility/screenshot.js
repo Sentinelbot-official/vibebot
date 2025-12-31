@@ -78,11 +78,11 @@ module.exports = {
       }
 
       // 4. Try free services (no key required, but may have limitations)
-      
+
       // Try shot.screenshotapi.net (free, no key)
       try {
         const freeUrl = `https://shot.screenshotapi.net/screenshot?url=${encodeURIComponent(url)}&width=1024&height=768&output=image&file_type=png&wait_for_event=load`;
-        
+
         // Test if the URL is accessible
         await axios.head(freeUrl, { timeout: 5000 });
 

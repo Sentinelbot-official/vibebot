@@ -192,9 +192,7 @@ module.exports = {
       });
     } catch (error) {
       console.error('Image manipulation error:', error);
-      return processingMsg.edit(
-        `❌ Failed to process image: ${error.message}`
-      );
+      return processingMsg.edit(`❌ Failed to process image: ${error.message}`);
     }
   },
 };

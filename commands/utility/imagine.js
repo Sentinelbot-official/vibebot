@@ -137,7 +137,8 @@ module.exports = {
         errorMsg += 'Request timed out. Try a simpler prompt.';
       } else {
         errorMsg +=
-          error.response?.data?.error?.message || 'Check your API key and quota.';
+          error.response?.data?.error?.message ||
+          'Check your API key and quota.';
       }
 
       const errorEmbed = new EmbedBuilder()

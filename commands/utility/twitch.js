@@ -123,7 +123,11 @@ module.exports = {
       if (isLive) {
         embed
           .addFields(
-            { name: '🎮 Game', value: stream.game_name || 'Unknown', inline: true },
+            {
+              name: '🎮 Game',
+              value: stream.game_name || 'Unknown',
+              inline: true,
+            },
             {
               name: '👥 Viewers',
               value: stream.viewer_count.toLocaleString(),
@@ -155,9 +159,7 @@ module.exports = {
         );
       }
 
-      embed
-        .setFooter({ text: 'Twitch' })
-        .setTimestamp();
+      embed.setFooter({ text: 'Twitch' }).setTimestamp();
 
       return loadingMsg.edit({ content: null, embeds: [embed] });
     } catch (error) {
