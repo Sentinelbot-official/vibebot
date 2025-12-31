@@ -25,7 +25,7 @@ module.exports = {
         .setDescription(firstMessage.content || '*No content*')
         .setAuthor({
           name: firstMessage.author.tag,
-          iconURL: firstMessage.author.displayAvatarURL({ dynamic: true }),
+          iconURL: firstMessage.author.displayAvatarURL(),
         })
         .addFields(
           { name: 'Author', value: `${firstMessage.author}`, inline: true },

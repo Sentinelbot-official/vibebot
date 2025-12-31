@@ -14,7 +14,7 @@ module.exports = {
       .setColor(0x0099ff)
       .setAuthor({
         name: `${newMember.user.tag} (${newMember.id})`,
-        iconURL: newMember.user.displayAvatarURL({ dynamic: true }),
+        iconURL: newMember.user.displayAvatarURL(),
       })
       .setTimestamp();
 
@@ -66,7 +66,7 @@ module.exports = {
         .setColor(0xff0000)
         .setAuthor({
           name: `${newMember.user.tag} (${newMember.id})`,
-          iconURL: newMember.user.displayAvatarURL({ dynamic: true }),
+          iconURL: newMember.user.displayAvatarURL(),
         })
         .setTitle('➖ Roles Removed')
         .addFields({

@@ -49,15 +49,15 @@ module.exports = {
         .setColor(0x0099ff)
         .setAuthor({
           name: `${message.client.user.username} Help`,
-          iconURL: message.client.user.displayAvatarURL({ dynamic: true }),
+          iconURL: message.client.user.displayAvatarURL(),
         })
         .setDescription(
           `Use \`${prefix}help [command]\` for detailed information about a command.\n\u200b`
         )
-        .setThumbnail(message.client.user.displayAvatarURL({ dynamic: true }))
+        .setThumbnail(message.client.user.displayAvatarURL())
         .setFooter({
           text: `Requested by ${message.author.tag}`,
-          iconURL: message.author.displayAvatarURL({ dynamic: true }),
+          iconURL: message.author.displayAvatarURL(),
         })
         .setTimestamp();
 
@@ -94,7 +94,7 @@ module.exports = {
         .setTitle(`📖 Command: ${command.name}`)
         .setFooter({
           text: `Requested by ${message.author.tag}`,
-          iconURL: message.author.displayAvatarURL({ dynamic: true }),
+          iconURL: message.author.displayAvatarURL(),
         })
         .setTimestamp();
 

@@ -33,7 +33,7 @@ module.exports = {
       .setDescription(announcement)
       .setFooter({
         text: `Announced by ${message.author.tag}`,
-        iconURL: message.author.displayAvatarURL({ dynamic: true }),
+        iconURL: message.author.displayAvatarURL(),
       })
       .setTimestamp();
 

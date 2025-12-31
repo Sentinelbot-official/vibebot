@@ -23,7 +23,7 @@ module.exports = {
       .setColor(0xffa500)
       .setAuthor({
         name: snipedEdit.author.tag,
-        iconURL: snipedEdit.author.displayAvatarURL({ dynamic: true }),
+        iconURL: snipedEdit.author.displayAvatarURL(),
       })
       .addFields(
         {

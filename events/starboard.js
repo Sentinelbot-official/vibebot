@@ -55,7 +55,7 @@ module.exports = {
       .setColor(0xffd700)
       .setAuthor({
         name: message.author.tag,
-        iconURL: message.author.displayAvatarURL({ dynamic: true }),
+        iconURL: message.author.displayAvatarURL(),
       })
       .setDescription(
         `⭐ **${starCount}** | ${message.channel}\n\n` +

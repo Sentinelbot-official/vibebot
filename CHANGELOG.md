@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
+
 - Support server setup
 - API integrations (weather, crypto, AI)
 - Music commands
@@ -22,6 +23,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 ### Added
 
 #### 🛡️ Moderation System (19 commands)
+
 - `warn` - Warning system with auto-escalation
 - `removewarn` - Remove specific warnings
 - `viewwarn` - View user warnings
@@ -44,6 +46,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - `history` - View complete moderation history
 
 #### 💰 Economy System (16 commands)
+
 - `balance` - Check balance with enhanced stats
 - `daily` - Daily rewards with multi-bonus system
 - `work` - Work for coins
@@ -62,6 +65,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - `hunt` - Go hunting
 
 #### 📊 Leveling System (4 commands)
+
 - `rank` - View XP and level
 - `leaderboard` - Server level rankings
 - `setlevelrole` - Set role rewards for levels
@@ -69,6 +73,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - Auto-XP system with message tracking
 
 #### 🎁 Engagement Features
+
 - `gstart` - Start giveaways
 - `gend` - End giveaways
 - `greroll` - Reroll giveaway winner
@@ -83,6 +88,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - `remind` - Set reminders
 
 #### 🔧 Utility Commands (37 commands)
+
 - `help` - Dynamic categorized help
 - `ping` - Bot latency
 - `userinfo` - User information (works for non-members)
@@ -123,6 +129,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - `image` - AI image generation (placeholder)
 
 #### 😂 Fun Commands (8 commands)
+
 - `blackjack` - Interactive card game
 - `dice` - Roll dice
 - `rps` - Rock paper scissors
@@ -133,6 +140,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - `compliment` - Give compliments
 
 #### ⚙️ Admin Commands (15 commands)
+
 - `setuptickets` - Setup ticket system with buttons
 - `setupverify` - Setup verification system
 - `setprefix` - Custom prefix per server
@@ -146,6 +154,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - `additem` - Add shop items
 
 #### 🎯 Advanced Systems
+
 - **Multi-Bonus System** - Streak, level, random, weekend bonuses
 - **Activity Scoring** - Track user and server engagement
 - **Badge System** - Achievements and status indicators
@@ -158,6 +167,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - **Smart Cooldowns** - Prevent spam and abuse
 
 #### 📝 Event Handlers (20 events)
+
 - `ready` - Bot startup
 - `messageCreate` - Command handling
 - `messageUpdate` - Message edit logging and snipe cache
@@ -180,6 +190,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - `blackjackButtons` - Blackjack game interactions
 
 #### 🔧 Utility Modules
+
 - `database.js` - SQLite3 database manager
 - `logger.js` - Advanced logging system
 - `cooldowns.js` - Cooldown management
@@ -189,6 +200,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - `formatting.js` - Text and data formatting
 
 #### 📄 Documentation & Legal
+
 - `README.md` - Comprehensive documentation
 - `CONTRIBUTING.md` - Contribution guidelines
 - `CODE_OF_CONDUCT.md` - Community standards
@@ -201,6 +213,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - Pull request template
 
 ### Changed
+
 - Migrated from JSON to SQLite3 database
 - Updated to Discord.js v14
 - Modernized all commands to 2025 standards
@@ -209,10 +222,12 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 - Updated license to proprietary with contribution allowance
 
 ### Removed
+
 - Outdated commands (reverse, ascii, kiss, pat, weather, define, translate, old meme, beg, dig, hug, joke, color, calc, timestamp, tag commands, 8ball, flip)
 - Replaced with modern, functional alternatives
 
 ### Security
+
 - Implemented role hierarchy checks
 - Added owner and self-protection
 - Enhanced input validation
@@ -222,6 +237,7 @@ Complete rewrite and expansion of Vibe Bot, built entirely live on stream with c
 ## [1.0.0] - 2025-12-30
 
 ### Added
+
 - Initial bot structure
 - Basic command handler
 - Event handler

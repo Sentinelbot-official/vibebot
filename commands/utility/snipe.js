@@ -23,7 +23,7 @@ module.exports = {
       .setColor(0xff0000)
       .setAuthor({
         name: snipedMessage.author.tag,
-        iconURL: snipedMessage.author.displayAvatarURL({ dynamic: true }),
+        iconURL: snipedMessage.author.displayAvatarURL(),
       })
       .setDescription(snipedMessage.content || '*No content*')
       .setFooter({ text: 'Deleted' })

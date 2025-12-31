@@ -31,7 +31,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor(0x0099ff)
       .setTitle('🤖 Vibe Bot Statistics')
-      .setThumbnail(message.client.user.displayAvatarURL({ dynamic: true }))
+      .setThumbnail(message.client.user.displayAvatarURL())
       .addFields(
         { name: '⏰ Uptime', value: uptimeStr, inline: true },
         {

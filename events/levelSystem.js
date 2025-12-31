@@ -43,7 +43,7 @@ module.exports = {
         .setDescription(
           `${message.author}, you've reached **Level ${levelData.level}**!`
         )
-        .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+        .setThumbnail(message.author.displayAvatarURL())
         .setTimestamp();
 
       message.channel.send({ embeds: [embed] }).then(msg => {

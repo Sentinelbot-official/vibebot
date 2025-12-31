@@ -27,6 +27,7 @@ Show an example of how this feature would be used:
 ```
 
 **Expected Output:**
+
 ```
 Description of what the bot would respond with
 ```

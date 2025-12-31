@@ -39,7 +39,7 @@ module.exports = {
       .setColor(0x0099ff)
       .setAuthor({
         name: message.author.tag,
-        iconURL: message.author.displayAvatarURL({ dynamic: true }),
+        iconURL: message.author.displayAvatarURL(),
       })
       .setTitle(`💡 Suggestion #${suggestionId}`)
       .setDescription(suggestion)

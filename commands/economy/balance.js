@@ -25,9 +25,9 @@ module.exports = {
       .setColor(0xffd700)
       .setAuthor({
         name: `${user.username}'s Balance`,
-        iconURL: user.displayAvatarURL({ dynamic: true }),
+        iconURL: user.displayAvatarURL(),
       })
-      .setThumbnail(user.displayAvatarURL({ dynamic: true }))
+      .setThumbnail(user.displayAvatarURL())
       .addFields(
         {
           name: '💰 Wallet',

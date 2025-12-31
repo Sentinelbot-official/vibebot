@@ -21,7 +21,7 @@ module.exports = {
       .setColor(0xffa500)
       .setAuthor({
         name: `${newMessage.author.tag} (${newMessage.author.id})`,
-        iconURL: newMessage.author.displayAvatarURL({ dynamic: true }),
+        iconURL: newMessage.author.displayAvatarURL(),
       })
       .setTitle('📝 Message Edited')
       .addFields(

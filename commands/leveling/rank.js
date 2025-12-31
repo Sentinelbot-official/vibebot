@@ -43,9 +43,9 @@ module.exports = {
       .setColor(0x0099ff)
       .setAuthor({
         name: `${user.username}'s Rank`,
-        iconURL: user.displayAvatarURL({ dynamic: true }),
+        iconURL: user.displayAvatarURL(),
       })
-      .setThumbnail(user.displayAvatarURL({ dynamic: true }))
+      .setThumbnail(user.displayAvatarURL())
       .addFields(
         { name: '📊 Level', value: `${levelData.level}`, inline: true },
         { name: '⭐ XP', value: `${levelData.xp}/${xpNeeded}`, inline: true },

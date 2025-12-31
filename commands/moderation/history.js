@@ -34,7 +34,7 @@ module.exports = {
       .setColor(0xff0000)
       .setTitle(`📋 Moderation History: ${target.user.tag}`)
       .setDescription(`Total Infractions: **${warns.length}**`)
-      .setThumbnail(target.user.displayAvatarURL({ dynamic: true }));
+      .setThumbnail(target.user.displayAvatarURL());
 
     // Show last 10 warns
     const recentWarns = warns.slice(0, 10);

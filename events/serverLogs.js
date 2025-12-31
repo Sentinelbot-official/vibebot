@@ -15,7 +15,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor(0x00ff00)
       .setTitle('📥 Member Joined')
-      .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
+      .setThumbnail(member.user.displayAvatarURL())
       .addFields(
         {
           name: 'User',
@@ -52,7 +52,7 @@ module.exports.guildMemberRemove = async member => {
   const embed = new EmbedBuilder()
     .setColor(0xff0000)
     .setTitle('📤 Member Left')
-    .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
+    .setThumbnail(member.user.displayAvatarURL())
     .addFields(
       {
         name: 'User',

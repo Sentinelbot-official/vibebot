@@ -24,7 +24,7 @@ module.exports = {
       .setColor(0x0099ff)
       .setAuthor({
         name: `${user.username}'s Inventory`,
-        iconURL: user.displayAvatarURL({ dynamic: true }),
+        iconURL: user.displayAvatarURL(),
       })
       .setTimestamp();
 

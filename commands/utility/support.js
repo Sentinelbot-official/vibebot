@@ -15,7 +15,7 @@ module.exports = {
           `**Support Server:** [COMING SOON]\n` +
           `**Email:** vibetbot0@proton.me`
       )
-      .setThumbnail(message.client.user.displayAvatarURL({ dynamic: true }))
+      .setThumbnail(message.client.user.displayAvatarURL())
       .setTimestamp();
 
     message.reply({ embeds: [embed] });

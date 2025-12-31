@@ -20,6 +20,7 @@
 ## 🔗 Related Issue
 
 <!-- Link to the issue this PR addresses -->
+
 Closes #(issue number)
 
 ## 📸 Screenshots (if applicable)
@@ -36,9 +37,10 @@ Closes #(issue number)
 - [ ] The bot runs without errors
 
 **Test Environment:**
-- Node.js Version: 
-- Discord.js Version: 
-- OS: 
+
+- Node.js Version:
+- Discord.js Version:
+- OS:
 
 ## 📝 Changes Made
 

@@ -103,6 +103,7 @@ git checkout -b fix/bug-description
 ```
 
 Branch naming conventions:
+
 - `feature/` - New features
 - `fix/` - Bug fixes
 - `docs/` - Documentation updates
@@ -304,6 +305,7 @@ Look for issues labeled `good first issue` - these are great starting points for
 ## 🌟 Recognition
 
 Contributors will be:
+
 - Credited in commit history
 - Mentioned in release notes (for significant contributions)
 - Added to a contributors list (coming soon!)

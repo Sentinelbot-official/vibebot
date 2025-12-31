@@ -42,11 +42,11 @@ Please include the following information in your report:
 
 We provide security updates for the following versions:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 2.x.x   | ✅ Yes             |
-| 1.x.x   | ❌ No              |
-| < 1.0   | ❌ No              |
+| Version | Supported |
+| ------- | --------- |
+| 2.x.x   | ✅ Yes    |
+| 1.x.x   | ❌ No     |
+| < 1.0   | ❌ No     |
 
 ## 🔐 Security Best Practices
 
@@ -77,6 +77,7 @@ The bot token is stored in the `.env` file and should NEVER be committed to vers
 ### Permission System
 
 All moderation commands include:
+
 - Permission checks
 - Role hierarchy validation
 - Owner protection
@@ -86,6 +87,7 @@ All moderation commands include:
 ### Rate Limiting
 
 The bot implements cooldown systems to prevent:
+
 - Command spam
 - API abuse
 - Resource exhaustion
@@ -124,6 +126,7 @@ For security concerns, contact:
 - **Subject Line:** `[SECURITY] Brief description`
 
 For non-security issues, please use:
+
 - **GitHub Issues:** https://github.com/Sentinelbot-official/vibebot/issues
 - **Discord:** (Support server link coming soon)
 
@@ -133,7 +136,7 @@ We appreciate security researchers who help keep Vibe Bot secure. Responsible re
 
 <!-- Security researchers will be listed here -->
 
-*No vulnerabilities reported yet*
+_No vulnerabilities reported yet_
 
 ---
 

@@ -23,7 +23,7 @@ module.exports = {
         name: message.author
           ? `${message.author.tag} (${message.author.id})`
           : 'Unknown User',
-        iconURL: message.author?.displayAvatarURL({ dynamic: true }),
+        iconURL: message.author?.displayAvatarURL(),
       })
       .setTitle('🗑️ Message Deleted')
       .addFields(

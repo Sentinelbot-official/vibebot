@@ -32,7 +32,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor(0x0099ff)
       .setTitle('🤖 Bot Information')
-      .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
+      .setThumbnail(client.user.displayAvatarURL())
       .addFields(
         { name: '📛 Bot Name', value: client.user.username, inline: true },
         { name: '🆔 Bot ID', value: client.user.id, inline: true },

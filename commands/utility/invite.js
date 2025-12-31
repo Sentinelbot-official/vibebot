@@ -15,7 +15,7 @@ module.exports = {
         `Click the link below to invite me to your server!\n\n` +
           `[Invite Vibe Bot](${invite})`
       )
-      .setThumbnail(message.client.user.displayAvatarURL({ dynamic: true }))
+      .setThumbnail(message.client.user.displayAvatarURL())
       .setFooter({ text: 'Thanks for using Vibe Bot!' })
       .setTimestamp();
 
