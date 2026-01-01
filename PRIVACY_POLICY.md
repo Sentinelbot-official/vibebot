@@ -103,6 +103,30 @@ Data you actively provide through Bot commands:
 - Birthday information (if provided)
 - Reputation points given/received
 
+**Music System:**
+
+- Personal playlists (song titles, URLs, creation dates)
+- Favorite songs list
+- Music listening history and statistics
+- Total songs played and listening time
+- Music quiz scores and participation
+- DJ mode preferences
+
+**Competitive System:**
+
+- Tournament registrations and results
+- Ranked leaderboard positions and ELO ratings
+- Seasonal competition statistics (points, wins, participation)
+- Championship history and placements
+- Skill ratings across different activities
+
+**Server Analytics:**
+
+- Message activity patterns (for heatmaps and analytics)
+- Voice channel usage statistics
+- Command usage frequency
+- Engagement metrics and activity scores
+
 ### 1.3 Message Content
 
 - **Temporary Processing:** Message content is processed temporarily for:
@@ -201,7 +225,7 @@ You have the right to:
 2. Email us at vibetbot0@proton.me (manual processing within 30 days)
 3. Join our support server and request deletion
 
-**Note:** Server moderation logs are retained for 30 days after deletion for server safety purposes.
+**Note:** Server moderation logs are retained for 30 days after deletion for server safety purposes. Tournament and competitive data may be retained for leaderboard integrity.
 
 ### 5.3 Data Correction
 
@@ -225,6 +249,9 @@ The Bot interacts with:
 - **Reddit API:** For meme commands (no user data shared)
 - **QR Code API:** For QR code generation (data not stored by third party)
 - **Screenshot API:** For website previews (URLs only, no user data)
+- **YouTube/Spotify/SoundCloud:** For music playback (search queries only, no user data shared)
+- **Weather APIs:** For weather commands (location queries only)
+- **Translation APIs:** For translation commands (text only, no user identification)
 
 **AI Services (Active - Early Access Feature):**
 

@@ -1,6 +1,6 @@
 # Terms of Service
 
-**Last Updated:** December 31, 2025
+**Last Updated:** January 1, 2026
 
 By inviting and using this Discord bot ("the Bot"), you agree to the following Terms of Service. If you do not agree, please remove the Bot from your server immediately.
 
@@ -41,6 +41,14 @@ The Bot provides the following services:
 - Rank cards and leaderboards
 - Server-wide level tracking
 
+**Music System:**
+
+- Full music player (YouTube, Spotify, SoundCloud)
+- Personal playlists and favorites
+- Music quiz and recommendations
+- DJ mode with audio effects
+- Queue management and controls
+
 **Engagement Features:**
 
 - Giveaway system with timed draws
@@ -52,6 +60,14 @@ The Bot provides the following services:
 - Reminder system
 - Custom tags/snippets
 
+**Competitive Features:**
+
+- Tournament system with brackets
+- Ranked leaderboards with ELO ratings
+- Seasonal competitions with rewards
+- Championship tracking
+- Skill rating system
+
 **Auto-Moderation:**
 
 - Spam detection and prevention
@@ -62,14 +78,16 @@ The Bot provides the following services:
 
 **Utility Commands:**
 
-- Server and user analytics
+- Server and user analytics with heatmaps
 - Advanced statistics and monitoring
+- Growth tracking and engagement metrics
 - QR code generation
 - Website screenshots
 - JSON formatting, Base64, hashing, UUID generation
 - Avatar, banner, emoji utilities
-- Developer tools (GitHub, NPM placeholders)
-- AI integration (placeholder)
+- Weather, translation, calculator
+- Notes, bookmarks, reminders
+- Advanced search and bulk operations
 
 **Admin Tools:**
 
@@ -115,8 +133,12 @@ The Bot collects and stores the following data:
 - Guild/Server IDs (for server-specific settings)
 - Message content (temporarily, for auto-moderation only)
 - Moderation actions (warnings, kicks, bans, timeouts)
-- Economy data (coins, bank balance, daily streaks)
+- Economy data (coins, bank balance, daily streaks, transactions)
 - Leveling data (XP, level, message count)
+- Music data (playlists, favorites, listening history)
+- Competitive data (tournament results, rankings, seasonal stats)
+- Social data (marriage status, reputation, profile customizations)
+- Server analytics (activity patterns, usage statistics)
 
 See our Privacy Policy for more details on data handling.
 
@@ -154,11 +176,23 @@ You may not:
 - We are not liable for any moderation actions taken using the Bot
 - Users should report abuse to server administrators and Discord Trust & Safety
 
-## 9. Economy System
+## 9. Virtual Systems (Economy, Music, Competitive)
 
+**Economy System:**
 - The economy system uses virtual currency with **NO real-world value**
 - Virtual currency **CANNOT** be exchanged for real money, goods, or services
 - Virtual currency has no monetary value and is for entertainment purposes only
+
+**Music System:**
+- Music playback uses third-party services (YouTube, Spotify, SoundCloud)
+- You must comply with those services' Terms of Service
+- We are not responsible for copyright violations by users
+- Music features are provided for personal, non-commercial use only
+
+**Competitive System:**
+- Rankings, ratings, and tournament results have no real-world value
+- We reserve the right to reset rankings or disqualify participants for rule violations
+- Tournament prizes (if any) are virtual and have no monetary value
 - We reserve the right to reset, modify, or remove economy data if:
   - Abuse or exploitation is detected
   - Bugs or glitches are discovered
