@@ -10,8 +10,71 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Planned
 
 - Support server setup
-- Slash commands support
 - Web dashboard
+
+## [2.7.0] - 2026-01-01
+
+### 🤖 Enhanced AI & Voice Features - Q1 2026 Complete!
+
+Completed the entire Q1 2026 roadmap with advanced AI and voice features!
+
+### Added
+
+#### 🤖 Enhanced AI Features (v2.6 Complete)
+
+- **OpenAI Moderation API Integration** - Real AI-powered content filtering
+  - Detects: sexual content, hate speech, harassment, self-harm, violence
+  - 10+ content categories with confidence scores
+  - Falls back to enhanced pattern matching if API unavailable
+  - Shows detection method (AI vs Pattern) in logs
+- **AI Conversation Memory System** - Context-aware AI chat
+  - Stores last 20 messages per user (24hr expiry)
+  - `//conversationhistory` command to view/clear history
+  - AI remembers previous conversations for better responses
+  - Automatic cleanup of old conversations
+- **AI Image Analysis** - Vision-powered moderation
+  - `//analyzeimage` command for image analysis
+  - Automatic NSFW image detection and removal
+  - Object recognition and text extraction
+  - `//imagemoderation` command for admin configuration
+  - Per-server settings and statistics
+
+#### 🎤 Voice Features (v2.7 Complete)
+
+- **Voice XP System** - Reward voice activity
+  - Earn XP for time spent in voice channels (default 5 XP/min)
+  - Voice level-up notifications
+  - `//voicestats` command to view statistics
+  - `//voicexp` command for admin configuration
+  - Ignores muted/deafened users
+  - Optional AFK channel XP
+  - Auto-awards XP every 5 minutes
+- **Soundboard System** - Custom sound effects
+  - Play custom sounds in voice channels
+  - `//soundboard add/remove/list` commands
+  - Per-server sound library
+  - Supports MP3/WAV files
+  - Auto-disconnect after playing
+- **Voice Recording** - Record voice channels (VIP only)
+  - `//record start/stop` commands
+  - Per-user audio streams
+  - Consent warnings for all participants
+  - Saves recordings locally
+  - Legal compliance notices
+
+### Technical Improvements
+
+- Added `conversationMemory` utility for chat history tracking
+- Enhanced AI moderation with OpenAI's official API
+- Integrated OpenAI Vision API for image analysis
+- Voice state tracking for XP system
+- Audio player management for soundboard
+- Recording stream management with prism-media
+
+### Fixed
+
+- Added missing branding imports to music commands
+- Fixed music command consistency
 
 ## [2.6.0] - 2025-12-31
 

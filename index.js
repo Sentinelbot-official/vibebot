@@ -1,6 +1,6 @@
 /**
  * ════════════════════════════════════════════════════════════════════════════
- *                            🎵 VIBE BOT v2.6 🎵
+ *                            🎵 VIBE BOT v2.7 🎵
  * ════════════════════════════════════════════════════════════════════════════
  *
  * 🔴 Built LIVE on 24/7 Twitch Stream by Airis & The Community
@@ -15,7 +15,7 @@
  *    features, helped debug, and made this possible. This isn't just a bot -
  *    it's OUR bot, built together 24/7.
  *
- * @version 2.6.0
+ * @version 2.7.0
  * @author Airis (with help from the best 24/7 Twitch community ever!)
  * @description 230+ commands | Music System | AI-powered | Built 24/7 live on stream
  * ════════════════════════════════════════════════════════════════════════════
