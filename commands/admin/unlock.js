@@ -2,10 +2,10 @@ const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const branding = require('../../utils/branding');
 
 module.exports = {
-  name: 'lockdown',
-  description: 'Lock all channels in the server (use //unlock to reverse)',
+  name: 'unlock',
+  description: 'Unlock all channels in the server',
   usage: '[reason]',
-  aliases: ['lockall', 'serverlock'],
+  aliases: ['unlockall', 'serverunlock'],
   category: 'admin',
   cooldown: 10,
   guildOnly: true,
@@ -14,10 +14,10 @@ module.exports = {
       return message.reply('❌ You need Administrator permission!');
     }
 
-    const reason = args.join(' ') || 'Server lockdown initiated';
+    const reason = args.join(' ') || 'Server unlocked';
 
     const confirmMsg = await message.reply(
-      '⚠️ **WARNING:** This will lock ALL channels in the server!\nReact with ✅ to confirm or ❌ to cancel.'
+      '⚠️ **WARNING:** This will unlock ALL channels in the server!\nReact with ✅ to confirm or ❌ to cancel.'
     );
 
     await confirmMsg.react('✅');
@@ -38,38 +38,38 @@ module.exports = {
 
     collector.on('collect', async reaction => {
       if (reaction.emoji.name === '❌') {
-        return confirmMsg.edit('❌ Lockdown cancelled.');
+        return confirmMsg.edit('❌ Unlock cancelled.');
       }
 
-      await confirmMsg.edit('🔒 Locking down server...');
+      await confirmMsg.edit('🔓 Unlocking server...');
 
       const channels = message.guild.channels.cache.filter(
         c => c.isTextBased() && c.permissionsFor(message.guild.id)
       );
 
-      let locked = 0;
+      let unlocked = 0;
       let failed = 0;
 
       for (const [_id, channel] of channels) {
         try {
           await channel.permissionOverwrites.edit(message.guild.id, {
-            SendMessages: false,
+            SendMessages: null, // Reset to default
           });
-          locked++;
+          unlocked++;
         } catch (error) {
           failed++;
-          console.error(`Failed to lock ${channel.name}:`, error);
+          console.error(`Failed to unlock ${channel.name}:`, error);
         }
       }
 
       const embed = new EmbedBuilder()
-        .setColor(branding.colors.error)
-        .setTitle('🔒 Server Lockdown')
+        .setColor(branding.colors.success)
+        .setTitle('🔓 Server Unlocked')
         .setDescription(reason)
         .addFields(
           {
-            name: 'Channels Locked',
-            value: `${locked}`,
+            name: 'Channels Unlocked',
+            value: `${unlocked}`,
             inline: true,
           },
           {
@@ -83,22 +83,24 @@ module.exports = {
             inline: true,
           }
         )
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       confirmMsg.edit({ content: null, embeds: [embed] });
 
       // Announce in all channels
       for (const [_id, channel] of channels) {
-        if (locked > 0) {
+        if (unlocked > 0) {
           try {
             await channel.send({
               embeds: [
                 new EmbedBuilder()
-                  .setColor(branding.colors.error)
-                  .setTitle('🔒 Channel Locked')
+                  .setColor(branding.colors.success)
+                  .setTitle('🔓 Channel Unlocked')
                   .setDescription(
-                    `This channel has been locked.\n**Reason:** ${reason}`
+                    `This channel has been unlocked.\n**Reason:** ${reason}`
                   )
+                  .setFooter(branding.footers.default)
                   .setTimestamp(),
               ],
             });
@@ -111,7 +113,7 @@ module.exports = {
 
     collector.on('end', collected => {
       if (collected.size === 0) {
-        confirmMsg.edit('❌ Lockdown timed out.');
+        confirmMsg.edit('❌ Unlock timed out.');
       }
     });
   },
