@@ -96,6 +96,11 @@ module.exports = {
             inline: true,
           },
           {
+            name: 'Total Channels',
+            value: `${channels.size}`,
+            inline: true,
+          },
+          {
             name: 'Initiated By',
             value: message.author.tag,
             inline: false,
@@ -104,7 +109,7 @@ module.exports = {
         .setFooter(branding.footers.default)
         .setTimestamp();
 
-      confirmMsg.edit({ content: null, embeds: [embed] });
+      await confirmMsg.edit({ content: null, embeds: [embed] });
 
       // Only announce if multiple channels were unlocked
       if (unlocked > 1) {
