@@ -52,9 +52,13 @@ module.exports = {
 
       for (const [_id, channel] of channels) {
         try {
-          await channel.permissionOverwrites.edit(message.guild.id, {
-            SendMessages: null, // Reset to default
-          });
+          // Check if there's a permission overwrite for @everyone
+          const everyoneOverwrite = channel.permissionOverwrites.cache.get(message.guild.id);
+          
+          if (everyoneOverwrite) {
+            // Delete the entire overwrite to restore default permissions
+            await everyoneOverwrite.delete();
+          }
           unlocked++;
         } catch (error) {
           failed++;
