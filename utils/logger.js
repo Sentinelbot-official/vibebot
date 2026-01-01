@@ -243,10 +243,21 @@ class Logger {
   /**
    * Log error message
    * @param {string} message - Log message
-   * @param {Object} data - Additional data
+   * @param {Error|Object} error - Error object or data
    */
-  error(message, data = null) {
-    this.log('ERROR', message, data);
+  error(message, error = null) {
+    // If error is an Error object, log it properly
+    if (error instanceof Error) {
+      console.error(`[ERROR] ${message}`);
+      console.error(error);
+      this.log('ERROR', message, {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+    } else {
+      this.log('ERROR', message, error);
+    }
   }
 
   /**
