@@ -24,128 +24,133 @@ module.exports = {
       await confirmMsg.react('✅');
       await confirmMsg.react('❌');
 
-    const filter = (reaction, user) => {
-      return (
-        ['✅', '❌'].includes(reaction.emoji.name) &&
-        user.id === message.author.id
-      );
-    };
+      const filter = (reaction, user) => {
+        return (
+          ['✅', '❌'].includes(reaction.emoji.name) &&
+          user.id === message.author.id
+        );
+      };
 
-    const collector = confirmMsg.createReactionCollector({
-      filter,
-      max: 1,
-      time: 30000,
-    });
+      const collector = confirmMsg.createReactionCollector({
+        filter,
+        max: 1,
+        time: 30000,
+      });
 
-    collector.on('collect', async reaction => {
-      if (reaction.emoji.name === '❌') {
-        return confirmMsg.edit('❌ Unlock cancelled.');
-      }
+      collector.on('collect', async reaction => {
+        if (reaction.emoji.name === '❌') {
+          return confirmMsg.edit('❌ Unlock cancelled.');
+        }
 
-      await confirmMsg.edit('🔓 Unlocking server...');
+        await confirmMsg.edit('🔓 Unlocking server...');
 
-      // Get ALL text-based channels
-      const channels = message.guild.channels.cache.filter(c => c.isTextBased());
+        // Get ALL text-based channels
+        const channels = message.guild.channels.cache.filter(c =>
+          c.isTextBased()
+        );
 
-      let unlocked = 0;
-      let failed = 0;
-      let skipped = 0;
-      const unlockedChannels = []; // Track which channels were actually unlocked
+        let unlocked = 0;
+        let failed = 0;
+        let skipped = 0;
+        const unlockedChannels = []; // Track which channels were actually unlocked
 
-      for (const [_id, channel] of channels) {
-        try {
-          // Check if there's a permission overwrite for @everyone
-          const everyoneOverwrite = channel.permissionOverwrites.cache.get(message.guild.id);
-          
-          if (everyoneOverwrite) {
-            // Check if SendMessages is explicitly denied
-            const permissions = everyoneOverwrite.deny;
-            if (permissions.has('SendMessages')) {
-              // Delete the entire overwrite to restore default permissions
-              await everyoneOverwrite.delete();
-              unlocked++;
-              unlockedChannels.push(channel); // Track this channel
+        for (const [_id, channel] of channels) {
+          try {
+            // Check if there's a permission overwrite for @everyone
+            const everyoneOverwrite = channel.permissionOverwrites.cache.get(
+              message.guild.id
+            );
+
+            if (everyoneOverwrite) {
+              // Check if SendMessages is explicitly denied
+              const permissions = everyoneOverwrite.deny;
+              if (permissions.has('SendMessages')) {
+                // Delete the entire overwrite to restore default permissions
+                await everyoneOverwrite.delete();
+                unlocked++;
+                unlockedChannels.push(channel); // Track this channel
+              } else {
+                skipped++;
+              }
             } else {
+              // No overwrite means it's already unlocked
               skipped++;
             }
-          } else {
-            // No overwrite means it's already unlocked
-            skipped++;
-          }
-        } catch (error) {
-          failed++;
-          console.error(`Failed to unlock ${channel.name}:`, error);
-        }
-      }
-
-      const embed = new EmbedBuilder()
-        .setColor(branding.colors.success)
-        .setTitle('🔓 Server Unlocked')
-        .setDescription(reason)
-        .addFields(
-          {
-            name: 'Channels Unlocked',
-            value: `${unlocked}`,
-            inline: true,
-          },
-          {
-            name: 'Already Unlocked',
-            value: `${skipped}`,
-            inline: true,
-          },
-          {
-            name: 'Failed',
-            value: `${failed}`,
-            inline: true,
-          },
-          {
-            name: 'Total Channels',
-            value: `${channels.size}`,
-            inline: true,
-          },
-          {
-            name: 'Initiated By',
-            value: message.author.tag,
-            inline: false,
-          }
-        )
-        .setFooter(branding.footers.default)
-        .setTimestamp();
-
-      await confirmMsg.edit({ content: null, embeds: [embed] });
-
-      // Only announce in channels that were actually unlocked
-      if (unlocked > 0) {
-        for (const channel of unlockedChannels) {
-          try {
-            await channel.send({
-              embeds: [
-                new EmbedBuilder()
-                  .setColor(branding.colors.success)
-                  .setTitle('🔓 Channel Unlocked')
-                  .setDescription(
-                    `This channel has been unlocked.\n**Reason:** ${reason}`
-                  )
-                  .setFooter(branding.footers.default)
-                  .setTimestamp(),
-              ],
-            });
-          } catch {
-            // Ignore errors
+          } catch (error) {
+            failed++;
+            console.error(`Failed to unlock ${channel.name}:`, error);
           }
         }
-      }
-    });
 
-    collector.on('end', collected => {
-      if (collected.size === 0) {
-        confirmMsg.edit('❌ Unlock timed out.');
-      }
-    });
+        const embed = new EmbedBuilder()
+          .setColor(branding.colors.success)
+          .setTitle('🔓 Server Unlocked')
+          .setDescription(reason)
+          .addFields(
+            {
+              name: 'Channels Unlocked',
+              value: `${unlocked}`,
+              inline: true,
+            },
+            {
+              name: 'Already Unlocked',
+              value: `${skipped}`,
+              inline: true,
+            },
+            {
+              name: 'Failed',
+              value: `${failed}`,
+              inline: true,
+            },
+            {
+              name: 'Total Channels',
+              value: `${channels.size}`,
+              inline: true,
+            },
+            {
+              name: 'Initiated By',
+              value: message.author.tag,
+              inline: false,
+            }
+          )
+          .setFooter(branding.footers.default)
+          .setTimestamp();
 
+        await confirmMsg.edit({ content: null, embeds: [embed] });
+
+        // Only announce in channels that were actually unlocked
+        if (unlocked > 0) {
+          for (const channel of unlockedChannels) {
+            try {
+              await channel.send({
+                embeds: [
+                  new EmbedBuilder()
+                    .setColor(branding.colors.success)
+                    .setTitle('🔓 Channel Unlocked')
+                    .setDescription(
+                      `This channel has been unlocked.\n**Reason:** ${reason}`
+                    )
+                    .setFooter(branding.footers.default)
+                    .setTimestamp(),
+                ],
+              });
+            } catch {
+              // Ignore errors
+            }
+          }
+        }
+      });
+
+      collector.on('end', collected => {
+        if (collected.size === 0) {
+          confirmMsg.edit('❌ Unlock timed out.');
+        }
+      });
     } catch (error) {
       console.error('Error in unlock command:', error);
-      return message.reply('❌ An error occurred while trying to unlock channels. Check console for details.');
+      return message.reply(
+        '❌ An error occurred while trying to unlock channels. Check console for details.'
+      );
     }
   },
 };

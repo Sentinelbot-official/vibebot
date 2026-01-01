@@ -167,7 +167,11 @@ module.exports = {
         .addFields(
           { name: '📝 Name', value: name, inline: true },
           { name: '🔍 Pattern', value: `\`${pattern}\``, inline: false },
-          { name: '🚩 Flags', value: '`gi` (global, case-insensitive)', inline: true }
+          {
+            name: '🚩 Flags',
+            value: '`gi` (global, case-insensitive)',
+            inline: true,
+          }
         )
         .setFooter(branding.footers.default)
         .setTimestamp();
@@ -197,7 +201,9 @@ module.exports = {
             { name: '📝 Test Text', value: testText, inline: false },
             {
               name: '✅ Matches',
-              value: matches ? `Found ${matches.length} match(es): ${matches.join(', ')}` : 'No matches found',
+              value: matches
+                ? `Found ${matches.length} match(es): ${matches.join(', ')}`
+                : 'No matches found',
               inline: false,
             }
           )

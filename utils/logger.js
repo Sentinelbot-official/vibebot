@@ -183,7 +183,10 @@ class Logger {
           dataString = ` | ${JSON.stringify(data, (key, value) => {
             if (typeof value === 'object' && value !== null) {
               // Skip circular references and large objects
-              if (value.constructor?.name === 'Client' || value.constructor?.name === 'Guild') {
+              if (
+                value.constructor?.name === 'Client' ||
+                value.constructor?.name === 'Guild'
+              ) {
                 return '[Circular]';
               }
             }
@@ -253,7 +256,7 @@ class Logger {
       this.log('ERROR', message, {
         message: error.message,
         stack: error.stack,
-        name: error.name
+        name: error.name,
       });
     } else {
       this.log('ERROR', message, error);
