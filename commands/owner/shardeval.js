@@ -23,6 +23,7 @@ module.exports = {
         guildId: message.guild?.id || 'DM',
         guildName: message.guild?.name || 'Direct Message',
       });
+      
       // Check if bot is sharded
       if (!message.client.shard) {
         return message.reply('❌ This bot is not running in sharded mode!');

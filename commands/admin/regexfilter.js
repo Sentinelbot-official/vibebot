@@ -117,5 +117,97 @@ module.exports = {
 
       return message.reply({ embeds: [embed] });
     }
+
+    if (action === 'add') {
+      if (!args[1] || !args[2]) {
+        return message.reply(
+          '❌ Usage: `regexfilter add <pattern> <name>`\nExample: `regexfilter add (discord\\.gg|discordapp\\.com\\/invite) InviteLinks`'
+        );
+      }
+
+      const pattern = args[1];
+      const name = args.slice(2).join(' ');
+
+      // Check if name already exists
+      if (regexFilters.some(f => f.name === name)) {
+        return message.reply('❌ A filter with that name already exists!');
+      }
+
+      // Validate regex pattern
+      if (!isSafeRegex(pattern)) {
+        return message.reply(
+          '❌ That regex pattern is unsafe or too complex! Please use a simpler pattern to avoid performance issues.'
+        );
+      }
+
+      // Test if the pattern is valid
+      try {
+        new RegExp(pattern, 'gi');
+      } catch (error) {
+        return message.reply(
+          `❌ Invalid regex pattern: ${error.message}\nMake sure to escape special characters like \`.\` with \`\\.\``
+        );
+      }
+
+      // Add filter
+      regexFilters.push({
+        name,
+        pattern,
+        flags: 'gi',
+        addedBy: message.author.id,
+        addedAt: Date.now(),
+      });
+
+      settings.regexFilters = regexFilters;
+      db.set('guild_settings', message.guild.id, settings);
+
+      const embed = new EmbedBuilder()
+        .setColor(branding.colors.success)
+        .setTitle('✅ Regex Filter Added')
+        .addFields(
+          { name: '📝 Name', value: name, inline: true },
+          { name: '🔍 Pattern', value: `\`${pattern}\``, inline: false },
+          { name: '🚩 Flags', value: '`gi` (global, case-insensitive)', inline: true }
+        )
+        .setFooter(branding.footers.default)
+        .setTimestamp();
+
+      return message.reply({ embeds: [embed] });
+    }
+
+    if (action === 'test') {
+      if (!args[1] || !args[2]) {
+        return message.reply(
+          '❌ Usage: `regexfilter test <pattern> <text>`\nExample: `regexfilter test discord\\.gg Check discord.gg/test`'
+        );
+      }
+
+      const pattern = args[1];
+      const testText = args.slice(2).join(' ');
+
+      try {
+        const regex = new RegExp(pattern, 'gi');
+        const matches = testText.match(regex);
+
+        const embed = new EmbedBuilder()
+          .setColor(matches ? branding.colors.warning : branding.colors.success)
+          .setTitle('🧪 Regex Test Results')
+          .addFields(
+            { name: '🔍 Pattern', value: `\`${pattern}\``, inline: false },
+            { name: '📝 Test Text', value: testText, inline: false },
+            {
+              name: '✅ Matches',
+              value: matches ? `Found ${matches.length} match(es): ${matches.join(', ')}` : 'No matches found',
+              inline: false,
+            }
+          )
+          .setFooter(branding.footers.default)
+          .setTimestamp();
+
+        return message.reply({ embeds: [embed] });
+      } catch (error) {
+        return message.reply(`❌ Invalid regex pattern: ${error.message}`);
+      }
+    }
   },
 };
