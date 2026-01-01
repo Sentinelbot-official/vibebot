@@ -43,12 +43,12 @@ module.exports = {
 
       await confirmMsg.edit('🔓 Unlocking server...');
 
-      const channels = message.guild.channels.cache.filter(
-        c => c.isTextBased() && c.permissionsFor(message.guild.id)
-      );
+      // Get ALL text-based channels
+      const channels = message.guild.channels.cache.filter(c => c.isTextBased());
 
       let unlocked = 0;
       let failed = 0;
+      let skipped = 0;
 
       for (const [_id, channel] of channels) {
         try {
@@ -56,10 +56,19 @@ module.exports = {
           const everyoneOverwrite = channel.permissionOverwrites.cache.get(message.guild.id);
           
           if (everyoneOverwrite) {
-            // Delete the entire overwrite to restore default permissions
-            await everyoneOverwrite.delete();
+            // Check if SendMessages is explicitly denied
+            const permissions = everyoneOverwrite.deny;
+            if (permissions.has('SendMessages')) {
+              // Delete the entire overwrite to restore default permissions
+              await everyoneOverwrite.delete();
+              unlocked++;
+            } else {
+              skipped++;
+            }
+          } else {
+            // No overwrite means it's already unlocked
+            skipped++;
           }
-          unlocked++;
         } catch (error) {
           failed++;
           console.error(`Failed to unlock ${channel.name}:`, error);
@@ -77,6 +86,11 @@ module.exports = {
             inline: true,
           },
           {
+            name: 'Already Unlocked',
+            value: `${skipped}`,
+            inline: true,
+          },
+          {
             name: 'Failed',
             value: `${failed}`,
             inline: true,
@@ -84,7 +98,7 @@ module.exports = {
           {
             name: 'Initiated By',
             value: message.author.tag,
-            inline: true,
+            inline: false,
           }
         )
         .setFooter(branding.footers.default)
