@@ -50,6 +50,7 @@ module.exports = {
       let unlocked = 0;
       let failed = 0;
       let skipped = 0;
+      const unlockedChannels = []; // Track which channels were actually unlocked
 
       for (const [_id, channel] of channels) {
         try {
@@ -63,6 +64,7 @@ module.exports = {
               // Delete the entire overwrite to restore default permissions
               await everyoneOverwrite.delete();
               unlocked++;
+              unlockedChannels.push(channel); // Track this channel
             } else {
               skipped++;
             }
@@ -112,18 +114,17 @@ module.exports = {
 
       await confirmMsg.edit({ content: null, embeds: [embed] });
 
-      // Only announce if multiple channels were unlocked
-      if (unlocked > 1) {
-        // Announce in all channels
-        for (const [_id, channel] of channels) {
+      // Only announce in channels that were actually unlocked
+      if (unlocked > 0) {
+        for (const channel of unlockedChannels) {
           try {
             await channel.send({
               embeds: [
                 new EmbedBuilder()
                   .setColor(branding.colors.success)
-                  .setTitle('🔓 Server Unlocked')
+                  .setTitle('🔓 Channel Unlocked')
                   .setDescription(
-                    `All channels have been unlocked.\n**Reason:** ${reason}`
+                    `This channel has been unlocked.\n**Reason:** ${reason}`
                   )
                   .setFooter(branding.footers.default)
                   .setTimestamp(),
