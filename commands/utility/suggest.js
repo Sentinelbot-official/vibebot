@@ -21,9 +21,7 @@ module.exports = {
 
     // Setup command (admin only)
     if (subcommand === 'setup') {
-      if (
-        !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
-      ) {
+      if (!message.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
         return message.reply(
           '❌ You need **Manage Server** permission to set up suggestions!'
         );
@@ -66,7 +64,12 @@ module.exports = {
         .setDescription(
           suggestionList
             .map(s => {
-              const status = s.status === 'approved' ? '✅' : s.status === 'denied' ? '❌' : '⏳';
+              const status =
+                s.status === 'approved'
+                  ? '✅'
+                  : s.status === 'denied'
+                    ? '❌'
+                    : '⏳';
               const votes = s.upvotes - s.downvotes;
               return (
                 `${status} **#${s.id}** - ${s.suggestion.substring(0, 50)}...\n` +
@@ -83,9 +86,7 @@ module.exports = {
 
     // Approve/Deny suggestions (admin only)
     if (subcommand === 'approve' || subcommand === 'deny') {
-      if (
-        !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
-      ) {
+      if (!message.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
         return message.reply(
           '❌ You need **Manage Server** permission to manage suggestions!'
         );
@@ -126,10 +127,7 @@ module.exports = {
                   : branding.colors.error
               )
               .addFields({
-                name:
-                  subcommand === 'approve'
-                    ? '✅ Approved'
-                    : '❌ Denied',
+                name: subcommand === 'approve' ? '✅ Approved' : '❌ Denied',
                 value: `**Reason:** ${reason}\n**By:** <@${message.author.id}>`,
                 inline: false,
               });
@@ -275,9 +273,19 @@ module.exports = {
       db.set('suggestions', message.guild.id, suggestions);
 
       const updatedEmbed = EmbedBuilder.from(interaction.message.embeds[0]);
-      updatedEmbed.spliceFields(0, 2,
-        { name: '👍 Upvotes', value: suggestion.upvotes.toString(), inline: true },
-        { name: '👎 Downvotes', value: suggestion.downvotes.toString(), inline: true }
+      updatedEmbed.spliceFields(
+        0,
+        2,
+        {
+          name: '👍 Upvotes',
+          value: suggestion.upvotes.toString(),
+          inline: true,
+        },
+        {
+          name: '👎 Downvotes',
+          value: suggestion.downvotes.toString(),
+          inline: true,
+        }
       );
 
       await interaction.update({ embeds: [updatedEmbed] });

@@ -19,7 +19,7 @@ module.exports = {
           '**Analyze the mood and emotion of messages!**\n\n' +
             '**Usage:**\n' +
             '`//sentiment <text>` - Analyze text\n' +
-            '`//sentiment @user` - Analyze user\'s recent messages\n' +
+            "`//sentiment @user` - Analyze user's recent messages\n" +
             '`//sentiment channel` - Analyze channel mood\n\n' +
             '**Features:**\n' +
             '• Emotion detection (happy, sad, angry, etc.)\n' +
@@ -62,7 +62,9 @@ async function analyzeText(message, text) {
         `**Overall Sentiment:** ${analysis.sentiment}\n` +
         `**Confidence:** ${(analysis.confidence * 100).toFixed(1)}%\n\n` +
         `**Emotions Detected:**\n` +
-        analysis.emotions.map(e => `${e.emoji} ${e.name}: ${e.score}%`).join('\n')
+        analysis.emotions
+          .map(e => `${e.emoji} ${e.name}: ${e.score}%`)
+          .join('\n')
     )
     .addFields(
       {
@@ -214,23 +216,80 @@ function analyzeSentiment(text) {
   // Emotion keywords
   const emotions = {
     happy: {
-      keywords: ['happy', 'joy', 'excited', 'love', 'great', 'awesome', 'amazing', 'wonderful', 'fantastic', 'lol', 'haha', '😊', '😄', '🎉', '❤️'],
+      keywords: [
+        'happy',
+        'joy',
+        'excited',
+        'love',
+        'great',
+        'awesome',
+        'amazing',
+        'wonderful',
+        'fantastic',
+        'lol',
+        'haha',
+        '😊',
+        '😄',
+        '🎉',
+        '❤️',
+      ],
       emoji: '😊',
     },
     sad: {
-      keywords: ['sad', 'depressed', 'down', 'unhappy', 'miserable', 'crying', 'tears', '😢', '😭', '💔'],
+      keywords: [
+        'sad',
+        'depressed',
+        'down',
+        'unhappy',
+        'miserable',
+        'crying',
+        'tears',
+        '😢',
+        '😭',
+        '💔',
+      ],
       emoji: '😢',
     },
     angry: {
-      keywords: ['angry', 'mad', 'furious', 'rage', 'hate', 'annoyed', 'frustrated', '😡', '😠', '🤬'],
+      keywords: [
+        'angry',
+        'mad',
+        'furious',
+        'rage',
+        'hate',
+        'annoyed',
+        'frustrated',
+        '😡',
+        '😠',
+        '🤬',
+      ],
       emoji: '😡',
     },
     anxious: {
-      keywords: ['anxious', 'worried', 'nervous', 'stressed', 'scared', 'afraid', 'concern', '😰', '😨'],
+      keywords: [
+        'anxious',
+        'worried',
+        'nervous',
+        'stressed',
+        'scared',
+        'afraid',
+        'concern',
+        '😰',
+        '😨',
+      ],
       emoji: '😰',
     },
     excited: {
-      keywords: ['excited', 'hyped', 'pumped', 'thrilled', 'eager', '🎉', '🔥', '⚡'],
+      keywords: [
+        'excited',
+        'hyped',
+        'pumped',
+        'thrilled',
+        'eager',
+        '🎉',
+        '🔥',
+        '⚡',
+      ],
       emoji: '🎉',
     },
   };
@@ -258,7 +317,10 @@ function analyzeSentiment(text) {
 
   // Calculate positivity/negativity
   const positiveScore = emotionScores.happy.score + emotionScores.excited.score;
-  const negativeScore = emotionScores.sad.score + emotionScores.angry.score + emotionScores.anxious.score;
+  const negativeScore =
+    emotionScores.sad.score +
+    emotionScores.angry.score +
+    emotionScores.anxious.score;
   const total = positiveScore + negativeScore || 1;
 
   const positivity = Math.round((positiveScore / total) * 100);

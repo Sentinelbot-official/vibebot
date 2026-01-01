@@ -35,7 +35,11 @@ module.exports = {
     }
 
     if (action === 'create') {
-      const eventData = args.slice(1).join(' ').split('|').map(s => s.trim());
+      const eventData = args
+        .slice(1)
+        .join(' ')
+        .split('|')
+        .map(s => s.trim());
 
       if (eventData.length < 3) {
         return message.reply(

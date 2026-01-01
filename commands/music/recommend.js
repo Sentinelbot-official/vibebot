@@ -13,10 +13,15 @@ module.exports = {
     const loadingMsg = await message.reply('🔍 Analyzing your music taste...');
 
     try {
-      const recommendations = await generateRecommendations(message.author.id, message.guild.id);
+      const recommendations = await generateRecommendations(
+        message.author.id,
+        message.guild.id
+      );
 
       if (recommendations.length === 0) {
-        return loadingMsg.edit('❌ Not enough listening history! Play some songs first.');
+        return loadingMsg.edit(
+          '❌ Not enough listening history! Play some songs first.'
+        );
       }
 
       const embed = new EmbedBuilder()

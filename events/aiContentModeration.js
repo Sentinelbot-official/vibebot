@@ -123,8 +123,7 @@ async function analyzeContent(content, config) {
   // Spam Detection
   if (config.spam) {
     // Check for excessive caps
-    const capsRatio =
-      (content.match(/[A-Z]/g) || []).length / content.length;
+    const capsRatio = (content.match(/[A-Z]/g) || []).length / content.length;
     if (capsRatio > 0.7 && content.length > 10) {
       return {
         flagged: true,
@@ -166,7 +165,11 @@ async function handleViolation(message, analysis, config) {
   }
 
   // Delete message
-  if (config.action === 'delete' || config.action === 'warn' || config.action === 'timeout') {
+  if (
+    config.action === 'delete' ||
+    config.action === 'warn' ||
+    config.action === 'timeout'
+  ) {
     try {
       await message.delete();
     } catch (error) {
@@ -191,7 +194,10 @@ async function handleViolation(message, analysis, config) {
   // Timeout user
   if (config.action === 'timeout') {
     try {
-      await message.member.timeout(5 * 60 * 1000, `AI Moderation: ${analysis.reason}`);
+      await message.member.timeout(
+        5 * 60 * 1000,
+        `AI Moderation: ${analysis.reason}`
+      );
     } catch (error) {
       console.error('Failed to timeout user:', error);
     }

@@ -101,43 +101,56 @@ async function analyzeRetention(guild) {
   const left90d = memberData.leaves.filter(l => l.timestamp > ninetyDaysAgo);
 
   // Calculate retention rates
-  const retention7d = joined7d.length > 0
-    ? ((joined7d.length - left7d.length) / joined7d.length) * 100
-    : 100;
-  const retention30d = joined30d.length > 0
-    ? ((joined30d.length - left30d.length) / joined30d.length) * 100
-    : 100;
-  const retention90d = joined90d.length > 0
-    ? ((joined90d.length - left90d.length) / joined90d.length) * 100
-    : 100;
+  const retention7d =
+    joined7d.length > 0
+      ? ((joined7d.length - left7d.length) / joined7d.length) * 100
+      : 100;
+  const retention30d =
+    joined30d.length > 0
+      ? ((joined30d.length - left30d.length) / joined30d.length) * 100
+      : 100;
+  const retention90d =
+    joined90d.length > 0
+      ? ((joined90d.length - left90d.length) / joined90d.length) * 100
+      : 100;
 
   const retentionRate = retention30d;
   const churnRate = 100 - retentionRate;
 
   // Calculate stay durations
-  const stayDurations = memberData.leaves.map(l => {
-    const joinRecord = memberData.joins.find(j => j.userId === l.userId);
-    return joinRecord ? l.timestamp - joinRecord.timestamp : 0;
-  }).filter(d => d > 0);
+  const stayDurations = memberData.leaves
+    .map(l => {
+      const joinRecord = memberData.joins.find(j => j.userId === l.userId);
+      return joinRecord ? l.timestamp - joinRecord.timestamp : 0;
+    })
+    .filter(d => d > 0);
 
-  const avgStayDuration = stayDurations.length > 0
-    ? stayDurations.reduce((a, b) => a + b, 0) / stayDurations.length
-    : 0;
+  const avgStayDuration =
+    stayDurations.length > 0
+      ? stayDurations.reduce((a, b) => a + b, 0) / stayDurations.length
+      : 0;
 
-  const recentLeavers = memberData.leaves.filter(l => l.timestamp > thirtyDaysAgo);
-  const recentStayDurations = recentLeavers.map(l => {
-    const joinRecord = memberData.joins.find(j => j.userId === l.userId);
-    return joinRecord ? l.timestamp - joinRecord.timestamp : 0;
-  }).filter(d => d > 0);
+  const recentLeavers = memberData.leaves.filter(
+    l => l.timestamp > thirtyDaysAgo
+  );
+  const recentStayDurations = recentLeavers
+    .map(l => {
+      const joinRecord = memberData.joins.find(j => j.userId === l.userId);
+      return joinRecord ? l.timestamp - joinRecord.timestamp : 0;
+    })
+    .filter(d => d > 0);
 
-  const avgLeaverDuration = recentStayDurations.length > 0
-    ? recentStayDurations.reduce((a, b) => a + b, 0) / recentStayDurations.length
-    : 0;
+  const avgLeaverDuration =
+    recentStayDurations.length > 0
+      ? recentStayDurations.reduce((a, b) => a + b, 0) /
+        recentStayDurations.length
+      : 0;
 
   const sortedDurations = [...stayDurations].sort((a, b) => a - b);
-  const medianStayDuration = sortedDurations.length > 0
-    ? sortedDurations[Math.floor(sortedDurations.length / 2)]
-    : 0;
+  const medianStayDuration =
+    sortedDurations.length > 0
+      ? sortedDurations[Math.floor(sortedDurations.length / 2)]
+      : 0;
 
   // Member segments
   const currentMembers = guild.members.cache.filter(m => !m.user.bot);
@@ -208,7 +221,8 @@ function formatDuration(ms) {
   const days = Math.floor(ms / (24 * 60 * 60 * 1000));
   if (days === 0) return '< 1 day';
   if (days < 7) return `${days} day${days !== 1 ? 's' : ''}`;
-  if (days < 30) return `${Math.floor(days / 7)} week${Math.floor(days / 7) !== 1 ? 's' : ''}`;
+  if (days < 30)
+    return `${Math.floor(days / 7)} week${Math.floor(days / 7) !== 1 ? 's' : ''}`;
   return `${Math.floor(days / 30)} month${Math.floor(days / 30) !== 1 ? 's' : ''}`;
 }
 

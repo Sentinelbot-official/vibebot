@@ -1,13 +1,13 @@
 /**
  * ════════════════════════════════════════════════════════════════════════════
- *                            🎵 VIBE BOT v2.2 🎵
+ *                            🎵 VIBE BOT v2.6 🎵
  * ════════════════════════════════════════════════════════════════════════════
  *
  * 🔴 Built LIVE on 24/7 Twitch Stream by Airis & The Community
  * 📺 https://twitch.tv/projectdraguk - ALWAYS LIVE!
  *
  * 🌟 This bot is special - every feature was coded live on a 24/7 stream with
- *    real-time input from viewers around the world. From 130 commands to 220+,
+ *    real-time input from viewers around the world. From 130 commands to 260+,
  *    this journey represents hundreds of hours of collaborative coding,
  *    debugging sessions at 3 AM, and an amazing global community coming together.
  *

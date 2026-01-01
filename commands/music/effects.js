@@ -38,7 +38,9 @@ module.exports = {
     const validEffects = ['bassboost', 'nightcore', 'vaporwave', '8d', 'clear'];
 
     if (!validEffects.includes(effect)) {
-      return message.reply('❌ Invalid effect! Use: `bassboost`, `nightcore`, `vaporwave`, `8d`, or `clear`');
+      return message.reply(
+        '❌ Invalid effect! Use: `bassboost`, `nightcore`, `vaporwave`, `8d`, or `clear`'
+      );
     }
 
     const musicManager = require('../../utils/musicManager');

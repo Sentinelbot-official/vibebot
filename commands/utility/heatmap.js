@@ -74,7 +74,10 @@ async function generateHeatmap(guild, user) {
   const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
 
   // Get user activity data
-  const activityData = db.get('activity_tracking', `${guild.id}_${user.id}`) || {
+  const activityData = db.get(
+    'activity_tracking',
+    `${guild.id}_${user.id}`
+  ) || {
     messages: [],
   };
 
@@ -157,7 +160,15 @@ function generateHourlyChart(hourly) {
 }
 
 function generateDailyChart(daily) {
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
   const max = Math.max(...Object.values(daily), 1);
 
   let chart = '```\n';

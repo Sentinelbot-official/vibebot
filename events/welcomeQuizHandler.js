@@ -97,7 +97,9 @@ module.exports = {
 
         const questionEmbed = new EmbedBuilder()
           .setColor(branding.colors.primary)
-          .setTitle(`📝 Question ${questionIndex + 1}/${quizData.questions.length}`)
+          .setTitle(
+            `📝 Question ${questionIndex + 1}/${quizData.questions.length}`
+          )
           .setDescription(
             `**${question.question}**\n\n` +
               'Type your answer in the chat below:'

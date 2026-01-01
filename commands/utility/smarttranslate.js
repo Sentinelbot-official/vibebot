@@ -51,12 +51,12 @@ module.exports = {
       .setTitle('🌐 Translating...')
       .setDescription(
         '${branding.getRandomMessage([\n' +
-        '  "Analyzing context...",\n' +
-        '  "Detecting idioms...",\n' +
-        '  "Preserving tone...",\n' +
-        '  "Adapting culturally...",\n' +
-        '  "Consulting language models..."\n' +
-        '])}'
+          '  "Analyzing context...",\n' +
+          '  "Detecting idioms...",\n' +
+          '  "Preserving tone...",\n' +
+          '  "Adapting culturally...",\n' +
+          '  "Consulting language models..."\n' +
+          '])}'
       )
       .setFooter(branding.footers.default)
       .setTimestamp();
@@ -151,15 +151,12 @@ async function translateWithContext(text, sourceLang, targetLang) {
 
   // Use LibreTranslate API (free, open-source)
   try {
-    const response = await axios.post(
-      'https://libretranslate.com/translate',
-      {
-        q: text,
-        source: sourceLang,
-        target: getLanguageCode(targetLang),
-        format: 'text',
-      }
-    );
+    const response = await axios.post('https://libretranslate.com/translate', {
+      q: text,
+      source: sourceLang,
+      target: getLanguageCode(targetLang),
+      format: 'text',
+    });
 
     return {
       text: response.data.translatedText,

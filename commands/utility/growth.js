@@ -108,7 +108,8 @@ async function analyzeGrowth(guild, period) {
   const joined = joins.length;
   const left = leaves.length;
   const netChange = joined - left;
-  const growthRate = guild.memberCount > 0 ? (netChange / guild.memberCount) * 100 : 0;
+  const growthRate =
+    guild.memberCount > 0 ? (netChange / guild.memberCount) * 100 : 0;
 
   // Activity stats
   const totalMessages = messages.reduce((sum, m) => sum + m.count, 0);
@@ -117,7 +118,8 @@ async function analyzeGrowth(guild, period) {
   const avgMessagesPerDay = Math.round(totalMessages / days);
 
   // Engagement metrics
-  const engagementRate = guild.memberCount > 0 ? (activeUsers / guild.memberCount) * 100 : 0;
+  const engagementRate =
+    guild.memberCount > 0 ? (activeUsers / guild.memberCount) * 100 : 0;
   const retentionRate = joined > 0 ? ((joined - left) / joined) * 100 : 100;
   const churnRate = 100 - retentionRate;
 
@@ -185,9 +187,7 @@ function getMilestones(guild, stats) {
   if (nextMilestone) {
     const remaining = nextMilestone - guild.memberCount;
     const daysToReach =
-      stats.netChange > 0
-        ? Math.ceil(remaining / (stats.netChange / 7))
-        : '∞';
+      stats.netChange > 0 ? Math.ceil(remaining / (stats.netChange / 7)) : '∞';
     milestones.push(
       `🎯 ${remaining} members until ${branding.formatNumber(nextMilestone)} (${daysToReach} days)`
     );

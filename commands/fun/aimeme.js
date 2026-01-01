@@ -164,10 +164,7 @@ function generateCaptions(topic, boxCount) {
 
   // Predefined patterns for common topics
   const patterns = {
-    programming: [
-      'Writing clean code',
-      'Copy-pasting from Stack Overflow',
-    ],
+    programming: ['Writing clean code', 'Copy-pasting from Stack Overflow'],
     bugs: ['My code', 'Production bugs'],
     monday: ['Weekend', 'Monday morning'],
     gaming: ['Playing for fun', 'Competitive ranked'],
@@ -183,10 +180,8 @@ function generateCaptions(topic, boxCount) {
   }
 
   // Default captions
-  return [
-    `When ${topic}`,
-    `${topic} be like`,
-    'Everyone',
-    `${topic}`,
-  ].slice(0, boxCount);
+  return [`When ${topic}`, `${topic} be like`, 'Everyone', `${topic}`].slice(
+    0,
+    boxCount
+  );
 }

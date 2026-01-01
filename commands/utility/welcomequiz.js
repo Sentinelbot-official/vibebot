@@ -135,9 +135,7 @@ module.exports = {
       const quizData = db.get('welcome_quiz', message.guild.id);
 
       if (!quizData) {
-        return message.reply(
-          '❌ Please run `//welcomequiz setup` first!'
-        );
+        return message.reply('❌ Please run `//welcomequiz setup` first!');
       }
 
       const questionData = args
@@ -183,9 +181,7 @@ module.exports = {
       const quizData = db.get('welcome_quiz', message.guild.id);
 
       if (!quizData) {
-        return message.reply(
-          '❌ Please run `//welcomequiz setup` first!'
-        );
+        return message.reply('❌ Please run `//welcomequiz setup` first!');
       }
 
       const index = quizData.questions.findIndex(q => q.id === questionId);
@@ -212,9 +208,7 @@ module.exports = {
       const quizData = db.get('welcome_quiz', message.guild.id);
 
       if (!quizData) {
-        return message.reply(
-          '❌ Please run `//welcomequiz setup` first!'
-        );
+        return message.reply('❌ Please run `//welcomequiz setup` first!');
       }
 
       quizData.roleId = role.id;

@@ -72,9 +72,7 @@ module.exports = {
     }
 
     if (action === 'setup') {
-      if (
-        !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
-      ) {
+      if (!message.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
         return message.reply(
           '❌ You need **Manage Server** permission to set up milestones!'
         );
@@ -211,7 +209,9 @@ module.exports = {
 
         return message.reply({ embeds: [embed] });
       } else {
-        return message.reply('📊 No new milestones achieved yet. Keep growing!');
+        return message.reply(
+          '📊 No new milestones achieved yet. Keep growing!'
+        );
       }
     }
   },

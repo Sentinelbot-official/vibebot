@@ -20,7 +20,9 @@ module.exports = {
     } else if (queue && queue.currentSong) {
       songName = queue.currentSong.title;
     } else {
-      return message.reply('❌ No song is currently playing! Provide a song name to search.');
+      return message.reply(
+        '❌ No song is currently playing! Provide a song name to search.'
+      );
     }
 
     const loadingMsg = await message.reply('🔍 Searching for lyrics...');
@@ -60,7 +62,9 @@ module.exports = {
         }
 
         if (chunks.length > 3) {
-          await message.channel.send('_Lyrics truncated. Full lyrics too long for Discord._');
+          await message.channel.send(
+            '_Lyrics truncated. Full lyrics too long for Discord._'
+          );
         }
       } else {
         throw new Error('No lyrics found');

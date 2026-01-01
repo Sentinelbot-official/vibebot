@@ -1,4 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 const db = require('../../utils/database');
 const branding = require('../../utils/branding');
 
@@ -12,7 +17,10 @@ module.exports = {
   async execute(message, args) {
     const action = args[0]?.toLowerCase();
 
-    if (!action || !['create', 'add', 'remove', 'list', 'play', 'delete'].includes(action)) {
+    if (
+      !action ||
+      !['create', 'add', 'remove', 'list', 'play', 'delete'].includes(action)
+    ) {
       const embed = new EmbedBuilder()
         .setColor(branding.colors.primary)
         .setTitle('🎵 Personal Playlists')
@@ -75,7 +83,9 @@ module.exports = {
 
       db.set('user_playlists', message.author.id, playlists);
 
-      return message.reply(`✅ Added **${song}** to playlist **${playlistName}**!`);
+      return message.reply(
+        `✅ Added **${song}** to playlist **${playlistName}**!`
+      );
     }
 
     if (action === 'remove') {
@@ -83,7 +93,9 @@ module.exports = {
       const index = parseInt(indexStr) - 1;
 
       if (!playlistName || isNaN(index)) {
-        return message.reply('❌ Usage: `//playlist remove <playlist> <song number>`');
+        return message.reply(
+          '❌ Usage: `//playlist remove <playlist> <song number>`'
+        );
       }
 
       if (!playlists[playlistName]) {
@@ -97,7 +109,9 @@ module.exports = {
       const removed = playlists[playlistName].songs.splice(index, 1)[0];
       db.set('user_playlists', message.author.id, playlists);
 
-      return message.reply(`✅ Removed **${removed.title}** from playlist **${playlistName}**!`);
+      return message.reply(
+        `✅ Removed **${removed.title}** from playlist **${playlistName}**!`
+      );
     }
 
     if (action === 'list') {
@@ -108,7 +122,7 @@ module.exports = {
         const playlistList = Object.values(playlists);
 
         if (playlistList.length === 0) {
-          return message.reply('📭 You don\'t have any playlists yet!');
+          return message.reply("📭 You don't have any playlists yet!");
         }
 
         const embed = new EmbedBuilder()
@@ -116,7 +130,10 @@ module.exports = {
           .setTitle(`🎵 ${message.author.username}'s Playlists`)
           .setDescription(
             playlistList
-              .map(pl => `**${pl.name}** - ${pl.songs.length} song${pl.songs.length !== 1 ? 's' : ''}`)
+              .map(
+                pl =>
+                  `**${pl.name}** - ${pl.songs.length} song${pl.songs.length !== 1 ? 's' : ''}`
+              )
               .join('\n')
           )
           .setFooter(branding.footers.default)
@@ -144,7 +161,9 @@ module.exports = {
             .map((song, i) => `**${i + 1}.** ${song.title}`)
             .join('\n')
         )
-        .setFooter({ text: `${playlist.songs.length} song${playlist.songs.length !== 1 ? 's' : ''} total` })
+        .setFooter({
+          text: `${playlist.songs.length} song${playlist.songs.length !== 1 ? 's' : ''} total`,
+        })
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
@@ -180,7 +199,9 @@ module.exports = {
         }
       }
 
-      return message.reply(`✅ Added ${addedCount}/${playlist.songs.length} songs from **${playlistName}** to queue!`);
+      return message.reply(
+        `✅ Added ${addedCount}/${playlist.songs.length} songs from **${playlistName}** to queue!`
+      );
     }
 
     if (action === 'delete') {

@@ -14,7 +14,9 @@ module.exports = {
     const action = args[0]?.toLowerCase();
 
     if (!action || !['enable', 'disable', 'settings'].includes(action)) {
-      const djConfig = db.get('dj_mode', message.guild.id) || { enabled: false };
+      const djConfig = db.get('dj_mode', message.guild.id) || {
+        enabled: false,
+      };
 
       const embed = new EmbedBuilder()
         .setColor(branding.colors.primary)
@@ -39,7 +41,9 @@ module.exports = {
     }
 
     if (!message.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-      return message.reply('❌ You need **Manage Server** permission to manage DJ mode!');
+      return message.reply(
+        '❌ You need **Manage Server** permission to manage DJ mode!'
+      );
     }
 
     if (action === 'enable') {
@@ -114,19 +118,25 @@ module.exports = {
         if (setting === 'crossfade' && (value === 'on' || value === 'off')) {
           djConfig.crossfade = value === 'on';
           db.set('dj_mode', message.guild.id, djConfig);
-          return message.reply(`✅ Crossfade ${value === 'on' ? 'enabled' : 'disabled'}!`);
+          return message.reply(
+            `✅ Crossfade ${value === 'on' ? 'enabled' : 'disabled'}!`
+          );
         }
 
         if (setting === 'autovolume' && (value === 'on' || value === 'off')) {
           djConfig.autoVolume = value === 'on';
           db.set('dj_mode', message.guild.id, djConfig);
-          return message.reply(`✅ Auto volume ${value === 'on' ? 'enabled' : 'disabled'}!`);
+          return message.reply(
+            `✅ Auto volume ${value === 'on' ? 'enabled' : 'disabled'}!`
+          );
         }
 
         if (setting === 'autodj' && (value === 'on' || value === 'off')) {
           djConfig.autoDJ = value === 'on';
           db.set('dj_mode', message.guild.id, djConfig);
-          return message.reply(`✅ Auto-DJ ${value === 'on' ? 'enabled' : 'disabled'}!`);
+          return message.reply(
+            `✅ Auto-DJ ${value === 'on' ? 'enabled' : 'disabled'}!`
+          );
         }
 
         if (setting === 'role') {

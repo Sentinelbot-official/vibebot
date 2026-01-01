@@ -11,7 +11,9 @@ module.exports = {
   cooldown: 15,
   guildOnly: true,
   async execute(message, args) {
-    const loadingMsg = await message.reply('📊 Calculating engagement metrics...');
+    const loadingMsg = await message.reply(
+      '📊 Calculating engagement metrics...'
+    );
 
     try {
       const metrics = await calculateEngagement(message.guild);
@@ -58,7 +60,10 @@ module.exports = {
             value:
               metrics.topContributors.length > 0
                 ? metrics.topContributors
-                    .map((c, i) => `${i + 1}. <@${c.userId}> - ${branding.formatNumber(c.messages)} msgs`)
+                    .map(
+                      (c, i) =>
+                        `${i + 1}. <@${c.userId}> - ${branding.formatNumber(c.messages)} msgs`
+                    )
                     .join('\n')
                 : 'No data',
             inline: false,
@@ -68,7 +73,10 @@ module.exports = {
             value:
               metrics.topChannels.length > 0
                 ? metrics.topChannels
-                    .map((c, i) => `${i + 1}. <#${c.channelId}> - ${branding.formatNumber(c.messages)} msgs`)
+                    .map(
+                      (c, i) =>
+                        `${i + 1}. <#${c.channelId}> - ${branding.formatNumber(c.messages)} msgs`
+                    )
                     .join('\n')
                 : 'No data',
             inline: false,
@@ -102,8 +110,12 @@ async function calculateEngagement(guild) {
   };
 
   // Filter by time periods
-  const messagesToday = engagementData.messages.filter(m => m.timestamp > oneDayAgo);
-  const messagesWeek = engagementData.messages.filter(m => m.timestamp > oneWeekAgo);
+  const messagesToday = engagementData.messages.filter(
+    m => m.timestamp > oneDayAgo
+  );
+  const messagesWeek = engagementData.messages.filter(
+    m => m.timestamp > oneWeekAgo
+  );
 
   // Calculate active members (sent message in last 7 days)
   const activeUserIds = new Set(messagesWeek.map(m => m.userId));
@@ -111,7 +123,8 @@ async function calculateEngagement(guild) {
   const botCount = guild.members.cache.filter(m => m.user.bot).size;
   const humanMembers = guild.memberCount - botCount;
   const inactiveMembers = humanMembers - activeMembers;
-  const activePercentage = humanMembers > 0 ? (activeMembers / humanMembers) * 100 : 0;
+  const activePercentage =
+    humanMembers > 0 ? (activeMembers / humanMembers) * 100 : 0;
 
   // Message stats
   const totalMessagesToday = messagesToday.length;
@@ -141,7 +154,8 @@ async function calculateEngagement(guild) {
   // Top channels (last 7 days)
   const channelMessageCounts = {};
   for (const msg of messagesWeek) {
-    channelMessageCounts[msg.channelId] = (channelMessageCounts[msg.channelId] || 0) + 1;
+    channelMessageCounts[msg.channelId] =
+      (channelMessageCounts[msg.channelId] || 0) + 1;
   }
   const topChannels = Object.entries(channelMessageCounts)
     .map(([channelId, messages]) => ({ channelId, messages }))
@@ -152,9 +166,10 @@ async function calculateEngagement(guild) {
   const lastWeekMessages = engagementData.messages.filter(
     m => m.timestamp > oneWeekAgo * 2 && m.timestamp <= oneWeekAgo
   ).length;
-  const trendPercentage = lastWeekMessages > 0
-    ? ((totalMessagesWeek - lastWeekMessages) / lastWeekMessages) * 100
-    : 0;
+  const trendPercentage =
+    lastWeekMessages > 0
+      ? ((totalMessagesWeek - lastWeekMessages) / lastWeekMessages) * 100
+      : 0;
 
   let trend;
   if (trendPercentage > 10) {
@@ -186,7 +201,9 @@ async function calculateEngagement(guild) {
 
   const peakHour = hourCounts.indexOf(Math.max(...hourCounts));
   const peakTime = `${peakHour}:00 - ${peakHour + 1}:00`;
-  const busiestDay = Object.entries(dayCounts).sort((a, b) => b[1] - a[1])[0][0];
+  const busiestDay = Object.entries(dayCounts).sort(
+    (a, b) => b[1] - a[1]
+  )[0][0];
 
   // Calculate health score (0-100)
   const healthScore = Math.min(

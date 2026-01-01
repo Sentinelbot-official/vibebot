@@ -11,7 +11,9 @@ module.exports = {
   cooldown: 10,
   guildOnly: true,
   async execute(message, args) {
-    const loadingMsg = await message.reply('📊 Analyzing peak activity times...');
+    const loadingMsg = await message.reply(
+      '📊 Analyzing peak activity times...'
+    );
 
     try {
       const analysis = await analyzePeakTimes(message.guild);
@@ -155,7 +157,15 @@ function generateHourlyActivity(hourly) {
 }
 
 function generateWeeklyPattern(daily) {
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
   const max = Math.max(...Object.values(daily), 1);
 
   let pattern = '```\n';
@@ -180,8 +190,7 @@ function generateTimeRecommendations(analysis) {
   );
 
   // Weekend vs weekday
-  const weekendActivity =
-    analysis.daily.Saturday + analysis.daily.Sunday;
+  const weekendActivity = analysis.daily.Saturday + analysis.daily.Sunday;
   const weekdayActivity =
     analysis.daily.Monday +
     analysis.daily.Tuesday +
@@ -190,18 +199,31 @@ function generateTimeRecommendations(analysis) {
     analysis.daily.Friday;
 
   if (weekendActivity > weekdayActivity / 2) {
-    recommendations.push('🎮 **Weekend activity is strong** - schedule events then');
+    recommendations.push(
+      '🎮 **Weekend activity is strong** - schedule events then'
+    );
   } else {
-    recommendations.push('💼 **Weekday activity dominates** - focus on weekday engagement');
+    recommendations.push(
+      '💼 **Weekday activity dominates** - focus on weekday engagement'
+    );
   }
 
   // Peak hour advice
   if (analysis.peakHours[0].hour >= 18 && analysis.peakHours[0].hour <= 23) {
-    recommendations.push('🌙 **Evening is your prime time** - schedule events 6-11 PM');
-  } else if (analysis.peakHours[0].hour >= 12 && analysis.peakHours[0].hour <= 17) {
-    recommendations.push('☀️ **Afternoon is most active** - schedule events 12-5 PM');
+    recommendations.push(
+      '🌙 **Evening is your prime time** - schedule events 6-11 PM'
+    );
+  } else if (
+    analysis.peakHours[0].hour >= 12 &&
+    analysis.peakHours[0].hour <= 17
+  ) {
+    recommendations.push(
+      '☀️ **Afternoon is most active** - schedule events 12-5 PM'
+    );
   } else {
-    recommendations.push('🌅 **Morning activity detected** - consider morning events');
+    recommendations.push(
+      '🌅 **Morning activity detected** - consider morning events'
+    );
   }
 
   return recommendations.join('\n\n');

@@ -72,9 +72,7 @@ module.exports = {
     }
 
     if (action === 'create') {
-      if (
-        !message.member.permissions.has(PermissionFlagsBits.ManageGuild)
-      ) {
+      if (!message.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
         return message.reply(
           '❌ You need **Manage Server** permission to create challenges!'
         );
@@ -198,7 +196,9 @@ module.exports = {
       }
 
       if (challenge.participants.includes(message.author.id)) {
-        return message.reply('⚠️ You are already participating in this challenge!');
+        return message.reply(
+          '⚠️ You are already participating in this challenge!'
+        );
       }
 
       challenge.participants.push(message.author.id);

@@ -40,7 +40,10 @@ module.exports = {
       return message.reply({ embeds: [embed] });
     }
 
-    const pollData = args.join(' ').split('|').map(s => s.trim());
+    const pollData = args
+      .join(' ')
+      .split('|')
+      .map(s => s.trim());
 
     if (pollData.length < 3) {
       return message.reply(
@@ -75,7 +78,8 @@ module.exports = {
       const resultsText = options
         .map((option, i) => {
           const voteCount = votes[i];
-          const percentage = totalVotes > 0 ? (voteCount / totalVotes) * 100 : 0;
+          const percentage =
+            totalVotes > 0 ? (voteCount / totalVotes) * 100 : 0;
           const barLength = Math.round(percentage / 5);
           const bar = '█'.repeat(barLength) + '░'.repeat(20 - barLength);
 
@@ -111,7 +115,18 @@ module.exports = {
           currentRow = new ActionRowBuilder();
         }
 
-        const emoji = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'][i];
+        const emoji = [
+          '1️⃣',
+          '2️⃣',
+          '3️⃣',
+          '4️⃣',
+          '5️⃣',
+          '6️⃣',
+          '7️⃣',
+          '8️⃣',
+          '9️⃣',
+          '🔟',
+        ][i];
 
         currentRow.addComponents(
           new ButtonBuilder()

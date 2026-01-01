@@ -1,4 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 const db = require('../../utils/database');
 const branding = require('../../utils/branding');
 
@@ -14,14 +19,18 @@ module.exports = {
     const difficulty = args[0]?.toLowerCase() || 'medium';
 
     if (!['easy', 'medium', 'hard'].includes(difficulty)) {
-      return message.reply('❌ Invalid difficulty! Choose: `easy`, `medium`, or `hard`');
+      return message.reply(
+        '❌ Invalid difficulty! Choose: `easy`, `medium`, or `hard`'
+      );
     }
 
     const musicManager = require('../../utils/musicManager');
     const queue = musicManager.getQueue(message.guild.id);
 
     if (!queue || queue.songs.length < 5) {
-      return message.reply('❌ Not enough songs in queue history! Play at least 5 songs first.');
+      return message.reply(
+        '❌ Not enough songs in queue history! Play at least 5 songs first.'
+      );
     }
 
     // Start quiz
@@ -63,7 +72,9 @@ module.exports = {
         .setFooter(branding.footers.default)
         .setTimestamp();
 
-      const questionMsg = await message.channel.send({ embeds: [questionEmbed] });
+      const questionMsg = await message.channel.send({
+        embeds: [questionEmbed],
+      });
 
       // Collect answers
       const filter = m => !m.author.bot && m.channel.id === message.channel.id;
@@ -80,7 +91,8 @@ module.exports = {
 
         if (isCorrectAnswer(m.content, quizSong, difficulty)) {
           correctAnswers.add(m.author.id);
-          scores[m.author.id] = (scores[m.author.id] || 0) + getPointsPerQuestion(difficulty);
+          scores[m.author.id] =
+            (scores[m.author.id] || 0) + getPointsPerQuestion(difficulty);
 
           await m.react('✅');
         }
@@ -121,7 +133,9 @@ module.exports = {
       .slice(0, 10);
 
     if (sortedScores.length === 0) {
-      return message.channel.send('😅 Nobody scored any points! Better luck next time!');
+      return message.channel.send(
+        '😅 Nobody scored any points! Better luck next time!'
+      );
     }
 
     const medals = ['🥇', '🥈', '🥉'];
@@ -194,7 +208,10 @@ function isCorrectAnswer(answer, song, difficulty) {
   } else if (difficulty === 'medium') {
     const titleWords = titleLower.split(' ');
     const answerWords = answerLower.split(' ');
-    return titleWords.some(w => answerWords.includes(w)) || answerWords.some(w => titleWords.includes(w));
+    return (
+      titleWords.some(w => answerWords.includes(w)) ||
+      answerWords.some(w => titleWords.includes(w))
+    );
   } else {
     return titleLower === answerLower;
   }

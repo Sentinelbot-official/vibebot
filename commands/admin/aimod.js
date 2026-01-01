@@ -125,11 +125,18 @@ module.exports = {
         const setting = args[1].toLowerCase();
         const value = args[2]?.toLowerCase();
 
-        if (setting === 'nsfw' || setting === 'toxicity' || setting === 'phishing' || setting === 'spam') {
+        if (
+          setting === 'nsfw' ||
+          setting === 'toxicity' ||
+          setting === 'phishing' ||
+          setting === 'spam'
+        ) {
           if (value === 'on' || value === 'off') {
             config[setting] = value === 'on';
             db.set('ai_moderation', message.guild.id, config);
-            return message.reply(`✅ ${setting} filter ${value === 'on' ? 'enabled' : 'disabled'}!`);
+            return message.reply(
+              `✅ ${setting} filter ${value === 'on' ? 'enabled' : 'disabled'}!`
+            );
           }
         }
 
@@ -138,7 +145,9 @@ module.exports = {
           if (threshold >= 0 && threshold <= 100) {
             config.threshold = threshold / 100;
             db.set('ai_moderation', message.guild.id, config);
-            return message.reply(`✅ Confidence threshold set to ${threshold}%`);
+            return message.reply(
+              `✅ Confidence threshold set to ${threshold}%`
+            );
           }
         }
 
