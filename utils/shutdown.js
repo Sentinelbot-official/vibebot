@@ -40,6 +40,12 @@ class ShutdownHandler {
 
     // Handle uncaught exceptions
     process.on('uncaughtException', error => {
+      console.error('=== UNCAUGHT EXCEPTION ===');
+      console.error('Error:', error);
+      console.error('Stack:', error?.stack);
+      console.error('Message:', error?.message);
+      console.error('Type:', typeof error);
+      console.error('==========================');
       logger.error('Uncaught exception:', error);
       this.shutdown(client, 'UNCAUGHT_EXCEPTION', 1);
     });
