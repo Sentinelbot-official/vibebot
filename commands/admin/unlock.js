@@ -16,12 +16,13 @@ module.exports = {
 
     const reason = args.join(' ') || 'Server unlocked';
 
-    const confirmMsg = await message.reply(
-      '⚠️ **WARNING:** This will unlock ALL channels in the server!\nReact with ✅ to confirm or ❌ to cancel.'
-    );
+    try {
+      const confirmMsg = await message.reply(
+        '⚠️ **WARNING:** This will unlock ALL channels in the server!\nReact with ✅ to confirm or ❌ to cancel.'
+      );
 
-    await confirmMsg.react('✅');
-    await confirmMsg.react('❌');
+      await confirmMsg.react('✅');
+      await confirmMsg.react('❌');
 
     const filter = (reaction, user) => {
       return (
@@ -140,5 +141,10 @@ module.exports = {
         confirmMsg.edit('❌ Unlock timed out.');
       }
     });
+
+    } catch (error) {
+      console.error('Error in unlock command:', error);
+      return message.reply('❌ An error occurred while trying to unlock channels. Check console for details.');
+    }
   },
 };
