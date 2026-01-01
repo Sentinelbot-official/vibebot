@@ -4,38 +4,32 @@ const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'notes',
-  description: 'Personal note-taking system',
-  usage: '<add/list/view/delete/clear> [note]',
   aliases: ['note', 'notebook'],
+  description: 'Personal note-taking system',
+  usage: '<add/list/view/delete/search>',
   category: 'utility',
   cooldown: 3,
   async execute(message, args) {
     const action = args[0]?.toLowerCase();
 
-    if (!action || action === 'list') {
-      const notes = db.get('notes', message.author.id) || { notes: [] };
-
-      if (!notes.notes.length) {
-        return message.reply(
-          '📝 You have no notes!\nUse `notes add <text>` to create one.'
-        );
-      }
-
-      const noteList = notes.notes
-        .map((note, index) => {
-          const preview = note.content.substring(0, 50);
-          const date = new Date(note.createdAt).toLocaleDateString();
-          return `**${index + 1}.** ${preview}${note.content.length > 50 ? '...' : ''} *(${date})*`;
-        })
-        .join('\n\n');
-
+    if (!action || !['add', 'list', 'view', 'delete', 'search'].includes(action)) {
       const embed = new EmbedBuilder()
-        .setColor(branding.colors.premium)
-        .setAuthor({
-          name: `${message.author.username}'s Notes`,
-          iconURL: message.author.displayAvatarURL(),
-        })
-        .setDescription(noteList)
+        .setColor(branding.colors.primary)
+        .setTitle('📝 Personal Notes')
+        .setDescription(
+          '**Your private note-taking system!**\n\n' +
+            '**Commands:**\n' +
+            '`//notes add <title> | <content>` - Create note\n' +
+            '`//notes list` - View all notes\n' +
+            '`//notes view <id>` - View note\n' +
+            '`//notes delete <id>` - Delete note\n' +
+            '`//notes search <query>` - Search notes\n\n' +
+            '**Features:**\n' +
+            '• Private & secure\n' +
+            '• Full-text search\n' +
+            '• Unlimited notes\n' +
+            '• Rich formatting'
+        )
         .setFooter(branding.footers.default)
         .setTimestamp();
 
@@ -43,74 +37,151 @@ module.exports = {
     }
 
     if (action === 'add') {
-      const content = args.slice(1).join(' ');
+      const data = args.slice(1).join(' ').split('|').map(s => s.trim());
 
-      if (!content) {
+      if (data.length < 2) {
         return message.reply(
-          '❌ Please provide note content!\nUsage: `notes add <text>`\nExample: `notes add Remember to buy milk`'
+          '❌ Usage: `//notes add <title> | <content>`\n' +
+            'Example: `//notes add Meeting Notes | Discussed new features`'
         );
       }
 
-      if (content.length > 1000) {
-        return message.reply('❌ Note is too long! Max 1000 characters.');
-      }
+      const [title, content] = data;
+      const noteId = Date.now().toString();
+      const notes = db.get('notes', message.author.id) || [];
 
-      const notes = db.get('notes', message.author.id) || { notes: [] };
-
-      notes.notes.push({
-        id: Date.now(),
-        content: content,
+      notes.push({
+        id: noteId,
+        title,
+        content,
         createdAt: Date.now(),
+        updatedAt: Date.now(),
       });
 
       db.set('notes', message.author.id, notes);
 
-      return message.reply(
-        `✅ Note added! You now have ${notes.notes.length} note(s).\nUse \`notes list\` to view all notes.`
-      );
+      return message.reply(`✅ Note **${title}** created! ID: \`${noteId}\``);
     }
 
-    if (action === 'view') {
-      const index = parseInt(args[1]) - 1;
+    if (action === 'list') {
+      const notes = db.get('notes', message.author.id) || [];
 
-      if (isNaN(index)) {
-        return message.reply(
-          '❌ Please provide a note number!\nUsage: `notes view <number>`\nExample: `notes view 1`'
-        );
+      if (notes.length === 0) {
+        return message.reply('📭 You have no notes!');
       }
-
-      const notes = db.get('notes', message.author.id) || { notes: [] };
-
-      if (index < 0 || index >= notes.notes.length) {
-        return message.reply(
-          `❌ Invalid note number! You have ${notes.notes.length} note(s).`
-        );
-      }
-
-      const note = notes.notes[index];
 
       const embed = new EmbedBuilder()
-        .setColor(branding.colors.premium)
-        .setAuthor({
-          name: `${message.author.username}'s Note #${index + 1}`,
-          iconURL: message.author.displayAvatarURL(),
-        })
-        .setDescription(note.content)
+        .setColor(branding.colors.primary)
+        .setTitle('📝 Your Notes')
+        .setDescription(
+          notes
+            .slice(0, 10)
+            .map(
+              (n, i) =>
+                `**${i + 1}. ${n.title}**\n` +
+                `${n.content.substring(0, 50)}${n.content.length > 50 ? '...' : ''}\n` +
+                `🆔 \`${n.id}\` | 📅 <t:${Math.floor(n.createdAt / 1000)}:R>`
+            )
+            .join('\n\n')
+        )
         .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
     }
 
-    return message.reply(
-      '❌ Invalid action!\nUsage: `notes <add/list/view/delete/clear/search>`\n\n' +
-        '**Examples:**\n' +
-        '`notes add Remember to buy milk` - Add a note\n' +
-        '`notes list` - List all notes\n' +
-        '`notes view 1` - View note #1\n' +
-        '`notes delete 1` - Delete note #1\n' +
-        '`notes search milk` - Search notes\n' +
-        '`notes clear` - Delete all notes'
-    );
+    if (action === 'view') {
+      const noteId = args[1];
+
+      if (!noteId) {
+        return message.reply('❌ Please provide a note ID!');
+      }
+
+      const notes = db.get('notes', message.author.id) || [];
+      const note = notes.find(n => n.id === noteId);
+
+      if (!note) {
+        return message.reply('❌ Note not found!');
+      }
+
+      const embed = new EmbedBuilder()
+        .setColor(branding.colors.primary)
+        .setTitle(`📝 ${note.title}`)
+        .setDescription(note.content)
+        .addFields(
+          {
+            name: '📅 Created',
+            value: `<t:${Math.floor(note.createdAt / 1000)}:F>`,
+            inline: true,
+          },
+          {
+            name: '🔄 Updated',
+            value: `<t:${Math.floor(note.updatedAt / 1000)}:R>`,
+            inline: true,
+          }
+        )
+        .setFooter(branding.footers.default)
+        .setTimestamp();
+
+      return message.reply({ embeds: [embed] });
+    }
+
+    if (action === 'delete') {
+      const noteId = args[1];
+
+      if (!noteId) {
+        return message.reply('❌ Please provide a note ID!');
+      }
+
+      const notes = db.get('notes', message.author.id) || [];
+      const index = notes.findIndex(n => n.id === noteId);
+
+      if (index === -1) {
+        return message.reply('❌ Note not found!');
+      }
+
+      const deleted = notes.splice(index, 1)[0];
+      db.set('notes', message.author.id, notes);
+
+      return message.reply(`✅ Deleted note: **${deleted.title}**`);
+    }
+
+    if (action === 'search') {
+      const query = args.slice(1).join(' ').toLowerCase();
+
+      if (!query) {
+        return message.reply('❌ Please provide a search query!');
+      }
+
+      const notes = db.get('notes', message.author.id) || [];
+      const results = notes.filter(
+        n =>
+          n.title.toLowerCase().includes(query) ||
+          n.content.toLowerCase().includes(query)
+      );
+
+      if (results.length === 0) {
+        return message.reply('📭 No notes found matching your query!');
+      }
+
+      const embed = new EmbedBuilder()
+        .setColor(branding.colors.primary)
+        .setTitle(`🔍 Search Results: "${query}"`)
+        .setDescription(
+          results
+            .slice(0, 10)
+            .map(
+              (n, i) =>
+                `**${i + 1}. ${n.title}**\n` +
+                `${n.content.substring(0, 50)}...\n` +
+                `🆔 \`${n.id}\``
+            )
+            .join('\n\n')
+        )
+        .setFooter(branding.footers.default)
+        .setTimestamp();
+
+      return message.reply({ embeds: [embed] });
+    }
   },
 };
