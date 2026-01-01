@@ -1,18 +1,20 @@
-const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const backup = require('../../utils/backup');
 const branding = require('../../utils/branding');
+const ownerCheck = require('../../utils/ownerCheck');
 
 module.exports = {
   name: 'backup',
-  description: 'Manually trigger a database backup',
+  description: 'Manually trigger a database backup (Bot Owner Only)',
   usage: '',
   aliases: ['backupdb', 'savedb'],
-  category: 'admin',
+  category: 'owner',
   cooldown: 60,
-  guildOnly: true,
+  ownerOnly: true,
   async execute(message, _args) {
-    if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
-      return message.reply('❌ You need Administrator permission!');
+    // Owner check
+    if (!ownerCheck.isOwner(message.author.id)) {
+      return message.reply('❌ This command is restricted to bot owners only!');
     }
 
     const msg = await message.reply('⏳ Creating database backup...');
