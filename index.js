@@ -36,12 +36,21 @@ dotenv.config();
 
 // Import utilities
 const logger = require('./utils/logger');
-const config = require('./utils/config');
-const backup = require('./utils/backup');
-const automod = require('./utils/automod');
-const health = require('./utils/health');
-const shutdown = require('./utils/shutdown');
-const statsApi = require('./utils/statsApi');
+
+// Try to load config and catch any errors
+let config, backup, automod, health, shutdown, statsApi;
+try {
+  config = require('./utils/config');
+  backup = require('./utils/backup');
+  automod = require('./utils/automod');
+  health = require('./utils/health');
+  shutdown = require('./utils/shutdown');
+  statsApi = require('./utils/statsApi');
+} catch (error) {
+  logger.error('Failed to load utilities:', error);
+  console.error('FATAL ERROR:', error);
+  process.exit(1);
+}
 
 const client = new Client({
   intents: [
