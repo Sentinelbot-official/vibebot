@@ -58,7 +58,9 @@ module.exports = {
 
       db.set('bookmarks', message.author.id, bookmarks);
 
-      return message.reply(`✅ Bookmark **${title}** saved! ID: \`${bookmarkId}\``);
+      return message.reply(
+        `✅ Bookmark **${title}** saved! ID: \`${bookmarkId}\``
+      );
     }
 
     if (action === 'list') {

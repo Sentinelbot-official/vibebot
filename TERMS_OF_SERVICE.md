@@ -277,6 +277,6 @@ Any feedback, suggestions, or ideas you provide about the Bot may be used by us 
 
 **By using the Bot, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree to these Terms, you must immediately stop using the Bot and remove it from your server.**
 
-**Last Updated:** December 31, 2025  
-**Version:** 2.0  
-**Effective Date:** December 31, 2025
+**Last Updated:** January 1, 2026  
+**Version:** 2.6  
+**Effective Date:** January 1, 2026

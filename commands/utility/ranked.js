@@ -25,7 +25,8 @@ module.exports = {
       .map(([userId, data]) => ({ userId, ...data }))
       .sort((a, b) => b.elo - a.elo);
 
-    const userPosition = allRankings.findIndex(r => r.userId === message.author.id) + 1;
+    const userPosition =
+      allRankings.findIndex(r => r.userId === message.author.id) + 1;
 
     const embed = new EmbedBuilder()
       .setColor(getRankColor(userRank.rank))
@@ -39,8 +40,7 @@ module.exports = {
           allRankings
             .slice(0, 10)
             .map(
-              (r, i) =>
-                `${i + 1}. <@${r.userId}> - ${r.elo} ELO (${r.rank})`
+              (r, i) => `${i + 1}. <@${r.userId}> - ${r.elo} ELO (${r.rank})`
             )
             .join('\n')
       )

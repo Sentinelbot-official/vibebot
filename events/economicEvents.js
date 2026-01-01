@@ -18,7 +18,10 @@ module.exports = {
             const event = selectRandomEvent();
             await triggerEvent(guild, event);
           } catch (error) {
-            console.error(`Error triggering economic event for ${guild.name}:`, error);
+            console.error(
+              `Error triggering economic event for ${guild.name}:`,
+              error
+            );
           }
         }
       },
@@ -53,7 +56,8 @@ function selectRandomEvent() {
     {
       id: 'tax_day',
       name: '💸 Tax Day',
-      description: 'Tax collectors are here! Everyone loses 5% of their wallet.',
+      description:
+        'Tax collectors are here! Everyone loses 5% of their wallet.',
       effect: 'tax',
       rate: 0.05,
     },
@@ -95,7 +99,8 @@ function selectRandomEvent() {
 async function triggerEvent(guild, event) {
   // Find announcement channel
   const channels = guild.channels.cache.filter(
-    c => c.isTextBased() && c.permissionsFor(guild.members.me).has('SendMessages')
+    c =>
+      c.isTextBased() && c.permissionsFor(guild.members.me).has('SendMessages')
   );
 
   if (channels.size === 0) return;
@@ -137,7 +142,12 @@ async function triggerEvent(guild, event) {
       break;
 
     case 'boost':
-      applyCommandBoost(guild.id, event.command, event.multiplier, event.duration);
+      applyCommandBoost(
+        guild.id,
+        event.command,
+        event.multiplier,
+        event.duration
+      );
       break;
   }
 }
@@ -180,13 +190,16 @@ async function applyLotteryWin(guild, amount) {
 
   // Announce winner
   const channels = guild.channels.cache.filter(
-    c => c.isTextBased() && c.permissionsFor(guild.members.me).has('SendMessages')
+    c =>
+      c.isTextBased() && c.permissionsFor(guild.members.me).has('SendMessages')
   );
 
   if (channels.size > 0) {
-    await channels.first().send(
-      `🎉 Congratulations ${winner}! You won the lottery and received **${branding.formatNumber(amount)}** coins!`
-    );
+    await channels
+      .first()
+      .send(
+        `🎉 Congratulations ${winner}! You won the lottery and received **${branding.formatNumber(amount)}** coins!`
+      );
   }
 }
 

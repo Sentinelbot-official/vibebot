@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last Updated:** December 31, 2025
+**Last Updated:** January 1, 2026
 
 This Privacy Policy explains how we collect, use, store, and protect your data when you use our Discord bot ("the Bot").
 

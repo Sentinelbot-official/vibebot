@@ -1,4 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require('discord.js');
 const db = require('../../utils/database');
 const branding = require('../../utils/branding');
 
@@ -13,7 +18,10 @@ module.exports = {
   async execute(message, args) {
     const action = args[0]?.toLowerCase();
 
-    if (!action || !['create', 'join', 'start', 'bracket', 'list'].includes(action)) {
+    if (
+      !action ||
+      !['create', 'join', 'start', 'bracket', 'list'].includes(action)
+    ) {
       const embed = new EmbedBuilder()
         .setColor(branding.colors.primary)
         .setTitle('🏆 Tournament System')
@@ -79,7 +87,9 @@ module.exports = {
 
     if (action === 'list') {
       const tournaments = db.get('tournaments', message.guild.id) || {};
-      const active = Object.values(tournaments).filter(t => t.status !== 'completed');
+      const active = Object.values(tournaments).filter(
+        t => t.status !== 'completed'
+      );
 
       if (active.length === 0) {
         return message.reply('📭 No active tournaments!');
@@ -204,7 +214,7 @@ module.exports = {
       }
 
       if (tourney.status === 'registration') {
-        return message.reply('❌ Tournament hasn\'t started yet!');
+        return message.reply("❌ Tournament hasn't started yet!");
       }
 
       const embed = new EmbedBuilder()

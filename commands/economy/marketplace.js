@@ -201,7 +201,7 @@ module.exports = {
       }
 
       if (listing.sellerId !== message.author.id) {
-        return message.reply("❌ You can only cancel your own listings!");
+        return message.reply('❌ You can only cancel your own listings!');
       }
 
       if (listing.sold) {

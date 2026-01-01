@@ -56,12 +56,16 @@ module.exports = {
         startedAt: Date.now(),
       });
 
-      return message.reply(`✅ Started story: **${title}**\nAdd to it with \`//story add <text>\``);
+      return message.reply(
+        `✅ Started story: **${title}**\nAdd to it with \`//story add <text>\``
+      );
     }
 
     if (action === 'add') {
       if (!story) {
-        return message.reply('❌ No story in progress! Start one with `//story start`');
+        return message.reply(
+          '❌ No story in progress! Start one with `//story start`'
+        );
       }
 
       const text = args.slice(1).join(' ');
@@ -82,7 +86,9 @@ module.exports = {
 
       db.set('active_story', message.guild.id, story);
 
-      return message.reply(`✅ Added to story! (${story.parts.length} parts total)`);
+      return message.reply(
+        `✅ Added to story! (${story.parts.length} parts total)`
+      );
     }
 
     if (action === 'view') {

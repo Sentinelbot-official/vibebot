@@ -12,14 +12,18 @@ module.exports = {
   guildOnly: true,
   async execute(message, args) {
     const currentSeason = getCurrentSeason();
-    const userStats = db.get('season_stats', `${message.guild.id}_${message.author.id}`) || {
+    const userStats = db.get(
+      'season_stats',
+      `${message.guild.id}_${message.author.id}`
+    ) || {
       points: 0,
       wins: 0,
       participated: 0,
     };
 
     const leaderboard = getSeasonLeaderboard(message.guild.id);
-    const userRank = leaderboard.findIndex(u => u.userId === message.author.id) + 1;
+    const userRank =
+      leaderboard.findIndex(u => u.userId === message.author.id) + 1;
 
     const embed = new EmbedBuilder()
       .setColor(branding.colors.primary)
@@ -34,7 +38,10 @@ module.exports = {
           `**Top 5:**\n` +
           leaderboard
             .slice(0, 5)
-            .map((u, i) => `${i + 1}. <@${u.userId}> - ${branding.formatNumber(u.points)} pts`)
+            .map(
+              (u, i) =>
+                `${i + 1}. <@${u.userId}> - ${branding.formatNumber(u.points)} pts`
+            )
             .join('\n')
       )
       .addFields(

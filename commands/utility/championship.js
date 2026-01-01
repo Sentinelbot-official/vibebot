@@ -78,6 +78,9 @@ function getMostChampionships(championships) {
   if (sorted.length === 0) return 'No data';
 
   return sorted
-    .map(([userId, count], i) => `${i + 1}. <@${userId}> - ${count} championship${count !== 1 ? 's' : ''}`)
+    .map(
+      ([userId, count], i) =>
+        `${i + 1}. <@${userId}> - ${count} championship${count !== 1 ? 's' : ''}`
+    )
     .join('\n');
 }

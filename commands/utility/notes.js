@@ -12,7 +12,10 @@ module.exports = {
   async execute(message, args) {
     const action = args[0]?.toLowerCase();
 
-    if (!action || !['add', 'list', 'view', 'delete', 'search'].includes(action)) {
+    if (
+      !action ||
+      !['add', 'list', 'view', 'delete', 'search'].includes(action)
+    ) {
       const embed = new EmbedBuilder()
         .setColor(branding.colors.primary)
         .setTitle('📝 Personal Notes')
@@ -37,7 +40,11 @@ module.exports = {
     }
 
     if (action === 'add') {
-      const data = args.slice(1).join(' ').split('|').map(s => s.trim());
+      const data = args
+        .slice(1)
+        .join(' ')
+        .split('|')
+        .map(s => s.trim());
 
       if (data.length < 2) {
         return message.reply(

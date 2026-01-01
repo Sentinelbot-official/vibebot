@@ -42,7 +42,9 @@ module.exports = {
     try {
       // Parse filters
       const filters = parseFilters(query);
-      const searchTerm = query.replace(/\b(from|in|has|before|after):\S+/g, '').trim();
+      const searchTerm = query
+        .replace(/\b(from|in|has|before|after):\S+/g, '')
+        .trim();
 
       // Search messages
       const messages = await message.channel.messages.fetch({ limit: 100 });

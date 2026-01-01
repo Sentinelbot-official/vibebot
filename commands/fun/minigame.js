@@ -73,7 +73,7 @@ module.exports = {
         'Reply hazy, try again.',
         'Ask again later.',
         'Cannot predict now.',
-        'Don\'t count on it.',
+        "Don't count on it.",
         'My reply is no.',
         'Very doubtful.',
       ];
@@ -125,7 +125,7 @@ module.exports = {
       });
 
       if (collected.size === 0) {
-        return message.reply('⏱️ Time\'s up!');
+        return message.reply("⏱️ Time's up!");
       }
 
       const answer = collected.first();
@@ -141,7 +141,7 @@ module.exports = {
 };
 
 function determineWinner(player, bot) {
-  if (player === bot) return '🤝 It\'s a tie!';
+  if (player === bot) return "🤝 It's a tie!";
 
   const wins = {
     rock: 'scissors',

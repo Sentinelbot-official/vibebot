@@ -72,7 +72,9 @@ module.exports = {
       const loadingMsg = await message.reply('📌 Pinning messages...');
 
       try {
-        const messages = await message.channel.messages.fetch({ limit: amount });
+        const messages = await message.channel.messages.fetch({
+          limit: amount,
+        });
         let pinned = 0;
 
         for (const msg of messages.values()) {

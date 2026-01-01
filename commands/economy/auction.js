@@ -138,9 +138,7 @@ module.exports = {
       const bidAmount = parseInt(bidStr);
 
       if (!auctionId || !bidStr || isNaN(bidAmount) || bidAmount < 1) {
-        return message.reply(
-          '❌ Usage: `//auction bid <auction_id> <amount>`'
-        );
+        return message.reply('❌ Usage: `//auction bid <auction_id> <amount>`');
       }
 
       const auctions = db.get('auctions', message.guild.id) || [];
@@ -228,7 +226,7 @@ module.exports = {
       }
 
       if (auction.sellerId !== message.author.id) {
-        return message.reply("❌ You can only end your own auctions!");
+        return message.reply('❌ You can only end your own auctions!');
       }
 
       if (auction.ended) {

@@ -15,9 +15,15 @@ module.exports = {
 
     if (
       !action ||
-      !['create', 'join', 'leave', 'deposit', 'withdraw', 'info', 'list'].includes(
-        action
-      )
+      ![
+        'create',
+        'join',
+        'leave',
+        'deposit',
+        'withdraw',
+        'info',
+        'list',
+      ].includes(action)
     ) {
       const embed = new EmbedBuilder()
         .setColor(branding.colors.economy)
@@ -55,9 +61,7 @@ module.exports = {
       const userData = db.get('users', message.author.id) || { wallet: 0 };
 
       if (userData.wallet < 10000) {
-        return message.reply(
-          '❌ You need **10,000** coins to create a guild!'
-        );
+        return message.reply('❌ You need **10,000** coins to create a guild!');
       }
 
       userData.wallet -= 10000;
