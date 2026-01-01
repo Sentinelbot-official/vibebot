@@ -172,7 +172,30 @@ class Logger {
       ...(data && { data }),
     };
 
-    const logString = `[${timestamp}] [${level}] ${message}${data ? ` | ${JSON.stringify(data)}` : ''}\n`;
+    // Safely stringify data, handling circular references
+    let dataString = '';
+    if (data) {
+      try {
+        dataString = ` | ${JSON.stringify(data)}`;
+      } catch (error) {
+        // Handle circular references
+        try {
+          dataString = ` | ${JSON.stringify(data, (key, value) => {
+            if (typeof value === 'object' && value !== null) {
+              // Skip circular references and large objects
+              if (value.constructor?.name === 'Client' || value.constructor?.name === 'Guild') {
+                return '[Circular]';
+              }
+            }
+            return value;
+          })}`;
+        } catch {
+          dataString = ` | [Unable to stringify]`;
+        }
+      }
+    }
+
+    const logString = `[${timestamp}] [${level}] ${message}${dataString}\n`;
 
     // Write to file
     if (this.enableFile) {
