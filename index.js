@@ -73,28 +73,7 @@ const client = new Client({
 client.commands = new Collection();
 client.cooldowns = new Collection();
 
-// Register health checks
-health.registerCheck('discord', async () => {
-  return {
-    websocket: client.ws.ping !== -1 ? 'connected' : 'disconnected',
-    ping: client.ws.ping,
-    guilds: client.guilds.cache.size,
-  };
-});
-
-health.registerCheck('database', async () => {
-  const db = require('./utils/database');
-  try {
-    // Simple query to check database - just verify db exists
-    if (db && db.get) {
-      return { status: 'operational' };
-    }
-    return { status: 'unavailable' };
-  } catch (error) {
-    logger.warn('Database health check failed:', error);
-    return { status: 'error', error: error.message };
-  }
-});
+// Health checks will be registered after bot starts
 
 // Load command handler (supports subfolders)
 const commandsPath = path.join(__dirname, 'commands');
@@ -224,6 +203,28 @@ async function start() {
 
     automod.startWarningCleanup();
     logger.success('  ✓ Auto-moderation online');
+
+    // Register health checks
+    health.registerCheck('discord', async () => {
+      return {
+        websocket: client.ws.ping !== -1 ? 'connected' : 'disconnected',
+        ping: client.ws.ping,
+        guilds: client.guilds.cache.size,
+      };
+    });
+
+    health.registerCheck('database', async () => {
+      const db = require('./utils/database');
+      try {
+        // Simple query to check database - just verify db exists
+        if (db && db.get) {
+          return { status: 'operational' };
+        }
+        return { status: 'unavailable' };
+      } catch (error) {
+        return { status: 'error', error: error.message };
+      }
+    });
 
     health.startMonitoring();
     logger.success('  ✓ Health monitoring online');
