@@ -411,7 +411,7 @@ function updateStats() {
         userCount.title = 'Stats API not available';
       }
       if (commandCount) {
-        commandCount.textContent = '220+';
+        commandCount.textContent = '300+';
       }
     });
 
@@ -841,7 +841,7 @@ function createParticles() {
 function addShareButtons() {
   const url = encodeURIComponent(window.location.href);
   const title = encodeURIComponent(
-    'Check out Vibe Bot - 220+ Commands Discord Bot!'
+    'Check out Vibe Bot - 300+ Commands Discord Bot with Music System!'
   );
 
   const shareButtons = document.createElement('div');
