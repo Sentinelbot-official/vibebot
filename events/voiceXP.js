@@ -1,134 +1,184 @@
-const logger = require('../utils/logger');
 const db = require('../utils/database');
+const { EmbedBuilder } = require('discord.js');
+const branding = require('../utils/branding');
 
-// Track users in voice channels
-const voiceTracking = new Map();
+// Track voice sessions
+const voiceSessions = new Map();
 
 module.exports = {
   name: 'voiceStateUpdate',
   async execute(oldState, newState) {
-    try {
-      const userId = newState.id;
-      const guildId = newState.guild.id;
+    const member = newState.member;
+    const guild = newState.guild;
 
-      // User joined a voice channel
-      if (!oldState.channelId && newState.channelId) {
-        voiceTracking.set(userId, {
-          joinedAt: Date.now(),
-          channelId: newState.channelId,
-          guildId: guildId,
-        });
-        logger.info(
-          `${newState.member.user.tag} joined voice channel in ${newState.guild.name}`
-        );
-      }
+    // Check if voice XP is enabled
+    const config = db.get('voice_xp_config', guild.id) || {
+      enabled: true,
+      xpPerMinute: 5,
+      afkChannelXP: false,
+    };
 
-      // User left a voice channel
-      else if (oldState.channelId && !newState.channelId) {
-        const tracking = voiceTracking.get(userId);
+    if (!config.enabled) return;
 
-        if (tracking) {
-          const timeSpent = Date.now() - tracking.joinedAt;
-          const minutesSpent = Math.floor(timeSpent / 60000);
-
-          // Only give XP if they were in voice for at least 1 minute
-          if (minutesSpent >= 1) {
-            // Get voice stats
-            const voiceStats = db.get('voice_stats', userId) || {
-              totalMinutes: 0,
-              totalSessions: 0,
-              xp: 0,
-              level: 1,
-            };
-
-            // Calculate XP (1 XP per minute, bonus for longer sessions)
-            let xpGained = minutesSpent;
-            if (minutesSpent >= 60) xpGained = Math.floor(minutesSpent * 1.5); // 50% bonus for 1+ hour
-            if (minutesSpent >= 180) xpGained = Math.floor(minutesSpent * 2); // 100% bonus for 3+ hours
-
-            voiceStats.totalMinutes += minutesSpent;
-            voiceStats.totalSessions += 1;
-            voiceStats.xp += xpGained;
-
-            // Check for level up
-            const xpNeeded = voiceStats.level * 500;
-            if (voiceStats.xp >= xpNeeded) {
-              voiceStats.level += 1;
-              voiceStats.xp -= xpNeeded;
-
-              // Notify user of level up
-              try {
-                const member = await newState.guild.members.fetch(userId);
-                await member
-                  .send(
-                    `🎤 **Voice Level Up!**\nYou've reached voice level **${voiceStats.level}** in ${newState.guild.name}!`
-                  )
-                  .catch(() => {});
-              } catch {}
-            }
-
-            db.set('voice_stats', userId, voiceStats);
-            logger.info(
-              `${newState.member.user.tag} earned ${xpGained} voice XP (${minutesSpent} minutes)`
-            );
-          }
-
-          voiceTracking.delete(userId);
-        }
-      }
-
-      // User switched channels (track as continuous session)
-      else if (
-        oldState.channelId &&
-        newState.channelId &&
-        oldState.channelId !== newState.channelId
+    // User joined a voice channel
+    if (!oldState.channelId && newState.channelId) {
+      // Don't track AFK channel unless enabled
+      if (
+        !config.afkChannelXP &&
+        newState.channelId === guild.afkChannelId
       ) {
-        const tracking = voiceTracking.get(userId);
-        if (tracking) {
-          tracking.channelId = newState.channelId;
-        }
+        return;
       }
-    } catch (error) {
-      logger.error('Error in voice XP tracking:', error);
+
+      // Start tracking session
+      voiceSessions.set(member.id, {
+        guildId: guild.id,
+        channelId: newState.channelId,
+        joinTime: Date.now(),
+        muted: newState.selfMute || newState.serverMute,
+        deafened: newState.selfDeaf || newState.serverDeaf,
+      });
+    }
+
+    // User left a voice channel
+    if (oldState.channelId && !newState.channelId) {
+      const session = voiceSessions.get(member.id);
+      if (!session) return;
+
+      // Calculate time spent
+      const timeSpent = Date.now() - session.joinTime;
+      const minutesSpent = Math.floor(timeSpent / 60000);
+
+      if (minutesSpent > 0) {
+        // Award XP
+        const xpEarned = minutesSpent * config.xpPerMinute;
+        awardVoiceXP(member, guild, xpEarned, minutesSpent);
+      }
+
+      voiceSessions.delete(member.id);
+    }
+
+    // User switched channels
+    if (
+      oldState.channelId &&
+      newState.channelId &&
+      oldState.channelId !== newState.channelId
+    ) {
+      const session = voiceSessions.get(member.id);
+      if (session) {
+        // Calculate XP for previous channel
+        const timeSpent = Date.now() - session.joinTime;
+        const minutesSpent = Math.floor(timeSpent / 60000);
+
+        if (minutesSpent > 0) {
+          const xpEarned = minutesSpent * config.xpPerMinute;
+          awardVoiceXP(member, guild, xpEarned, minutesSpent);
+        }
+
+        // Start new session
+        session.channelId = newState.channelId;
+        session.joinTime = Date.now();
+      }
+    }
+
+    // Update mute/deaf status
+    if (oldState.channelId && newState.channelId) {
+      const session = voiceSessions.get(member.id);
+      if (session) {
+        session.muted = newState.selfMute || newState.serverMute;
+        session.deafened = newState.selfDeaf || newState.serverDeaf;
+      }
     }
   },
 };
 
-// Periodic save (every 5 minutes) for users still in voice
-setInterval(
-  () => {
-    const now = Date.now();
+function awardVoiceXP(member, guild, xpEarned, minutesSpent) {
+  const userData = db.get('users', member.id) || {
+    xp: 0,
+    level: 1,
+    voiceTime: 0,
+    voiceXP: 0,
+  };
 
-    for (const [userId, tracking] of voiceTracking.entries()) {
-      const timeSpent = now - tracking.joinedAt;
-      const minutesSpent = Math.floor(timeSpent / 60000);
+  userData.voiceTime = (userData.voiceTime || 0) + minutesSpent;
+  userData.voiceXP = (userData.voiceXP || 0) + xpEarned;
+  userData.xp += xpEarned;
 
-      if (minutesSpent >= 5) {
-        // Save progress
-        const voiceStats = db.get('voice_stats', userId) || {
-          totalMinutes: 0,
-          totalSessions: 0,
-          xp: 0,
-          level: 1,
-        };
+  // Check for level up
+  const oldLevel = userData.level;
+  const xpNeeded = oldLevel * 100;
 
-        const xpGained = minutesSpent;
-        voiceStats.totalMinutes += minutesSpent;
-        voiceStats.xp += xpGained;
+  if (userData.xp >= xpNeeded) {
+    userData.level++;
+    userData.xp -= xpNeeded;
 
-        // Check for level up
-        const xpNeeded = voiceStats.level * 500;
-        if (voiceStats.xp >= xpNeeded) {
-          voiceStats.level += 1;
-          voiceStats.xp -= xpNeeded;
-        }
+    // Send level up message
+    try {
+      const embed = new EmbedBuilder()
+        .setColor(branding.colors.success)
+        .setTitle('🎤 Voice Level Up!')
+        .setDescription(
+          `${member} just reached **Voice Level ${userData.level}**!\n\n` +
+            `🎙️ Total Voice Time: ${formatTime(userData.voiceTime)}\n` +
+            `⭐ Voice XP Earned: ${userData.voiceXP.toLocaleString()}`
+        )
+        .setFooter(branding.footers.default)
+        .setTimestamp();
 
-        db.set('voice_stats', userId, voiceStats);
+      // Try to send to a system channel
+      const systemChannel =
+        guild.systemChannel ||
+        guild.channels.cache.find(c => c.isTextBased() && c.permissionsFor(guild.members.me).has('SendMessages'));
 
-        // Reset tracking start time
-        tracking.joinedAt = now;
+      if (systemChannel) {
+        systemChannel.send({ embeds: [embed] });
       }
+    } catch (error) {
+      console.error('Failed to send voice level up message:', error);
     }
-  },
-  5 * 60 * 1000
-); // Every 5 minutes
+  }
+
+  db.set('users', member.id, userData);
+}
+
+function formatTime(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+
+  if (hours > 0) {
+    return `${hours}h ${mins}m`;
+  }
+  return `${mins}m`;
+}
+
+// Award XP every 5 minutes for active voice users
+setInterval(() => {
+  for (const [memberId, session] of voiceSessions.entries()) {
+    // Skip if muted or deafened (not actively participating)
+    if (session.muted || session.deafened) continue;
+
+    const timeSpent = Date.now() - session.joinTime;
+    const minutesSpent = Math.floor(timeSpent / 60000);
+
+    // Award XP every 5 minutes
+    if (minutesSpent >= 5) {
+      const guild = require('discord.js').client?.guilds?.cache.get(
+        session.guildId
+      );
+      if (!guild) continue;
+
+      const member = guild.members.cache.get(memberId);
+      if (!member) continue;
+
+      const config = db.get('voice_xp_config', session.guildId) || {
+        xpPerMinute: 5,
+      };
+
+      const xpEarned = 5 * config.xpPerMinute;
+      awardVoiceXP(member, guild, xpEarned, 5);
+
+      // Reset join time
+      session.joinTime = Date.now();
+    }
+  }
+}, 5 * 60 * 1000); // Check every 5 minutes

@@ -4,92 +4,85 @@ const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'voicestats',
-  description: 'View voice channel statistics',
-  usage: '[@user]',
-  aliases: ['voicexp', 'vxp', 'vstats'],
+  description: 'View your voice activity statistics',
+  usage: '//voicestats [@user]',
+  aliases: ['vstats', 'voicetime', 'vtime'],
   category: 'utility',
   cooldown: 5,
+  guildOnly: true,
   async execute(message, args) {
     const targetUser = message.mentions.users.first() || message.author;
-
-    const voiceStats = db.get('voice_stats', targetUser.id) || {
-      totalMinutes: 0,
-      totalSessions: 0,
-      xp: 0,
+    const userData = db.get('users', targetUser.id) || {
+      voiceTime: 0,
+      voiceXP: 0,
       level: 1,
     };
 
-    if (voiceStats.totalMinutes === 0) {
-      if (targetUser.id === message.author.id) {
-        return message.reply(
-          "❌ You haven't spent any time in voice channels yet!"
-        );
-      } else {
-        return message.reply(
-          `❌ ${targetUser.username} hasn\'t spent any time in voice channels yet!`
-        );
-      }
-    }
+    const voiceTime = userData.voiceTime || 0;
+    const voiceXP = userData.voiceXP || 0;
 
-    // Calculate time breakdowns
-    const hours = Math.floor(voiceStats.totalMinutes / 60);
-    const days = Math.floor(hours / 24);
-    const remainingHours = hours % 24;
+    // Format time
+    const hours = Math.floor(voiceTime / 60);
+    const minutes = voiceTime % 60;
+    const timeDisplay =
+      hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 
-    let timeText = '';
-    if (days > 0) {
-      timeText = `${days}d ${remainingHours}h`;
-    } else {
-      timeText = `${hours}h ${voiceStats.totalMinutes % 60}m`;
-    }
+    // Get voice leaderboard position
+    const allUsers = db.all('users');
+    const sortedUsers = Object.entries(allUsers)
+      .map(([id, data]) => ({
+        id,
+        voiceTime: data.voiceTime || 0,
+      }))
+      .sort((a, b) => b.voiceTime - a.voiceTime);
 
-    // Calculate XP progress
-    const xpNeeded = voiceStats.level * 500;
-    const xpProgress = Math.floor((voiceStats.xp / xpNeeded) * 100);
+    const position =
+      sortedUsers.findIndex(u => u.id === targetUser.id) + 1;
 
-    // Calculate average session length
-    const avgSession =
-      voiceStats.totalSessions > 0
-        ? Math.floor(voiceStats.totalMinutes / voiceStats.totalSessions)
-        : 0;
+    // Calculate XP to next level
+    const xpNeeded = userData.level * 100;
+    const xpProgress = userData.xp || 0;
+    const xpPercent = Math.floor((xpProgress / xpNeeded) * 100);
 
     const embed = new EmbedBuilder()
-      .setColor(branding.colors.info)
-      .setTitle(`🎤 ${targetUser.username}'s Voice Stats`)
+      .setColor(branding.colors.primary)
+      .setTitle(`🎤 ${targetUser.username}'s Voice Statistics`)
       .setThumbnail(targetUser.displayAvatarURL({ dynamic: true }))
       .addFields(
         {
-          name: '⭐ Voice Level',
-          value: voiceStats.level.toString(),
+          name: '⏰ Total Voice Time',
+          value: timeDisplay,
           inline: true,
         },
         {
-          name: '✨ XP',
-          value: `${voiceStats.xp}/${xpNeeded} (${xpProgress}%)`,
-          inline: true,
-        },
-        { name: '⏱️ Total Time', value: timeText, inline: true },
-        {
-          name: '📊 Total Sessions',
-          value: voiceStats.totalSessions.toLocaleString(),
+          name: '⭐ Voice XP Earned',
+          value: voiceXP.toLocaleString(),
           inline: true,
         },
         {
-          name: '📈 Avg Session',
-          value: `${avgSession} minutes`,
+          name: '📊 Voice Level',
+          value: `Level ${userData.level}`,
           inline: true,
         },
         {
-          name: '🎯 Total Minutes',
-          value: voiceStats.totalMinutes.toLocaleString(),
+          name: '🏆 Server Rank',
+          value: position > 0 ? `#${position}` : 'Unranked',
+          inline: true,
+        },
+        {
+          name: '📈 Progress to Next Level',
+          value: `${xpProgress}/${xpNeeded} XP (${xpPercent}%)`,
+          inline: true,
+        },
+        {
+          name: '💬 Total XP',
+          value: (userData.xp || 0).toLocaleString(),
           inline: true,
         }
       )
-      .setFooter({
-        text: 'Voice XP is earned by spending time in voice channels',
-      })
+      .setFooter(branding.footers.default)
       .setTimestamp();
 
-    return message.reply({ embeds: [embed] });
+    message.reply({ embeds: [embed] });
   },
 };
