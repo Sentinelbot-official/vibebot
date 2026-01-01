@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const musicManager = require('../../utils/musicManager');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'nowplaying',
