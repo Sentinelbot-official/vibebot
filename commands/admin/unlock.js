@@ -2,10 +2,10 @@ const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const branding = require('../../utils/branding');
 
 module.exports = {
-  name: 'unlock',
+  name: 'unlockall',
   description: 'Unlock all channels in the server',
   usage: '[reason]',
-  aliases: ['unlockall', 'serverunlock'],
+  aliases: ['serverunlock'],
   category: 'admin',
   cooldown: 10,
   guildOnly: true,
