@@ -118,6 +118,9 @@ if (fs.existsSync(commandsPath)) {
   loadCommands(commandsPath);
 }
 
+// Increase max listeners BEFORE loading events (we have 12 messageCreate handlers)
+client.setMaxListeners(15);
+
 // Load event handler
 const eventsPath = path.join(__dirname, 'events');
 if (fs.existsSync(eventsPath)) {
@@ -161,9 +164,6 @@ if (fs.existsSync(eventsPath)) {
 
 // Initialize shutdown handler (handles uncaughtException, unhandledRejection, SIGTERM, SIGINT)
 shutdown.init(client);
-
-// Increase max listeners for messageCreate event (we have 12 event handlers)
-client.setMaxListeners(15);
 
 // Register cleanup callbacks
 shutdown.register(async () => {
