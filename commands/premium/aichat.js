@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const premiumPerks = require('../../utils/premiumPerks');
 const db = require('../../utils/database');
+const conversationMemory = require('../../utils/conversationMemory');
 
 module.exports = {
   name: 'aichat',
@@ -149,6 +150,20 @@ module.exports = {
 
       // Save conversation (limit to last 20 messages)
       db.set('ai_conversations', conversationKey, conversation.slice(-20));
+
+      // Also save to conversation memory system
+      conversationMemory.addMessage(
+        message.author.id,
+        message.guild.id,
+        'user',
+        userMessage
+      );
+      conversationMemory.addMessage(
+        message.author.id,
+        message.guild.id,
+        'assistant',
+        aiResponse
+      );
 
       // Split response if too long
       if (aiResponse.length > 2000) {
