@@ -35,6 +35,13 @@ module.exports = {
     twitch: '🎬',
   },
 
+  /**
+   * Get Twitch icon URL
+   */
+  getTwitchIconURL() {
+    return 'https://static-cdn.jtvnw.net/ttv-boxart/Just%20Chatting-285x380.jpg';
+  },
+
   // Footer Templates
   footers: {
     default: {
