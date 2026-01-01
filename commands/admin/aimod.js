@@ -1,286 +1,200 @@
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
 const branding = require('../../utils/branding');
-const axios = require('axios');
 
 module.exports = {
   name: 'aimod',
-  description: 'AI-powered moderation for toxicity detection',
-  usage: '<enable/disable/config/test> [settings]',
+  aliases: ['aimoderation', 'smartmod'],
+  description: 'Configure AI-powered content moderation',
+  usage: '<enable/disable/config/stats>',
   category: 'admin',
   cooldown: 5,
+  guildOnly: true,
+  userPermissions: [PermissionFlagsBits.ManageGuild],
   async execute(message, args) {
-    if (!message.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-      return message.reply('❌ You need Manage Server permission!');
-    }
-
     const action = args[0]?.toLowerCase();
 
-    if (action === 'enable') {
-      const apiKey =
-        process.env.OPENAI_API_KEY || process.env.PERSPECTIVE_API_KEY;
-
-      if (!apiKey) {
-        return message.reply(
-          '❌ AI Moderation requires an API key!\n\n' +
-            '**Setup Options:**\n' +
-            '1. **OpenAI** (Recommended): Add `OPENAI_API_KEY` to .env\n' +
-            '2. **Perspective API** (Free): Add `PERSPECTIVE_API_KEY` to .env\n\n' +
-            'Get Perspective API key: [Google Perspective](https://perspectiveapi.com)'
-        );
-      }
-
-      const settings = db.get('guild_settings', message.guild.id) || {};
-      settings.aiModeration = {
-        enabled: true,
-        threshold: 0.7, // 70% confidence
-        action: 'warn', // warn, delete, timeout
-        logChannel: null,
+    if (!action) {
+      const config = db.get('ai_moderation', message.guild.id) || {
+        enabled: false,
       };
 
-      db.set('guild_settings', message.guild.id, settings);
-
-      return message.reply(
-        '✅ AI Moderation enabled!\n\n' +
-          '**Settings:**\n' +
-          '• Threshold: 70% (adjustable with `aimod config`)\n' +
-          '• Action: Warn (change with `aimod config`)\n' +
-          '• Messages will be analyzed for toxicity, harassment, threats, etc.'
-      );
-    }
-
-    if (action === 'disable') {
-      const settings = db.get('guild_settings', message.guild.id) || {};
-      if (settings.aiModeration) {
-        settings.aiModeration.enabled = false;
-      }
-
-      db.set('guild_settings', message.guild.id, settings);
-
-      return message.reply('✅ AI Moderation disabled!');
-    }
-
-    if (action === 'config') {
-      const setting = args[1]?.toLowerCase();
-      const value = args[2];
-
-      if (!setting || !value) {
-        return message.reply(
-          '❌ Usage: `aimod config <threshold/action/logchannel> <value>`\n\n' +
-            '**Examples:**\n' +
-            '`aimod config threshold 0.8` - Set to 80% confidence\n' +
-            '`aimod config action delete` - Auto-delete toxic messages\n' +
-            '`aimod config logchannel #logs` - Set log channel'
-        );
-      }
-
-      const settings = db.get('guild_settings', message.guild.id) || {};
-      if (!settings.aiModeration) {
-        return message.reply(
-          '❌ AI Moderation is not enabled! Use `aimod enable` first.'
-        );
-      }
-
-      if (setting === 'threshold') {
-        const threshold = parseFloat(value);
-        if (isNaN(threshold) || threshold < 0.1 || threshold > 1) {
-          return message.reply('❌ Threshold must be between 0.1 and 1.0!');
-        }
-        settings.aiModeration.threshold = threshold;
-        db.set('guild_settings', message.guild.id, settings);
-        return message.reply(
-          `✅ AI Moderation threshold set to ${(threshold * 100).toFixed(0)}%`
-        );
-      }
-
-      if (setting === 'action') {
-        if (!['warn', 'delete', 'timeout'].includes(value)) {
-          return message.reply('❌ Action must be: warn, delete, or timeout');
-        }
-        settings.aiModeration.action = value;
-        db.set('guild_settings', message.guild.id, settings);
-        return message.reply(`✅ AI Moderation action set to: ${value}`);
-      }
-
-      if (setting === 'logchannel') {
-        const channel = message.mentions.channels.first();
-        if (!channel) {
-          return message.reply('❌ Please mention a channel!');
-        }
-        settings.aiModeration.logChannel = channel.id;
-        db.set('guild_settings', message.guild.id, settings);
-        return message.reply(
-          `✅ AI Moderation logs will be sent to ${channel}`
-        );
-      }
-
-      return message.reply(
-        '❌ Invalid setting! Use: threshold, action, or logchannel'
-      );
-    }
-
-    if (action === 'test') {
-      const testMessage = args.slice(1).join(' ');
-
-      if (!testMessage) {
-        return message.reply(
-          '❌ Please provide a message to test!\nUsage: `aimod test <message>`'
-        );
-      }
-
-      const testingMsg = await message.reply('🤖 Analyzing message...');
-
-      try {
-        const result = await analyzeToxicity(testMessage);
-
-        const embed = new EmbedBuilder()
-          .setColor(result.isToxic ? 0xff0000 : 0x00ff00)
-          .setTitle('🤖 AI Moderation Test')
-          .setDescription(`**Message:** ${testMessage}`)
-          .addFields(
-            {
-              name: 'Result',
-              value: result.isToxic ? '❌ Toxic' : '✅ Clean',
-              inline: true,
-            },
-            {
-              name: 'Confidence',
-              value: `${(result.confidence * 100).toFixed(1)}%`,
-              inline: true,
-            },
-            {
-              name: 'Categories',
-              value: result.categories.join(', ') || 'None',
-              inline: false,
-            }
-          )
-          .setTimestamp();
-
-        return testingMsg.edit({ content: null, embeds: [embed] });
-      } catch (error) {
-        return testingMsg.edit(`❌ Failed to analyze: ${error.message}`);
-      }
-    }
-
-    if (action === 'status') {
-      const settings = db.get('guild_settings', message.guild.id) || {};
-      const aiMod = settings.aiModeration;
-
-      if (!aiMod) {
-        return message.reply(
-          '❌ AI Moderation is not configured! Use `aimod enable` to set it up.'
-        );
-      }
-
       const embed = new EmbedBuilder()
-        .setColor(aiMod.enabled ? 0x00ff00 : 0xff0000)
-        .setTitle('🤖 AI Moderation Status')
-        .addFields(
-          {
-            name: 'Status',
-            value: aiMod.enabled ? '✅ Enabled' : '❌ Disabled',
-            inline: true,
-          },
-          {
-            name: 'Threshold',
-            value: `${(aiMod.threshold * 100).toFixed(0)}%`,
-            inline: true,
-          },
-          {
-            name: 'Action',
-            value: aiMod.action,
-            inline: true,
-          },
-          {
-            name: 'Log Channel',
-            value: aiMod.logChannel ? `<#${aiMod.logChannel}>` : 'Not set',
-            inline: false,
-          }
+        .setColor(branding.colors.primary)
+        .setTitle('🤖 AI Moderation System')
+        .setDescription(
+          '**Intelligent content filtering powered by AI**\n\n' +
+            `**Status:** ${config.enabled ? '✅ Enabled' : '❌ Disabled'}\n\n` +
+            '**Features:**\n' +
+            '• 🔞 NSFW content detection\n' +
+            '• ☠️ Toxicity & hate speech detection\n' +
+            '• 🎣 Phishing & scam detection\n' +
+            '• 📢 Spam pattern recognition\n' +
+            '• 🔗 Malicious link scanning\n\n' +
+            '**Commands:**\n' +
+            '`//aimod enable` - Enable AI moderation\n' +
+            '`//aimod disable` - Disable AI moderation\n' +
+            '`//aimod config` - Configure settings\n' +
+            '`//aimod stats` - View moderation stats'
         )
+        .setFooter(branding.footers.default)
         .setTimestamp();
 
       return message.reply({ embeds: [embed] });
     }
 
-    return message.reply(
-      '❌ Invalid action!\nUsage: `aimod <enable/disable/config/test/status>`\n\n' +
-        '**Examples:**\n' +
-        '`aimod enable` - Enable AI moderation\n' +
-        '`aimod config threshold 0.8` - Set threshold\n' +
-        '`aimod test your message here` - Test a message\n' +
-        '`aimod status` - View current settings'
-    );
+    if (action === 'enable') {
+      const config = db.get('ai_moderation', message.guild.id) || {};
+
+      config.enabled = true;
+      config.nsfw = config.nsfw !== false;
+      config.toxicity = config.toxicity !== false;
+      config.phishing = config.phishing !== false;
+      config.spam = config.spam !== false;
+      config.threshold = config.threshold || 0.7;
+      config.action = config.action || 'delete';
+      config.logChannel = config.logChannel || null;
+
+      db.set('ai_moderation', message.guild.id, config);
+
+      const embed = new EmbedBuilder()
+        .setColor(branding.colors.success)
+        .setTitle('✅ AI Moderation Enabled!')
+        .setDescription(
+          '**Your server is now protected by AI!**\n\n' +
+            '**Active Filters:**\n' +
+            `${config.nsfw ? '✅' : '❌'} NSFW Content\n` +
+            `${config.toxicity ? '✅' : '❌'} Toxicity Detection\n` +
+            `${config.phishing ? '✅' : '❌'} Phishing Detection\n` +
+            `${config.spam ? '✅' : '❌'} Spam Detection\n\n` +
+            `**Confidence Threshold:** ${(config.threshold * 100).toFixed(0)}%\n` +
+            `**Action:** ${config.action}\n\n` +
+            'Use `//aimod config` to customize settings.'
+        )
+        .setFooter(branding.footers.default)
+        .setTimestamp();
+
+      return message.reply({ embeds: [embed] });
+    }
+
+    if (action === 'disable') {
+      const config = db.get('ai_moderation', message.guild.id) || {};
+      config.enabled = false;
+      db.set('ai_moderation', message.guild.id, config);
+
+      return message.reply('✅ AI moderation has been disabled.');
+    }
+
+    if (action === 'config') {
+      const config = db.get('ai_moderation', message.guild.id) || {
+        enabled: false,
+        nsfw: true,
+        toxicity: true,
+        phishing: true,
+        spam: true,
+        threshold: 0.7,
+        action: 'delete',
+      };
+
+      const embed = new EmbedBuilder()
+        .setColor(branding.colors.primary)
+        .setTitle('⚙️ AI Moderation Configuration')
+        .setDescription(
+          '**Current Settings:**\n\n' +
+            `**Status:** ${config.enabled ? '✅ Enabled' : '❌ Disabled'}\n` +
+            `**NSFW Filter:** ${config.nsfw ? '✅ On' : '❌ Off'}\n` +
+            `**Toxicity Filter:** ${config.toxicity ? '✅ On' : '❌ Off'}\n` +
+            `**Phishing Filter:** ${config.phishing ? '✅ On' : '❌ Off'}\n` +
+            `**Spam Filter:** ${config.spam ? '✅ On' : '❌ Off'}\n` +
+            `**Confidence Threshold:** ${(config.threshold * 100).toFixed(0)}%\n` +
+            `**Action:** ${config.action}\n` +
+            `**Log Channel:** ${config.logChannel ? `<#${config.logChannel}>` : 'Not set'}\n\n` +
+            '**To Configure:**\n' +
+            '`//aimod config nsfw <on/off>`\n' +
+            '`//aimod config toxicity <on/off>`\n' +
+            '`//aimod config phishing <on/off>`\n' +
+            '`//aimod config spam <on/off>`\n' +
+            '`//aimod config threshold <0-100>`\n' +
+            '`//aimod config action <delete/warn/timeout>`\n' +
+            '`//aimod config log <#channel>`'
+        )
+        .setFooter(branding.footers.default)
+        .setTimestamp();
+
+      if (args[1]) {
+        const setting = args[1].toLowerCase();
+        const value = args[2]?.toLowerCase();
+
+        if (setting === 'nsfw' || setting === 'toxicity' || setting === 'phishing' || setting === 'spam') {
+          if (value === 'on' || value === 'off') {
+            config[setting] = value === 'on';
+            db.set('ai_moderation', message.guild.id, config);
+            return message.reply(`✅ ${setting} filter ${value === 'on' ? 'enabled' : 'disabled'}!`);
+          }
+        }
+
+        if (setting === 'threshold') {
+          const threshold = parseInt(value);
+          if (threshold >= 0 && threshold <= 100) {
+            config.threshold = threshold / 100;
+            db.set('ai_moderation', message.guild.id, config);
+            return message.reply(`✅ Confidence threshold set to ${threshold}%`);
+          }
+        }
+
+        if (setting === 'action') {
+          if (['delete', 'warn', 'timeout'].includes(value)) {
+            config.action = value;
+            db.set('ai_moderation', message.guild.id, config);
+            return message.reply(`✅ Action set to: ${value}`);
+          }
+        }
+
+        if (setting === 'log') {
+          const channel = message.mentions.channels.first();
+          if (channel) {
+            config.logChannel = channel.id;
+            db.set('ai_moderation', message.guild.id, config);
+            return message.reply(`✅ Log channel set to ${channel}`);
+          }
+        }
+      }
+
+      return message.reply({ embeds: [embed] });
+    }
+
+    if (action === 'stats') {
+      const stats = db.get('ai_mod_stats', message.guild.id) || {
+        totalScans: 0,
+        totalBlocked: 0,
+        nsfw: 0,
+        toxicity: 0,
+        phishing: 0,
+        spam: 0,
+      };
+
+      const blockRate =
+        stats.totalScans > 0
+          ? ((stats.totalBlocked / stats.totalScans) * 100).toFixed(2)
+          : 0;
+
+      const embed = new EmbedBuilder()
+        .setColor(branding.colors.primary)
+        .setTitle('📊 AI Moderation Statistics')
+        .setDescription(
+          `**Total Messages Scanned:** ${branding.formatNumber(stats.totalScans)}\n` +
+            `**Total Blocked:** ${branding.formatNumber(stats.totalBlocked)}\n` +
+            `**Block Rate:** ${blockRate}%\n\n` +
+            '**Breakdown:**\n' +
+            `🔞 NSFW: ${branding.formatNumber(stats.nsfw)}\n` +
+            `☠️ Toxicity: ${branding.formatNumber(stats.toxicity)}\n` +
+            `🎣 Phishing: ${branding.formatNumber(stats.phishing)}\n` +
+            `📢 Spam: ${branding.formatNumber(stats.spam)}`
+        )
+        .setFooter(branding.footers.default)
+        .setTimestamp();
+
+      return message.reply({ embeds: [embed] });
+    }
   },
 };
-
-async function analyzeToxicity(text) {
-  const openaiKey = process.env.OPENAI_API_KEY;
-  const perspectiveKey = process.env.PERSPECTIVE_API_KEY;
-
-  if (openaiKey) {
-    // Use OpenAI for moderation
-    try {
-      const response = await axios.post(
-        'https://api.openai.com/v1/moderations',
-        { input: text },
-        {
-          headers: {
-            Authorization: `Bearer ${openaiKey}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-
-      const result = response.data.results[0];
-      const categories = Object.entries(result.categories)
-        .filter(([, value]) => value)
-        .map(([key]) => key);
-
-      return {
-        isToxic: result.flagged,
-        confidence: Math.max(...Object.values(result.category_scores)),
-        categories,
-      };
-    } catch (error) {
-      throw new Error('OpenAI moderation failed');
-    }
-  }
-
-  if (perspectiveKey) {
-    // Use Perspective API
-    try {
-      const response = await axios.post(
-        `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${perspectiveKey}`,
-        {
-          comment: { text },
-          requestedAttributes: {
-            TOXICITY: {},
-            SEVERE_TOXICITY: {},
-            IDENTITY_ATTACK: {},
-            INSULT: {},
-            PROFANITY: {},
-            THREAT: {},
-          },
-        }
-      );
-
-      const scores = response.data.attributeScores;
-      const toxicityScore = scores.TOXICITY.summaryScore.value;
-      const categories = Object.entries(scores)
-        .filter(([, data]) => data.summaryScore.value > 0.7)
-        .map(([key]) => key.toLowerCase());
-
-      return {
-        isToxic: toxicityScore > 0.7,
-        confidence: toxicityScore,
-        categories,
-      };
-    } catch (error) {
-      throw new Error('Perspective API failed');
-    }
-  }
-
-  throw new Error('No API key configured');
-}
-
-module.exports.analyzeToxicity = analyzeToxicity;
