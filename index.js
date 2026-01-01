@@ -168,8 +168,11 @@ if (fs.existsSync(eventsPath)) {
   }
 }
 
-// Initialize shutdown handler
+// Initialize shutdown handler (handles uncaughtException, unhandledRejection, SIGTERM, SIGINT)
 shutdown.init(client);
+
+// Increase max listeners for messageCreate event (we have 12 event handlers)
+client.setMaxListeners(15);
 
 // Register cleanup callbacks
 shutdown.register(async () => {
@@ -258,11 +261,7 @@ process.on('unhandledRejection', (reason, promise) => {
   // Don't exit - log and continue
 });
 
-process.on('uncaughtException', error => {
-  logger.error('🚨 Uncaught Exception:', error);
-  // For uncaught exceptions, we should exit gracefully
-  shutdown.triggerShutdown('Uncaught exception');
-});
+// Uncaught exceptions are handled by shutdown.init(client)
 
 // Handle warnings
 process.on('warning', warning => {
