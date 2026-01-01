@@ -87,18 +87,20 @@ module.exports = {
 
       confirmMsg.edit({ content: null, embeds: [embed] });
 
-      // Announce in all channels
-      for (const [_id, channel] of channels) {
-        if (locked > 0) {
+      // Only announce if multiple channels were locked
+      if (locked > 1) {
+        // Announce in all channels
+        for (const [_id, channel] of channels) {
           try {
             await channel.send({
               embeds: [
                 new EmbedBuilder()
                   .setColor(branding.colors.error)
-                  .setTitle('🔒 Channel Locked')
+                  .setTitle('🔒 Server Locked')
                   .setDescription(
-                    `This channel has been locked.\n**Reason:** ${reason}`
+                    `All channels have been locked.\n**Reason:** ${reason}`
                   )
+                  .setFooter(branding.footers.default)
                   .setTimestamp(),
               ],
             });

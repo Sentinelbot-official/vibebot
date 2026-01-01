@@ -92,17 +92,18 @@ module.exports = {
 
       confirmMsg.edit({ content: null, embeds: [embed] });
 
-      // Announce in all channels
-      for (const [_id, channel] of channels) {
-        if (unlocked > 0) {
+      // Only announce if multiple channels were unlocked
+      if (unlocked > 1) {
+        // Announce in all channels
+        for (const [_id, channel] of channels) {
           try {
             await channel.send({
               embeds: [
                 new EmbedBuilder()
                   .setColor(branding.colors.success)
-                  .setTitle('🔓 Channel Unlocked')
+                  .setTitle('🔓 Server Unlocked')
                   .setDescription(
-                    `This channel has been unlocked.\n**Reason:** ${reason}`
+                    `All channels have been unlocked.\n**Reason:** ${reason}`
                   )
                   .setFooter(branding.footers.default)
                   .setTimestamp(),
