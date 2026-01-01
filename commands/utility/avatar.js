@@ -4,6 +4,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
 } = require('discord.js');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'avatar',

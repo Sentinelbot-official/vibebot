@@ -6,6 +6,7 @@ const {
   PermissionFlagsBits,
   MessageFlags,
 } = require('discord.js');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'roleinfo',

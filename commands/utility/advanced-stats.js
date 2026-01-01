@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const os = require('os');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'advanced-stats',

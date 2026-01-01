@@ -1,4 +1,5 @@
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'webhook',

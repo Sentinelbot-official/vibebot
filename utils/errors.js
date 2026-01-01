@@ -3,6 +3,8 @@
  * @module utils/errors
  */
 
+const logger = require('./logger');
+
 /**
  * Base error class for all bot errors
  */

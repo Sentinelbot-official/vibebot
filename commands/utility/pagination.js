@@ -5,6 +5,7 @@ const {
   ButtonStyle,
   MessageFlags,
 } = require('discord.js');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'pagination',

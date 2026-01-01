@@ -1,5 +1,6 @@
 const premium = require('./premium');
 const logger = require('./logger');
+const db = require('./database');
 
 /**
  * Premium Perks System

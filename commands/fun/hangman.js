@@ -4,6 +4,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
 } = require('discord.js');
+const branding = require('../../utils/branding');
 
 // Store active games
 const activeGames = new Map();

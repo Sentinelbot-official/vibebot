@@ -1,6 +1,7 @@
 const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const db = require('../../utils/database');
 const logger = require('../../utils/logger');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'reviewappeal',

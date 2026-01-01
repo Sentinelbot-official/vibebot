@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const branding = require('../../utils/branding');
 
 // Store edited messages (in memory, resets on bot restart)
 const editedMessages = new Map();

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const https = require('https');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'shorten',

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const math = require('mathjs');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'calculator',

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const axios = require('axios');
+const branding = require('../../utils/branding');
 
 // Cache for access token
 let twitchAccessToken = null;

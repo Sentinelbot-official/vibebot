@@ -1,5 +1,6 @@
 const { AttachmentBuilder, EmbedBuilder } = require('discord.js');
 const axios = require('axios');
+const branding = require('../../utils/branding');
 
 module.exports = {
   name: 'meme',
