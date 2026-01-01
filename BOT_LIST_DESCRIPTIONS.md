@@ -1,9 +1,11 @@
 # Bot List Descriptions for Vibe Bot
 
 ## Short Description (200 characters max)
+
 ```
 A multipurpose Discord bot with 300+ commands including economy, music player, moderation tools, leveling system, and games. Free to use with optional premium tiers.
 ```
+
 **Character count:** 172
 
 ---
@@ -11,6 +13,7 @@ A multipurpose Discord bot with 300+ commands including economy, music player, m
 ## Long Description (2000-5000 characters)
 
 ### Version 1: Concise & Professional
+
 ```
 Vibe Bot is a feature-rich multipurpose Discord bot with over 300 commands across 12 categories.
 
@@ -56,11 +59,13 @@ Activate with `//activate <key>` after purchasing on Ko-fi.
 - Website: https://sentinelbot-official.github.io/vibebot/
 - Documentation: Full command list and guides available
 ```
+
 **Character count:** ~2,100
 
 ---
 
 ### Version 2: Feature-Focused
+
 ```
 **Vibe Bot - 300+ Commands Across 12 Categories**
 
@@ -146,11 +151,13 @@ Premium and VIP tiers available for server cost support. Core features remain fr
 Discord: https://discord.gg/zFMgG6ZN68
 Website: https://sentinelbot-official.github.io/vibebot/
 ```
+
 **Character count:** ~2,350
 
 ---
 
 ## Tags/Keywords
+
 ```
 economy, music, moderation, leveling, games, utility, multipurpose, free, casino, tournaments
 ```
@@ -158,6 +165,7 @@ economy, music, moderation, leveling, games, utility, multipurpose, free, casino
 ---
 
 ## Category Suggestions
+
 - **Primary:** Multipurpose
 - **Secondary:** Economy, Music, Moderation
 - **Tertiary:** Fun, Utility, Leveling
@@ -165,19 +173,23 @@ economy, music, moderation, leveling, games, utility, multipurpose, free, casino
 ---
 
 ## Bot Prefix
+
 ```
 //
 ```
+
 (Customizable per server)
 
 ---
 
 ## Invite Permissions
+
 ```
 268446806
 ```
 
 **Required Permissions:**
+
 - View Channels
 - Send Messages
 - Embed Links
@@ -195,6 +207,7 @@ economy, music, moderation, leveling, games, utility, multipurpose, free, casino
 ---
 
 ## Support Server Invite
+
 ```
 https://discord.gg/zFMgG6ZN68
 ```
@@ -202,6 +215,7 @@ https://discord.gg/zFMgG6ZN68
 ---
 
 ## Website URL
+
 ```
 https://sentinelbot-official.github.io/vibebot/
 ```
@@ -209,6 +223,7 @@ https://sentinelbot-official.github.io/vibebot/
 ---
 
 ## Custom Bot Invite URL
+
 ```
 https://discord.com/oauth2/authorize?client_id=1455908224958992384&permissions=268446806&integration_type=0&scope=bot
 ```
@@ -216,6 +231,7 @@ https://discord.com/oauth2/authorize?client_id=1455908224958992384&permissions=2
 ---
 
 ## Privacy & Compliance
+
 - GDPR and CCPA compliant
 - Data deletion available via `//deletemydata`
 - Privacy Policy: https://sentinelbot-official.github.io/vibebot/privacy.html
@@ -224,6 +240,7 @@ https://discord.com/oauth2/authorize?client_id=1455908224958992384&permissions=2
 ---
 
 ## Statistics (for bot lists that display them)
+
 - Total Commands: 300+
 - Servers: [Auto-updated by bot list]
 - Users: [Auto-updated by bot list]

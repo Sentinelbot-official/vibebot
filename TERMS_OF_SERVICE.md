@@ -179,17 +179,20 @@ You may not:
 ## 9. Virtual Systems (Economy, Music, Competitive)
 
 **Economy System:**
+
 - The economy system uses virtual currency with **NO real-world value**
 - Virtual currency **CANNOT** be exchanged for real money, goods, or services
 - Virtual currency has no monetary value and is for entertainment purposes only
 
 **Music System:**
+
 - Music playback uses third-party services (YouTube, Spotify, SoundCloud)
 - You must comply with those services' Terms of Service
 - We are not responsible for copyright violations by users
 - Music features are provided for personal, non-commercial use only
 
 **Competitive System:**
+
 - Rankings, ratings, and tournament results have no real-world value
 - We reserve the right to reset rankings or disqualify participants for rule violations
 - Tournament prizes (if any) are virtual and have no monetary value
