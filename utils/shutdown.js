@@ -52,8 +52,13 @@ class ShutdownHandler {
 
     // Handle unhandled promise rejections
     process.on('unhandledRejection', (reason, promise) => {
+      console.error('=== UNHANDLED PROMISE REJECTION ===');
+      console.error('Reason:', reason);
+      console.error('Stack:', reason?.stack);
+      console.error('Message:', reason?.message);
+      console.error('Type:', typeof reason);
+      console.error('===================================');
       logger.error('Unhandled promise rejection:', reason);
-      logger.error('Promise:', promise);
       // Don't exit on unhandled rejection in production
       if (process.env.NODE_ENV === 'development') {
         this.shutdown(client, 'UNHANDLED_REJECTION', 1);
