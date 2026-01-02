@@ -305,15 +305,44 @@ class MusicManager {
         logger.info(`Fetching video_info for guild ${guildId}...`);
         const videoInfo = await play.video_info(urlToStream);
         
-        if (!videoInfo || !videoInfo.video_details) {
-          throw new Error('Failed to get video info from play-dl');
+        // Validate the InfoData structure
+        if (!videoInfo) {
+          throw new Error('video_info returned null/undefined');
+        }
+        
+        logger.info(`video_info structure check for guild ${guildId}:`, {
+          hasVideoDetails: !!videoInfo.video_details,
+          hasFormat: !!videoInfo.format,
+          hasHtml5Player: !!videoInfo.html5player,
+          videoDetailsUrl: videoInfo.video_details?.url,
+          videoDetailsTitle: videoInfo.video_details?.title
+        });
+        
+        if (!videoInfo.video_details) {
+          throw new Error('video_info missing video_details property');
+        }
+        
+        if (!videoInfo.video_details.url) {
+          throw new Error('video_details missing url property');
         }
 
-        logger.info(`Got video_info, using stream_from_info for guild ${guildId}`);
-        
-        // Use stream_from_info with the InfoData object - this is the recommended method
-        stream = await play.stream_from_info(videoInfo);
-        logger.info(`Successfully streamed using stream_from_info for guild ${guildId}`);
+        // Validate InfoData structure before using stream_from_info
+        if (!videoInfo.format || !Array.isArray(videoInfo.format) || videoInfo.format.length === 0) {
+          logger.warn(`video_info missing format array, trying alternative method for guild ${guildId}`);
+          // If format is missing, try using video_details.url directly
+          if (videoInfo.video_details && videoInfo.video_details.url) {
+            stream = await play.stream(videoInfo.video_details.url);
+            logger.info(`Successfully streamed using video_details.url for guild ${guildId}`);
+          } else {
+            throw new Error('video_info missing required format or video_details.url');
+          }
+        } else {
+          logger.info(`Got video_info with format array (${videoInfo.format.length} formats), using stream_from_info for guild ${guildId}`);
+          
+          // Use stream_from_info with the InfoData object - this is the recommended method
+          stream = await play.stream_from_info(videoInfo);
+          logger.info(`Successfully streamed using stream_from_info for guild ${guildId}`);
+        }
       } catch (infoError) {
         // If video_info fails, try direct stream as fallback
         logger.warn(`video_info method failed, trying direct stream for guild ${guildId}:`, infoError.message);
