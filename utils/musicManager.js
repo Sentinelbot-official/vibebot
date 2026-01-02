@@ -45,6 +45,38 @@ class MusicManager {
   }
 
   /**
+   * Validate if a URL is valid
+   * @param {string} url - URL to validate
+   * @returns {boolean} True if valid
+   */
+  isValidUrl(url) {
+    if (!url || typeof url !== 'string') return false;
+    if (url === 'undefined' || url === 'null') return false;
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Clean invalid songs from queue
+   * @param {string} guildId - Guild ID
+   * @returns {number} Number of songs removed
+   */
+  cleanQueue(guildId) {
+    const queue = this.getQueue(guildId);
+    const originalLength = queue.songs.length;
+    queue.songs = queue.songs.filter(song => this.isValidUrl(song?.url));
+    const removed = originalLength - queue.songs.length;
+    if (removed > 0) {
+      logger.warn(`Removed ${removed} invalid song(s) from queue in guild ${guildId}`);
+    }
+    return removed;
+  }
+
+  /**
    * Add a song to the queue
    * @param {string} guildId - Guild ID
    * @param {Object} song - Song object
@@ -52,7 +84,7 @@ class MusicManager {
    */
   addSong(guildId, song) {
     // Validate song has required properties
-    if (!song || !song.url || typeof song.url !== 'string') {
+    if (!song || !this.isValidUrl(song.url)) {
       logger.warn(`Invalid song object added to queue for guild ${guildId}:`, song);
       throw new Error('Song must have a valid URL');
     }
@@ -157,12 +189,28 @@ class MusicManager {
       return false;
     }
 
+    // Clean queue of invalid songs first
+    this.cleanQueue(guildId);
+
     if (queue.songs.length === 0) {
       queue.playing = false;
       return false;
     }
 
     const song = queue.songs[0];
+    
+    // Double-check song URL before playing
+    if (!this.isValidUrl(song.url)) {
+      logger.warn(`Invalid song URL in queue for guild ${guildId}:`, song);
+      queue.songs.shift();
+      if (queue.songs.length > 0) {
+        return this.play(guildId);
+      } else {
+        queue.playing = false;
+        return false;
+      }
+    }
+    
     queue.playing = true;
 
     // Clear any disconnect timer since we're playing again
@@ -172,8 +220,8 @@ class MusicManager {
     }
 
     try {
-      // Validate song URL before attempting to stream
-      if (!song.url || typeof song.url !== 'string') {
+      // Final validation before streaming
+      if (!this.isValidUrl(song.url)) {
         throw new Error(`Invalid song URL: ${song.url}`);
       }
 
