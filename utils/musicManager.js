@@ -335,8 +335,34 @@ class MusicManager {
         }
 
         logger.info(`Fetching audio stream for guild ${guildId}...`);
-        // Get the stream URL and create a readable stream
-        const streamUrl = audioFormat.decipher(youtube.session.player);
+        // Get the stream URL - check if it needs deciphering or already has a URL
+        let streamUrl;
+        try {
+          // Try to get URL directly first
+          if (audioFormat.url) {
+            streamUrl = audioFormat.url;
+            logger.info(`Using direct URL for guild ${guildId}`);
+          } else {
+            // If no direct URL, try to decipher
+            streamUrl = audioFormat.decipher(youtube.session.player);
+            logger.info(`Deciphered URL for guild ${guildId}`);
+          }
+        } catch (decipherError) {
+          // If decipher fails, try to get URL from format properties
+          logger.warn(`Decipher failed, trying alternative method:`, decipherError.message);
+          if (audioFormat.url) {
+            streamUrl = audioFormat.url;
+          } else {
+            throw new Error(`Cannot get stream URL: ${decipherError.message}`);
+          }
+        }
+
+        // Ensure streamUrl is a string
+        if (typeof streamUrl !== 'string') {
+          logger.error(`Stream URL is not a string:`, typeof streamUrl, streamUrl);
+          throw new Error('Stream URL is not a valid string');
+        }
+
         const https = require('https');
         const http = require('http');
         
