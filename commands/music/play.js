@@ -128,13 +128,16 @@ module.exports = {
           // Add all videos to queue
           for (const video of videos.slice(0, 50)) {
             // Limit to 50 songs
-            musicManager.addSong(guildId, {
-              title: video.title,
-              url: video.url,
-              duration: formatDuration(video.durationInSec),
-              thumbnail: video.thumbnails[0]?.url,
-              requester: message.author.tag,
-            });
+            // Only add if video has a valid URL
+            if (video.url) {
+              musicManager.addSong(guildId, {
+                title: video.title,
+                url: video.url,
+                duration: formatDuration(video.durationInSec),
+                thumbnail: video.thumbnails[0]?.url,
+                requester: message.author.tag,
+              });
+            }
           }
 
           // Join voice channel if not already in
@@ -219,7 +222,7 @@ module.exports = {
                   { limit: 1 }
                 );
 
-                if (searchResult.length > 0) {
+                if (searchResult.length > 0 && searchResult[0].url) {
                   musicManager.addSong(guildId, {
                     title: track.name,
                     url: searchResult[0].url,
@@ -299,8 +302,8 @@ module.exports = {
           };
         }
 
-        if (!song) {
-          return searchingMsg.edit('❌ Failed to process that song!');
+        if (!song || !song.url) {
+          return searchingMsg.edit('❌ Failed to process that song! Invalid URL.');
         }
 
         // Add song to queue

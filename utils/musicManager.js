@@ -51,6 +51,12 @@ class MusicManager {
    * @returns {number} Position in queue
    */
   addSong(guildId, song) {
+    // Validate song has required properties
+    if (!song || !song.url || typeof song.url !== 'string') {
+      logger.warn(`Invalid song object added to queue for guild ${guildId}:`, song);
+      throw new Error('Song must have a valid URL');
+    }
+    
     const queue = this.getQueue(guildId);
     queue.songs.push(song);
     return queue.songs.length;
@@ -166,6 +172,11 @@ class MusicManager {
     }
 
     try {
+      // Validate song URL before attempting to stream
+      if (!song.url || typeof song.url !== 'string') {
+        throw new Error(`Invalid song URL: ${song.url}`);
+      }
+
       // Get stream from play-dl
       const stream = await play.stream(song.url);
 
@@ -272,18 +283,28 @@ class MusicManager {
     } catch (error) {
       logger.error(`Failed to play song in guild ${guildId}:`, error);
 
+      // Remove the invalid song from queue
+      queue.songs.shift();
+
       // Send error message
       if (queue.textChannel) {
         try {
-          await queue.textChannel.send(
-            `❌ Failed to play **${song.title}**. Skipping to next song...`
-          );
+          const errorMsg = error.message?.includes('Invalid URL') || !song.url
+            ? `❌ **${song.title || 'Unknown song'}** has an invalid URL. Removed from queue.`
+            : `❌ Failed to play **${song.title || 'Unknown song'}**. Skipping to next song...`;
+          
+          await queue.textChannel.send(errorMsg);
         } catch {}
       }
 
-      // Skip to next song
-      this.handleSongEnd(guildId);
-      return false;
+      // If there are more songs, try playing the next one
+      if (queue.songs.length > 0) {
+        return this.play(guildId);
+      } else {
+        // No more songs, stop playing
+        this.handleSongEnd(guildId);
+        return false;
+      }
     }
   }
 
