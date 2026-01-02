@@ -14,8 +14,11 @@ const {
   getVoiceConnection,
   StreamType,
 } = require('@discordjs/voice');
-const ytdl = require('@distube/ytdl-core');
+const { Innertube } = require('youtubei.js');
 const logger = require('./logger');
+
+// Initialize YouTube client
+let youtube;
 
 class MusicManager {
   constructor() {
@@ -23,6 +26,19 @@ class MusicManager {
     this.players = new Map(); // guildId => audio player
     this.connections = new Map(); // guildId => voice connection
     this.disconnectTimers = new Map(); // guildId => timeout ID
+    this.initYouTube();
+  }
+
+  /**
+   * Initialize YouTube client
+   */
+  async initYouTube() {
+    try {
+      youtube = await Innertube.create();
+      logger.info('YouTube client initialized successfully');
+    } catch (error) {
+      logger.error('Failed to initialize YouTube client:', error);
+    }
   }
 
   /**
@@ -297,15 +313,55 @@ class MusicManager {
 
       logger.info(`Attempting to stream URL for guild ${guildId}:`, urlToStream.substring(0, 50) + '...');
 
-      // Get stream from @distube/ytdl-core (actively maintained, works reliably)
+      // Get stream from youtubei.js (actively maintained, works with current YouTube)
       let stream;
       try {
-        logger.info(`Creating YouTube stream for guild ${guildId}...`);
-        stream = ytdl(urlToStream, {
-          filter: 'audioonly',
-          quality: 'highestaudio',
-          highWaterMark: 1 << 25, // 32MB buffer
+        // Ensure YouTube client is initialized
+        if (!youtube) {
+          await this.initYouTube();
+        }
+
+        logger.info(`Getting video info from YouTube for guild ${guildId}...`);
+        const videoId = urlToStream.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/)?.[1];
+        if (!videoId) {
+          throw new Error('Invalid YouTube URL');
+        }
+
+        const info = await youtube.getInfo(videoId);
+        const audioFormat = info.chooseFormat({ type: 'audio', quality: 'best' });
+        
+        if (!audioFormat) {
+          throw new Error('No audio format available');
+        }
+
+        logger.info(`Fetching audio stream for guild ${guildId}...`);
+        // Get the stream URL and create a readable stream
+        const streamUrl = audioFormat.url;
+        const https = require('https');
+        const http = require('http');
+        const { Readable } = require('stream');
+        
+        // Create a readable stream from the audio URL
+        const protocol = streamUrl.startsWith('https') ? https : http;
+        
+        stream = new Promise((resolve, reject) => {
+          const request = protocol.get(streamUrl, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+              'Accept': '*/*',
+            },
+          }, (response) => {
+            if (response.statusCode !== 200) {
+              reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
+              return;
+            }
+            resolve(response);
+          });
+          
+          request.on('error', reject);
         });
+        
+        stream = await stream; // Wait for the stream to be ready
         logger.info(`Successfully created stream for guild ${guildId}`);
       } catch (streamError) {
         logger.error(`Failed to create stream for guild ${guildId}:`, {
