@@ -337,11 +337,26 @@ class MusicManager {
             throw new Error('video_info missing required format or video_details.url');
           }
         } else {
-          logger.info(`Got video_info with format array (${videoInfo.format.length} formats), using stream_from_info for guild ${guildId}`);
+          // Check if format array has valid entries with URLs
+          const validFormats = videoInfo.format.filter(f => f && f.url);
+          logger.info(`Got video_info with format array (${videoInfo.format.length} formats, ${validFormats.length} with URLs), using stream_from_info for guild ${guildId}`);
           
-          // Use stream_from_info with the InfoData object - this is the recommended method
-          stream = await play.stream_from_info(videoInfo);
-          logger.info(`Successfully streamed using stream_from_info for guild ${guildId}`);
+          if (validFormats.length === 0) {
+            logger.warn(`Format array has no valid URLs, trying video_details.url for guild ${guildId}`);
+            stream = await play.stream(videoInfo.video_details.url);
+            logger.info(`Successfully streamed using video_details.url fallback for guild ${guildId}`);
+          } else {
+            // Use stream_from_info with the InfoData object - this is the recommended method
+            try {
+              stream = await play.stream_from_info(videoInfo);
+              logger.info(`Successfully streamed using stream_from_info for guild ${guildId}`);
+            } catch (streamFromInfoError) {
+              // If stream_from_info fails even with valid InfoData, try using the URL from video_details
+              logger.warn(`stream_from_info failed despite valid InfoData, trying video_details.url:`, streamFromInfoError.message);
+              stream = await play.stream(videoInfo.video_details.url);
+              logger.info(`Successfully streamed using video_details.url after stream_from_info failure for guild ${guildId}`);
+            }
+          }
         }
       } catch (infoError) {
         // If video_info fails, try direct stream as fallback
