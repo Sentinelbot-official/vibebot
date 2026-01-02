@@ -12,6 +12,7 @@ const {
   VoiceConnectionStatus,
   entersState,
   getVoiceConnection,
+  StreamType,
 } = require('@discordjs/voice');
 const ytdl = require('@distube/ytdl-core');
 const logger = require('./logger');
@@ -316,8 +317,9 @@ class MusicManager {
       }
 
       // Create audio resource
+      // ytdl-core returns a readable stream that needs to be processed as arbitrary audio
       const resource = createAudioResource(stream, {
-        inputType: 'unknown',
+        inputType: StreamType.Arbitrary,
         inlineVolume: true,
       });
 
