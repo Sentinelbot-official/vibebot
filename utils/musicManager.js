@@ -335,25 +335,48 @@ class MusicManager {
         }
 
         logger.info(`Fetching audio stream for guild ${guildId}...`);
-        // Get the stream URL - check if it needs deciphering or already has a URL
+        // Get the stream URL - check format object properties
         let streamUrl;
-        try {
-          // Try to get URL directly first
-          if (audioFormat.url) {
-            streamUrl = audioFormat.url;
-            logger.info(`Using direct URL for guild ${guildId}`);
-          } else {
-            // If no direct URL, try to decipher
-            streamUrl = audioFormat.decipher(youtube.session.player);
+        
+        // Log format object structure for debugging
+        logger.info(`Format object properties for guild ${guildId}:`, {
+          hasUrl: !!audioFormat.url,
+          hasDecipher: typeof audioFormat.decipher === 'function',
+          formatType: audioFormat.constructor?.name,
+          keys: Object.keys(audioFormat).slice(0, 10) // First 10 keys
+        });
+
+        // Try to get URL directly first
+        if (audioFormat.url && typeof audioFormat.url === 'string') {
+          streamUrl = audioFormat.url;
+          logger.info(`Using direct URL for guild ${guildId}`);
+        } else {
+          // If no direct URL, try to decipher
+          try {
+            const deciphered = audioFormat.decipher(youtube.session.player);
+            // decipher() might return an object with a url property, or a string
+            if (typeof deciphered === 'string') {
+              streamUrl = deciphered;
+            } else if (deciphered && typeof deciphered.url === 'string') {
+              streamUrl = deciphered.url;
+            } else if (deciphered && typeof deciphered.toString === 'function') {
+              streamUrl = deciphered.toString();
+            } else {
+              throw new Error('Decipher returned invalid format');
+            }
             logger.info(`Deciphered URL for guild ${guildId}`);
-          }
-        } catch (decipherError) {
-          // If decipher fails, try to get URL from format properties
-          logger.warn(`Decipher failed, trying alternative method:`, decipherError.message);
-          if (audioFormat.url) {
-            streamUrl = audioFormat.url;
-          } else {
-            throw new Error(`Cannot get stream URL: ${decipherError.message}`);
+          } catch (decipherError) {
+            // If decipher fails, check other format properties
+            logger.warn(`Decipher failed:`, decipherError.message);
+            
+            // Try alternative properties
+            if (audioFormat.url) {
+              streamUrl = audioFormat.url;
+            } else if (audioFormat.streaming_data?.formats?.[0]?.url) {
+              streamUrl = audioFormat.streaming_data.formats[0].url;
+            } else {
+              throw new Error(`Cannot get stream URL: ${decipherError.message}`);
+            }
           }
         }
 
