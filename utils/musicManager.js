@@ -296,21 +296,36 @@ class MusicManager {
 
       logger.info(`Attempting to stream URL for guild ${guildId}:`, urlToStream.substring(0, 50) + '...');
 
-      // Get stream from play-dl - wrap in try-catch to handle play-dl's internal URL validation
+      // Get stream from play-dl
+      // play-dl can accept URL strings, but sometimes it's better to get video info first
       let stream;
       try {
+        // Try streaming directly with URL first (faster)
         stream = await play.stream(urlToStream);
       } catch (streamError) {
-        // If play-dl throws Invalid URL error, it means our validation missed something
+        // If direct URL streaming fails, try getting video info first
         if (streamError.message?.includes('Invalid URL') || streamError.code === 'ERR_INVALID_URL') {
-          logger.error(`play-dl rejected URL in guild ${guildId}:`, {
-            urlToStream,
-            error: streamError.message,
-            song: JSON.stringify(song)
-          });
-          throw new Error(`play-dl rejected URL: ${urlToStream}`);
+          logger.warn(`Direct URL streaming failed, trying video_info first for guild ${guildId}:`, urlToStream);
+          try {
+            // Get video info first, then stream from that
+            const videoInfo = await play.video_info(urlToStream);
+            if (!videoInfo || !videoInfo.video_details) {
+              throw new Error('Failed to get video info');
+            }
+            stream = await play.stream(videoInfo.video_details.url || urlToStream);
+            logger.info(`Successfully streamed using video_info method for guild ${guildId}`);
+          } catch (videoInfoError) {
+            logger.error(`Both streaming methods failed in guild ${guildId}:`, {
+              urlToStream,
+              directError: streamError.message,
+              videoInfoError: videoInfoError.message,
+              song: JSON.stringify(song)
+            });
+            throw new Error(`play-dl rejected URL: ${urlToStream} - ${streamError.message}`);
+          }
+        } else {
+          throw streamError; // Re-throw if it's a different error
         }
-        throw streamError; // Re-throw if it's a different error
       }
 
       // Create audio resource
