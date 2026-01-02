@@ -321,15 +321,30 @@ class MusicManager {
               throw new Error('Could not extract video ID');
             }
           } catch (videoIdError) {
-            // Try method 2: Use search to find the video, then stream
+            // Try method 2: Use search to find the video, then stream using the video object directly
             try {
               logger.info(`Trying search method for guild ${guildId} with title:`, song.title);
               const searchResults = await play.search(song.title, { limit: 1 });
-              if (searchResults && searchResults.length > 0 && searchResults[0].url) {
-                const foundUrl = searchResults[0].url;
-                logger.info(`Found video via search for guild ${guildId}:`, foundUrl);
-                stream = await play.stream(foundUrl);
-                logger.info(`Successfully streamed using search method for guild ${guildId}`);
+              if (searchResults && searchResults.length > 0) {
+                const foundVideo = searchResults[0];
+                logger.info(`Found video via search for guild ${guildId}:`, foundVideo.url);
+                
+                // Try streaming with the video object directly instead of URL string
+                try {
+                  // Method 2a: Try streaming with the video object
+                  stream = await play.stream(foundVideo);
+                  logger.info(`Successfully streamed using video object method for guild ${guildId}`);
+                } catch (objectError) {
+                  // Method 2b: If that fails, try getting video_info first
+                  logger.warn(`Video object streaming failed, trying video_info for guild ${guildId}`);
+                  const videoInfo = await play.video_info(foundVideo.url);
+                  if (videoInfo && videoInfo.video_details) {
+                    stream = await play.stream(videoInfo.video_details);
+                    logger.info(`Successfully streamed using video_info object method for guild ${guildId}`);
+                  } else {
+                    throw new Error('Failed to get video_info');
+                  }
+                }
               } else {
                 throw new Error('No search results found');
               }
