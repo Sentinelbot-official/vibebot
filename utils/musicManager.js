@@ -382,9 +382,20 @@ class MusicManager {
           
           // Use stream_from_info with the InfoData object - this is the recommended method
           // It should automatically decipher formats that need it
+          // However, if formats don't have URLs, stream_from_info might fail
+          // So we'll try it, but have a fallback to direct streaming
           try {
-            stream = await play.stream_from_info(videoInfo);
-            logger.info(`Successfully streamed using stream_from_info for guild ${guildId}`);
+            // Ensure we have at least one format with a URL before calling stream_from_info
+            if (formatsWithUrls.length === 0) {
+              // No formats have URLs - try to use video_details.url directly
+              logger.warn(`No formats have URLs, using video_details.url for streaming for guild ${guildId}`);
+              stream = await play.stream(videoInfo.video_details.url);
+              logger.info(`Successfully streamed using video_details.url (no format URLs) for guild ${guildId}`);
+            } else {
+              // We have formats with URLs - use stream_from_info
+              stream = await play.stream_from_info(videoInfo);
+              logger.info(`Successfully streamed using stream_from_info for guild ${guildId}`);
+            }
           } catch (streamFromInfoError) {
               // If stream_from_info fails even with valid InfoData, try using the URL from video_details
               logger.error(`stream_from_info failed despite valid InfoData:`, {
@@ -411,7 +422,6 @@ class MusicManager {
               }
             }
           }
-        }
       } catch (infoError) {
         // If video_info fails, try direct stream as fallback
         logger.warn(`video_info method failed, trying direct stream for guild ${guildId}:`, infoError.message);
