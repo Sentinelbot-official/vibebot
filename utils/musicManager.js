@@ -13,7 +13,7 @@ const {
   entersState,
   getVoiceConnection,
 } = require('@discordjs/voice');
-const play = require('play-dl');
+const ytdl = require('@distube/ytdl-core');
 const logger = require('./logger');
 
 class MusicManager {
@@ -296,152 +296,28 @@ class MusicManager {
 
       logger.info(`Attempting to stream URL for guild ${guildId}:`, urlToStream.substring(0, 50) + '...');
 
-      // Get stream from play-dl
-      // Based on play-dl documentation, stream_from_info() is more reliable than stream()
-      // It requires an InfoData object from video_info()
+      // Get stream from @distube/ytdl-core (actively maintained, works reliably)
       let stream;
       try {
-        // Get video info first - this returns InfoData object with video_details, format, etc.
-        // video_info() = video_basic_info() + decipher_info() - formats should already be deciphered
-        logger.info(`Fetching video_info for guild ${guildId}...`);
-        let videoInfo = await play.video_info(urlToStream);
-        
-        // Validate the InfoData structure
-        if (!videoInfo) {
-          throw new Error('video_info returned null/undefined');
-        }
-        
-        logger.info(`video_info structure check for guild ${guildId}:`, {
-          hasVideoDetails: !!videoInfo.video_details,
-          hasFormat: !!videoInfo.format,
-          hasHtml5Player: !!videoInfo.html5player,
-          videoDetailsUrl: videoInfo.video_details?.url,
-          videoDetailsTitle: videoInfo.video_details?.title,
-          formatCount: videoInfo.format?.length || 0
+        logger.info(`Creating YouTube stream for guild ${guildId}...`);
+        stream = ytdl(urlToStream, {
+          filter: 'audioonly',
+          quality: 'highestaudio',
+          highWaterMark: 1 << 25, // 32MB buffer
         });
-        
-        if (!videoInfo.video_details) {
-          throw new Error('video_info missing video_details property');
-        }
-        
-        if (!videoInfo.video_details.url) {
-          throw new Error('video_details missing url property');
-        }
-        
-        // Check if formats need additional deciphering
-        // video_info should already decipher, but let's check if formats have URLs
-        const formatsWithUrls = videoInfo.format?.filter(f => f && f.url && typeof f.url === 'string') || [];
-        const formatsWithCipher = videoInfo.format?.filter(f => f && (f.signatureCipher || f.cipher) && !f.url) || [];
-        
-        logger.info(`Format analysis for guild ${guildId}:`, {
-          totalFormats: videoInfo.format?.length || 0,
-          formatsWithUrls: formatsWithUrls.length,
-          formatsWithCipher: formatsWithCipher.length
+        logger.info(`Successfully created stream for guild ${guildId}`);
+      } catch (streamError) {
+        logger.error(`Failed to create stream for guild ${guildId}:`, {
+          error: streamError.message,
+          stack: streamError.stack,
+          url: urlToStream
         });
-        
-        // If no formats have URLs but have cipher, try manual deciphering
-        if (formatsWithUrls.length === 0 && formatsWithCipher.length > 0 && videoInfo.html5player) {
-          logger.warn(`No formats have URLs, attempting manual decipher for guild ${guildId}`);
-          try {
-            // Manually decipher the formats
-            videoInfo = await play.decipher_info(videoInfo, true); // true = audio_only
-            logger.info(`Successfully deciphered formats for guild ${guildId}`);
-            
-            // Re-check formats after deciphering
-            const newFormatsWithUrls = videoInfo.format?.filter(f => f && f.url && typeof f.url === 'string') || [];
-            logger.info(`After deciphering: ${newFormatsWithUrls.length} formats now have URLs`);
-          } catch (decipherError) {
-            logger.warn(`Manual decipher failed for guild ${guildId}:`, decipherError.message);
-            // Continue anyway, stream_from_info might handle it
-          }
-        }
-
-        // Validate InfoData structure before using stream_from_info
-        if (!videoInfo.format || !Array.isArray(videoInfo.format) || videoInfo.format.length === 0) {
-          logger.warn(`video_info missing format array, trying alternative method for guild ${guildId}`);
-          // If format is missing, try using video_details.url directly
-          if (videoInfo.video_details && videoInfo.video_details.url) {
-            stream = await play.stream(videoInfo.video_details.url);
-            logger.info(`Successfully streamed using video_details.url for guild ${guildId}`);
-          } else {
-            throw new Error('video_info missing required format or video_details.url');
-          }
-        } else {
-          // Check if format array has valid entries with URLs or cipher data
-          const validFormats = videoInfo.format.filter(f => f && (f.url || f.signatureCipher || f.cipher));
-          const formatsWithUrls = videoInfo.format.filter(f => f && f.url);
-          
-          logger.info(`Got video_info with format array (${videoInfo.format.length} formats, ${formatsWithUrls.length} with direct URLs, ${validFormats.length} total valid), using stream_from_info for guild ${guildId}`);
-          
-          // stream_from_info should handle cipher decryption automatically
-          // But if it's failing, the formats might need to be deciphered first
-          if (formatsWithUrls.length === 0 && validFormats.length > 0) {
-            // All formats need deciphering - stream_from_info should handle this
-            logger.info(`All formats require deciphering, stream_from_info should handle this for guild ${guildId}`);
-          }
-          
-          // Use stream_from_info with the InfoData object - this is the recommended method
-          // It should automatically decipher formats that need it
-          // However, if formats don't have URLs, stream_from_info might fail
-          // So we'll try it, but have a fallback to direct streaming
-          try {
-            // Ensure we have at least one format with a URL before calling stream_from_info
-            if (formatsWithUrls.length === 0) {
-              // No formats have URLs - try to use video_details.url directly
-              logger.warn(`No formats have URLs, using video_details.url for streaming for guild ${guildId}`);
-              stream = await play.stream(videoInfo.video_details.url);
-              logger.info(`Successfully streamed using video_details.url (no format URLs) for guild ${guildId}`);
-            } else {
-              // We have formats with URLs - use stream_from_info
-              stream = await play.stream_from_info(videoInfo);
-              logger.info(`Successfully streamed using stream_from_info for guild ${guildId}`);
-            }
-          } catch (streamFromInfoError) {
-              // If stream_from_info fails even with valid InfoData, try using the URL from video_details
-              logger.error(`stream_from_info failed despite valid InfoData:`, {
-                error: streamFromInfoError.message,
-                stack: streamFromInfoError.stack,
-                code: streamFromInfoError.code,
-                input: streamFromInfoError.input,
-                fullError: JSON.stringify(streamFromInfoError, Object.getOwnPropertyNames(streamFromInfoError))
-              });
-              
-              logger.warn(`Trying video_details.url as fallback:`, videoInfo.video_details.url);
-              try {
-                stream = await play.stream(videoInfo.video_details.url);
-                logger.info(`Successfully streamed using video_details.url after stream_from_info failure for guild ${guildId}`);
-              } catch (streamError) {
-                logger.error(`Even video_details.url streaming failed:`, {
-                  error: streamError.message,
-                  stack: streamError.stack,
-                  code: streamError.code,
-                  input: streamError.input,
-                  url: videoInfo.video_details.url
-                });
-                throw streamError;
-              }
-            }
-          }
-      } catch (infoError) {
-        // If video_info fails, try direct stream as fallback
-        logger.warn(`video_info method failed, trying direct stream for guild ${guildId}:`, infoError.message);
-        try {
-          stream = await play.stream(urlToStream);
-          logger.info(`Successfully streamed using direct stream method for guild ${guildId}`);
-        } catch (streamError) {
-          logger.error(`Both streaming methods failed in guild ${guildId}:`, {
-            urlToStream,
-            infoError: infoError.message,
-            streamError: streamError.message,
-            song: JSON.stringify(song)
-          });
-          throw new Error(`play-dl failed: video_info error: ${infoError.message}, stream error: ${streamError.message}`);
-        }
+        throw new Error(`Failed to stream: ${streamError.message}`);
       }
 
       // Create audio resource
-      const resource = createAudioResource(stream.stream, {
-        inputType: stream.type,
+      const resource = createAudioResource(stream, {
+        inputType: 'unknown',
         inlineVolume: true,
       });
 
