@@ -199,9 +199,13 @@ class MusicManager {
 
     const song = queue.songs[0];
     
+    // Log queue state for debugging
+    logger.info(`Playing song from queue in guild ${guildId}. Queue length: ${queue.songs.length}`);
+    logger.info(`Song object:`, JSON.stringify(song, null, 2));
+    
     // Double-check song URL before playing
-    if (!this.isValidUrl(song.url)) {
-      logger.warn(`Invalid song URL in queue for guild ${guildId}:`, song);
+    if (!song || !this.isValidUrl(song?.url)) {
+      logger.warn(`Invalid song URL in queue for guild ${guildId}:`, JSON.stringify(song));
       queue.songs.shift();
       if (queue.songs.length > 0) {
         return this.play(guildId);
@@ -220,13 +224,28 @@ class MusicManager {
     }
 
     try {
-      // Final validation before streaming
+      // Final validation before streaming - check multiple times
+      if (!song || !song.url) {
+        logger.error(`Song object is invalid before streaming in guild ${guildId}:`, JSON.stringify(song));
+        throw new Error(`Song object is invalid: ${JSON.stringify(song)}`);
+      }
+
       if (!this.isValidUrl(song.url)) {
+        logger.error(`Invalid song URL before streaming in guild ${guildId}:`, song.url, 'Song:', JSON.stringify(song));
         throw new Error(`Invalid song URL: ${song.url}`);
       }
 
+      // Double-check URL is still valid right before streaming
+      const urlToStream = song.url;
+      if (!urlToStream || typeof urlToStream !== 'string' || urlToStream === 'undefined' || urlToStream === 'null') {
+        logger.error(`URL became invalid right before streaming in guild ${guildId}:`, urlToStream);
+        throw new Error(`URL is invalid: ${urlToStream}`);
+      }
+
+      logger.info(`Attempting to stream URL for guild ${guildId}:`, urlToStream.substring(0, 50) + '...');
+
       // Get stream from play-dl
-      const stream = await play.stream(song.url);
+      const stream = await play.stream(urlToStream);
 
       // Create audio resource
       const resource = createAudioResource(stream.stream, {
