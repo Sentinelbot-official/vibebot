@@ -352,9 +352,28 @@ class MusicManager {
               logger.info(`Successfully streamed using stream_from_info for guild ${guildId}`);
             } catch (streamFromInfoError) {
               // If stream_from_info fails even with valid InfoData, try using the URL from video_details
-              logger.warn(`stream_from_info failed despite valid InfoData, trying video_details.url:`, streamFromInfoError.message);
-              stream = await play.stream(videoInfo.video_details.url);
-              logger.info(`Successfully streamed using video_details.url after stream_from_info failure for guild ${guildId}`);
+              logger.error(`stream_from_info failed despite valid InfoData:`, {
+                error: streamFromInfoError.message,
+                stack: streamFromInfoError.stack,
+                code: streamFromInfoError.code,
+                input: streamFromInfoError.input,
+                fullError: JSON.stringify(streamFromInfoError, Object.getOwnPropertyNames(streamFromInfoError))
+              });
+              
+              logger.warn(`Trying video_details.url as fallback:`, videoInfo.video_details.url);
+              try {
+                stream = await play.stream(videoInfo.video_details.url);
+                logger.info(`Successfully streamed using video_details.url after stream_from_info failure for guild ${guildId}`);
+              } catch (streamError) {
+                logger.error(`Even video_details.url streaming failed:`, {
+                  error: streamError.message,
+                  stack: streamError.stack,
+                  code: streamError.code,
+                  input: streamError.input,
+                  url: videoInfo.video_details.url
+                });
+                throw streamError;
+              }
             }
           }
         }
