@@ -297,31 +297,52 @@ class MusicManager {
       logger.info(`Attempting to stream URL for guild ${guildId}:`, urlToStream.substring(0, 50) + '...');
 
       // Get stream from play-dl
-      // play-dl can accept URL strings, but sometimes it's better to get video info first
+      // play-dl sometimes has issues with full YouTube URLs, so we'll use search as fallback
       let stream;
       try {
         // Try streaming directly with URL first (faster)
         stream = await play.stream(urlToStream);
+        logger.info(`Successfully streamed directly for guild ${guildId}`);
       } catch (streamError) {
         // If direct URL streaming fails, try getting video info first
         if (streamError.message?.includes('Invalid URL') || streamError.code === 'ERR_INVALID_URL') {
-          logger.warn(`Direct URL streaming failed, trying video_info first for guild ${guildId}:`, urlToStream);
+          logger.warn(`Direct URL streaming failed, trying alternative methods for guild ${guildId}:`, urlToStream);
+          
+          // Try method 1: Extract video ID and use that
           try {
-            // Get video info first, then stream from that
-            const videoInfo = await play.video_info(urlToStream);
-            if (!videoInfo || !videoInfo.video_details) {
-              throw new Error('Failed to get video info');
+            const videoIdMatch = urlToStream.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+            if (videoIdMatch && videoIdMatch[1]) {
+              const videoId = videoIdMatch[1];
+              const shortUrl = `https://www.youtube.com/watch?v=${videoId}`;
+              logger.info(`Trying with extracted video ID for guild ${guildId}:`, videoId);
+              stream = await play.stream(shortUrl);
+              logger.info(`Successfully streamed using video ID method for guild ${guildId}`);
+            } else {
+              throw new Error('Could not extract video ID');
             }
-            stream = await play.stream(videoInfo.video_details.url || urlToStream);
-            logger.info(`Successfully streamed using video_info method for guild ${guildId}`);
-          } catch (videoInfoError) {
-            logger.error(`Both streaming methods failed in guild ${guildId}:`, {
-              urlToStream,
-              directError: streamError.message,
-              videoInfoError: videoInfoError.message,
-              song: JSON.stringify(song)
-            });
-            throw new Error(`play-dl rejected URL: ${urlToStream} - ${streamError.message}`);
+          } catch (videoIdError) {
+            // Try method 2: Use search to find the video, then stream
+            try {
+              logger.info(`Trying search method for guild ${guildId} with title:`, song.title);
+              const searchResults = await play.search(song.title, { limit: 1 });
+              if (searchResults && searchResults.length > 0 && searchResults[0].url) {
+                const foundUrl = searchResults[0].url;
+                logger.info(`Found video via search for guild ${guildId}:`, foundUrl);
+                stream = await play.stream(foundUrl);
+                logger.info(`Successfully streamed using search method for guild ${guildId}`);
+              } else {
+                throw new Error('No search results found');
+              }
+            } catch (searchError) {
+              logger.error(`All streaming methods failed in guild ${guildId}:`, {
+                urlToStream,
+                directError: streamError.message,
+                videoIdError: videoIdError.message,
+                searchError: searchError.message,
+                song: JSON.stringify(song)
+              });
+              throw new Error(`play-dl rejected URL: ${urlToStream} - All methods failed. Direct: ${streamError.message}`);
+            }
           }
         } else {
           throw streamError; // Re-throw if it's a different error
