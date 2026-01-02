@@ -335,8 +335,32 @@ class MusicManager {
         }
 
         logger.info(`Fetching audio stream for guild ${guildId}...`);
-        // Get the stream directly from youtubei.js
-        stream = await audioFormat.download();
+        // Get the stream URL and create a readable stream
+        const streamUrl = audioFormat.decipher(youtube.session.player);
+        const https = require('https');
+        const http = require('http');
+        
+        // Create a readable stream from the audio URL
+        const protocol = streamUrl.startsWith('https') ? https : http;
+        
+        stream = new Promise((resolve, reject) => {
+          const request = protocol.get(streamUrl, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+              'Accept': '*/*',
+            },
+          }, (response) => {
+            if (response.statusCode !== 200) {
+              reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
+              return;
+            }
+            resolve(response);
+          });
+          
+          request.on('error', reject);
+        });
+        
+        stream = await stream; // Wait for the stream to be ready
         logger.info(`Successfully created stream for guild ${guildId}`);
       } catch (streamError) {
         logger.error(`Failed to create stream for guild ${guildId}:`, {
