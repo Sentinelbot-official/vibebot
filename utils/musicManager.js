@@ -189,22 +189,52 @@ class MusicManager {
       return false;
     }
 
-    // Clean queue of invalid songs first
-    this.cleanQueue(guildId);
+    // Clean queue of invalid songs first - do this aggressively
+    const removedCount = this.cleanQueue(guildId);
+    if (removedCount > 0) {
+      logger.warn(`Removed ${removedCount} invalid song(s) from queue in guild ${guildId}`);
+    }
 
     if (queue.songs.length === 0) {
       queue.playing = false;
+      logger.info(`Queue is empty for guild ${guildId}`);
       return false;
     }
 
+    // Get the first song and validate it exists
     const song = queue.songs[0];
+    
+    // Aggressive validation - check song object structure
+    if (!song) {
+      logger.error(`Song object is null/undefined in queue for guild ${guildId}`);
+      queue.songs.shift();
+      if (queue.songs.length > 0) {
+        return this.play(guildId);
+      } else {
+        queue.playing = false;
+        return false;
+      }
+    }
+
+    // Check if song has url property at all
+    if (!('url' in song)) {
+      logger.error(`Song object missing 'url' property in guild ${guildId}:`, JSON.stringify(song));
+      queue.songs.shift();
+      if (queue.songs.length > 0) {
+        return this.play(guildId);
+      } else {
+        queue.playing = false;
+        return false;
+      }
+    }
     
     // Log queue state for debugging
     logger.info(`Playing song from queue in guild ${guildId}. Queue length: ${queue.songs.length}`);
     logger.info(`Song object:`, JSON.stringify(song, null, 2));
+    logger.info(`Song URL value:`, song.url, `Type:`, typeof song.url);
     
     // Double-check song URL before playing
-    if (!song || !this.isValidUrl(song?.url)) {
+    if (!this.isValidUrl(song.url)) {
       logger.warn(`Invalid song URL in queue for guild ${guildId}:`, JSON.stringify(song));
       queue.songs.shift();
       if (queue.songs.length > 0) {
