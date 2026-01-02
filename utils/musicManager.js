@@ -340,40 +340,79 @@ class MusicManager {
         
         // Log format object structure for debugging
         logger.info(`Format object properties for guild ${guildId}:`, {
+          urlValue: audioFormat.url,
+          urlType: typeof audioFormat.url,
           hasUrl: !!audioFormat.url,
           hasDecipher: typeof audioFormat.decipher === 'function',
           formatType: audioFormat.constructor?.name,
           keys: Object.keys(audioFormat).slice(0, 10) // First 10 keys
         });
 
-        // Try to get URL directly first
-        if (audioFormat.url && typeof audioFormat.url === 'string') {
+        // Try to get URL directly first - check actual value, not just truthiness
+        if (audioFormat.url && typeof audioFormat.url === 'string' && audioFormat.url.trim().length > 0) {
           streamUrl = audioFormat.url;
-          logger.info(`Using direct URL for guild ${guildId}`);
+          logger.info(`Using direct URL for guild ${guildId}: ${streamUrl.substring(0, 50)}...`);
         } else {
-          // If no direct URL, try to decipher
+          // If no direct URL, try to decipher - but decipher() might throw if no URL to decipher
           try {
-            const deciphered = audioFormat.decipher(youtube.session.player);
+            // Check if format has a URL property that needs deciphering
+            // Some formats have url but it's empty/null, and decipher() is needed
+            const deciphered = await audioFormat.decipher(youtube.session.player);
             // decipher() might return an object with a url property, or a string
-            if (typeof deciphered === 'string') {
+            if (typeof deciphered === 'string' && deciphered.trim().length > 0) {
               streamUrl = deciphered;
-            } else if (deciphered && typeof deciphered.url === 'string') {
+            } else if (deciphered && typeof deciphered.url === 'string' && deciphered.url.trim().length > 0) {
               streamUrl = deciphered.url;
             } else if (deciphered && typeof deciphered.toString === 'function') {
-              streamUrl = deciphered.toString();
+              const urlString = deciphered.toString();
+              if (urlString && urlString.trim().length > 0) {
+                streamUrl = urlString;
+              } else {
+                throw new Error('Decipher returned empty string');
+              }
             } else {
               throw new Error('Decipher returned invalid format');
             }
-            logger.info(`Deciphered URL for guild ${guildId}`);
+            logger.info(`Deciphered URL for guild ${guildId}: ${streamUrl.substring(0, 50)}...`);
           } catch (decipherError) {
             // If decipher fails, check other format properties
             logger.warn(`Decipher failed:`, decipherError.message);
             
-            // Try alternative properties
-            if (audioFormat.url) {
+            // Try alternative properties - check info object for streaming data
+            logger.info(`Checking alternative URL sources for guild ${guildId}...`);
+            logger.info(`Info object keys:`, Object.keys(info).slice(0, 10));
+            
+            if (audioFormat.url && typeof audioFormat.url === 'string' && audioFormat.url.trim().length > 0) {
               streamUrl = audioFormat.url;
-            } else if (audioFormat.streaming_data?.formats?.[0]?.url) {
-              streamUrl = audioFormat.streaming_data.formats[0].url;
+              logger.info(`Using audioFormat.url after decipher failed for guild ${guildId}`);
+            } else if (info.streaming_data?.formats) {
+              // Try to find a format with a URL in streaming_data
+              const formatWithUrl = info.streaming_data.formats.find(f => f.url && typeof f.url === 'string' && f.url.trim().length > 0);
+              if (formatWithUrl) {
+                streamUrl = formatWithUrl.url;
+                logger.info(`Using streaming_data format URL for guild ${guildId}`);
+              } else {
+                // Try to get all available formats and choose the best audio one
+                const allFormats = info.formats || [];
+                const audioFormats = allFormats.filter(f => f.hasAudio && !f.hasVideo);
+                const formatWithUrl = audioFormats.find(f => f.url && typeof f.url === 'string' && f.url.trim().length > 0);
+                if (formatWithUrl) {
+                  streamUrl = formatWithUrl.url;
+                  logger.info(`Using alternative format URL from info.formats for guild ${guildId}`);
+                } else {
+                  throw new Error(`Cannot get stream URL: No valid URL found in any format`);
+                }
+              }
+            } else if (info.formats) {
+              // Try info.formats directly
+              const audioFormats = info.formats.filter(f => f.hasAudio && !f.hasVideo);
+              const formatWithUrl = audioFormats.find(f => f.url && typeof f.url === 'string' && f.url.trim().length > 0);
+              if (formatWithUrl) {
+                streamUrl = formatWithUrl.url;
+                logger.info(`Using format URL from info.formats for guild ${guildId}`);
+              } else {
+                throw new Error(`Cannot get stream URL: No valid URL found in info.formats`);
+              }
             } else {
               throw new Error(`Cannot get stream URL: ${decipherError.message}`);
             }
