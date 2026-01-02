@@ -242,10 +242,46 @@ class MusicManager {
         throw new Error(`URL is invalid: ${urlToStream}`);
       }
 
+      // Final safety check - if URL is still invalid, throw before play-dl
+      if (!urlToStream || urlToStream === 'undefined' || urlToStream === 'null' || typeof urlToStream !== 'string') {
+        logger.error(`CRITICAL: URL is invalid right before play.stream() in guild ${guildId}:`, {
+          urlToStream,
+          type: typeof urlToStream,
+          song: JSON.stringify(song)
+        });
+        throw new Error(`Cannot stream: URL is ${urlToStream}`);
+      }
+
+      // Try to create URL object to validate format
+      try {
+        new URL(urlToStream);
+      } catch (urlError) {
+        logger.error(`CRITICAL: URL format is invalid in guild ${guildId}:`, {
+          urlToStream,
+          error: urlError.message,
+          song: JSON.stringify(song)
+        });
+        throw new Error(`Invalid URL format: ${urlToStream}`);
+      }
+
       logger.info(`Attempting to stream URL for guild ${guildId}:`, urlToStream.substring(0, 50) + '...');
 
-      // Get stream from play-dl
-      const stream = await play.stream(urlToStream);
+      // Get stream from play-dl - wrap in try-catch to handle play-dl's internal URL validation
+      let stream;
+      try {
+        stream = await play.stream(urlToStream);
+      } catch (streamError) {
+        // If play-dl throws Invalid URL error, it means our validation missed something
+        if (streamError.message?.includes('Invalid URL') || streamError.code === 'ERR_INVALID_URL') {
+          logger.error(`play-dl rejected URL in guild ${guildId}:`, {
+            urlToStream,
+            error: streamError.message,
+            song: JSON.stringify(song)
+          });
+          throw new Error(`play-dl rejected URL: ${urlToStream}`);
+        }
+        throw streamError; // Re-throw if it's a different error
+      }
 
       // Create audio resource
       const resource = createAudioResource(stream.stream, {
